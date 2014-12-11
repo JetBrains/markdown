@@ -1,0 +1,81 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('``')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('foo')
+      WHITE_SPACE(' ')
+      Markdown:BACKTICK('`')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('bar')
+      WHITE_SPACE('  ')
+      Markdown:BACKTICK('``')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('``')
+      Markdown:EOL('\n')
+      Markdown:TEXT('foo')
+      Markdown:EOL('\n')
+      Markdown:BACKTICK('``')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('foo')
+      Markdown:ESCAPED_BACKTICKS('\`')
+    Markdown:TEXT('bar')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      WHITE_SPACE(' ')
+      Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:[('[')
+    Markdown:TEXT('not a')
+    WHITE_SPACE(' ')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('link')
+      Markdown:](']')
+      Markdown:(('(')
+      Markdown:TEXT('/foo')
+      Markdown:BACKTICK('`')
+    Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:AUTOLINK
+      Markdown:<('<')
+      Markdown:AUTOLINK('http://foo.bar.')
+      Markdown:BACKTICK('`')
+      Markdown:AUTOLINK('baz')
+      Markdown:>('>')
+    Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:EMPH('*')
+    Markdown:TEXT('foo')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:EMPH('*')
+      Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('foo')
+      Markdown:EMPH('*')
+      Markdown:BACKTICK('`')
+    Markdown:EMPH('*')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:BACKTICK('```')
+    Markdown:TEXT('foo')
+    Markdown:BACKTICK('``')

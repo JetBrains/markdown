@@ -1,0 +1,32 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    Markdown:TEXT('Some text')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    WHITE_SPACE('    ')
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    WHITE_SPACE('      ')
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    WHITE_SPACE('    ')
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    WHITE_SPACE('  ')
+    Markdown:TEXT('Some text')
+    Markdown:EOL('\n')
+    Markdown:TEXT('Some text')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  WHITE_SPACE('    ')
+  Markdown:CODE_BLOCK
+    Markdown:CODE('Some text')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Some text')
