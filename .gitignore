@@ -3,6 +3,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# kotlin libs
+lib/
+
 # Package Files #
 *.jar
 *.war
