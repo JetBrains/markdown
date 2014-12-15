@@ -3,7 +3,7 @@ package org.intellij.markdown;
 import org.intellij.markdown.parser.MarkerProcessorFactory;
 import org.intellij.markdown.parser.dialects.KDocMarkerProcessor;
 
-public class RDocParsingTest extends BaseParsingTest {
+public class KDocParsingTest extends BaseParsingTest {
     @Override
     protected MarkerProcessorFactory getMarkerProcessorFactory() {
         return new KDocMarkerProcessor.object.Factory();
