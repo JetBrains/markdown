@@ -61,7 +61,10 @@ public class MarkdownParserUtil private() {
             var eolPos = rawOffset - 1
             while (true) {
                 val `type` = iterator.rawLookup(eolPos)
-                if (`type` == MarkdownTokenTypes.EOL || `type` == null) {
+                if (type != MarkdownTokenTypes.WHITE_SPACE
+                        && type != MarkdownTokenTypes.BLOCK_QUOTE
+                        && type != MarkdownTokenTypes.LIST_BULLET
+                        && type != MarkdownTokenTypes.LIST_NUMBER) {
                     break
                 }
 
