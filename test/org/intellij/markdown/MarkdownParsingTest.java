@@ -66,6 +66,25 @@ public class MarkdownParsingTest extends UsefulTestCase {
                 getParsedTreeText("\n"));
     }
 
+    public void testSmall2() {
+        assertEquals(
+                "Markdown:MARKDOWN_FILE\n" +
+                "  Markdown:PARAGRAPH\n" +
+                "    Markdown:TEXT('test')",
+                getParsedTreeText("test"));
+    }
+
+    public void testSmall3() {
+        assertEquals(
+                "Markdown:MARKDOWN_FILE\n" +
+                "  Markdown:PARAGRAPH\n" +
+                "    Markdown:EMPH\n" +
+                "      Markdown:EMPH('*')\n" +
+                "      Markdown:TEXT('test')\n" +
+                "      Markdown:EMPH('*')",
+                getParsedTreeText("*test*"));
+    }
+
     public void testSimple() {
         defaultTest();
     }

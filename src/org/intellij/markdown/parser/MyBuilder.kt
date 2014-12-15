@@ -58,13 +58,14 @@ public class MyBuilder {
 
     private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
         val events = ArrayList<MyEvent>()
-        for (result in production) {
+        for (index in production.indices) {
+            val result = production.get(index)
             val startTokenId = result.range.start
             val endTokenId = result.range.end
 
-            events.add(MyEvent(startTokenId, result))
+            events.add(MyEvent(startTokenId, index, result))
             if (endTokenId != startTokenId) {
-                events.add(MyEvent(endTokenId, result))
+                events.add(MyEvent(endTokenId, index, result))
             }
         }
         Collections.sort<MyEvent>(events)
@@ -115,7 +116,9 @@ public class MyBuilder {
         }
     }
 
-    private class MyEvent(val position: Int, val info: SequentialParser.Node) : Comparable<MyEvent> {
+    private class MyEvent(val position: Int,
+                          val timeClosed: Int,
+                          val info: SequentialParser.Node) : Comparable<MyEvent> {
 
         public fun isStart(): Boolean {
             return info.range.start == position
@@ -130,7 +133,18 @@ public class MyBuilder {
                 return position - other.position
             }
             if (isStart() == other.isStart()) {
-                return -(info.range.start + info.range.end - other.info.range.start - other.info.range.end)
+                val positionDiff = info.range.start + info.range.end - (other.info.range.start + other.info.range.end)
+                if (positionDiff != 0) {
+                    return -positionDiff
+                }
+
+                val timeDiff = timeClosed - other.timeClosed
+                if (isStart()) {
+                    return -timeDiff
+                }
+                else {
+                    return timeDiff
+                }
             }
             return if (isStart()) 1 else -1
         }
