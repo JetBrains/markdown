@@ -8,18 +8,9 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.*
 
 public class MyBuilder {
-    private val production = ArrayList<SequentialParser.Node>()
 
-    public fun addNode(node: SequentialParser.Node) {
-        production.add(node)
-    }
-
-    public fun addNodes(nodes: Collection<SequentialParser.Node>) {
-        production.addAll(nodes)
-    }
-
-    public fun buildTree(tokensCache: TokensCache): ASTNode {
-        val events = constructEvents()
+    public fun buildTree(production: List<SequentialParser.Node>, tokensCache: TokensCache): ASTNode {
+        val events = constructEvents(production)
         val markersStack = Stack<MutableList<MyASTNodeWrapper>>()
 
         assert(!events.isEmpty(), "nonsense")
@@ -65,7 +56,7 @@ public class MyBuilder {
         markersStack.peek().add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
     }
 
-    private fun constructEvents(): List<MyEvent> {
+    private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
         val events = ArrayList<MyEvent>()
         for (result in production) {
             val startTokenId = result.range.start

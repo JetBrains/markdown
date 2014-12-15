@@ -7,21 +7,17 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 import java.util.*
 
-public abstract class MarkerProcessor(startingConstraints: MarkdownConstraints) {
+public abstract class MarkerProcessor(private val productionHolder: ProductionHolder,
+                                      protected val tokensCache: TokensCache,
+                                      private val startConstraints: MarkdownConstraints) {
 
-    protected var NO_BLOCKS: Array<MarkerBlock> = array()
+    protected val NO_BLOCKS: Array<MarkerBlock> = array()
 
     protected val markersStack: MutableList<MarkerBlock> = ArrayList()
 
     private val postponedActions = TreeMap<Int, MarkerBlock.ProcessingResult>()
 
-    private val productionHolder = ProductionHolder()
-
-    public var tokensCache: TokensCache? = null
-
     private var cachedPermutation: List<Int>? = null
-
-    private val startConstraints: MarkdownConstraints
 
     private var topBlockConstraints: MarkdownConstraints
 
@@ -29,22 +25,20 @@ public abstract class MarkerProcessor(startingConstraints: MarkdownConstraints) 
         private set
 
     {
-        startConstraints = startingConstraints
-        topBlockConstraints = startingConstraints
-        $currentConstraints = startingConstraints
+        topBlockConstraints = startConstraints
+        $currentConstraints = startConstraints
     }
 
     protected abstract fun getPrioritizedMarkerPermutation(): List<Int>
 
     public abstract fun createNewMarkerBlocks(tokenType: IElementType, iterator: TokensCache.Iterator, productionHolder: ProductionHolder): Array<MarkerBlock>
 
-    public fun getProduction(): Collection<SequentialParser.Node> {
+    public fun getProduction(): List<SequentialParser.Node> {
         return productionHolder.production
     }
 
     public fun processToken(tokenType: IElementType, iterator: TokensCache.Iterator): TokensCache.Iterator {
         var it = iterator
-        productionHolder.updatePosition(it.index)
         processPostponedActions()
 
         val someoneHasCancelledEvent = processMarkers(tokenType, it)
@@ -79,8 +73,7 @@ public abstract class MarkerProcessor(startingConstraints: MarkdownConstraints) 
         currentConstraints = topBlockConstraints
     }
 
-    public fun flushMarkers(iterator: TokensCache.Iterator) {
-        productionHolder.updatePosition(iterator.index)
+    public fun flushMarkers() {
         processPostponedActions()
 
         closeChildren(-1, MarkerBlock.ClosingAction.DEFAULT)

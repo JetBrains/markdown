@@ -9,8 +9,8 @@ public class ProductionHolder {
     public var currentPosition: Int = 0
         private set
 
-    private val _production : MutableCollection<SequentialParser.Node> = ArrayList()
-    public val production: Collection<SequentialParser.Node>
+    private val _production : MutableList<SequentialParser.Node> = ArrayList()
+    public val production: List<SequentialParser.Node>
         get() {
             return _production
         }
@@ -34,7 +34,7 @@ public class ProductionHolder {
             startPos = currentPosition
         }
 
-        public fun done(`type`: IElementType) {
+        public fun done(type: IElementType) {
             _production.add(SequentialParser.Node(startPos..currentPosition, type))
         }
     }

@@ -7,8 +7,11 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 import java.util.*
+import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.TokensCache
 
-public abstract class FixedPriorityListMarkerProcessor(startingConstraints: MarkdownConstraints) : MarkerProcessor(startingConstraints) {
+public abstract class FixedPriorityListMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache, startingConstraints: MarkdownConstraints)
+        : MarkerProcessor(productionHolder, tokensCache, startingConstraints) {
     private val priorityMap: Map<IElementType, Int>
 
     {

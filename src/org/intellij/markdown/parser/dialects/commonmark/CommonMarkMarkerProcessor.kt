@@ -12,8 +12,11 @@ import org.intellij.markdown.parser.markerblocks.impl.*
 
 import java.util.ArrayList
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.MarkerProcessor
 
-public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(MarkdownConstraints.BASE) {
+public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
+        : FixedPriorityListMarkerProcessor(productionHolder, tokensCache, MarkdownConstraints.BASE) {
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
         val result = ArrayList<Pair<IElementType, Int>>()
@@ -41,7 +44,10 @@ public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(Markdo
         if (tokenType == MarkdownTokenTypes.EOL) {
             return NO_BLOCKS
         }
-        if (tokenType == MarkdownTokenTypes.HORIZONTAL_RULE || tokenType == MarkdownTokenTypes.SETEXT_1 || tokenType == MarkdownTokenTypes.SETEXT_2 || tokenType == MarkdownTokenTypes.HTML_BLOCK) {
+        if (tokenType == MarkdownTokenTypes.HORIZONTAL_RULE
+                || tokenType == MarkdownTokenTypes.SETEXT_1
+                || tokenType == MarkdownTokenTypes.SETEXT_2
+                || tokenType == MarkdownTokenTypes.HTML_BLOCK) {
             return NO_BLOCKS
         }
 
@@ -63,7 +69,7 @@ public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(Markdo
             }
         } else if (tokenType == MarkdownTokenTypes.ATX_HEADER && paragraph == null) {
             val tokenText = iterator.text
-            result.add(AtxHeaderMarkerBlock(newConstraints, tokensCache!!, productionHolder, tokenText.length()))
+            result.add(AtxHeaderMarkerBlock(newConstraints, tokensCache, productionHolder, tokenText.length()))
         } else if (tokenType == MarkdownTokenTypes.CODE_FENCE_START) {
             result.add(CodeFenceMarkerBlock(newConstraints, productionHolder.mark()))
         } else {
@@ -71,11 +77,11 @@ public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(Markdo
             val paragraphToUse: ParagraphMarkerBlock
 
             if (paragraph == null) {
-                paragraphToUse = ParagraphMarkerBlock(newConstraints, productionHolder, tokensCache!!)
+                paragraphToUse = ParagraphMarkerBlock(newConstraints, productionHolder, tokensCache)
                 result.add(paragraphToUse)
 
                 if (isAtLineStart(iterator)) {
-                    result.add(SetextHeaderMarkerBlock(newConstraints, tokensCache!!, productionHolder))
+                    result.add(SetextHeaderMarkerBlock(newConstraints, tokensCache, productionHolder))
 
                 }
             }
@@ -94,6 +100,13 @@ public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(Markdo
     }
 
     class object {
+        public class Factory : MarkerProcessorFactory {
+            override fun createMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache): MarkerProcessor {
+                return CommonMarkMarkerProcessor(productionHolder, tokensCache)
+            }
+
+        }
+
         private fun isAtLineStart(iterator: TokensCache.Iterator): Boolean {
             var index = -1
             while (true) {

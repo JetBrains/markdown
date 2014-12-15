@@ -29,7 +29,7 @@ public class MarkdownParsingTest extends UsefulTestCase {
 
     @NotNull
     private String getParsedTreeText(@NotNull String inputText) {
-        ASTNode tree = new MarkdownParser(new CommonMarkMarkerProcessor()).buildMarkdownTreeFromString(inputText);
+        ASTNode tree = new MarkdownParser(new CommonMarkMarkerProcessor.object.Factory()).buildMarkdownTreeFromString(inputText);
         return treeToStr(inputText, tree);
     }
 

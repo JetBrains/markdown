@@ -6,7 +6,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class MarkdownParser(private val markerProcessor: MarkerProcessor) {
+public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorFactory) {
 
     public fun buildMarkdownTreeFromString(text: String): ASTNode {
         val cache = TokensCache(MarkdownLexer(text))
@@ -14,25 +14,26 @@ public class MarkdownParser(private val markerProcessor: MarkerProcessor) {
     }
 
     public fun parse(root: IElementType, tokensCache: TokensCache): ASTNode {
-        markerProcessor.tokensCache = tokensCache
+        val productionHolder = ProductionHolder()
+        val markerProcessor = markerProcessorFactory.createMarkerProcessor(productionHolder, tokensCache)
 
-        val startOffset = 0
+        val rootMarker = productionHolder.mark()
 
-        var iterator = tokensCache.Iterator(startOffset)
+        var iterator = tokensCache.Iterator(0)
+        productionHolder.updatePosition(iterator.index)
         while (iterator.type != null) {
             val tokenType = iterator.type!!
             iterator = markerProcessor.processToken(tokenType, iterator)
             iterator = iterator.advance()
+            productionHolder.updatePosition(iterator.index)
         }
-        markerProcessor.flushMarkers(iterator)
+        markerProcessor.flushMarkers()
 
+        rootMarker.done(root)
 
         val builder = MyBuilder()
 
-        builder.addNode(SequentialParser.Node(0..iterator.index, root))
-        builder.addNodes(markerProcessor.getProduction())
-
-        return builder.buildTree(tokensCache)
+        return builder.buildTree(productionHolder.production, tokensCache)
     }
 
 }
