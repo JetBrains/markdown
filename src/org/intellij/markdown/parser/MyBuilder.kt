@@ -35,10 +35,13 @@ public class MyBuilder {
                 currentTokenPosition++
             }
 
-            if (event.isStart()) {
+            if (event.isStart() && !event.isEmpty()) {
                 markersStack.push(ArrayList<MyASTNodeWrapper>())
             } else {
-                val currentNodeChildren = markersStack.pop()
+                val currentNodeChildren = if (event.isEmpty())
+                    ArrayList()
+                else
+                    markersStack.pop()
                 val isTopmostNode = markersStack.isEmpty()
 
                 val newNode = createASTNodeOnClosingEvent(tokensCache, event, currentNodeChildren, isTopmostNode)
@@ -69,7 +72,9 @@ public class MyBuilder {
             val endTokenId = result.range.end
 
             events.add(MyEvent(startTokenId, result))
-            events.add(MyEvent(endTokenId, result))
+            if (endTokenId != startTokenId) {
+                events.add(MyEvent(endTokenId, result))
+            }
         }
         Collections.sort<MyEvent>(events)
         return events
@@ -95,7 +100,9 @@ public class MyBuilder {
 
             addRawTokens(tokensCache, childrenWithWhitespaces, prev.endTokenIndex - 1, +1, tokensCache.Iterator(next.startTokenIndex).start)
         }
-        childrenWithWhitespaces.add(currentNodeChildren.get(currentNodeChildren.size() - 1).astNode)
+        if (!currentNodeChildren.isEmpty()) {
+            childrenWithWhitespaces.add(currentNodeChildren.last!!.astNode)
+        }
         if (isTopmostNode) {
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId, +1, -1)
         }
@@ -121,6 +128,10 @@ public class MyBuilder {
 
         public fun isStart(): Boolean {
             return info.range.start == position
+        }
+
+        public fun isEmpty(): Boolean {
+            return info.range.start == info.range.end
         }
 
         override fun compareTo(other: MyEvent): Int {

@@ -22,10 +22,15 @@ public class MarkdownParsingTest extends UsefulTestCase {
             throw new AssertionError("failed to read src");
         }
 
-        ASTNode tree = new MarkdownParser(new CommonMarkMarkerProcessor()).buildMarkdownTreeFromString(src);
-        String result = treeToStr(src, tree);
+        String result = getParsedTreeText(src);
 
         assertSameLinesWithFile(getTestDataPath() + "/" + getTestName(false) + ".txt", result);
+    }
+
+    @NotNull
+    private String getParsedTreeText(@NotNull String inputText) {
+        ASTNode tree = new MarkdownParser(new CommonMarkMarkerProcessor()).buildMarkdownTreeFromString(inputText);
+        return treeToStr(inputText, tree);
     }
 
     private String treeToStr(String src, @NotNull ASTNode tree) {
@@ -50,6 +55,15 @@ public class MarkdownParsingTest extends UsefulTestCase {
         }
 
         return sb;
+    }
+
+    public void testEmpty() {
+        assertEquals("Markdown:MARKDOWN_FILE", getParsedTreeText(""));
+    }
+
+    public void testSmall1() {
+        assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:EOL('\\n')",
+                getParsedTreeText("\n"));
     }
 
     public void testSimple() {
