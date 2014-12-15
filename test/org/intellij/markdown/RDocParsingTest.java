@@ -13,4 +13,12 @@ public class RDocParsingTest extends BaseParsingTest {
         defaultTest();
     }
 
+    public void testSimple() {
+        defaultTest();
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return super.getTestDataPath() + "/kdoc";
+    }
 }

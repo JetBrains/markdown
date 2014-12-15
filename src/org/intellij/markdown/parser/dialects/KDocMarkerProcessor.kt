@@ -10,11 +10,18 @@ import org.intellij.markdown.parser.markerblocks.impl.KDocSectionMarkerBlock
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.MarkerProcessor
 import java.util.ArrayList
+import org.intellij.markdown.MarkdownElementTypes
 
 public class KDocMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
         : CommonMarkMarkerProcessor(productionHolder, tokensCache) {
 
-    private var delegateRestrictingBound: Int = 0
+    private var delegateRestrictingBound: Int = -1
+
+    override fun getPriorityList(): List<Pair<IElementType, Int>> {
+        val list = super<CommonMarkMarkerProcessor>.getPriorityList()
+        val maxPair = list.maxBy { p -> p.second }
+        return list + Pair(MarkdownElementTypes.SECTION, maxPair?.second ?: 1)
+    }
 
     override fun createNewMarkerBlocks(tokenType: IElementType, iterator: TokensCache.Iterator, productionHolder: ProductionHolder): Array<MarkerBlock> {
         val myList = ArrayList<MarkerBlock>()

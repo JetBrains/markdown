@@ -1,6 +1,7 @@
 Markdown:MARKDOWN_FILE
   Markdown:SECTION
-    Markdown:TEXT('This is some title text')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('This is some title text')
     Markdown:EOL('\n')
     Markdown:EOL('\n')
     Markdown:PARAGRAPH

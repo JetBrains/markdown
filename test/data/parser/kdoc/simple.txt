@@ -1,0 +1,37 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Plain text')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$one')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Summary')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('${two}')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Description with')
+      WHITE_SPACE(' ')
+      Markdown:EMPH
+        Markdown:EMPH('*')
+        Markdown:TEXT('emphasis')
+        Markdown:EMPH('*')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('${An example of a section}')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Example')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('${Super comp.lex $strange @#)*$!@_@ link}')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Text')
