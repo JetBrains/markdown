@@ -23,7 +23,6 @@ public trait MarkdownTokenTypes {
         public val COLON: IElementType = MarkdownElementType(":")
         public val EXCLAMATION_MARK: IElementType = MarkdownElementType("!")
 
-
         public val HARD_LINE_BREAK: IElementType = MarkdownElementType("BR")
         public val EOL: IElementType = MarkdownElementType("EOL")
 
@@ -49,6 +48,8 @@ public trait MarkdownTokenTypes {
         public val AUTOLINK: IElementType = MarkdownElementType("AUTOLINK")
         public val EMAIL_AUTOLINK: IElementType = MarkdownElementType("EMAIL_AUTOLINK")
         public val HTML_TAG: IElementType = MarkdownElementType("HTML_TAG")
+
+        public val SECTION_ID: IElementType = MarkdownElementType("SECTION_ID");
 
         public val BAD_CHARACTER: IElementType = IElementType("BAD_CHARACTER")
         public val WHITE_SPACE: IElementType = IElementType("WHITE_SPACE")

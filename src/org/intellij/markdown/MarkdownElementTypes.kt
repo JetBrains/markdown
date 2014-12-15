@@ -12,6 +12,8 @@ public trait MarkdownElementTypes {
 
         public val BLOCK_QUOTE: IElementType = MarkdownElementType("BLOCK_QUOTE")
 
+        public val SECTION: IElementType = MarkdownElementType("SECTION")
+
         public val CODE_FENCE: IElementType = MarkdownElementType("CODE_FENCE")
 
         public val CODE_BLOCK: IElementType = MarkdownElementType("CODE_BLOCK")

@@ -257,11 +257,11 @@ SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
+SECTION_ID = "$"{ALPHANUM}+ | "${" {WHITE_SPACE}* ({ALPHANUM}+ {WHITE_SPACE}*)+ "}"
+
 %state HTML_BLOCK, TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE, CODE_FENCE
 
 %%
-
-
 
 <YYINITIAL> {
   {TAG_START} | {TAG_END} {
@@ -414,6 +414,10 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 
   "*" | "_" {
     return getReturnGeneralized(Token.EMPH);
+  }
+
+  {SECTION_ID} {
+    return Token.SECTION_ID;
   }
 
   {AUTOLINK} { return parseDelimited(Token.AUTOLINK, false); }

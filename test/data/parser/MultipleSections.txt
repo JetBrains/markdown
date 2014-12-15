@@ -1,0 +1,49 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:TEXT('This is some title text')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('This is some description probably')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$Section2')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('This text')
+      Markdown:EOL('\n')
+      WHITE_SPACE('    ')
+      Markdown:TEXT('continues here')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:PARAGRAPH
+      Markdown:SECTION_ID('$This')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('is not a section continuation because there is no colon')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('And one more paragraph with a link')
+      Markdown::(':')
+      WHITE_SPACE(' ')
+      Markdown:SECTION_ID('${Section2}')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    WHITE_SPACE('    ')
+    Markdown:CODE_BLOCK
+      Markdown:CODE('And some code')
+      Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('${section with multiple words}')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('oneliner description with')
+      WHITE_SPACE(' ')
+      Markdown:EMPH
+        Markdown:EMPH('*')
+        Markdown:TEXT('inline')
+        Markdown:EMPH('*')

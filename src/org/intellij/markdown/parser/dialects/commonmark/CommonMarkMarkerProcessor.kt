@@ -15,7 +15,7 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.MarkerProcessor
 
-public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
+public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
         : FixedPriorityListMarkerProcessor(productionHolder, tokensCache, MarkdownConstraints.BASE) {
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
@@ -107,7 +107,7 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, token
 
         }
 
-        private fun isAtLineStart(iterator: TokensCache.Iterator): Boolean {
+        public fun isAtLineStart(iterator: TokensCache.Iterator): Boolean {
             var index = -1
             while (true) {
                 val `type` = iterator.rawLookup(index)
