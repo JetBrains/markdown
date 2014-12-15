@@ -46,11 +46,22 @@ public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
         }
 
         // Something breaks paragraph
-        if (afterEol == MarkdownTokenTypes.EOL || afterEol == MarkdownTokenTypes.HORIZONTAL_RULE || afterEol == MarkdownTokenTypes.CODE_FENCE_START || afterEol == MarkdownTokenTypes.LIST_BULLET || afterEol == MarkdownTokenTypes.LIST_NUMBER || afterEol == MarkdownTokenTypes.ATX_HEADER || afterEol == MarkdownTokenTypes.BLOCK_QUOTE || afterEol == MarkdownTokenTypes.HTML_BLOCK) {
+        if (nextTokenTypeBreaksParagraph(afterEol)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
         return MarkerBlock.ProcessingResult.CANCEL
+    }
+
+    protected fun nextTokenTypeBreaksParagraph(afterEol: IElementType?): Boolean {
+        return afterEol == MarkdownTokenTypes.EOL
+                || afterEol == MarkdownTokenTypes.HORIZONTAL_RULE
+                || afterEol == MarkdownTokenTypes.CODE_FENCE_START
+                || afterEol == MarkdownTokenTypes.LIST_BULLET
+                || afterEol == MarkdownTokenTypes.LIST_NUMBER
+                || afterEol == MarkdownTokenTypes.ATX_HEADER
+                || afterEol == MarkdownTokenTypes.BLOCK_QUOTE
+                || afterEol == MarkdownTokenTypes.HTML_BLOCK
     }
 
     override fun getDefaultNodeType(): IElementType {

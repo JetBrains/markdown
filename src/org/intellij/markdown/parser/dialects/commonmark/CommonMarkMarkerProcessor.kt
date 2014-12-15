@@ -78,13 +78,11 @@ public class CommonMarkMarkerProcessor : FixedPriorityListMarkerProcessor(Markdo
                     result.add(SetextHeaderMarkerBlock(newConstraints, tokensCache!!, productionHolder))
 
                 }
-                //                addLinkDefinitionIfAny(iterator, result, newConstraints, paragraphToUse);
             }
 
-            //            addInlineMarkerBlocks(result, paragraphToUse, iterator, tokenType);
         }
 
-        return result.toArray<MarkerBlock>(arrayOfNulls<MarkerBlock>(result.size()))
+        return result.toArray(arrayOfNulls<MarkerBlock>(result.size()))
     }
 
     private fun getParagraphBlock(): ParagraphMarkerBlock? {
