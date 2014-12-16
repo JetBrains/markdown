@@ -23,7 +23,7 @@ public class BacktickParser : SequentialParser {
 
                 if (j != -1) {
                     result.withNode(SequentialParser.Node(indices.get(i)..indices.get(j) + 1, MarkdownElementTypes.CODE_SPAN))
-                    i = j
+                    i = j + 1
                     continue
                 }
             }
