@@ -1,0 +1,20 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Anonymous')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$item1.with.dots')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('First item')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$item2.with.dots')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Second item')

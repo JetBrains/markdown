@@ -17,6 +17,10 @@ public class KDocParsingTest extends BaseParsingTest {
         defaultTest();
     }
 
+    public void testDotSections() {
+        defaultTest();
+    }
+
     public void testSmall() {
         assertEquals(
                 "Markdown:MARKDOWN_FILE\n" +
