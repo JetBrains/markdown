@@ -19,7 +19,7 @@ public abstract class BaseParsingTest extends UsefulTestCase {
     protected void defaultTest() {
         String src;
         try {
-            src = FileUtil.loadFile(new File(getTestDataPath() + "/" + getTestName(true) + ".md")).trim();
+            src = FileUtil.loadFile(new File(getTestDataPath() + "/" + getTestName(true) + ".md"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new AssertionError("failed to read src");
