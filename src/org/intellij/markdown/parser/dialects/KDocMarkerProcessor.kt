@@ -31,7 +31,7 @@ public class KDocMarkerProcessor(productionHolder: ProductionHolder, tokensCache
                 && CommonMarkMarkerProcessor.isAtLineStart(iterator)) {
 
             myList.add(KDocSectionMarkerBlock(currentConstraints, productionHolder.mark()))
-            // Let's restrict the creation of anything while passing the section id
+            // Let's restrict the creation of anything while parsing the section id
             if (tokenType == MarkdownTokenTypes.SECTION_ID && iterator.advance().type == MarkdownTokenTypes.COLON) {
                 delegateRestrictingBound = iterator.index + 1
             }
