@@ -257,7 +257,7 @@ SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
-SECTION_NAME = [a-zA-Z0-9_\.]
+SECTION_NAME = [a-zA-Z0-9_\.$]
 
 SECTION_ID = "$"{SECTION_NAME}+ | "${" [^\n\r}]+ "}"
 
