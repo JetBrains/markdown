@@ -1,0 +1,36 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Some text in anonymous section')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$normal')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('one')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$$special')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('two')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$another.normal')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('three')
+    Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$$another.special')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('four')

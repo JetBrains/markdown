@@ -1,0 +1,8 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:PARAGRAPH
+      Markdown:TEXT('This is')
+      WHITE_SPACE(' ')
+      Markdown:SECTION_ID('${code directive}')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('code directive.')

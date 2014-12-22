@@ -1,0 +1,17 @@
+Markdown:MARKDOWN_FILE
+  Markdown:SECTION
+    Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$summary')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Summary')
+  Markdown:EOL('\n')
+  Markdown:SECTION
+    Markdown:SECTION_ID('$description')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Description')
+      Markdown:EOL('\n')
