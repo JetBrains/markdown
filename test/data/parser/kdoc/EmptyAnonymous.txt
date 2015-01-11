@@ -1,6 +1,6 @@
 Markdown:MARKDOWN_FILE
   Markdown:SECTION
-    Markdown:EOL('\n')
+  Markdown:EOL('\n')
   Markdown:SECTION
     Markdown:SECTION_ID('$summary')
     Markdown::(':')

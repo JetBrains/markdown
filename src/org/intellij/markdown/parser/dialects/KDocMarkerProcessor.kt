@@ -30,7 +30,18 @@ public class KDocMarkerProcessor(productionHolder: ProductionHolder, tokensCache
                 && iterator.advance().type == MarkdownTokenTypes.COLON
                 && CommonMarkMarkerProcessor.isAtLineStart(iterator)) {
 
-            myList.add(KDocSectionMarkerBlock(currentConstraints, productionHolder.mark()))
+            val sectionMarkerBlock = KDocSectionMarkerBlock(currentConstraints, productionHolder.mark())
+            myList.add(sectionMarkerBlock)
+
+            // #1: should close first (anonymous) section if it's empty
+            // So we'll let new block to honestly eat the first token
+            if (iterator.index == 0) {
+                val processingResult = sectionMarkerBlock.processToken(tokenType, iterator, currentConstraints)
+                if (sectionMarkerBlock.acceptAction(processingResult.selfAction)) {
+                    myList.clear();
+                }
+            }
+
             // Let's restrict the creation of anything while parsing the section id
             if (tokenType == MarkdownTokenTypes.SECTION_ID && iterator.advance().type == MarkdownTokenTypes.COLON) {
                 delegateRestrictingBound = iterator.index + 1
