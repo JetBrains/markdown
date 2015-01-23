@@ -1,7 +1,5 @@
 package org.intellij.markdown;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.testFramework.UsefulTestCase;
 import org.intellij.markdown.ast.ASTNode;
 import org.intellij.markdown.ast.LeafASTNode;
 import org.intellij.markdown.parser.MarkdownParser;
@@ -9,14 +7,15 @@ import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcesso
 
 import java.io.File;
 import kotlin.test.assertEquals
+import junit.framework.TestCase
 
-public class MarkdownParsingTest : UsefulTestCase() {
+public class MarkdownParsingTest : TestCase() {
 
     private fun defaultTest() {
-        val src = FileUtil.loadFile(File(getTestDataPath() + "/" + getTestName(true) + ".md")).trim();
+        val src = File(getTestDataPath() + "/" + testName + ".md").readText().trim();
         val result = getParsedTreeText(src);
 
-        UsefulTestCase.assertSameLinesWithFile(getTestDataPath() + "/" + getTestName(false) + ".txt", result);
+        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
     }
 
     private fun getParsedTreeText(inputText: String): String {

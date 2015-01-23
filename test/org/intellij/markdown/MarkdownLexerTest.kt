@@ -1,19 +1,11 @@
 package org.intellij.markdown;
 
-import com.intellij.lexer.EmptyLexer;
-import com.intellij.lexer.Lexer;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.testFramework.LexerTestCase;
 import org.intellij.markdown.lexer.MarkdownLexer;
+import junit.framework.TestCase
+import java.io.File
 
-public class MarkdownLexerTest : LexerTestCase() {
-    override fun createLexer(): Lexer? {
-        return EmptyLexer();
-    }
-
-    override fun getDirPath(): String? {
-        return "test/data/lexer";
-    }
+public class MarkdownLexerTest : TestCase() {
+    private fun getDirPath() = "test/data/lexer"
 
     public fun testSimple() {
         defaultTest();
@@ -68,35 +60,36 @@ public class MarkdownLexerTest : LexerTestCase() {
     }
 
     private fun defaultTest() {
-        doFileTest("md");
+        doFileTest();
     }
 
-    override fun printTokens(text: String, start: Int): String? {
-        return printTokens(MarkdownLexer(text));
-    }
+    fun printTokens(text: String): String {
+        val lexer = MarkdownLexer(text)
 
-    class object {
-        public fun printTokens(lexer: MarkdownLexer): String {
-
-            var result = "";
-            while (true) {
-                val tokenType = lexer.type;
-                if (tokenType == null) {
-                    break;
-                }
-                val tokenText = getTokenText(lexer);
-                val tokenTypeName = tokenType.toString();
-                val line = tokenTypeName +" ('" + tokenText + "')\n";
-                result += line;
-                lexer.advance();
+        var result = "";
+        while (true) {
+            val tokenType = lexer.type;
+            if (tokenType == null) {
+                break;
             }
-            return result;
+            val tokenText = getTokenText(lexer);
+            val tokenTypeName = tokenType.toString();
+            val line = tokenTypeName + " ('" + tokenText + "')\n";
+            result += line;
+            lexer.advance();
         }
+        return result;
+    }
 
-        private fun getTokenText(lexer: MarkdownLexer): String {
-            var text = lexer.originalText.subSequence(lexer.tokenStart, lexer.tokenEnd).toString();
-            text = StringUtil.replace(text, "\n", "\\n");
-            return text;
-        }
+    private fun getTokenText(lexer: MarkdownLexer) = lexer.originalText
+            .subSequence(lexer.tokenStart, lexer.tokenEnd)
+            .toString()
+            .replace("\n", "\\n")
+
+    fun doFileTest() {
+        val filePath = getDirPath() + "/" + testName + ".md"
+        val result = printTokens(File(filePath).readText())
+
+        assertSameLinesWithFile(getDirPath() + "/" + testName + ".txt", result);
     }
 }
