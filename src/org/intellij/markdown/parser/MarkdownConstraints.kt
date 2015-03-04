@@ -8,11 +8,11 @@ public class MarkdownConstraints private(private var indents: IntArray,
                                          private var isExplicit: BooleanArray) {
 
     public fun getIndent(): Int {
-        if (indents.size == 0) {
+        if (indents.size() == 0) {
             return 0
         }
 
-        return indents[indents.size - 1]
+        return indents[indents.size() - 1]
     }
 
     public fun upstreamWith(other: MarkdownConstraints): Boolean {
@@ -20,19 +20,19 @@ public class MarkdownConstraints private(private var indents: IntArray,
     }
 
     public fun extendsPrev(other: MarkdownConstraints): Boolean {
-        return startsWith(other) && !containsListMarkers(other.types.size)
+        return startsWith(other) && !containsListMarkers(other.types.size())
     }
 
     public fun extendsList(other: MarkdownConstraints): Boolean {
-        if (other.types.size == 0) {
+        if (other.types.size() == 0) {
             throw IllegalArgumentException("List constraints should contain at least one item")
         }
-        return startsWith(other) && !containsListMarkers(other.types.size - 1)
+        return startsWith(other) && !containsListMarkers(other.types.size() - 1)
     }
 
     private fun startsWith(other: MarkdownConstraints): Boolean {
-        val n = indents.size
-        val m = other.indents.size
+        val n = indents.size()
+        val m = other.indents.size()
 
         if (n < m) {
             return false
@@ -46,7 +46,7 @@ public class MarkdownConstraints private(private var indents: IntArray,
     }
 
     private fun containsListMarkers(): Boolean {
-        return containsListMarkers(types.size)
+        return containsListMarkers(types.size())
     }
 
     private fun containsListMarkers(upToIndex: Int): Boolean {
@@ -65,8 +65,8 @@ public class MarkdownConstraints private(private var indents: IntArray,
 
         var eaten = 0
 
-        val n = indents.size
-        val m = prevLineConstraints.indents.size
+        val n = indents.size()
+        val m = prevLineConstraints.indents.size()
 
         if (n > 0 && types[n - 1] == BQ_CHAR) {
             eaten++
@@ -144,7 +144,7 @@ public class MarkdownConstraints private(private var indents: IntArray,
         public val BQ_CHAR: Char = '>'
 
         private fun MarkdownConstraints(parent: MarkdownConstraints, newIndent: Int, newType: Char, newExplicit: Boolean): MarkdownConstraints {
-            val n = parent.indents.size
+            val n = parent.indents.size()
             val _indents = IntArray(n + 1)
             val _types = CharArray(n + 1)
             val _isExplicit = BooleanArray(n + 1)

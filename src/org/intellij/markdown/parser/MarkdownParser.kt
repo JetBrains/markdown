@@ -4,12 +4,11 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.lexer.MarkdownLexer
-import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorFactory) {
 
     public fun buildMarkdownTreeFromString(text: String): ASTNode {
-        val cache = TokensCache(MarkdownLexer(text))
+        val cache = LexerBasedTokensCache(MarkdownLexer(text))
         return parse(MarkdownElementTypes.MARKDOWN_FILE, cache)
     }
 
