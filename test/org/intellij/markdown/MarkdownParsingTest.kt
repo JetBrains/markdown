@@ -19,7 +19,7 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     private fun getParsedTreeText(inputText: String): String {
-        val tree = MarkdownParser(CommonMarkMarkerProcessor.Factory()).buildMarkdownTreeFromString(inputText);
+        val tree = MarkdownParser(CommonMarkMarkerProcessor.Factory).buildMarkdownTreeFromString(inputText);
         return treeToStr(inputText, tree);
     }
 

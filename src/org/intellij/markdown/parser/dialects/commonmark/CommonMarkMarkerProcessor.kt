@@ -99,13 +99,13 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, token
         return markersStack.lastOrNull()
     }
 
-    class object {
-        public class Factory : MarkerProcessorFactory {
-            override fun createMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache): MarkerProcessor {
-                return CommonMarkMarkerProcessor(productionHolder, tokensCache)
-            }
-
+    public object Factory : MarkerProcessorFactory {
+        override fun createMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache): MarkerProcessor {
+            return CommonMarkMarkerProcessor(productionHolder, tokensCache)
         }
+    }
+
+    class object {
 
         private fun isAtLineStart(iterator: TokensCache.Iterator): Boolean {
             var index = -1

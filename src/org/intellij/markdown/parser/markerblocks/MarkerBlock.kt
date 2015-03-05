@@ -45,33 +45,24 @@ public trait MarkerBlock {
         CANCEL
     }
 
-    class object {
+    public class ProcessingResult internal (public val childrenAction: ClosingAction,
+                                            public val selfAction: ClosingAction,
+                                            public val eventAction: EventAction,
+                                            public val isPostponed: Boolean = false) {
 
-
-        public fun ProcessingResult(childrenAction: ClosingAction, selfAction: ClosingAction, eventAction: EventAction): ProcessingResult {
-            return ProcessingResult(childrenAction, selfAction, eventAction, false)
-        }
-
-        public class ProcessingResult internal (public val childrenAction: ClosingAction,
-                                                public val selfAction: ClosingAction,
-                                                public val eventAction: EventAction,
-                                                public val isPostponed: Boolean) {
-
-            public fun postpone(): ProcessingResult {
-                if (isPostponed) {
-                    return this
-                }
-
-                return ProcessingResult(childrenAction, selfAction, eventAction, true)
+        public fun postpone(): ProcessingResult {
+            if (isPostponed) {
+                return this
             }
 
-            class object {
-                public val PASS: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.PROPAGATE)
-                public val CANCEL: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.CANCEL)
-                public val DEFAULT: ProcessingResult = ProcessingResult(ClosingAction.DEFAULT, ClosingAction.DONE, EventAction.PROPAGATE)
-            }
-
+            return ProcessingResult(childrenAction, selfAction, eventAction, true)
         }
+
+        class object {
+            public val PASS: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.PROPAGATE)
+            public val CANCEL: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.CANCEL)
+            public val DEFAULT: ProcessingResult = ProcessingResult(ClosingAction.DEFAULT, ClosingAction.DONE, EventAction.PROPAGATE)
+        }
+
     }
-
 }
