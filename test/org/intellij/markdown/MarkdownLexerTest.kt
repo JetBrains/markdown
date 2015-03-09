@@ -59,6 +59,10 @@ public class MarkdownLexerTest : TestCase() {
         defaultTest();
     }
 
+    public fun testHtmlEntities() {
+        defaultTest()
+    }
+
     private fun defaultTest() {
         doFileTest();
     }

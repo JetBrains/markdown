@@ -236,6 +236,7 @@ DOUBLE_QUOTED_TEXT = \" (\\\" | [^\n\"])* \"
 SINGLE_QUOTED_TEXT = "'" (\\"'" | [^\n'])* "'"
 QUOTED_TEXT = {SINGLE_QUOTED_TEXT} | {DOUBLE_QUOTED_TEXT}
 
+HTML_ENTITY = "&" ({ALPHANUM}+ | "#"[a-fA-F0-9]{1,8}) ";"
 HTML_COMMENT = "<!" "-"{2,4} ">" | "<!--" ([^-] | "-"[^-])* "-->"
 PROCESSING_INSTRUCTION = "<?" ([^?] | "?"[^>])* "?>"
 DECLARATION = "<!" [A-Z]+ {WHITE_SPACE}+ [^>] ">"
@@ -458,6 +459,10 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 
     processEol();
     return Token.EOL;
+  }
+
+  {HTML_ENTITY} {
+    return Token.HTML_ENTITY;
   }
 
   // optimize

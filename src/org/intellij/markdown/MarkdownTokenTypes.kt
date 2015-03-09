@@ -24,6 +24,8 @@ public trait MarkdownTokenTypes {
         public val EXCLAMATION_MARK: IElementType = MarkdownElementType("!")
 
 
+        public val HTML_ENTITY: IElementType = MarkdownElementType("HTML_ENTITY")
+
         public val HARD_LINE_BREAK: IElementType = MarkdownElementType("BR")
         public val EOL: IElementType = MarkdownElementType("EOL")
 
