@@ -1,0 +1,118 @@
+Markdown:MARKDOWN_FILE
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1.')
+      WHITE_SPACE(' ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This is ordered list')
+        Markdown:'(''')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('item')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('2.')
+      WHITE_SPACE(' ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('And another')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1991.')
+      WHITE_SPACE(' ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('And one more')
+        Markdown:EOL('\n')
+        Markdown:TEXT('1986\.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('And this is not')
+        Markdown:EOL('\n')
+        Markdown:TEXT('1 Also this is not')
+        Markdown:EOL('\n')
+        Markdown:TEXT('And this 1.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('is also not a list')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Let')
+    Markdown:'(''')
+    Markdown:TEXT('s look at the indentation')
+    Markdown::(':')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1.')
+      WHITE_SPACE(' ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This is the item')
+      Markdown:EOL('\n')
+      WHITE_SPACE('    ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('*')
+          WHITE_SPACE(' ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('And this is subitem')
+          Markdown:EOL('\n')
+          Markdown:EOL('\n')
+          WHITE_SPACE('        ')
+          Markdown:PARAGRAPH
+            Markdown:(('(')
+            Markdown:TEXT('It has some text indented')
+            Markdown:)(')')
+          Markdown:EOL('\n')
+          Markdown:EOL('\n')
+          WHITE_SPACE('            ')
+          Markdown:CODE_BLOCK
+            Markdown:CODE('And this *code* has the indent of 12 to be code')
+            Markdown:EOL('\n')
+          Markdown:EOL('\n')
+          WHITE_SPACE('        ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('That')
+            Markdown:'(''')
+            Markdown:TEXT('s the story')
+        Markdown:EOL('\n')
+        Markdown:EOL('\n')
+        WHITE_SPACE('    ')
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('*')
+          WHITE_SPACE(' ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('As well as this one')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('    ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('And some text in here,')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('which related to the ordered 1.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('item.')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('        ')
+      Markdown:CODE_BLOCK
+        Markdown:CODE('So the indent of 8 is enough now to be the +code+')
+        Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('2.')
+      WHITE_SPACE(' ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('The second item in here')
+        Markdown:!('!')
+        Markdown:!('!')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('        ')
+      Markdown:CODE_BLOCK
+        Markdown:CODE('And it contains some code, indented at 8')
+        Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('    ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('That')
+        Markdown:'(''')
+        Markdown:TEXT('s all folks')
+        Markdown:!('!')
