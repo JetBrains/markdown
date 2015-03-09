@@ -5,7 +5,7 @@ import junit.framework.TestCase
 import java.io.File
 
 public class MarkdownLexerTest : TestCase() {
-    private fun getDirPath() = "test/data/lexer"
+    private fun getDirPath() = File("test/data/lexer").getAbsolutePath()
 
     public fun testSimple() {
         defaultTest();
@@ -74,7 +74,11 @@ public class MarkdownLexerTest : TestCase() {
             }
             val tokenText = getTokenText(lexer);
             val tokenTypeName = tokenType.toString();
-            val line = tokenTypeName + " ('" + tokenText + "')\n";
+            val line = tokenTypeName + " ('" + tokenText + "')";
+
+            if (result.isNotEmpty()) {
+                result += "\n";
+            }
             result += line;
             lexer.advance();
         }
