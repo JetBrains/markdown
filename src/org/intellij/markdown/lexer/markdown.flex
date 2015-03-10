@@ -236,7 +236,7 @@ DOUBLE_QUOTED_TEXT = \" (\\\" | [^\n\"])* \"
 SINGLE_QUOTED_TEXT = "'" (\\"'" | [^\n'])* "'"
 QUOTED_TEXT = {SINGLE_QUOTED_TEXT} | {DOUBLE_QUOTED_TEXT}
 
-HTML_ENTITY = "&" ({ALPHANUM}+ | "#"[a-fA-F0-9]{1,8}) ";"
+HTML_ENTITY = "&" ({ALPHANUM}+ | "#"{DIGIT}{1,8} | "#"[xX][a-fA-F0-9]{1,8}) ";"
 HTML_COMMENT = "<!" "-"{2,4} ">" | "<!--" ([^-] | "-"[^-])* "-->"
 PROCESSING_INSTRUCTION = "<?" ([^?] | "?"[^>])* "?>"
 DECLARATION = "<!" [A-Z]+ {WHITE_SPACE}+ [^>] ">"
