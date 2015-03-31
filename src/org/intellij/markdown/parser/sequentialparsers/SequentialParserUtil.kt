@@ -40,9 +40,9 @@ public class SequentialParserUtil {
                 return true
             }
             if (lookup == -1) {
-                return info.rollback().text.endsWith(' ')
+                return info.rollback().text.endsWith(' ', ignoreCase = false)
             } else {
-                return info.advance().text.startsWith(' ')
+                return info.advance().text.startsWith(' ', ignoreCase = false)
             }
         }
 
