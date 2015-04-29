@@ -5,7 +5,7 @@ import junit.framework.TestCase
 import java.io.File
 
 public class MarkdownLexerTest : TestCase() {
-    private fun getDirPath() = File("test/data/lexer").getAbsolutePath()
+    private fun getDirPath() = File(getIntellijMarkdownHome() + "/test/data/lexer").getAbsolutePath()
 
     public fun testSimple() {
         defaultTest();

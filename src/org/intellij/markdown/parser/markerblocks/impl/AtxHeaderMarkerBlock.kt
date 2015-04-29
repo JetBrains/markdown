@@ -13,7 +13,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   tokensCache: TokensCache,
                                   productionHolder: ProductionHolder,
                                   headerSize: Int)
-        : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, setOf(MarkdownTokenTypes.EOL)) {
+        : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, null) {
 
     private val nodeType: IElementType
 
@@ -45,7 +45,10 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
     }
 
     override fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DONE, MarkerBlock.EventAction.PROPAGATE)
+        if (tokenType == MarkdownTokenTypes.EOL) {
+            return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DONE, MarkerBlock.EventAction.PROPAGATE)
+        }
+        return MarkerBlock.ProcessingResult.CANCEL;
     }
 
     override fun getRangesContainingInlineStructure(): Collection<Range<Int>> {
