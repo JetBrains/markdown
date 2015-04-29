@@ -15,14 +15,9 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   headerSize: Int)
         : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, null) {
 
-    private val nodeType: IElementType
+    private val nodeType = calcNodeType(headerSize)
 
-    private val startPosition: Int
-
-    init {
-        nodeType = calcNodeType(headerSize)
-        startPosition = productionHolder.currentPosition
-    }
+    private val startPosition = productionHolder.currentPosition
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {

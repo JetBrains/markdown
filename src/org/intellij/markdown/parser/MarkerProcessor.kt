@@ -19,15 +19,10 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
 
     private var cachedPermutation: List<Int>? = null
 
-    private var topBlockConstraints: MarkdownConstraints
+    private var topBlockConstraints: MarkdownConstraints = startConstraints
 
-    public var currentConstraints: MarkdownConstraints
+    public var currentConstraints: MarkdownConstraints = startConstraints
         private set
-
-    {
-        topBlockConstraints = startConstraints
-        $currentConstraints = startConstraints
-    }
 
     protected abstract fun getPrioritizedMarkerPermutation(): List<Int>
 

@@ -28,11 +28,7 @@ public class ProductionHolder {
     }
 
     public inner class Marker {
-        private val startPos: Int
-
-        init {
-            startPos = currentPosition
-        }
+        private val startPos: Int = currentPosition
 
         public fun done(type: IElementType) {
             _production.add(SequentialParser.Node(startPos..currentPosition, type))

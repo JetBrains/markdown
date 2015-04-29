@@ -15,11 +15,7 @@ public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
                                   tokensCache: TokensCache)
         : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, setOf(MarkdownTokenTypes.EOL)) {
-    private val startPosition: Int
-
-    init {
-        startPosition = productionHolder.currentPosition
-    }
+    private val startPosition = productionHolder.currentPosition
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
