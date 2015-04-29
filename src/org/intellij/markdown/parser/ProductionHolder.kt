@@ -30,7 +30,7 @@ public class ProductionHolder {
     public inner class Marker {
         private val startPos: Int
 
-        {
+        init {
             startPos = currentPosition
         }
 

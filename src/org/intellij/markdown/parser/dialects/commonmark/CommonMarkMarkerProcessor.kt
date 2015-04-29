@@ -105,7 +105,7 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, token
         }
     }
 
-    class object {
+    companion object {
 
         private fun isAtLineStart(iterator: TokensCache.Iterator): Boolean {
             var index = -1

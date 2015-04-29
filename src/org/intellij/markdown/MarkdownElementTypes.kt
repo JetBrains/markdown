@@ -1,7 +1,7 @@
 package org.intellij.markdown
 
 public trait MarkdownElementTypes {
-    class object {
+    companion object {
         public val MARKDOWN_FILE: IElementType = MarkdownElementType("MARKDOWN_FILE")
 
         public val UNORDERED_LIST: IElementType = MarkdownElementType("UNORDERED_LIST")
@@ -45,6 +45,4 @@ public trait MarkdownElementTypes {
         public val ATX_5: IElementType = MarkdownElementType("ATX_5")
         public val ATX_6: IElementType = MarkdownElementType("ATX_6")
     }
-
-
 }

@@ -10,7 +10,7 @@ public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
     override val filteredTokens: List<TokensCache.TokenInfo>
     override val originalText: CharSequence
 
-    {
+    init {
         val (_cachedTokens, _filteredTokens) = cacheTokens(lexer)
 
         cachedTokens = _cachedTokens
@@ -20,7 +20,7 @@ public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
         verify()
     }
 
-    class object {
+    companion object {
         private fun isWhitespace(elementType: IElementType?): Boolean {
             return elementType == MarkdownTokenTypes.WHITE_SPACE
         }

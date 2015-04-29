@@ -5,7 +5,7 @@ import org.intellij.markdown.parser.TokensCache
 import java.util.ArrayList
 
 public class SequentialParserUtil {
-    class object {
+    companion object {
         public fun textRangesToIndices(ranges: Collection<Range<Int>>): List<Int> {
             val result = ArrayList<Int>()
             for (range in ranges) {

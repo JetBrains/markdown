@@ -14,7 +14,7 @@ public abstract class FixedPriorityListMarkerProcessor(productionHolder: Product
         : MarkerProcessor(productionHolder, tokensCache, startingConstraints) {
     private val priorityMap: Map<IElementType, Int>
 
-    {
+    init {
         val priorityList = getPriorityList()
 
         val _priorityMap = IdentityHashMap<IElementType, Int>()

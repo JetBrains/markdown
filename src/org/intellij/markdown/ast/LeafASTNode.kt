@@ -7,7 +7,7 @@ public class LeafASTNode(type: IElementType, startOffset: Int, endOffset: Int) :
     override val children: List<ASTNode>
         get() = EMPTY_CHILDREN
 
-    class object {
+    companion object {
         private val EMPTY_CHILDREN = ArrayList<ASTNode>(0)
     }
 }

@@ -138,7 +138,7 @@ public class MarkdownConstraints private(private var indents: IntArray,
         return "MdConstraints: " + String(types) + "(" + getIndent() + ")"
     }
 
-    class object {
+    companion object {
         public val BASE: MarkdownConstraints = MarkdownConstraints(IntArray(0), CharArray(0), BooleanArray(0))
 
         public val BQ_CHAR: Char = '>'

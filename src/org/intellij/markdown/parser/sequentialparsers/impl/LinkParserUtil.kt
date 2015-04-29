@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import java.util.ArrayList
 
 public class LinkParserUtil {
-    class object {
+    companion object {
         fun parseLinkDestination(result: MutableCollection<SequentialParser.Node>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL || it.type == MarkdownTokenTypes.RPAREN) {

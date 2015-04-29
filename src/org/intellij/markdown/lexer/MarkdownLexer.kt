@@ -20,7 +20,7 @@ public class MarkdownLexer(public val originalText: String) {
     public var tokenEnd: Int = 0
         private set
 
-    {
+    init {
         baseLexer = _MarkdownLexer(null : Reader?)
         baseLexer.reset(originalText, 0, originalText.length(), 0)
 
@@ -66,7 +66,7 @@ public class MarkdownLexer(public val originalText: String) {
 
     }
 
-    class object {
+    companion object {
         private val TOKENS_TO_MERGE = setOf(
                 MarkdownTokenTypes.TEXT,
                 MarkdownTokenTypes.WHITE_SPACE,

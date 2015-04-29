@@ -1,7 +1,7 @@
 package org.intellij.markdown
 
 public trait MarkdownTokenTypes {
-    class object {
+    companion object {
 
         public val TEXT: IElementType = MarkdownElementType("TEXT")
 

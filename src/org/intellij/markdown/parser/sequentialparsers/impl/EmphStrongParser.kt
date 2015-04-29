@@ -108,7 +108,7 @@ public class EmphStrongParser : SequentialParser {
         return info.text.charAt(0)
     }
 
-    class object {
+    companion object {
 
         val ITALIC: Char = '_'
 

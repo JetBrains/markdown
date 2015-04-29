@@ -17,7 +17,7 @@ public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
         : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, setOf(MarkdownTokenTypes.EOL)) {
     private val startPosition: Int
 
-    {
+    init {
         startPosition = productionHolder.currentPosition
     }
 

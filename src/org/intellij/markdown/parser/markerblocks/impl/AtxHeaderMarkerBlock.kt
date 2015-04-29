@@ -19,8 +19,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     private val startPosition: Int
 
-    {
-
+    init {
         nodeType = calcNodeType(headerSize)
         startPosition = productionHolder.currentPosition
     }
