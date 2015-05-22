@@ -1,6 +1,7 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.TokensCache
 
 public class MarkdownParserUtil private() {
@@ -69,6 +70,12 @@ public class MarkdownParserUtil private() {
             }
 
             return iterator.rawStart(rawOffset) - iterator.rawStart(eolPos + 1)
+        }
+
+        public fun hasCodeBlockIndent(iterator: TokensCache.Iterator,
+                                      rawOffset: Int,
+                                      constraints: MarkdownConstraints): Boolean {
+            return getIndentBeforeRawToken(iterator, rawOffset) >= constraints.getIndent() + 4
         }
     }
 

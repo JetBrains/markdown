@@ -7,8 +7,8 @@ import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
-import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
+import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
 
@@ -43,8 +43,7 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        val indent = iterator.rawStart(nonWhitespaceOffset) - iterator.rawStart(1)
-        if (indent < constraints.getIndent() + 4) {
+        if (!MarkdownParserUtil.hasCodeBlockIndent(iterator, nonWhitespaceOffset, constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
             return MarkerBlock.ProcessingResult.CANCEL

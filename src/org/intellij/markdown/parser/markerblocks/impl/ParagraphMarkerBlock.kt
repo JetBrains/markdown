@@ -8,13 +8,13 @@ import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.markerblocks.InlineStructureHoldingMarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
-import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
+import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
 public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
                                   tokensCache: TokensCache)
-        : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, setOf(MarkdownTokenTypes.EOL)) {
+        : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, null) {
     private val startPosition = productionHolder.currentPosition
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
@@ -22,6 +22,13 @@ public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
     }
 
     override fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        if (tokenType == MarkdownTokenTypes.SETEXT_1 || tokenType == MarkdownTokenTypes.SETEXT_2) {
+            return MarkerBlock.ProcessingResult.PASS;
+        }
+        else if (tokenType != MarkdownTokenTypes.EOL) {
+            return MarkerBlock.ProcessingResult.CANCEL;
+        }
+
         assert(tokenType == MarkdownTokenTypes.EOL)
 
         if (MarkdownParserUtil.calcNumberOfConsequentEols(iterator) >= 2) {
@@ -42,8 +49,14 @@ public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
         }
 
         // Something breaks paragraph
+
         if (nextTokenTypeBreaksParagraph(afterEol)) {
-            return MarkerBlock.ProcessingResult.DEFAULT
+            // RUBY-16750 Let's check this is valid start for a new block
+            val nextLineConstraints = MarkdownConstraints.fromBase(iterator, 1, constraints)
+            if (!MarkdownParserUtil.hasCodeBlockIndent(iterator.advance(), 0, nextLineConstraints)) {
+                return MarkerBlock.ProcessingResult.DEFAULT
+            }
+
         }
 
         return MarkerBlock.ProcessingResult.CANCEL

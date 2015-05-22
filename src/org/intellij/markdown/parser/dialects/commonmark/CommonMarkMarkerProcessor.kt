@@ -1,19 +1,14 @@
 package org.intellij.markdown.parser.dialects.commonmark
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.MarkdownConstraints
-import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.*
 import org.intellij.markdown.parser.dialects.FixedPriorityListMarkerProcessor
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.impl.*
-
 import java.util.ArrayList
-import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.parser.MarkerProcessorFactory
-import org.intellij.markdown.parser.MarkerProcessor
 
 public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
         : FixedPriorityListMarkerProcessor(productionHolder, tokensCache, MarkdownConstraints.BASE) {
@@ -56,7 +51,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, token
         val newConstraints = currentConstraints.addModifierIfNeeded(tokenType, iterator)
         val paragraph = getParagraphBlock()
 
-        if (MarkdownParserUtil.getIndentBeforeRawToken(iterator, 0) >= newConstraints.getIndent() + 4 && paragraph == null) {
+
+        if (MarkdownParserUtil.hasCodeBlockIndent(iterator, 0, newConstraints) && paragraph == null) {
             result.add(CodeBlockMarkerBlock(newConstraints, productionHolder.mark()))
         } else if (tokenType == MarkdownTokenTypes.BLOCK_QUOTE) {
             result.add(BlockQuoteMarkerBlock(newConstraints, productionHolder.mark()))

@@ -2,6 +2,7 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 
 public class MarkdownConstraints private(private var indents: IntArray,
                                          private var types: CharArray,
@@ -92,7 +93,7 @@ public class MarkdownConstraints private(private var indents: IntArray,
 
     public fun addModifierIfNeeded(`type`: IElementType?, iterator: TokensCache.Iterator): MarkdownConstraints {
         var result = this
-        if (isConstraintType(`type`)) {
+        if (!MarkdownParserUtil.hasCodeBlockIndent(iterator, 0, this) && isConstraintType(`type`)) {
             result = result.addModifier(`type`!!, iterator, 0)
         }
         return result
@@ -176,7 +177,7 @@ public class MarkdownConstraints private(private var indents: IntArray,
                 }
 
                 // We could jump into code block while scanning "blockquotes", for example.
-                if (iterator.rawStart(offset) - myStartOffset >= result.getIndent() + 4) {
+                if (MarkdownParserUtil.hasCodeBlockIndent(iterator, offset, result)) {
                     break
                 }
 

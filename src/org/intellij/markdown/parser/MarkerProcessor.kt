@@ -2,10 +2,11 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-
-import java.util.*
+import java.util.ArrayList
+import java.util.TreeMap
 
 public abstract class MarkerProcessor(private val productionHolder: ProductionHolder,
                                       protected val tokensCache: TokensCache,
@@ -85,6 +86,11 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
         while (true) {
             val `type` = it.rawLookup(rawIndex)
             if (`type` == null) {
+                break
+            }
+
+
+            if (MarkdownParserUtil.hasCodeBlockIndent(iterator, rawIndex, constraints)) {
                 break
             }
 

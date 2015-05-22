@@ -1,13 +1,12 @@
 package org.intellij.markdown;
 
-import org.intellij.markdown.ast.ASTNode;
-import org.intellij.markdown.ast.LeafASTNode;
-import org.intellij.markdown.parser.MarkdownParser;
-import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcessor;
-
-import java.io.File;
-import kotlin.test.assertEquals
 import junit.framework.TestCase
+import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.parser.MarkdownParser
+import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcessor
+import java.io.File
+import kotlin.test.assertEquals
 
 public class MarkdownParsingTest : TestCase() {
 
@@ -123,6 +122,14 @@ public class MarkdownParsingTest : TestCase() {
 
     public fun testReferenceLinks() {
         defaultTest();
+    }
+
+    public fun testPuppetApache() {
+        defaultTest()
+    }
+
+    public fun testRuby16750() {
+        defaultTest()
     }
 
     protected fun getTestDataPath(): String {
