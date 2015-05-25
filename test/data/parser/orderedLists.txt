@@ -116,3 +116,4 @@ Markdown:MARKDOWN_FILE
         Markdown:'(''')
         Markdown:TEXT('s all folks')
         Markdown:!('!')
+        Markdown:EOL('\n')

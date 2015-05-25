@@ -30,3 +30,4 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('Some text')
+    Markdown:EOL('\n')

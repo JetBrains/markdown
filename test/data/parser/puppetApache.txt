@@ -11839,3 +11839,4 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
         WHITE_SPACE(' ')
         Markdown:TEXT('$replace parameter to concat')
+        Markdown:EOL('\n')

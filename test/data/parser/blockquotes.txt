@@ -259,5 +259,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('foo')
-    Markdown:EOL('\n')
-    Markdown:BACKTICK('```')
+  Markdown:EOL('\n')
+  Markdown:CODE_FENCE
+    Markdown:CODE_FENCE_START('```')
+    Markdown:CODE('\n\n')

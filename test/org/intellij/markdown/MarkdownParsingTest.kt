@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 public class MarkdownParsingTest : TestCase() {
 
     private fun defaultTest() {
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText().trim();
+        val src = File(getTestDataPath() + "/" + testName + ".md").readText();
         val result = getParsedTreeText(src);
 
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
@@ -70,6 +70,26 @@ public class MarkdownParsingTest : TestCase() {
                 "      Markdown:TEXT('test')\n" +
                 "      Markdown:EMPH('*')",
                 getParsedTreeText("*test*"));
+    }
+
+    public fun testOneSpace() {
+        assertEquals("Markdown:MARKDOWN_FILE\n" +
+                "  WHITE_SPACE(' ')",
+                getParsedTreeText(" "));
+    }
+
+    public fun testLeadingSpace() {
+        assertEquals("Markdown:MARKDOWN_FILE\n  WHITE_SPACE(' ')\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')",
+                getParsedTreeText(" Test"));
+    }
+
+    public fun testTrailingSpace() {
+        assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')\n  WHITE_SPACE(' ')",
+                getParsedTreeText("Test "));
+    }
+
+    public fun testLeadingAndTrailingWhitespaces() {
+        defaultTest()
     }
 
     public fun testSimple() {

@@ -4,8 +4,9 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Stack
 
 public class MyBuilder {
 
@@ -82,7 +83,7 @@ public class MyBuilder {
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
 
         if (isTopmostNode) {
-            addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, -1)
+            addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, +1)
         }
         for (i in 1..currentNodeChildren.size() - 1) {
             val prev = currentNodeChildren.get(i - 1)
@@ -96,7 +97,7 @@ public class MyBuilder {
             childrenWithWhitespaces.add(currentNodeChildren.last!!.astNode)
         }
         if (isTopmostNode) {
-            addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId, +1, -1)
+            addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
         newNode = CompositeASTNode(type, childrenWithWhitespaces)

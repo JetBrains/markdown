@@ -86,11 +86,15 @@ public abstract class TokensCache {
         private fun info(rawSteps: Int): TokenInfo {
             if (index < 0) {
                 return TokenInfo(null, 0, 0, 0, 0)
-            } else if (index >= filteredTokens.size()) {
+            } else if (index > filteredTokens.size()) {
                 return TokenInfo(null, originalText.length(), 0, 0, 0)
             }
 
-            val rawIndex = filteredTokens.get(index).rawIndex + rawSteps
+            val rawIndex = if (index < filteredTokens.size())
+                filteredTokens.get(index).rawIndex + rawSteps
+            else
+                cachedTokens.size() + rawSteps
+
             if (rawIndex < 0) {
                 return TokenInfo(null, 0, 0, 0, 0)
             } else if (rawIndex >= cachedTokens.size()) {
