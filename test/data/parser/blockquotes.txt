@@ -262,4 +262,5 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:CODE_FENCE
     Markdown:CODE_FENCE_START('```')
-    Markdown:CODE('\n\n')
+    Markdown:EOL('\n')
+    Markdown:CODE('\n')

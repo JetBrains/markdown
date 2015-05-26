@@ -506,8 +506,13 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 }
 
 <CODE_FENCE> {
-  ("~~~" "~"* | "```" "`"*) / {WHITE_SPACE}* $ {
-    if (yycharat(0) == codeFence.fenceChar && yylength() >= codeFence.fenceLength) {
+  ("~~~" "~"* | "```" "`"*) ([^~` \f\t\n\r]|{WHITE_SPACE}+ [^ \f\t\n\r]+) {
+    return Token.CODE;
+  }
+
+  ("~~~" "~"* | "```" "`"*) {WHITE_SPACE}* {
+    if (yycharat(0) == codeFence.fenceChar && yylength() >= codeFence.fenceLength
+        && countChars(yytext(), codeFence.fenceChar) >= codeFence.fenceLength) {
       yybegin(YYINITIAL);
       return Token.CODE_FENCE_END;
     }
@@ -516,23 +521,37 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 
   [^ \f\t\n\r]+ {
     if (!codeFence.typeWasRead) {
-      codeFence.typeWasRead = true;
       return Token.FENCE_LANG;
     }
     return Token.CODE;
   }
 
   {EOL} ({WHITE_SPACE}* ">")* {
-    int newLevel = countChars(yytext(), '>');
-    if (newLevel < blockQuotes.level) {
+      int newLevel = countChars(yytext(), '>');
+      if (newLevel < blockQuotes.level) {
+        yypushback(yylength() - 1);
+        processEol();
+        return Token.EOL;
+      }
+
+      if (!codeFence.typeWasRead) {
+        codeFence.typeWasRead = true;
+        return Token.EOL;
+      }
+      return Token.CODE;
+  }
+
+  {EOL} ({WHITE_SPACE}{0,3} ("~~~" "~"* | "```" "`"*) {WHITE_SPACE}*)? {
+    if (yylength() > 2 && countChars(yytext(), codeFence.fenceChar) >= codeFence.fenceLength) {
       yypushback(yylength() - 1);
-      processEol();
       return Token.EOL;
     }
-    else {
+
+    if (!codeFence.typeWasRead) {
       codeFence.typeWasRead = true;
-      return Token.CODE;
+      return Token.EOL;
     }
+    return Token.CODE;
   }
 
   . {
