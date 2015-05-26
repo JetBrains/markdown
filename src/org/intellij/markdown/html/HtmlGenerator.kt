@@ -109,7 +109,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
-    class object {
+    companion object {
         private val entityConverter = EntityConverter()
 
         fun leafText(text: String, node: ASTNode): CharSequence {
