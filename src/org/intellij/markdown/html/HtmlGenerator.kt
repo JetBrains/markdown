@@ -236,7 +236,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     },
 
                     MarkdownElementTypes.PARAGRAPH to SimpleInlineTagProvider("p"),
-                    MarkdownElementTypes.EMPH to SimpleInlineTagProvider("emph", 1, -1),
+                    MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
                     MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
                     MarkdownElementTypes.CODE_SPAN to SimpleInlineTagProvider("code", 1, -1)
 

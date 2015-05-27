@@ -1,3 +1,3 @@
-<body><h2> Some test header</h2><h1>Some test header</h1><p>Some text with <emph>emph</emph> and <strong>strong</strong> and <code>code span</code></p><blockquote><p>Some blockquote
+<body><h2> Some test header</h2><h1>Some test header</h1><p>Some text with <em>emph</em> and <strong>strong</strong> and <code>code span</code></p><blockquote><p>Some blockquote
  This is not lazy second line
 This is lazy third line</p></blockquote><ul><li><p>This is list</p></li><li><p>And another bullet</p></li></ul><ol><li><p>This is numered list</p></li><li><p>And the second point</p></li></ol><pre><code>This is *code* fence</code></pre><p>And that's all!</p></body>
