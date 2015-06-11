@@ -2,6 +2,6 @@ package org.intellij.markdown.ast.visitors
 
 import org.intellij.markdown.ast.ASTNode
 
-public trait Visitor {
+public interface Visitor {
     fun visitNode(node: ASTNode)
 }

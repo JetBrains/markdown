@@ -30,7 +30,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
-    trait GeneratingProvider {
+    interface GeneratingProvider {
         fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode)
     }
 
@@ -227,7 +227,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                             for (child in node.children) {
                                 var html = leafText(text, child)
                                 if (child.type == MarkdownTokenTypes.EOL) {
-                                    html = html.toString().replaceAll("\n(    |\t)", "\n")
+                                    html = html.toString().replace("\n(    |\t)".toRegex(), "\n")
                                 }
                                 visitor.consumeHtml(html)
                             }

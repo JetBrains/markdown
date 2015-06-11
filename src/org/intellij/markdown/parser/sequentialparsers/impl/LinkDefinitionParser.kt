@@ -31,7 +31,7 @@ public class LinkDefinitionParser : SequentialParser {
         if (testingIt == null) {
             return null
         }
-        it = testingIt!!
+        it = testingIt
         if (it.rawLookup(1) != MarkdownTokenTypes.COLON) {
             return null
         }
@@ -44,7 +44,7 @@ public class LinkDefinitionParser : SequentialParser {
         if (testingIt == null) {
             return null
         }
-        it = testingIt!!
+        it = testingIt
         it = it.advance()
         if (it.type == MarkdownTokenTypes.EOL) {
             it = it.advance()
@@ -54,7 +54,7 @@ public class LinkDefinitionParser : SequentialParser {
         if (testingIt == null) {
             return null
         }
-        it = testingIt!!
+        it = testingIt
 
         val nextType = it.advance().type
         if (nextType != null && nextType != MarkdownTokenTypes.EOL) {

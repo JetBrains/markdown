@@ -4,7 +4,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.TokensCache
 
-public class MarkdownParserUtil private() {
+public class MarkdownParserUtil private constructor() {
     companion object {
 
         public fun calcNumberOfConsequentEols(iterator: TokensCache.Iterator): Int {

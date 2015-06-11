@@ -12,7 +12,7 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
                                       protected val tokensCache: TokensCache,
                                       private val startConstraints: MarkdownConstraints) {
 
-    protected val NO_BLOCKS: Array<MarkerBlock> = array()
+    protected val NO_BLOCKS: Array<MarkerBlock> = arrayOf()
 
     protected val markersStack: MutableList<MarkerBlock> = ArrayList()
 

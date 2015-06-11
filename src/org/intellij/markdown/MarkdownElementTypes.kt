@@ -1,6 +1,6 @@
 package org.intellij.markdown
 
-public trait MarkdownElementTypes {
+public interface MarkdownElementTypes {
     companion object {
         public val MARKDOWN_FILE: IElementType = MarkdownElementType("MARKDOWN_FILE")
 

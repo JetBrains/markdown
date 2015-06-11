@@ -3,7 +3,7 @@ package org.intellij.markdown.ast
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.visitors.Visitor
 
-public trait ASTNode {
+public interface ASTNode {
     val type : IElementType
     val startOffset : Int
     val endOffset : Int
