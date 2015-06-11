@@ -58,18 +58,18 @@ public class ReferenceLinkParser : SequentialParser {
         if (it == null) {
             return null
         }
-        it = it!!.advance()
+        it = it.advance()
 
-        if (it!!.type == MarkdownTokenTypes.EOL) {
-            it = it!!.advance()
+        if (it.type == MarkdownTokenTypes.EOL) {
+            it = it.advance()
         }
 
-        it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it!!)
+        it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it)
         if (it == null) {
             return null
         }
 
-        result.add(SequentialParser.Node(startIndex..it!!.index + 1, MarkdownElementTypes.FULL_REFERENCE_LINK))
+        result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.FULL_REFERENCE_LINK))
         return it
     }
 
@@ -84,18 +84,18 @@ public class ReferenceLinkParser : SequentialParser {
 
         val shortcutLinkEnd = it
 
-        it = it!!.advance()
-        if (it!!.type == MarkdownTokenTypes.EOL) {
-            it = it!!.advance()
+        it = it.advance()
+        if (it.type == MarkdownTokenTypes.EOL) {
+            it = it.advance()
         }
 
-        if (it!!.type == MarkdownTokenTypes.LBRACKET && it!!.rawLookup(1) == MarkdownTokenTypes.RBRACKET) {
-            it = it!!.advance()
+        if (it.type == MarkdownTokenTypes.LBRACKET && it.rawLookup(1) == MarkdownTokenTypes.RBRACKET) {
+            it = it.advance()
         } else {
             it = shortcutLinkEnd
         }
 
-        result.add(SequentialParser.Node(startIndex..it!!.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK))
+        result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK))
         return it
     }
 

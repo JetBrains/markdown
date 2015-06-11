@@ -35,7 +35,7 @@ public class MarkdownParsingTest : TestCase() {
         sb.append(tree.type.toString());
         if (tree is LeafASTNode) {
             val str = src.substring(tree.startOffset, tree.endOffset);
-            sb.append("('").append(str.replaceAll("\\n", "\\\\n")).append("')");
+            sb.append("('").append(str.replace("\\n".toRegex(), "\\\\n")).append("')");
         }
         for (child in tree.children) {
             treeToStr(src, child, sb, depth + 1);

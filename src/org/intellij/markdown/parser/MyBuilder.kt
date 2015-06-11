@@ -94,7 +94,7 @@ public class MyBuilder {
             addRawTokens(tokensCache, childrenWithWhitespaces, prev.endTokenIndex - 1, +1, tokensCache.Iterator(next.startTokenIndex).start)
         }
         if (!currentNodeChildren.isEmpty()) {
-            childrenWithWhitespaces.add(currentNodeChildren.last!!.astNode)
+            childrenWithWhitespaces.add(currentNodeChildren.lastOrNull()!!.astNode)
         }
         if (isTopmostNode) {
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)

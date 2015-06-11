@@ -5,7 +5,7 @@ import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.TokensCache
 
-public trait MarkerBlock {
+public interface MarkerBlock {
 
     public fun processToken(tokenType: IElementType, builder: TokensCache.Iterator, currentConstraints: MarkdownConstraints): ProcessingResult
 
@@ -22,30 +22,30 @@ public trait MarkerBlock {
             override fun doAction(marker: ProductionHolder.Marker, type: IElementType) {
                 marker.done(type)
             }
-        }
+        },
         DROP {
             override fun doAction(marker: ProductionHolder.Marker, type: IElementType) {
             }
-        }
+        },
         DEFAULT {
             override fun doAction(marker: ProductionHolder.Marker, type: IElementType) {
                 throw UnsupportedOperationException("Should not be invoked")
             }
-        }
+        },
         NOTHING {
             override fun doAction(marker: ProductionHolder.Marker, type: IElementType) {
             }
-        }
+        };
 
         public abstract fun doAction(marker: ProductionHolder.Marker, `type`: IElementType)
     }
 
     public enum class EventAction {
-        PROPAGATE
+        PROPAGATE,
         CANCEL
     }
 
-    public class ProcessingResult internal (public val childrenAction: ClosingAction,
+    public class ProcessingResult internal constructor(public val childrenAction: ClosingAction,
                                             public val selfAction: ClosingAction,
                                             public val eventAction: EventAction,
                                             public val isPostponed: Boolean = false) {

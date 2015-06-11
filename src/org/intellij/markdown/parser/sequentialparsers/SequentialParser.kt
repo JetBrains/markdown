@@ -4,7 +4,7 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.parser.TokensCache
 import java.util.ArrayList
 
-public trait SequentialParser {
+public interface SequentialParser {
 
     public fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): ParsingResult
 
