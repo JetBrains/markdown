@@ -57,4 +57,8 @@ public class HtmlGeneratorTest : TestCase() {
     public fun testGoPlugin() {
         defaultTest()
     }
+
+    public fun testHeaders() {
+        defaultTest()
+    }
 }

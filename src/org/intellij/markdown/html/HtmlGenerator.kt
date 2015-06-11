@@ -144,12 +144,12 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.SETEXT_1 to SimpleInlineTagProvider("h1", 0, -2),
                     MarkdownElementTypes.SETEXT_2 to SimpleInlineTagProvider("h2", 0, -2),
 
-                    MarkdownElementTypes.ATX_1 to SimpleInlineTagProvider("h1", 1),
-                    MarkdownElementTypes.ATX_2 to SimpleInlineTagProvider("h2", 1),
-                    MarkdownElementTypes.ATX_3 to SimpleInlineTagProvider("h3", 1),
-                    MarkdownElementTypes.ATX_4 to SimpleInlineTagProvider("h4", 1),
-                    MarkdownElementTypes.ATX_5 to SimpleInlineTagProvider("h5", 1),
-                    MarkdownElementTypes.ATX_6 to SimpleInlineTagProvider("h6", 1),
+                    MarkdownElementTypes.ATX_1 to ATXGeneratingProvider("h1"),
+                    MarkdownElementTypes.ATX_2 to ATXGeneratingProvider("h2"),
+                    MarkdownElementTypes.ATX_3 to ATXGeneratingProvider("h3"),
+                    MarkdownElementTypes.ATX_4 to ATXGeneratingProvider("h4"),
+                    MarkdownElementTypes.ATX_5 to ATXGeneratingProvider("h5"),
+                    MarkdownElementTypes.ATX_6 to ATXGeneratingProvider("h6"),
 
                     MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
                         override fun generateTag(text: String, node: ASTNode): String {

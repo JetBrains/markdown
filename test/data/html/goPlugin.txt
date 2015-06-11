@@ -1,9 +1,9 @@
 <body>
-<h1> Go plugin for IntelliJ</h1>
+<h1>Go plugin for IntelliJ</h1>
 <p><a href="https://travis-ci.org/go-lang-plugin-org/go-lang-idea-plugin">![Build Status](https://travis-ci.org/go-lang-plugin-org/go-lang-idea-plugin.png?branch=v1.0.0-alpha0)</a>
  <a href="https://gitter.im/go-lang-plugin-org/go-lang-idea-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">![Gitter](https://badges.gitter.im/Join Chat.svg)</a>
 </p>
-<h2> Pre-release builds</h2>
+<h2>Pre-release builds</h2>
 <p>Pre-release builds can be installed on IntelliJ platform 141.2 or greater. It corresponds to IntelliJ IDEA 14.1, WebStorm 10, PhpStorm 9.</p>
 <p>Pre-release builds are available in two forms: nightly and alphas. At the time
 of writing, alpha builds are released usually at the start of every week while
@@ -28,10 +28,10 @@ about them not working or being inaccessible unless you are getting an error fro
 the IDE itself.</p>
 <p>Reporting issues is very important for us as such, please see the section below
 on how to submit a proper bug report.</p>
-<h2> FAQ</h2>
+<h2>FAQ</h2>
 <p>Here's a list of the most frequent asked questions: <a href="https://github.com/go-lang-plugin-org/go-lang-idea-plugin/wiki/FAQ">FAQ</a>
 </p>
-<h2> Bugs</h2>
+<h2>Bugs</h2>
 <p>
 <strong>Please ensure that the bug is not reported already using the search functionality</strong>
 </p>
@@ -45,7 +45,7 @@ on how to submit a proper bug report.</p>
 <li>JDK version</li>
 <li>plugin version (or commit hash, if you built the plugin yourself)</li>
 </ul>
-<h2> Bumping or +1 or me as well comments</h2>
+<h2>Bumping or +1 or me as well comments</h2>
 <p>As annoying as things might be when they don't work, please don't comment with
 &quot;bump&quot;, &quot;+1&quot;, &quot;same for me&quot; or other form of comments which is not relevant for
 either better identifying the issue providing a solution to it.</p>
@@ -54,15 +54,15 @@ contact Github support to add a issue voting feature to the repositories by
 writing them here: https://github.com/contact</p>
 <p>Contributions are always welcomed and we'll do our best to help you out to add
 yours to the project.</p>
-<h2> Contributing</h2>
+<h2>Contributing</h2>
 <p>We encourage you to contribute to the plugin if you find any issues or missing
 functionality that you'd want to see. In order to get started, see
 <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>
  guide.</p>
-<h2> Contributors</h2>
+<h2>Contributors</h2>
 <p>People who helped with the plugin development, please see <a href="https://github.com/go-lang-plugin-org/go-lang-idea-plugin/graphs/contributors">contributors page</a>
 .</p>
-<h2> Thank you</h2>
+<h2>Thank you</h2>
 <p>We would like to thank <a href="http://www.yourkit.com">YourKit</a>
  for supporting the development
 of this plugin by providing us licenses to their full-featured <a href="http://www.yourkit.com/java/profiler/index.jsp">Yourkit Java Profiler</a>
