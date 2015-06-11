@@ -1,0 +1,102 @@
+<body>
+<ul>
+<li>This list</li>
+<li>Is tight</li>
+</ul>
+<ul>
+<li>
+<p>This list</p>
+</li>
+<li>
+<p>Is loose</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>This list</p>
+<p>Is also loose</p>
+</li>
+<li>
+<p>Yes it is</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>But this list</p>
+<pre>
+<code>is not loose at all</code>
+</pre>
+</li>
+<li>It's tight.</li>
+</ul>
+<ul>
+<li>
+<p>This</p>
+</li>
+<li>
+<p>is</p>
+</li>
+<li>
+<p>loose</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>This is too</p>
+</li>
+<li></li>
+<li>
+<p>(loose one)</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Tight</p>
+<ul>
+<li>
+<p>Loose</p>
+<p>inside</p>
+</li>
+</ul>
+</li>
+<li>tight</li>
+</ul>
+<ul>
+<li>
+<p>Tight</p>
+<blockquote>
+<p>quote</p>
+</blockquote>
+</li>
+<li>tight</li>
+</ul>
+<ul>
+<li>
+<p>Tight</p>
+<blockquote>
+<p>quote</p>
+</blockquote>
+<pre>
+<code>  something second</code>
+</pre>
+</li>
+<li>tight</li>
+</ul>
+
+------------
+
+* Loose
+  * tight
+
+  loose
+
+--------------
+
+- a
+  - b
+  - c
+
+- d
+  - e
+  - f
+</body>
