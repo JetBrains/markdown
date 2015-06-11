@@ -73,7 +73,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
-    class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
+    open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
         override fun openTag(text: String, node: ASTNode): String {
             return "<$tagName>"
         }
@@ -121,8 +121,6 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
 
         fun initProviders(): Map<IElementType, GeneratingProvider> {
-            MarkdownTokenTypes.javaClass.getDeclaredFields()
-
             return hashMapOf(
 
                     MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
@@ -141,7 +139,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
                     MarkdownElementTypes.ORDERED_LIST to SimpleTagProvider("ol"),
                     MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
-                    MarkdownElementTypes.LIST_ITEM to SimpleTagProvider("li"),
+                    MarkdownElementTypes.LIST_ITEM to ListItemGeneratingProvider(),
 
                     MarkdownElementTypes.SETEXT_1 to SimpleInlineTagProvider("h1", 0, -2),
                     MarkdownElementTypes.SETEXT_2 to SimpleInlineTagProvider("h2", 0, -2),

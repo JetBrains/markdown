@@ -1,8 +1,7 @@
 package org.intellij.markdown.parser
 
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.CompositeASTNode
-import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.ArrayList
 import java.util.Collections
@@ -53,7 +52,7 @@ public class MyBuilder {
     private fun flushOneTokenToTree(tokensCache: TokensCache, markersStack: Stack<MutableList<MyASTNodeWrapper>>, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val node = LeafASTNode(iterator.type!!, iterator.start, iterator.end)
+        val node = ASTNodeBuilder.createLeafNode(iterator.type!!, iterator.start, iterator.end)
         markersStack.peek().add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
     }
 
@@ -100,7 +99,7 @@ public class MyBuilder {
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
-        newNode = CompositeASTNode(type, childrenWithWhitespaces)
+        newNode = ASTNodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 
@@ -112,7 +111,7 @@ public class MyBuilder {
         }
         while (rawIdx != 0) {
             val rawType = iterator.rawLookup(rawIdx)!!
-            childrenWithWhitespaces.add(LeafASTNode(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
+            childrenWithWhitespaces.add(ASTNodeBuilder.createLeafNode(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
             rawIdx -= dx
         }
     }
