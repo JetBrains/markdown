@@ -1,9 +1,9 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 
 

@@ -1,8 +1,8 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 public class MarkdownParserUtil private constructor() {
     companion object {

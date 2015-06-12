@@ -3,11 +3,11 @@ package org.intellij.markdown.parser.markerblocks.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.MarkdownConstraints
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.TokensCache
-import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
+import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker, setOf(MarkdownTokenTypes.EOL)) {
 

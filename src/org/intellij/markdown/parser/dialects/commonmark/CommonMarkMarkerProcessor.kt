@@ -3,7 +3,11 @@ package org.intellij.markdown.parser.dialects.commonmark
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.*
+import org.intellij.markdown.parser.MarkerProcessor
+import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.dialects.FixedPriorityListMarkerProcessor
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock

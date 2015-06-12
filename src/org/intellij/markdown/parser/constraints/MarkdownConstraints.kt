@@ -1,12 +1,13 @@
-package org.intellij.markdown.parser
+package org.intellij.markdown.parser.constraints
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 
 public class MarkdownConstraints private constructor(private var indents: IntArray,
-                                         private var types: CharArray,
-                                         private var isExplicit: BooleanArray) {
+                                                     private var types: CharArray,
+                                                     private var isExplicit: BooleanArray) {
 
     public fun getIndent(): Int {
         if (indents.size() == 0) {
