@@ -3,28 +3,25 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.lexer.MarkdownLexer
 
 public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorFactory) {
 
     public fun buildMarkdownTreeFromString(text: String): ASTNode {
-        val cache = LexerBasedTokensCache(MarkdownLexer(text))
-        return parse(MarkdownElementTypes.MARKDOWN_FILE, cache)
+        return parse(MarkdownElementTypes.MARKDOWN_FILE, text)
     }
 
-    public fun parse(root: IElementType, tokensCache: TokensCache): ASTNode {
+    public fun parse(root: IElementType, text: String): ASTNode {
         val productionHolder = ProductionHolder()
-        val markerProcessor = markerProcessorFactory.createMarkerProcessor(productionHolder, tokensCache)
+        val markerProcessor = markerProcessorFactory.createMarkerProcessor(productionHolder)
 
         val rootMarker = productionHolder.mark()
 
-        var iterator = tokensCache.Iterator(0)
-        productionHolder.updatePosition(iterator.index)
-        while (iterator.type != null) {
-            val tokenType = iterator.type!!
-            iterator = markerProcessor.processToken(tokenType, iterator)
-            iterator = iterator.advance()
-            productionHolder.updatePosition(iterator.index)
+        val textHolder = LookaheadText(text)
+        var pos = textHolder.startPosition
+        productionHolder.updatePosition(pos.offset)
+        while (pos != null) {
+            pos = markerProcessor.processToken(pos)
+            productionHolder.updatePosition(pos.offset)
         }
         markerProcessor.flushMarkers()
 
@@ -32,7 +29,7 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
 
         val builder = MyBuilder()
 
-        return builder.buildTree(productionHolder.production, tokensCache)
+        return builder.buildTree(productionHolder.production, text)
     }
 
 }

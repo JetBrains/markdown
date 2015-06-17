@@ -1,23 +1,32 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 
 public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
-                                      protected val marker: ProductionHolder.Marker,
-                                      private val interestingTypes: Set<IElementType>? = null) : MarkerBlock {
+                                      protected val marker: ProductionHolder.Marker) : MarkerBlock {
 
-    override fun processToken(tokenType: IElementType, builder: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (interestingTypes != null && !interestingTypes.contains(tokenType)) {
-            return MarkerBlock.ProcessingResult.PASS
+    private var getLastInterestingOffset: Int? = -1
+
+    final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int? {
+        if (getLastInterestingOffset != null && getLastInterestingOffset!! < pos.offset) {
+            getLastInterestingOffset = calcNextInterestingOffset(pos)
         }
-        return doProcessToken(tokenType, builder, currentConstraints)
+        return getLastInterestingOffset
     }
 
-    override fun getBlockConstraints(): MarkdownConstraints {
+    final override fun processToken(pos: LookaheadText.Position,
+                              currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        if (getNextInterestingOffset(pos) > pos.offset) {
+            return MarkerBlock.ProcessingResult.PASS
+        }
+        return doProcessToken(pos, currentConstraints)
+    }
+
+    final override fun getBlockConstraints(): MarkdownConstraints {
         return constraints
     }
 
@@ -35,7 +44,10 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
     protected abstract fun getDefaultAction(): MarkerBlock.ClosingAction
 
-    protected abstract fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult
+    protected abstract fun doProcessToken(pos: LookaheadText.Position,
+                                          currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult
+
+    protected abstract fun calcNextInterestingOffset(pos: LookaheadText.Position): Int?
 
     public abstract fun getDefaultNodeType(): IElementType
 }

@@ -1,7 +1,7 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 public class MarkdownParserUtil private constructor() {
@@ -58,24 +58,13 @@ public class MarkdownParserUtil private constructor() {
             throw AssertionError("Could not be here: 0 is EOL")
         }
 
-        public fun getIndentBeforeRawToken(iterator: TokensCache.Iterator, rawOffset: Int): Int {
-            var eolPos = rawOffset - 1
-            while (true) {
-                val `type` = iterator.rawLookup(eolPos)
-                if (`type` == MarkdownTokenTypes.EOL || `type` == null) {
-                    break
-                }
-
-                eolPos--
-            }
-
-            return iterator.rawStart(rawOffset) - iterator.rawStart(eolPos + 1)
+        public fun getIndentBeforeRawToken(pos: LookaheadText.Position): Int {
+            return pos.offsetInCurrentLine
         }
 
-        public fun hasCodeBlockIndent(iterator: TokensCache.Iterator,
-                                      rawOffset: Int,
+        public fun hasCodeBlockIndent(pos: LookaheadText.Position,
                                       constraints: MarkdownConstraints): Boolean {
-            return getIndentBeforeRawToken(iterator, rawOffset) >= constraints.getIndent() + 4
+            return getIndentBeforeRawToken(pos) >= constraints.getIndent() + 4
         }
     }
 

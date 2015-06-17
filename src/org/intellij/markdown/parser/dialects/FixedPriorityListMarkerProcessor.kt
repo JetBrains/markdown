@@ -3,7 +3,6 @@ package org.intellij.markdown.parser.dialects
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
@@ -12,8 +11,8 @@ import java.util.Collections
 import java.util.Comparator
 import java.util.IdentityHashMap
 
-public abstract class FixedPriorityListMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache, startingConstraints: MarkdownConstraints)
-        : MarkerProcessor(productionHolder, tokensCache, startingConstraints) {
+public abstract class FixedPriorityListMarkerProcessor(productionHolder: ProductionHolder, startingConstraints: MarkdownConstraints)
+        : MarkerProcessor(productionHolder, startingConstraints) {
     private val priorityMap: Map<IElementType, Int>
 
     init {

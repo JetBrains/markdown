@@ -3,8 +3,8 @@ package org.intellij.markdown.parser.markerblocks.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
@@ -16,15 +16,25 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
         return MarkerBlock.ClosingAction.DONE
     }
 
-    override fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+    override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         // Eat everything if we're on code line
-        if (tokenType != MarkdownTokenTypes.EOL) {
+        if (pos.char != '\n') {
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        assert(tokenType == MarkdownTokenTypes.EOL)
+        assert(pos.char == '\n')
 
-        var afterEol: IElementType? = iterator.advance().type
+        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+        // kinda equals
+        if (!(nextLineConstraints.upstreamWith(constraints) && nextLineConstraints.extendsPrev(constraints))) {
+            return MarkerBlock.ProcessingResult.DEFAULT
+        }
+
+
+
+
+
+        var afterEol: Char = pos.currentLine
         val nonWhitespaceOffset: Int
         if (afterEol == MarkdownTokenTypes.BLOCK_QUOTE) {
             val nextLineConstraints = MarkdownConstraints.fromBase(iterator, 1, constraints)

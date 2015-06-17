@@ -6,7 +6,6 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.dialects.FixedPriorityListMarkerProcessor
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
@@ -14,8 +13,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.impl.*
 import java.util.ArrayList
 
-public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache)
-        : FixedPriorityListMarkerProcessor(productionHolder, tokensCache, MarkdownConstraints.BASE) {
+public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
+        : FixedPriorityListMarkerProcessor(productionHolder, MarkdownConstraints.BASE) {
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
         val result = ArrayList<Pair<IElementType, Int>>()
@@ -100,8 +99,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, token
     }
 
     public object Factory : MarkerProcessorFactory {
-        override fun createMarkerProcessor(productionHolder: ProductionHolder, tokensCache: TokensCache): MarkerProcessor {
-            return CommonMarkMarkerProcessor(productionHolder, tokensCache)
+        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor {
+            return CommonMarkMarkerProcessor(productionHolder)
         }
     }
 

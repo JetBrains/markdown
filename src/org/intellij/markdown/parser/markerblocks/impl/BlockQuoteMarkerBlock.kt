@@ -2,23 +2,26 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker, setOf(MarkdownTokenTypes.EOL)) {
+public class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+        return pos.nextLineOffset
+    }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
     }
 
-    override fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        assert(tokenType == MarkdownTokenTypes.EOL)
+    override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        assert(pos.char == '\n')
 
-        val nextLineConstraints = MarkdownConstraints.fromBase(iterator, 1, constraints)
+        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
         // That means nextLineConstraints are "shorter" so our blockquote char is absent
         if (!nextLineConstraints.extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT

@@ -2,7 +2,7 @@ package org.intellij.markdown.parser.constraints
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.TokensCache
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 
 public class MarkdownConstraints private constructor(private var indents: IntArray,
@@ -164,14 +164,16 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
             return `type` == MarkdownTokenTypes.LIST_NUMBER || `type` == MarkdownTokenTypes.LIST_BULLET || `type` == MarkdownTokenTypes.BLOCK_QUOTE
         }
 
-        public fun fromBase(iterator: TokensCache.Iterator, rawIndex: Int, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
-            val myStartOffset = iterator.rawStart(rawIndex)
+        public fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
+            assert(pos.char == '\n')
 
-            var result = BASE
-            var isAlignedWithPrev = true
+            val line = pos.currentLine
+            val result = fillFromPrevious(line, 0, prevLineConstraints, BASE)
+            var offset = result.getIndent()
 
-            var offset = rawIndex
-            while (true) {
+
+
+            {
                 val `type` = iterator.rawLookup(offset)
                 if (`type` != MarkdownTokenTypes.WHITE_SPACE && !isConstraintType(`type`)) {
                     break
@@ -197,6 +199,69 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                 offset++
             }
 
+            return result
+        }
+
+        private fun fillFromPrevious(line: String,
+                                     startOffset: Int,
+                                     prevLineConstraints: MarkdownConstraints,
+                                     base: MarkdownConstraints): MarkdownConstraints {
+            var offset = startOffset
+            var result = base
+            val prevN = prevLineConstraints.indents.size()
+            var indexPrev = 0
+            while (indexPrev < prevN) {
+                var maxSpaces = 0
+
+                while (indexPrev < prevN) {
+                    if (prevLineConstraints.types[indexPrev] == BQ_CHAR) {
+                        maxSpaces += 3
+                        break
+                    }
+
+                    val deltaIndent = prevLineConstraints.indents[indexPrev] -
+                            if (indexPrev == 0)
+                                0
+                            else
+                                prevLineConstraints.indents[indexPrev - 1]
+
+                    var deltaRemaining = deltaIndent
+                    while (deltaRemaining > 0 && offset < line.length() && line.charAt(offset) == ' ') {
+                        offset++;
+                        deltaRemaining--
+                    }
+                    if (deltaRemaining > 0 && offset < line.length() && line.charAt(offset) != '\n') {
+                        break
+                    }
+                    result = MarkdownConstraints(result,
+                            result.getIndent() + deltaIndent,
+                            prevLineConstraints.types[indexPrev],
+                            false)
+
+                    indexPrev++
+                }
+
+                var spacesEaten = 0
+                while (spacesEaten < maxSpaces && offset < line.length() && line.charAt(offset) == ' ') {
+                    spacesEaten++
+                    offset++
+                }
+
+                if (spacesEaten == maxSpaces && offset < line.length() && line.charAt(offset) == ' ') {
+                    indexPrev = Int.MAX_VALUE
+                }
+
+                if (indexPrev < prevN && prevLineConstraints.types[indexPrev] == BQ_CHAR) {
+                    if (line.charAt(offset) == BQ_CHAR) {
+                        indexPrev++
+                        result = MarkdownConstraints(result,
+                                result.getIndent() + spacesEaten,
+                                BQ_CHAR, true)
+                    } else {
+                        indexPrev = Int.MAX_VALUE
+                    }
+                }
+            }
             return result
         }
 

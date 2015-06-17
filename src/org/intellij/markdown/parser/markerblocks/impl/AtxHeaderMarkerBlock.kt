@@ -2,22 +2,20 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.InlineStructureHoldingMarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 
 public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
-                                  tokensCache: TokensCache,
                                   productionHolder: ProductionHolder,
                                   headerSize: Int)
-        : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, null) {
+        : InlineStructureHoldingMarkerBlock(myConstraints, productionHolder) {
 
     private val nodeType = calcNodeType(headerSize)
 
-    private val startPosition = productionHolder.currentPosition
+    private val startPosition = productionHolder.currentPosition + headerSize
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {
@@ -39,8 +37,13 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ClosingAction.DONE
     }
 
-    override fun doProcessToken(tokenType: IElementType, iterator: TokensCache.Iterator, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (tokenType == MarkdownTokenTypes.EOL) {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+        return pos.offset + 1
+    }
+
+    override fun doProcessToken(pos: LookaheadText.Position,
+                                currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        if (pos.char == '\n') {
             return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DONE, MarkerBlock.EventAction.PROPAGATE)
         }
         return MarkerBlock.ProcessingResult.CANCEL;

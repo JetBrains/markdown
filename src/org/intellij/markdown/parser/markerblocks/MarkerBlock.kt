@@ -1,13 +1,16 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 public interface MarkerBlock {
 
-    public fun processToken(tokenType: IElementType, builder: TokensCache.Iterator, currentConstraints: MarkdownConstraints): ProcessingResult
+    public fun getNextInterestingOffset(pos: LookaheadText.Position): Int?
+
+    public fun processToken(pos: LookaheadText.Position,
+                            currentConstraints: MarkdownConstraints): ProcessingResult
 
     public fun getBlockConstraints(): MarkdownConstraints
 
