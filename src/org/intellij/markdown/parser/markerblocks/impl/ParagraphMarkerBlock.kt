@@ -12,8 +12,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
 public class ParagraphMarkerBlock(myConstraints: MarkdownConstraints,
-                                  productionHolder: ProductionHolder,
-                                  tokensCache: TokensCache)
+                                  marker: ProductionHolder.Marker)
         : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, null) {
     private val startPosition = productionHolder.currentPosition
 

@@ -10,7 +10,6 @@ import org.intellij.markdown.parser.markerblocks.InlineStructureHoldingMarkerBlo
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 
 public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
-                                     tokensCache: TokensCache,
                                      productionHolder: ProductionHolder)
         : InlineStructureHoldingMarkerBlock(myConstraints, tokensCache, productionHolder, setOf(MarkdownTokenTypes.SETEXT_1,
                                                                                                 MarkdownTokenTypes.SETEXT_2)) {

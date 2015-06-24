@@ -11,8 +11,9 @@ import java.util.Collections
 import java.util.Comparator
 import java.util.IdentityHashMap
 
-public abstract class FixedPriorityListMarkerProcessor(productionHolder: ProductionHolder, startingConstraints: MarkdownConstraints)
-        : MarkerProcessor(productionHolder, startingConstraints) {
+public abstract class FixedPriorityListMarkerProcessor<T : MarkerProcessor.PositionInfo>(
+        productionHolder: ProductionHolder,
+        startingConstraints: MarkdownConstraints) : MarkerProcessor<T>(productionHolder, startingConstraints) {
     private val priorityMap: Map<IElementType, Int>
 
     init {
@@ -34,7 +35,7 @@ public abstract class FixedPriorityListMarkerProcessor(productionHolder: Product
             result.add(i)
         }
 
-        Collections.sort<Int>(result, object : Comparator<Int> {
+        Collections.sort(result, object : Comparator<Int> {
             override fun compare(o1: Int, o2: Int): Int {
                 if (priorityMap.isEmpty()) {
                     return o2 - o1
@@ -58,9 +59,9 @@ public abstract class FixedPriorityListMarkerProcessor(productionHolder: Product
             return 0
         }
 
-        val `type` = (block : MarkerBlockImpl).getDefaultNodeType()
+        val `type` = block.getDefaultNodeType()
         if (priorityMap.containsKey(`type`)) {
-            return priorityMap.get(`type`)?:0
+            return priorityMap.get(`type`) ?: 0
         }
 
         return 0

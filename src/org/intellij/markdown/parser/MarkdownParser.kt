@@ -17,19 +17,19 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
         val rootMarker = productionHolder.mark()
 
         val textHolder = LookaheadText(text)
-        var pos = textHolder.startPosition
-        productionHolder.updatePosition(pos.offset)
+        var pos: LookaheadText.Position? = textHolder.startPosition
+        productionHolder.updatePosition(pos!!.offset)
         while (pos != null) {
             pos = markerProcessor.processToken(pos)
-            productionHolder.updatePosition(pos.offset)
+            productionHolder.updatePosition(pos?.offset ?: text.length())
         }
         markerProcessor.flushMarkers()
 
         rootMarker.done(root)
 
-        val builder = MyBuilder()
+        val builder = MyRawBuilder()
 
-        return builder.buildTree(productionHolder.production, text)
+        return builder.buildTree(productionHolder.production)
     }
 
 }

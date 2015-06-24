@@ -69,6 +69,14 @@ public class LookaheadText(public val text: String) {
             }
         }
 
+        public fun nextLinePosition(): Position? {
+            val nextLine = nextLineOffset
+            if (nextLine == null) {
+                return null
+            }
+            return nextPosition(nextLine - offset)
+        }
+
         public fun charsToNonWhitespace(): Int? {
             val line = currentLine
             var i = 1

@@ -2,12 +2,13 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
-import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
+import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
 import java.util.ArrayList
 import java.util.TreeMap
 
-public abstract class MarkerProcessor(private val productionHolder: ProductionHolder,
-                                      private val startConstraints: MarkdownConstraints) {
+public abstract class MarkerProcessor<T : MarkerProcessor.PositionInfo>(protected val productionHolder: ProductionHolder,
+                                                                        private val startConstraints: MarkdownConstraints) {
 
     protected val NO_BLOCKS: Array<MarkerBlock> = arrayOf()
 
@@ -19,18 +20,23 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
 
     private var topBlockConstraints: MarkdownConstraints = startConstraints
 
-    public var currentConstraints: MarkdownConstraints = startConstraints
-        private set
+    protected abstract var positionInfo: T
 
     protected abstract fun getPrioritizedMarkerPermutation(): List<Int>
 
-    public abstract fun createNewMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder): Array<MarkerBlock>
+    protected abstract fun getMarkerBlockProviders(): List<MarkerBlockProvider<T>>
 
-    public fun getProduction(): List<SequentialParser.Node> {
-        return productionHolder.production
+    public open fun createNewMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder): Array<MarkerBlock> {
+        for (provider in getMarkerBlockProviders()) {
+            val markerBlock = provider.createMarkerBlock(pos, positionInfo)
+            if (markerBlock != null) {
+                return arrayOf(markerBlock)
+            }
+        }
+        return emptyArray()
     }
 
-    public fun processToken(pos: LookaheadText.Position): Int {
+    public fun processToken(pos: LookaheadText.Position): LookaheadText.Position? {
         processPostponedActions()
 
         val someoneHasCancelledEvent = processMarkers(pos)
@@ -43,15 +49,29 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
 
         var nextPos = calculateNextPos(pos)
         return nextPos
-//        if (pos.char == '\n') {
-//            // Eat "duplicating" block tokens (blockquote, lists..)
-//            // Since ended blocks are dead after EOL, top block's constraints are prefix of the new one.
-//            return passDuplicatingTokens(pos)
-//        }
-//        else {
-//
-//        }
-//        return it
+    }
+
+    private fun calculateNextPos(pos: LookaheadText.Position): LookaheadText.Position? {
+        if (cachedPermutation == null) {
+            cachedPermutation = getPrioritizedMarkerPermutation()
+        }
+
+        var result: Int? = null
+        for (index in cachedPermutation!!) {
+            if (index >= markersStack.size()) {
+                continue
+            }
+
+            val markerBlock = markersStack.get(index)
+            val offset = markerBlock.getNextInterestingOffset(pos)
+            if (result == null || offset != null && result > offset) {
+                result = offset
+            }
+        }
+        return if (result == null)
+            null
+        else
+            pos.nextPosition(result - pos.offset)
     }
 
     private fun processPostponedActions() {
@@ -67,7 +87,6 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
         markersStack.add(newMarkerBlock)
         topBlockConstraints = newMarkerBlock.getBlockConstraints()
         cachedPermutation = null
-        currentConstraints = topBlockConstraints
     }
 
     public fun flushMarkers() {
@@ -75,52 +94,6 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
 
         closeChildren(-1, MarkerBlock.ClosingAction.DEFAULT)
     }
-
-//    private fun passDuplicatingTokens(iterator: TokensCache.Iterator): TokensCache.Iterator {
-//        var it = iterator
-//        assert(it.type == MarkdownTokenTypes.EOL)
-//
-//        var constraints = startConstraints
-//        var toSkip = 0
-//
-//        var rawIndex = 1
-//        while (true) {
-//            val `type` = it.rawLookup(rawIndex)
-//            if (`type` == null) {
-//                break
-//            }
-//
-//
-//            if (MarkdownParserUtil.hasCodeBlockIndent(iterator, rawIndex, constraints)) {
-//                break
-//            }
-//
-//            val next: MarkdownConstraints
-//            if (`type` == MarkdownTokenTypes.WHITE_SPACE) {
-//                next = constraints.fillImplicitsOnWhiteSpace(it, rawIndex, topBlockConstraints)
-//            } else if (MarkdownConstraints.isConstraintType(`type`)) {
-//                next = constraints.addModifier(`type`, it, rawIndex)
-//            } else {
-//                break
-//            }
-//
-//            if (next.upstreamWith(topBlockConstraints)) {
-//                constraints = next
-//                if (`type` != MarkdownTokenTypes.WHITE_SPACE) {
-//                    toSkip++
-//                }
-//            } else {
-//                break
-//            }
-//            rawIndex++
-//        }
-//
-//        currentConstraints = constraints
-//        for (i in 0..toSkip - 1) {
-//            it = it.advance()
-//        }
-//        return it
-//    }
 
     /**
      * @return true if some markerBlock has canceled the event, false otherwise
@@ -194,6 +167,20 @@ public abstract class MarkerProcessor(private val productionHolder: ProductionHo
                 markersStack.remove(latterIndex)
                 --latterIndex
             }
+        }
+    }
+
+    public inner open data class PositionInfo(public val currentConstraints: MarkdownConstraints,
+                                              public val newConstraints: MarkdownConstraints) {
+
+        public val productionHolder: ProductionHolder
+            get() = this@MarkerProcessor.productionHolder
+
+        public val paragraphBlock: ParagraphMarkerBlock?
+            get() = markersStack.firstOrNull { block -> block is ParagraphMarkerBlock } as ParagraphMarkerBlock?
+
+        public fun getLastBlock(): MarkerBlock? {
+            return markersStack.lastOrNull()
         }
     }
 

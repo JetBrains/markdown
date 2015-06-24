@@ -3,56 +3,56 @@ package org.intellij.markdown
 public interface MarkdownTokenTypes {
     companion object {
 
-        public val TEXT: IElementType = MarkdownElementType("TEXT")
+        public val TEXT: IElementType = MarkdownElementType("TEXT", true)
 
-        public val CODE: IElementType = MarkdownElementType("CODE")
+        public val CODE: IElementType = MarkdownElementType("CODE", true)
 
-        public val BLOCK_QUOTE: IElementType = MarkdownElementType("BLOCK_QUOTE")
+        public val BLOCK_QUOTE: IElementType = MarkdownElementType("BLOCK_QUOTE", true)
 
-        public val HTML_BLOCK: IElementType = MarkdownElementType("HTML_BLOCK")
+        public val HTML_BLOCK: IElementType = MarkdownElementType("HTML_BLOCK", true)
 
-        public val SINGLE_QUOTE: IElementType = MarkdownElementType("'")
-        public val DOUBLE_QUOTE: IElementType = MarkdownElementType("\"")
-        public val LPAREN: IElementType = MarkdownElementType("(")
-        public val RPAREN: IElementType = MarkdownElementType(")")
-        public val LBRACKET: IElementType = MarkdownElementType("[")
-        public val RBRACKET: IElementType = MarkdownElementType("]")
-        public val LT: IElementType = MarkdownElementType("<")
-        public val GT: IElementType = MarkdownElementType(">")
+        public val SINGLE_QUOTE: IElementType = MarkdownElementType("'", true)
+        public val DOUBLE_QUOTE: IElementType = MarkdownElementType("\"", true)
+        public val LPAREN: IElementType = MarkdownElementType("(", true)
+        public val RPAREN: IElementType = MarkdownElementType(", true)", true)
+        public val LBRACKET: IElementType = MarkdownElementType("[", true)
+        public val RBRACKET: IElementType = MarkdownElementType("]", true)
+        public val LT: IElementType = MarkdownElementType("<", true)
+        public val GT: IElementType = MarkdownElementType(">", true)
 
-        public val COLON: IElementType = MarkdownElementType(":")
-        public val EXCLAMATION_MARK: IElementType = MarkdownElementType("!")
+        public val COLON: IElementType = MarkdownElementType(":", true)
+        public val EXCLAMATION_MARK: IElementType = MarkdownElementType("!", true)
 
 
-        public val HTML_ENTITY: IElementType = MarkdownElementType("HTML_ENTITY")
+        public val HTML_ENTITY: IElementType = MarkdownElementType("HTML_ENTITY", true)
 
-        public val HARD_LINE_BREAK: IElementType = MarkdownElementType("BR")
-        public val EOL: IElementType = MarkdownElementType("EOL")
+        public val HARD_LINE_BREAK: IElementType = MarkdownElementType("BR", true)
+        public val EOL: IElementType = MarkdownElementType("EOL", true)
 
-        public val LINK_ID: IElementType = MarkdownElementType("LINK_ID")
-        public val ATX_HEADER: IElementType = MarkdownElementType("ATX_HEADER")
-        public val EMPH: IElementType = MarkdownElementType("EMPH")
+        public val LINK_ID: IElementType = MarkdownElementType("LINK_ID", true)
+        public val ATX_HEADER: IElementType = MarkdownElementType("ATX_HEADER", true)
+        public val EMPH: IElementType = MarkdownElementType("EMPH", true)
 
-        public val BACKTICK: IElementType = MarkdownElementType("BACKTICK")
-        public val ESCAPED_BACKTICKS: IElementType = MarkdownElementType("ESCAPED_BACKTICKS")
+        public val BACKTICK: IElementType = MarkdownElementType("BACKTICK", true)
+        public val ESCAPED_BACKTICKS: IElementType = MarkdownElementType("ESCAPED_BACKTICKS", true)
 
-        public val TAG_NAME: IElementType = MarkdownElementType("TAG_NAME")
-        public val LIST_BULLET: IElementType = MarkdownElementType("LIST_BULLET")
-        public val URL: IElementType = MarkdownElementType("URL")
-        public val HORIZONTAL_RULE: IElementType = MarkdownElementType("HORIZONTAL_RULE")
-        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1")
-        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2")
-        public val LIST_NUMBER: IElementType = MarkdownElementType("LIST_NUMBER")
-        public val FENCE_LANG: IElementType = MarkdownElementType("FENCE_LANG")
-        public val CODE_FENCE_START: IElementType = MarkdownElementType("CODE_FENCE_START")
-        public val CODE_FENCE_END: IElementType = MarkdownElementType("CODE_FENCE_END")
-        public val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE")
+        public val TAG_NAME: IElementType = MarkdownElementType("TAG_NAME", true)
+        public val LIST_BULLET: IElementType = MarkdownElementType("LIST_BULLET", true)
+        public val URL: IElementType = MarkdownElementType("URL", true)
+        public val HORIZONTAL_RULE: IElementType = MarkdownElementType("HORIZONTAL_RULE", true)
+        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1", true)
+        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2", true)
+        public val LIST_NUMBER: IElementType = MarkdownElementType("LIST_NUMBER", true)
+        public val FENCE_LANG: IElementType = MarkdownElementType("FENCE_LANG", true)
+        public val CODE_FENCE_START: IElementType = MarkdownElementType("CODE_FENCE_START", true)
+        public val CODE_FENCE_END: IElementType = MarkdownElementType("CODE_FENCE_END", true)
+        public val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE", true)
 
-        public val AUTOLINK: IElementType = MarkdownElementType("AUTOLINK")
-        public val EMAIL_AUTOLINK: IElementType = MarkdownElementType("EMAIL_AUTOLINK")
-        public val HTML_TAG: IElementType = MarkdownElementType("HTML_TAG")
+        public val AUTOLINK: IElementType = MarkdownElementType("AUTOLINK", true)
+        public val EMAIL_AUTOLINK: IElementType = MarkdownElementType("EMAIL_AUTOLINK", true)
+        public val HTML_TAG: IElementType = MarkdownElementType("HTML_TAG", true)
 
-        public val BAD_CHARACTER: IElementType = IElementType("BAD_CHARACTER")
-        public val WHITE_SPACE: IElementType = IElementType("WHITE_SPACE")
+        public val BAD_CHARACTER: IElementType = MarkdownElementType("BAD_CHARACTER", true)
+        public val WHITE_SPACE: IElementType = MarkdownElementType("WHITE_SPACE", true)
     }
 }
