@@ -9,19 +9,25 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
                                       protected val marker: ProductionHolder.Marker) : MarkerBlock {
 
-    private var getLastInterestingOffset: Int? = -1
+    private var lastInterestingOffset: Int? = -1
+
+    private var scheduledResult: MarkerBlock.ProcessingResult? = null
 
     final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        if (getLastInterestingOffset != null && getLastInterestingOffset!! < pos.offset) {
-            getLastInterestingOffset = calcNextInterestingOffset(pos)
+        if (lastInterestingOffset != null && lastInterestingOffset!! < pos.offset) {
+            lastInterestingOffset = calcNextInterestingOffset(pos)
         }
-        return getLastInterestingOffset
+        return lastInterestingOffset
     }
 
     final override fun processToken(pos: LookaheadText.Position,
                               currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (getNextInterestingOffset(pos) > pos.offset) {
+        val nextInterestingOffset = getNextInterestingOffset(pos)
+        if (nextInterestingOffset == null || nextInterestingOffset > pos.offset) {
             return MarkerBlock.ProcessingResult.PASS
+        }
+        if (scheduledResult != null) {
+            return scheduledResult!!
         }
         return doProcessToken(pos, currentConstraints)
     }
@@ -40,6 +46,11 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
         return actionToRun != MarkerBlock.ClosingAction.NOTHING
 
+    }
+
+    protected final fun scheduleProcessingResult(offset: Int, result: MarkerBlock.ProcessingResult) {
+        lastInterestingOffset = offset
+        scheduledResult = result
     }
 
     protected abstract fun getDefaultAction(): MarkerBlock.ClosingAction

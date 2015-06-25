@@ -2,18 +2,19 @@ package org.intellij.markdown.parser.markerblocks.providers
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
+import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.HorizontalRuleMarkerBlock
 import java.util.ArrayList
 import kotlin.text.Regex
 
-public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.PositionInfo> {
+public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlock(pos: LookaheadText.Position,
-                                   positionInfo: MarkerProcessor.PositionInfo): MarkerBlock? {
+                                   productionHolder: ProductionHolder,
+                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
         if (matches(pos)) {
-            return HorizontalRuleMarkerBlock(positionInfo.currentConstraints,
-                    positionInfo.productionHolder.mark())
+            return HorizontalRuleMarkerBlock(stateInfo.currentConstraints, productionHolder.mark())
         } else {
             return null
         }

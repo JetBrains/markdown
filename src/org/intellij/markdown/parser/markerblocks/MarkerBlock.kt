@@ -50,16 +50,7 @@ public interface MarkerBlock {
 
     public class ProcessingResult internal constructor(public val childrenAction: ClosingAction,
                                                        public val selfAction: ClosingAction,
-                                                       public val eventAction: EventAction,
-                                                       public val isPostponed: Boolean = false) {
-
-        public fun postpone(): ProcessingResult {
-            if (isPostponed) {
-                return this
-            }
-
-            return ProcessingResult(childrenAction, selfAction, eventAction, true)
-        }
+                                                       public val eventAction: EventAction) {
 
         companion object {
             public val PASS: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.PROPAGATE)

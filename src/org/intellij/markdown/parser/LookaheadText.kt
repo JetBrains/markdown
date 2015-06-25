@@ -32,6 +32,9 @@ public class LookaheadText(public val text: String) {
                 null
             }
 
+        public val nextLineOrEofOffset: Int
+            get() = globalPos + (currentLine.length() - localPos)
+
         public val currentLine: String
             get() = lines.get(lineN)
 
@@ -71,9 +74,7 @@ public class LookaheadText(public val text: String) {
 
         public fun nextLinePosition(): Position? {
             val nextLine = nextLineOffset
-            if (nextLine == null) {
-                return null
-            }
+                    ?: return null
             return nextPosition(nextLine - offset)
         }
 

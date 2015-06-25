@@ -1,70 +1,75 @@
 package org.intellij.markdown.parser.markerblocks
 
-import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
-public class MarkdownParserUtil private constructor() {
-    companion object {
+public object MarkdownParserUtil {
 
-        public fun calcNumberOfConsequentEols(iterator: TokensCache.Iterator): Int {
-            var it = iterator
-            var answer = 0
-            while (true) {
-                val `type` = it.type
-                if (`type` != MarkdownTokenTypes.EOL) {
-                    return answer
-                }
-                it = it.advance()
-                answer++
+    public fun calcNumberOfConsequentEols(pos: LookaheadText.Position): Int {
+        var currentPos = pos;
+        var result = 0
+        while (currentPos.charsToNonWhitespace() == null) {
+            currentPos = currentPos.nextLinePosition()
+                    ?: break
+
+            result++
+            if (result > 4) {
+                break
             }
         }
+        return result
+    }
 
-        public fun getFirstNextLineNonBlockquoteRawIndex(iterator: TokensCache.Iterator): Int {
-            assert(iterator.type == MarkdownTokenTypes.EOL)
+    public fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position): LookaheadText.Position? {
+        var currentPos = pos;
+        while (currentPos.charsToNonWhitespace() == null) {
+            currentPos = currentPos.nextLinePosition()
+                    ?: return null
+        }
+        return currentPos
+    }
 
-            var answer = 1
-            while (true) {
-                val `type` = iterator.rawLookup(answer)
-                if (`type` != MarkdownTokenTypes.WHITE_SPACE && `type` != MarkdownTokenTypes.BLOCK_QUOTE) {
-                    return answer
-                }
-                answer++
+    public fun getIndentBeforeRawToken(pos: LookaheadText.Position): Int {
+        return pos.offsetInCurrentLine
+    }
+
+    public fun hasCodeBlockIndent(pos: LookaheadText.Position,
+                                  constraints: MarkdownConstraints): Boolean {
+        return getIndentBeforeRawToken(pos) >= constraints.getIndent() + 4
+    }
+
+    public fun isEmptyOrSpaces(s: CharSequence): Boolean {
+        for (c in s) {
+            if (c != ' ' && c != '\t') {
+                return false
             }
         }
+        return true
+    }
 
-        public fun getFirstNonWhiteSpaceRawIndex(iterator: TokensCache.Iterator): Int {
-            var answer = 0
-            while (true) {
-                val `type` = iterator.rawLookup(answer)
-                if (`type` != MarkdownTokenTypes.WHITE_SPACE && `type` != MarkdownTokenTypes.EOL) {
-                    return answer
-                }
-                answer++
+    public fun findNonEmptyLineWithSameConstraints(constraints: MarkdownConstraints,
+                                                   pos: LookaheadText.Position): LookaheadText.Position? {
+        var currentPos = pos;
+
+        while (true) {
+            currentPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(currentPos)
+                    ?: return null
+
+            val nextLineConstraints = MarkdownConstraints.fromBase(currentPos, constraints)
+            // kinda equals
+            if (!(nextLineConstraints.upstreamWith(constraints) && nextLineConstraints.extendsPrev(constraints))) {
+                return null
             }
-        }
 
-        public fun getFirstNonWhitespaceLineEolRawIndex(iterator: TokensCache.Iterator): Int {
-            assert(iterator.type == MarkdownTokenTypes.EOL)
+            val stringAfterConstaints = currentPos.currentLine.subSequence(nextLineConstraints.getIndent(),
+                    currentPos.currentLine.length())
 
-            val lastIndex = getFirstNonWhiteSpaceRawIndex(iterator)
-            var index = lastIndex - 1
-            while (index >= 0) {
-                if (iterator.rawLookup(index) == MarkdownTokenTypes.EOL) {
-                    return index
-                }
-                --index
+            if (!MarkdownParserUtil.isEmptyOrSpaces(stringAfterConstaints)) {
+                return currentPos
+            } else {
+                currentPos = currentPos.nextLinePosition()
+                        ?: return null
             }
-            throw AssertionError("Could not be here: 0 is EOL")
-        }
-
-        public fun getIndentBeforeRawToken(pos: LookaheadText.Position): Int {
-            return pos.offsetInCurrentLine
-        }
-
-        public fun hasCodeBlockIndent(pos: LookaheadText.Position,
-                                      constraints: MarkdownConstraints): Boolean {
-            return getIndentBeforeRawToken(pos) >= constraints.getIndent() + 4
         }
     }
 

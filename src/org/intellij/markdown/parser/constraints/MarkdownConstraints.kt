@@ -166,6 +166,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
 
             while (true) {
                 val offset = result.getIndent()
+                // TODO delta
                 result = result.addModifierIfNeeded(pos.nextPosition(offset))
                         ?: break
             }

@@ -14,8 +14,20 @@ import org.intellij.markdown.parser.markerblocks.providers.*
 import java.util.ArrayList
 
 public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
-: FixedPriorityListMarkerProcessor<MarkerProcessor.PositionInfo>(productionHolder, MarkdownConstraints.BASE) {
-    override var positionInfo: MarkerProcessor.PositionInfo = MarkerProcessor.PositionInfo(1, 2, 3)
+: FixedPriorityListMarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, MarkdownConstraints.BASE) {
+    override var stateInfo: MarkerProcessor.StateInfo = MarkerProcessor.StateInfo(MarkdownConstraints.BASE,
+            MarkdownConstraints.BASE,
+            markersStack)
+
+    private val markerBlockProviders = listOf(
+            CodeBlockProvider(),
+            BlockQuoteProvider(),
+            ListMarkerProvider(),
+            ListItemMarkerProvider(),
+            AtxHeaderProvider(),
+            CodeFenceProvider(),
+            SetextHeaderProvider()
+    )
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
         val result = ArrayList<Pair<IElementType, Int>>()
@@ -39,17 +51,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
         return result
     }
 
-    override fun getMarkerBlockProviders(): List<MarkerBlockProvider<MarkerProcessor.PositionInfo>> {
-        return listOf(
-                CodeBlockProvider(),
-                BlockQuoteProvider(),
-                ListMarkerProvider(),
-                ListItemMarkerProvider(),
-                AtxHeaderProvider(),
-                CodeFenceProvider(),
-                SetextHeaderProvider(),
-                ParagraphProvider()
-        )
+    override fun getMarkerBlockProviders(): List<MarkerBlockProvider<MarkerProcessor.StateInfo>> {
+        return markerBlockProviders
     }
 
     override fun createNewMarkerBlocks(pos: LookaheadText.Position,
@@ -57,6 +60,9 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
         if (pos.char == '\n') {
             return NO_BLOCKS
         }
+        stateInfo = MarkerProcessor.StateInfo(topBlockConstraints,
+                topBlockConstraints.addModifierIfNeeded(pos) ?: topBlockConstraints,
+                markersStack)
 
         return super.createNewMarkerBlocks(pos, productionHolder)
     }

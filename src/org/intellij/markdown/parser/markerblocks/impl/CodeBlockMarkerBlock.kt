@@ -2,7 +2,6 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -11,12 +10,21 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+    private var realInterestingOffset = -1
+
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+        return pos.offset + 1
+    }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
     }
 
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        if (pos.offset < realInterestingOffset) {
+            return MarkerBlock.ProcessingResult.CANCEL
+        }
+
         // Eat everything if we're on code line
         if (pos.char != '\n') {
             return MarkerBlock.ProcessingResult.CANCEL
@@ -24,38 +32,15 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
 
         assert(pos.char == '\n')
 
-        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
-        // kinda equals
-        if (!(nextLineConstraints.upstreamWith(constraints) && nextLineConstraints.extendsPrev(constraints))) {
-            return MarkerBlock.ProcessingResult.DEFAULT
-        }
+        val nonemptyPos = MarkdownParserUtil.findNonEmptyLineWithSameConstraints(constraints, pos)
+            ?: return MarkerBlock.ProcessingResult.DEFAULT
 
+        val nextConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
 
-
-
-
-        var afterEol: Char = pos.currentLine
-        val nonWhitespaceOffset: Int
-        if (afterEol == MarkdownTokenTypes.BLOCK_QUOTE) {
-            val nextLineConstraints = MarkdownConstraints.fromBase(iterator, 1, constraints)
-            // kinda equals
-            if (!(nextLineConstraints.upstreamWith(constraints) && nextLineConstraints.extendsPrev(constraints))) {
-                return MarkerBlock.ProcessingResult.DEFAULT
-            }
-
-            afterEol = iterator.rawLookup(MarkdownParserUtil.getFirstNextLineNonBlockquoteRawIndex(iterator))
-            nonWhitespaceOffset = MarkdownParserUtil.getFirstNextLineNonBlockquoteRawIndex(iterator)
-        } else {
-            nonWhitespaceOffset = MarkdownParserUtil.getFirstNonWhiteSpaceRawIndex(iterator)
-        }
-
-        if (afterEol == MarkdownTokenTypes.EOL) {
-            return MarkerBlock.ProcessingResult.CANCEL
-        }
-
-        if (!MarkdownParserUtil.hasCodeBlockIndent(iterator, nonWhitespaceOffset, constraints)) {
+        if (!MarkdownParserUtil.hasCodeBlockIndent(nonemptyPos, nextConstraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
+            realInterestingOffset = nonemptyPos.offset
             return MarkerBlock.ProcessingResult.CANCEL
         }
     }

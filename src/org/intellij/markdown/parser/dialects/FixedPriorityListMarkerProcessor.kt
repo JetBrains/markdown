@@ -11,7 +11,7 @@ import java.util.Collections
 import java.util.Comparator
 import java.util.IdentityHashMap
 
-public abstract class FixedPriorityListMarkerProcessor<T : MarkerProcessor.PositionInfo>(
+public abstract class FixedPriorityListMarkerProcessor<T : MarkerProcessor.StateInfo>(
         productionHolder: ProductionHolder,
         startingConstraints: MarkdownConstraints) : MarkerProcessor<T>(productionHolder, startingConstraints) {
     private val priorityMap: Map<IElementType, Int>
