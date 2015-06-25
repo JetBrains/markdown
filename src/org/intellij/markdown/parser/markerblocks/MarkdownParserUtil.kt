@@ -6,8 +6,10 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 public object MarkdownParserUtil {
 
     public fun calcNumberOfConsequentEols(pos: LookaheadText.Position): Int {
+        assert(pos.char == '\n')
+
         var currentPos = pos;
-        var result = 0
+        var result = 1
         while (currentPos.charsToNonWhitespace() == null) {
             currentPos = currentPos.nextLinePosition()
                     ?: break

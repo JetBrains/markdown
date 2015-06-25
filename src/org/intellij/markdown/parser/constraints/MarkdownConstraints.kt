@@ -66,7 +66,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
     }
 
     public fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
-        if (pos == null)
+        if (pos == null || pos.char == '\n')
             return null
         return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
     }
@@ -202,12 +202,16 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                         offset++;
                         deltaRemaining--
                     }
-                    if (deltaRemaining > 0 && offset < line.length() && line.charAt(offset) != '\n') {
+                    if (deltaRemaining > 0 && offset < line.length()) {
                         break
                     }
                     result = MarkdownConstraints(result, deltaIndent, prevLineConstraints.types[indexPrev], false)
 
                     indexPrev++
+                }
+
+                if (indexPrev >= prevN || prevLineConstraints.types[indexPrev] != BQ_CHAR) {
+                    break
                 }
 
                 var spacesEaten = 0
@@ -220,13 +224,12 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                     indexPrev = Int.MAX_VALUE
                 }
 
-                if (indexPrev < prevN && prevLineConstraints.types[indexPrev] == BQ_CHAR) {
-                    if (line.charAt(offset) == BQ_CHAR) {
-                        indexPrev++
-                        result = MarkdownConstraints(result, spacesEaten, BQ_CHAR, true)
-                    } else {
-                        indexPrev = Int.MAX_VALUE
-                    }
+                if (line.charAt(offset) == BQ_CHAR) {
+                    indexPrev++
+                    offset++
+                    result = MarkdownConstraints(result, spacesEaten + 1, BQ_CHAR, true)
+                } else {
+                    indexPrev = Int.MAX_VALUE
                 }
             }
             return result

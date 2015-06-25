@@ -81,7 +81,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             }
         }
         return if (result == null)
-            null
+            pos.nextPosition()
         else
             pos.nextPosition(result - pos.offset)
     }

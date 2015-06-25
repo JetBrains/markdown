@@ -14,7 +14,7 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
     private var scheduledResult: MarkerBlock.ProcessingResult? = null
 
     final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        if (lastInterestingOffset != null && lastInterestingOffset!! < pos.offset) {
+        if (lastInterestingOffset != null && lastInterestingOffset!! <= pos.offset) {
             lastInterestingOffset = calcNextInterestingOffset(pos)
         }
         return lastInterestingOffset
@@ -22,9 +22,11 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
     final override fun processToken(pos: LookaheadText.Position,
                               currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        val nextInterestingOffset = getNextInterestingOffset(pos)
-        if (nextInterestingOffset == null || nextInterestingOffset > pos.offset) {
-            return MarkerBlock.ProcessingResult.PASS
+        if (lastInterestingOffset != null && lastInterestingOffset!! < pos.offset) {
+            val nextInterestingOffset = getNextInterestingOffset(pos)
+            if (nextInterestingOffset == null || nextInterestingOffset > pos.offset) {
+                return MarkerBlock.ProcessingResult.PASS
+            }
         }
         if (scheduledResult != null) {
             return scheduledResult!!

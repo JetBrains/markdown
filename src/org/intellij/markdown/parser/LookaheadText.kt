@@ -3,13 +3,13 @@ package org.intellij.markdown.parser
 import kotlin.text.Regex
 
 public class LookaheadText(public val text: String) {
-    public val startPosition: Position = Position(0, 0, 0)
+    private val lines: List<String> = text.split(Regex("\n"))
 
-    private val lines: List<String>
+    public val startPosition: Position? = if (text.isNotEmpty())
+        Position(0, -1, -1).nextPosition()
+    else
+        null
 
-    init {
-        lines = text.split(Regex("\n"))
-    }
 
     public inner class Position internal constructor(private val lineN: Int,
                                                      private val localPos: Int, // -1 if on newline before
@@ -17,6 +17,16 @@ public class LookaheadText(public val text: String) {
         init {
             assert(lineN < lines.size())
             assert(localPos >= -1 && localPos < lines.get(lineN).length())
+        }
+
+        override fun toString(): String {
+            return "Position: '${
+                if (localPos == -1) {
+                    "\\n" + currentLine
+                } else {
+                    currentLine.substring(localPos)
+                }
+            }'"
         }
 
         public val offset: Int
@@ -82,9 +92,10 @@ public class LookaheadText(public val text: String) {
             val line = currentLine
             var i = 1
             while (localPos + i < line.length()) {
-                if (line.charAt(i) != ' ' && line.charAt(i) != '\t') {
+                if (line.charAt(localPos + i) != ' ' && line.charAt(localPos + i) != '\t') {
                     return i
                 }
+                i++
             }
             return null
         }

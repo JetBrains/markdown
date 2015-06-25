@@ -29,7 +29,7 @@ public class MyRawBuilder {
                     markersStack.pop()
                 val isTopmostNode = markersStack.isEmpty()
 
-                val newNode = createASTNodeOnClosingEvent(event, currentNodeChildren, isTopmostNode)
+                val newNode = createASTNodeOnClosingEvent(event, currentNodeChildren)
 
                 if (isTopmostNode) {
                     assert(i + 1 == events.size())
@@ -59,7 +59,7 @@ public class MyRawBuilder {
         return events
     }
 
-    private fun createASTNodeOnClosingEvent(event: MyEvent, currentNodeChildren: List<MyASTNodeWrapper>, isTopmostNode: Boolean): MyASTNodeWrapper {
+    private fun createASTNodeOnClosingEvent(event: MyEvent, currentNodeChildren: List<MyASTNodeWrapper>): MyASTNodeWrapper {
         val newNode: ASTNode
 
         val type = event.info.`type`
@@ -68,22 +68,24 @@ public class MyRawBuilder {
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
 
-        addRawTokens(childrenWithWhitespaces,
-                startOffset,
-                currentNodeChildren.firstOrNull()?.startTokenIndex ?: endOffset)
+//        if (currentNodeChildren.isNotEmpty()) {
+            addRawTokens(childrenWithWhitespaces,
+                    startOffset,
+                    currentNodeChildren.firstOrNull()?.startTokenIndex ?: endOffset)
 
-        for (i in 1..currentNodeChildren.size() - 1) {
-            val prev = currentNodeChildren.get(i - 1)
-            val next = currentNodeChildren.get(i)
+            for (i in 1..currentNodeChildren.size() - 1) {
+                val prev = currentNodeChildren.get(i - 1)
+                val next = currentNodeChildren.get(i)
 
-            childrenWithWhitespaces.add(prev.astNode)
+                childrenWithWhitespaces.add(prev.astNode)
 
-            addRawTokens(childrenWithWhitespaces, prev.endTokenIndex, next.startTokenIndex)
-        }
-        if (!currentNodeChildren.isEmpty()) {
-            childrenWithWhitespaces.add(currentNodeChildren.last().astNode)
-            addRawTokens(childrenWithWhitespaces, currentNodeChildren.last().endTokenIndex, endOffset)
-        }
+                addRawTokens(childrenWithWhitespaces, prev.endTokenIndex, next.startTokenIndex)
+            }
+            if (!currentNodeChildren.isEmpty()) {
+                childrenWithWhitespaces.add(currentNodeChildren.last().astNode)
+                addRawTokens(childrenWithWhitespaces, currentNodeChildren.last().endTokenIndex, endOffset)
+            }
+//        }
 
         newNode = ASTNodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startOffset, endOffset)
