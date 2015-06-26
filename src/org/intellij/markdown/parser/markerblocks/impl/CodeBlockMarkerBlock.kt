@@ -38,8 +38,9 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
         val nextConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
         val shifted = nonemptyPos.nextPosition(1 + nextConstraints.getIndent())
         val nonWhitespace = shifted?.nextPosition(shifted.charsToNonWhitespace() ?: 0)
+            ?: return MarkerBlock.ProcessingResult.DEFAULT
 
-        if (!MarkdownParserUtil.hasCodeBlockIndent(nonemptyPos, nextConstraints)) {
+        if (!MarkdownParserUtil.hasCodeBlockIndent(nonWhitespace, nextConstraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
             realInterestingOffset = nonemptyPos.offset

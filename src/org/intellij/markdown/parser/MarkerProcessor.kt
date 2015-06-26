@@ -9,7 +9,7 @@ import java.util.ArrayList
 public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
                                                                      private val startConstraints: MarkdownConstraints) {
 
-    protected val NO_BLOCKS: Array<MarkerBlock> = arrayOf()
+    protected val NO_BLOCKS: List<MarkerBlock> = emptyList()
 
     protected val markersStack: MutableList<MarkerBlock> = ArrayList()
 
@@ -35,19 +35,19 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
     }
 
     public open fun createNewMarkerBlocks(pos: LookaheadText.Position,
-                                          productionHolder: ProductionHolder): Array<MarkerBlock> {
+                                          productionHolder: ProductionHolder): List<MarkerBlock> {
         for (provider in getMarkerBlockProviders()) {
-            val markerBlock = provider.createMarkerBlock(pos, productionHolder, stateInfo)
-            if (markerBlock != null) {
-                return arrayOf(markerBlock)
+            val list = provider.createMarkerBlocks(pos, productionHolder, stateInfo)
+            if (list.isNotEmpty()) {
+                return list
             }
         }
 
         if (!Character.isWhitespace(pos.char) && stateInfo.paragraphBlock == null) {
-            return arrayOf(ParagraphMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), interruptsParagraph))
+            return listOf(ParagraphMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), interruptsParagraph))
         }
 
-        return emptyArray()
+        return emptyList()
     }
 
     public fun processToken(pos: LookaheadText.Position): LookaheadText.Position? {

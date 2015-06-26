@@ -28,6 +28,13 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun doProcessToken(pos: LookaheadText.Position,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        val startSpaces = pos.charsToNonWhitespace()
+                ?: return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DROP, MarkerBlock.EventAction.PROPAGATE)
+
+        if (pos.nextPosition(startSpaces)?.char == '-') {
+            nodeType = MarkdownElementTypes.SETEXT_2
+        }
+
         scheduleProcessingResult(pos.nextLineOrEofOffset, MarkerBlock.ProcessingResult.DEFAULT)
         return MarkerBlock.ProcessingResult.CANCEL
     }

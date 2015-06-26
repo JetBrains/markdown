@@ -8,15 +8,15 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.BlockQuoteMarkerBlock
 
 public class BlockQuoteProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val currentConstraints = stateInfo.currentConstraints
         val nextConstraints = currentConstraints.addModifierIfNeeded(pos)
         if (nextConstraints != null && nextConstraints?.getLastType() == '>') {
-            return BlockQuoteMarkerBlock(nextConstraints, productionHolder.mark())
+            return listOf(BlockQuoteMarkerBlock(nextConstraints, productionHolder.mark()))
         } else {
-            return null
+            return emptyList()
         }
     }
 

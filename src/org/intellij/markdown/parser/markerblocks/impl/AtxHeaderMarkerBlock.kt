@@ -5,13 +5,13 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
-import org.intellij.markdown.parser.markerblocks.InlineStructureHoldingMarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
+import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
                                   headerSize: Int)
-        : InlineStructureHoldingMarkerBlock(myConstraints, productionHolder) {
+        : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
 
     private val nodeType = calcNodeType(headerSize)
 
@@ -49,8 +49,4 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ProcessingResult.CANCEL;
     }
 
-    override fun getRangesContainingInlineStructure(): Collection<Range<Int>> {
-        val endPosition = productionHolder.currentPosition
-        return listOf(startPosition + 1..endPosition)
-    }
 }

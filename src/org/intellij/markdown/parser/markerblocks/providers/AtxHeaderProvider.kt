@@ -9,15 +9,15 @@ import org.intellij.markdown.parser.markerblocks.impl.AtxHeaderMarkerBlock
 import kotlin.text.Regex
 
 public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         if (matches(pos)) {
-            return AtxHeaderMarkerBlock(stateInfo.currentConstraints,
+            return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints,
                     productionHolder,
-                    calcHeaderSize(pos))
+                    calcHeaderSize(pos)))
         } else {
-            return null
+            return emptyList()
         }
 
     }

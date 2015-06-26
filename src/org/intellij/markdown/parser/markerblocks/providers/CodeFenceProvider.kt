@@ -9,14 +9,14 @@ import org.intellij.markdown.parser.markerblocks.impl.CodeFenceMarkerBlock
 import kotlin.text.Regex
 
 public class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val fenceStart = getFenceStart(pos)
         if (fenceStart != null) {
-            return CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), fenceStart)
+            return listOf(CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), fenceStart))
         } else {
-            return null
+            return emptyList()
         }
     }
 

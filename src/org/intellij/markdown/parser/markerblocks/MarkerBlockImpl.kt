@@ -22,7 +22,10 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
     final override fun processToken(pos: LookaheadText.Position,
                               currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (lastInterestingOffset != null && lastInterestingOffset!! < pos.offset) {
+        if (lastInterestingOffset == null) {
+            return MarkerBlock.ProcessingResult.PASS
+        }
+        if (lastInterestingOffset!! < pos.offset) {
             val nextInterestingOffset = getNextInterestingOffset(pos)
             if (nextInterestingOffset == null || nextInterestingOffset > pos.offset) {
                 return MarkerBlock.ProcessingResult.PASS

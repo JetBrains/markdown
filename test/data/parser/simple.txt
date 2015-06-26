@@ -4,9 +4,9 @@ Markdown:MARKDOWN_FILE
   Markdown:WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
     Markdown:WHITE_SPACE('Some text\n    Some text\n      Some text\n    Some text\n  Some text\nSome text')
-  Markdown:WHITE_SPACE('\n\n    ')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('Some text')
+    Markdown:WHITE_SPACE('    Some text')
   Markdown:WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
     Markdown:WHITE_SPACE('Some text')

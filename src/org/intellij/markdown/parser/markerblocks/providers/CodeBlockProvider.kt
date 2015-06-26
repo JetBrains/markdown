@@ -9,17 +9,22 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.CodeBlockMarkerBlock
 
 public class CodeBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         if (stateInfo.paragraphBlock != null) {
-            return null
+            return emptyList()
         }
 
-        if (MarkdownParserUtil.hasCodeBlockIndent(pos, stateInfo.currentConstraints)) {
-            return CodeBlockMarkerBlock(stateInfo.currentConstraints, productionHolder.mark())
+        val charsToNonWhitespace = pos.charsToNonWhitespace()
+            ?: return emptyList()
+        val blockStart = pos.nextPosition(charsToNonWhitespace)
+            ?: return emptyList()
+
+        if (MarkdownParserUtil.hasCodeBlockIndent(blockStart, stateInfo.currentConstraints)) {
+            return listOf(CodeBlockMarkerBlock(stateInfo.currentConstraints, productionHolder.mark()))
         } else {
-            return null
+            return emptyList()
         }
     }
 

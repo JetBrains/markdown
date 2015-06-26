@@ -10,13 +10,13 @@ import java.util.ArrayList
 import kotlin.text.Regex
 
 public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         if (matches(pos)) {
-            return HorizontalRuleMarkerBlock(stateInfo.currentConstraints, productionHolder.mark())
+            return listOf(HorizontalRuleMarkerBlock(stateInfo.currentConstraints, productionHolder.mark()))
         } else {
-            return null
+            return emptyList()
         }
     }
 
@@ -32,12 +32,12 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     }
 
     companion object {
-        val REGEX: Regex = {
+        val REGEX: Regex = run {
             var variants = ArrayList<String>()
-            for (c in arrayOf('-', '_', '*')) {
+            for (c in arrayOf("-", "_", "\\*")) {
                 variants.add("(${c} *)(${c} *)(${c} *)+")
             }
             Regex("^ {0,3}(" + variants.join("|") + ")$")
-        }.invoke()
+        }
     }
 }

@@ -23,10 +23,10 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
             CodeBlockProvider(),
             BlockQuoteProvider(),
             ListMarkerProvider(),
-            ListItemMarkerProvider(),
             AtxHeaderProvider(),
             CodeFenceProvider(),
-            SetextHeaderProvider()
+            SetextHeaderProvider(),
+            HorizontalRuleProvider()
     )
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
@@ -56,7 +56,7 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
     }
 
     override fun createNewMarkerBlocks(pos: LookaheadText.Position,
-                                       productionHolder: ProductionHolder): Array<MarkerBlock> {
+                                       productionHolder: ProductionHolder): List<MarkerBlock> {
         if (pos.char == '\n') {
             return NO_BLOCKS
         }

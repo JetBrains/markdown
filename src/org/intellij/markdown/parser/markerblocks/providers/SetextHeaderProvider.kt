@@ -9,16 +9,16 @@ import org.intellij.markdown.parser.markerblocks.impl.SetextHeaderMarkerBlock
 import kotlin.text.Regex
 
 public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
-    override fun createMarkerBlock(pos: LookaheadText.Position,
+    override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
-                                   stateInfo: MarkerProcessor.StateInfo): MarkerBlock? {
+                                   stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         if (stateInfo.paragraphBlock != null) {
-            return null
+            return emptyList()
         }
         if (pos.offsetInCurrentLine == 0 && pos.nextLine?.matches(REGEX) == true) {
-            return SetextHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder)
+            return listOf(SetextHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder))
         } else {
-            return null
+            return emptyList()
         }
     }
 
