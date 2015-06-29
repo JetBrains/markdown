@@ -12,6 +12,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
                                   headerSize: Int)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     private val nodeType = calcNodeType(headerSize)
 

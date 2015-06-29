@@ -17,16 +17,20 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     protected var topBlockConstraints: MarkdownConstraints = startConstraints
 
-    protected abstract var stateInfo: T
+    protected abstract val stateInfo: T
 
     protected abstract fun getPrioritizedMarkerPermutation(): List<Int>
 
     protected abstract fun getMarkerBlockProviders(): List<MarkerBlockProvider<T>>
 
+    protected abstract fun updateStateInfo(pos: LookaheadText.Position)
+
+    private var nextInterestingPosForExistingMarkers: Int = -1
+
     private val interruptsParagraph: (LookaheadText.Position) -> Boolean = { position ->
         var result = false
         for (provider in getMarkerBlockProviders()) {
-            if (provider.interruptsParagraph(position)) {
+            if (provider.interruptsParagraph(position, stateInfo.currentConstraints)) {
                 result = true
                 break
             }
@@ -43,27 +47,48 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             }
         }
 
-        if (!Character.isWhitespace(pos.char) && stateInfo.paragraphBlock == null) {
+        if (!Character.isWhitespace(pos.char)
+                && stateInfo.paragraphBlock == null
+                && pos.offsetInCurrentLine >= stateInfo.nextConstraints.getIndent()) {
             return listOf(ParagraphMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), interruptsParagraph))
         }
 
         return emptyList()
     }
 
-    public fun processToken(pos: LookaheadText.Position): LookaheadText.Position? {
-        val someoneHasCancelledEvent = processMarkers(pos)
+    public fun processPosition(pos: LookaheadText.Position): LookaheadText.Position? {
+        updateStateInfo(pos)
+
+        val someoneHasCancelledEvent: Boolean
+        var shouldRecalcNextPos = false
+
+        if (pos.offset >= nextInterestingPosForExistingMarkers) {
+            someoneHasCancelledEvent = processMarkers(pos)
+            shouldRecalcNextPos = true
+        } else {
+            someoneHasCancelledEvent = false
+        }
+
         if (!someoneHasCancelledEvent) {
             val newMarkerBlocks = createNewMarkerBlocks(pos, productionHolder)
             for (newMarkerBlock in newMarkerBlocks) {
                 addNewMarkerBlock(newMarkerBlock)
+                shouldRecalcNextPos = true
             }
         }
 
-        var nextPos = calculateNextPos(pos)
-        return nextPos
+        if (shouldRecalcNextPos) {
+            nextInterestingPosForExistingMarkers = calculateNextPosForExistingMarkers(pos)
+        }
+
+        if (pos.char == '\n') {
+            return pos.nextPosition(stateInfo.nextConstraints.getIndent() + 1)
+        }
+
+        return pos.nextPosition()
     }
 
-    private fun calculateNextPos(pos: LookaheadText.Position): LookaheadText.Position? {
+    private fun calculateNextPosForExistingMarkers(pos: LookaheadText.Position): Int {
         if (cachedPermutation == null) {
             cachedPermutation = getPrioritizedMarkerPermutation()
         }
@@ -81,15 +106,15 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             }
         }
         return if (result == null)
-            pos.nextPosition()
+            Int.MAX_VALUE
         else
-            pos.nextPosition(result - pos.offset)
+            result
     }
 
     public fun addNewMarkerBlock(newMarkerBlock: MarkerBlock) {
         markersStack.add(newMarkerBlock)
-        topBlockConstraints = newMarkerBlock.getBlockConstraints()
         cachedPermutation = null
+        relaxTopConstraints()
     }
 
     public fun flushMarkers() {
@@ -112,7 +137,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
                 }
 
                 val markerBlock = markersStack.get(index)
-                val processingResult = markerBlock.processToken(pos, topBlockConstraints)
+                val processingResult = markerBlock.processToken(pos, stateInfo.currentConstraints)
                 if (processingResult == MarkerBlock.ProcessingResult.PASS) {
                     continue
                 }
@@ -129,11 +154,6 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             // Stack was changed
             if (cachedPermutation == null || markersStack.size() != cachedPermutation!!.size()) {
                 cachedPermutation = null
-                //noinspection ConstantConditions
-                topBlockConstraints = if (markersStack.isEmpty())
-                    startConstraints
-                else
-                    markersStack.last().getBlockConstraints()
             }
         }
 
@@ -145,6 +165,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         // process self
         if (markerBlock.acceptAction(processingResult.selfAction)) {
             markersStack.remove(index)
+            relaxTopConstraints()
         }
     }
 
@@ -158,11 +179,19 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
                 markersStack.remove(latterIndex)
                 --latterIndex
             }
+            relaxTopConstraints()
         }
     }
 
+    private fun relaxTopConstraints() {
+        topBlockConstraints = if (markersStack.isEmpty())
+            startConstraints
+        else
+            markersStack.last().getBlockConstraints()
+    }
+
     public open data class StateInfo(public val currentConstraints: MarkdownConstraints,
-                                     public val newConstraints: MarkdownConstraints,
+                                     public val nextConstraints: MarkdownConstraints,
                                      private val markersStack: List<MarkerBlock>) {
 
         public val paragraphBlock: ParagraphMarkerBlock?

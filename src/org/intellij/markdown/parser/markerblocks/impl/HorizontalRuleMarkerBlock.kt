@@ -10,6 +10,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker)
 : MarkerBlockImpl(myConstraints, marker) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
     }
@@ -22,7 +24,7 @@ public class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marke
     }
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        return pos.nextLineOffset
+        return pos.offset + 1
     }
 
     override fun getDefaultNodeType(): IElementType {

@@ -11,6 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
                                  marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
@@ -23,7 +24,7 @@ public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         assert(pos.char == '\n')
 
-        val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos)
+        val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints)
         if (eolN >= 3) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

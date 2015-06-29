@@ -18,11 +18,12 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
 
         val textHolder = LookaheadText(text)
         var pos: LookaheadText.Position? = textHolder.startPosition
-        productionHolder.updatePosition(pos?.offset ?: text.length())
         while (pos != null) {
-            pos = markerProcessor.processToken(pos)
-            productionHolder.updatePosition(pos?.offset ?: text.length())
+            productionHolder.updatePosition(pos.offset)
+            pos = markerProcessor.processPosition(pos)
         }
+
+        productionHolder.updatePosition(text.length())
         markerProcessor.flushMarkers()
 
         rootMarker.done(root)

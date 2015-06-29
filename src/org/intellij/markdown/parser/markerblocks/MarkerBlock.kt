@@ -9,6 +9,8 @@ public interface MarkerBlock {
 
     public fun getNextInterestingOffset(pos: LookaheadText.Position): Int?
 
+    public fun isInterestingOffset(pos: LookaheadText.Position): Boolean
+
     public fun processToken(pos: LookaheadText.Position,
                             currentConstraints: MarkdownConstraints): ProcessingResult
 

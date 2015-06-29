@@ -1,37 +1,37 @@
 package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker)
+: MarkerBlockImpl(myConstraints, marker) {
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
-
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        return pos.nextLineOffset
-    }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
     }
 
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        assert(pos.char == '\n')
-
-        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
-        // That means nextLineConstraints are "shorter" so our blockquote char is absent
-        if (!nextLineConstraints.extendsPrev(constraints)) {
+        if (pos.offsetInCurrentLine != -1) {
+            return MarkerBlock.ProcessingResult.CANCEL
+        }
+        if (MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
+        return MarkerBlock.ProcessingResult.CANCEL
+    }
 
-        return MarkerBlock.ProcessingResult.PASS
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+        return pos.offset + 1
     }
 
     override fun getDefaultNodeType(): IElementType {
-        return MarkdownElementTypes.BLOCK_QUOTE
+        return MarkdownTokenTypes.HTML_BLOCK
     }
 }

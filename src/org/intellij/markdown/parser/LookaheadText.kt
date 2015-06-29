@@ -29,6 +29,9 @@ public class LookaheadText(public val text: String) {
             }'"
         }
 
+        public val textFromPosition: CharSequence
+            get() = text.subSequence(globalPos, text.length())
+
         public val offset: Int
             get() = globalPos
 
@@ -90,9 +93,9 @@ public class LookaheadText(public val text: String) {
 
         public fun charsToNonWhitespace(): Int? {
             val line = currentLine
-            var i = 1
+            var i = 0
             while (localPos + i < line.length()) {
-                if (line.charAt(localPos + i) != ' ' && line.charAt(localPos + i) != '\t') {
+                if (localPos + i >= 0 && line.charAt(localPos + i) != ' ' && line.charAt(localPos + i) != '\t') {
                     return i
                 }
                 i++

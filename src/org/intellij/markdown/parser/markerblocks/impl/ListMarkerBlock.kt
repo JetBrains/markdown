@@ -13,6 +13,7 @@ public class ListMarkerBlock(myConstraints: MarkdownConstraints,
                              marker: ProductionHolder.Marker,
                              private val listType: Char)
     : MarkerBlockImpl(myConstraints, marker) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
@@ -26,7 +27,7 @@ public class ListMarkerBlock(myConstraints: MarkdownConstraints,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         assert(pos.char == '\n')
 
-        val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos)
+        val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints)
         if (eolN >= 3) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
@@ -42,7 +43,7 @@ public class ListMarkerBlock(myConstraints: MarkdownConstraints,
     }
 
     override fun getDefaultNodeType(): IElementType {
-        return if (listType == '-' || listType == '*')
+        return if (listType == '-' || listType == '*' || listType == '+')
             MarkdownElementTypes.UNORDERED_LIST
         else
             MarkdownElementTypes.ORDERED_LIST

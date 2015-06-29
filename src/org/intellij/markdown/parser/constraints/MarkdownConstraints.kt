@@ -102,7 +102,8 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
             return MarkdownConstraints(this, spacesBefore + marker.length() + spacesAfter, getMarkerType(marker), true)
         }
         if (spacesAfter >= 5 && offset < line.length() // 2. Starts with an indented code
-                || offset == line.length()) {          // 3. Starts with an empty string
+                || offset == line.length()) {
+            // 3. Starts with an empty string
             return MarkdownConstraints(this, spacesBefore + marker.length() + 1, getMarkerType(marker), true)
         }
 
@@ -166,31 +167,56 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
 
             while (true) {
                 val offset = result.getIndent()
-                // TODO delta
-                result = result.addModifierIfNeeded(pos.nextPosition(offset))
+                result = result.addModifierIfNeeded(pos.nextPosition(1 + offset))
                         ?: break
             }
 
             return result
         }
 
-        private fun fillFromPrevious(line: String,
-                                     startOffset: Int,
-                                     prevLineConstraints: MarkdownConstraints,
-                                     base: MarkdownConstraints): MarkdownConstraints {
-            var offset = startOffset
-            var result = base
+        public fun fillFromPrevious(line: String,
+                                    startOffset: Int,
+                                    prevLineConstraints: MarkdownConstraints,
+                                    base: MarkdownConstraints): MarkdownConstraints {
+
             val prevN = prevLineConstraints.indents.size()
             var indexPrev = 0
-            while (indexPrev < prevN) {
-                var maxSpaces = 0
 
-                while (indexPrev < prevN) {
-                    if (prevLineConstraints.types[indexPrev] == BQ_CHAR) {
-                        maxSpaces += 3
-                        break
-                    }
+            val getBlockQuoteIndent = { startOffset: Int ->
+                var offset = startOffset
+                var blockQuoteIndent = 0
 
+                while (blockQuoteIndent < 3 && offset < line.length() && line[offset] == ' ') {
+                    blockQuoteIndent++
+                    offset++
+                }
+
+                if (offset < line.length() && line[offset] == BQ_CHAR) {
+                    blockQuoteIndent + 1
+                } else {
+                    null
+                }
+            }
+
+            val fillMaybeBlockquoteAndListIndents = fun(constraints: MarkdownConstraints): MarkdownConstraints {
+                if (indexPrev >= prevN) {
+                    return constraints
+                }
+
+                var offset = startOffset + constraints.getIndent()
+
+                val bqIndent: Int?
+                if (prevLineConstraints.types[indexPrev] == BQ_CHAR) {
+                    bqIndent = getBlockQuoteIndent(offset)
+                        ?: return constraints
+                    offset += bqIndent
+                    indexPrev++
+                } else {
+                    bqIndent = null
+                }
+
+                val oldIndexPrev = indexPrev
+                while (indexPrev < prevN && prevLineConstraints.types[indexPrev] != BQ_CHAR) {
                     val deltaIndent = prevLineConstraints.indents[indexPrev] -
                             if (indexPrev == 0)
                                 0
@@ -198,45 +224,48 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                                 prevLineConstraints.indents[indexPrev - 1]
 
                     var deltaRemaining = deltaIndent
-                    while (deltaRemaining > 0 && offset < line.length() && line.charAt(offset) == ' ') {
+                    while (deltaRemaining > 0 && offset < line.length() && line[offset] == ' ') {
                         offset++;
                         deltaRemaining--
                     }
-                    if (deltaRemaining > 0 && offset < line.length()) {
+                    if (deltaRemaining > 0) {
                         break
                     }
-                    result = MarkdownConstraints(result, deltaIndent, prevLineConstraints.types[indexPrev], false)
 
                     indexPrev++
                 }
 
-                if (indexPrev >= prevN || prevLineConstraints.types[indexPrev] != BQ_CHAR) {
-                    break
+                var result = constraints
+                if (bqIndent != null) {
+                    val bonusForTheBlockquote = if (offset < line.length() && line[offset] == ' ')
+                        1
+                    else
+                        0
+                    result = MarkdownConstraints(result, bqIndent + bonusForTheBlockquote, BQ_CHAR, true)
                 }
-
-                var spacesEaten = 0
-                while (spacesEaten < maxSpaces && offset < line.length() && line.charAt(offset) == ' ') {
-                    spacesEaten++
-                    offset++
+                for (index in oldIndexPrev..indexPrev - 1) {
+                    val deltaIndent = prevLineConstraints.indents[index] -
+                            if (index == 0)
+                                0
+                            else
+                                prevLineConstraints.indents[index - 1]
+                    result = MarkdownConstraints(result, deltaIndent, prevLineConstraints.types[index], false)
                 }
-
-                if (spacesEaten == maxSpaces && offset < line.length() && line.charAt(offset) == ' ') {
-                    indexPrev = Int.MAX_VALUE
-                }
-
-                if (line.charAt(offset) == BQ_CHAR) {
-                    indexPrev++
-                    offset++
-                    result = MarkdownConstraints(result, spacesEaten + 1, BQ_CHAR, true)
-                } else {
-                    indexPrev = Int.MAX_VALUE
-                }
+                return result
             }
-            return result
+
+            var result = base
+            while (true) {
+                val nextConstraints = fillMaybeBlockquoteAndListIndents(result)
+                if (nextConstraints == result) {
+                    return result
+                }
+                result = nextConstraints
+            }
         }
 
         private fun fetchListMarker(pos: LookaheadText.Position): CharSequence? {
-            if (pos.char == '*' || pos.char == '-') {
+            if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
                 return pos.char.toString()
             }
 
@@ -245,7 +274,9 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
             while (offset < line.length() && line[offset] in '0'..'9') {
                 offset++
             }
-            if (offset < line.length() && (line[offset] == '.' || line[offset] == ')')) {
+            if (offset > pos.offsetInCurrentLine
+                    && offset < line.length()
+                    && (line[offset] == '.' || line[offset] == ')')) {
                 return line.subSequence(pos.offsetInCurrentLine, offset + 1)
             } else {
                 return null

@@ -3,6 +3,7 @@ package org.intellij.markdown.parser.markerblocks.providers
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.SetextHeaderMarkerBlock
@@ -22,11 +23,11 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
         }
     }
 
-    override fun interruptsParagraph(pos: LookaheadText.Position): Boolean {
+    override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         return false
     }
 
     companion object {
-        val REGEX: Regex = Regex("^(\\-+|=+) *$")
+        val REGEX: Regex = Regex("^ {0,3}(\\-+|=+) *$")
     }
 }

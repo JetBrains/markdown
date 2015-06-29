@@ -1,104 +1,70 @@
 Markdown:MARKDOWN_FILE
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('* ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('First item')
-    Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('First item')
+    Markdown:WHITE_SPACE('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('* ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('second item')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('second item')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
-    Markdown:TEXT('And there')
-    Markdown::(':')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+    Markdown:WHITE_SPACE('And there:')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('- ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('First item')
-    Markdown:EOL('\n')
-    Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('First item')
+    Markdown:WHITE_SPACE('\n\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('- ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('Second Item')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('Second Item')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
-    Markdown:TEXT('And here')
-    Markdown::(':')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+    Markdown:WHITE_SPACE('And here:')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('+')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('+ ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('First item')
-    Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('First item')
+    Markdown:WHITE_SPACE('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('+')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('+ ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('Second Item')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+        Markdown:WHITE_SPACE('Second Item')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
-    Markdown:TEXT('And nested ones?')
-  Markdown:EOL('\n')
-  Markdown:EOL('\n')
+    Markdown:WHITE_SPACE('And nested ones?')
+  Markdown:WHITE_SPACE('\n\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('* ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('First item')
-      Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+        Markdown:WHITE_SPACE('First item')
+      Markdown:WHITE_SPACE('\n    ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('+')
-          WHITE_SPACE(' ')
+          Markdown:WHITE_SPACE('+ ')
           Markdown:PARAGRAPH
-            Markdown:TEXT('An Item')
-        Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+            Markdown:WHITE_SPACE('An Item')
+        Markdown:WHITE_SPACE('\n    ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('+')
-          WHITE_SPACE(' ')
+          Markdown:WHITE_SPACE('+ ')
           Markdown:PARAGRAPH
-            Markdown:TEXT('An Item')
-    Markdown:EOL('\n')
+            Markdown:WHITE_SPACE('An Item')
+    Markdown:WHITE_SPACE('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:WHITE_SPACE('* ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('Second item')
-        Markdown:EOL('\n')
-        WHITE_SPACE('    ')
-        Markdown:TEXT('One may note that this is not a code anymore,')
-      Markdown:EOL('\n')
-      Markdown:EOL('\n')
-      WHITE_SPACE('        ')
+        Markdown:WHITE_SPACE('Second item\n    One may note that this is not a code anymore,')
+      Markdown:WHITE_SPACE('\n\n  ')
       Markdown:CODE_BLOCK
-        Markdown:CODE('But this is still verbatim because of the indent of 8')
-        Markdown:EOL('\n')
-        Markdown:EOL('\n')
-        WHITE_SPACE('        ')
-        Markdown:CODE('And after this EOL it is still a `code`')
-        Markdown:EOL('\n')
-      Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+        Markdown:WHITE_SPACE('      But this is still verbatim because of the indent of 8\n\n        And after this EOL it is still a `code`')
+      Markdown:WHITE_SPACE('\n\n    ')
       Markdown:PARAGRAPH
-        Markdown:TEXT('But this is not,')
-        WHITE_SPACE(' ')
-        Markdown:TEXT('I suppose.')
+        Markdown:WHITE_SPACE('But this is not, I suppose.')

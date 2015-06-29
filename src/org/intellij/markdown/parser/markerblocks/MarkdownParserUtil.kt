@@ -5,12 +5,21 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 public object MarkdownParserUtil {
 
-    public fun calcNumberOfConsequentEols(pos: LookaheadText.Position): Int {
+    public fun calcNumberOfConsequentEols(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int {
         assert(pos.char == '\n')
 
         var currentPos = pos;
         var result = 1
-        while (currentPos.charsToNonWhitespace() == null) {
+
+        val isClearLine: (LookaheadText.Position) -> Boolean = { pos ->
+            val currentConstraints = MarkdownConstraints.fromBase(pos, constraints)
+
+            currentConstraints.upstreamWith(constraints) && (
+                    currentConstraints.getIndent() >= pos.currentLine.length() ||
+                    pos.nextPosition(1 + currentConstraints.getIndent())?.charsToNonWhitespace() == null)
+        }
+
+        while (isClearLine(currentPos)) {
             currentPos = currentPos.nextLinePosition()
                     ?: break
 

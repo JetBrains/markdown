@@ -3,6 +3,7 @@ package org.intellij.markdown.parser.markerblocks.providers
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ListItemMarkerBlock
@@ -14,8 +15,15 @@ public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
 
+        if (Character.isWhitespace(pos.char)) {
+            return emptyList()
+        }
+        if (pos.offsetInCurrentLine != 0 && !Character.isWhitespace(pos.currentLine[pos.offsetInCurrentLine - 1])) {
+            return emptyList()
+        }
+
         val currentConstraints = stateInfo.currentConstraints
-        val nextConstraints = stateInfo.newConstraints
+        val nextConstraints = stateInfo.nextConstraints
         if (nextConstraints != currentConstraints
                 && nextConstraints.getLastType() != '>' && nextConstraints.getLastExplicit() == true) {
 
@@ -30,7 +38,7 @@ public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         }
     }
 
-    override fun interruptsParagraph(pos: LookaheadText.Position): Boolean {
+    override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         // Actually, list item interrupts a paragraph, but we have MarkdownConstraints for these cases
         return false
     }

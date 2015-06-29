@@ -11,9 +11,10 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                      productionHolder: ProductionHolder)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        return pos.nextLineOffset
+        return pos.offset + 1
     }
 
     private var nodeType: IElementType = MarkdownElementTypes.SETEXT_1
@@ -23,11 +24,15 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
     }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
-        return MarkerBlock.ClosingAction.DROP
+        return MarkerBlock.ClosingAction.DONE
     }
 
     override fun doProcessToken(pos: LookaheadText.Position,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+        if (pos.char != '\n') {
+            return MarkerBlock.ProcessingResult.CANCEL
+        }
+
         val startSpaces = pos.charsToNonWhitespace()
                 ?: return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DROP, MarkerBlock.EventAction.PROPAGATE)
 

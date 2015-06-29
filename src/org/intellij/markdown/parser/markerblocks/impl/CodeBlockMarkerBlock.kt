@@ -10,6 +10,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
+
     private var realInterestingOffset = -1
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {

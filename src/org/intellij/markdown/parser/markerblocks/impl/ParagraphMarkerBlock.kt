@@ -13,6 +13,7 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
                                   marker: ProductionHolder.Marker,
                                   val interruptsParagraph: (LookaheadText.Position) -> Boolean)
         : MarkerBlockImpl(constraints, marker) {
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
@@ -31,7 +32,7 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
 
         assert(pos.char == '\n')
 
-        if (MarkdownParserUtil.calcNumberOfConsequentEols(pos) >= 2) {
+        if (MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 

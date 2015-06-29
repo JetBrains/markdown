@@ -26,7 +26,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
             AtxHeaderProvider(),
             CodeFenceProvider(),
             SetextHeaderProvider(),
-            HorizontalRuleProvider()
+            HorizontalRuleProvider(),
+            HtmlBlockProvider()
     )
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {
@@ -55,14 +56,23 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
         return markerBlockProviders
     }
 
+    override fun updateStateInfo(pos: LookaheadText.Position) {
+        if (pos.char == '\n') {
+            stateInfo = MarkerProcessor.StateInfo(MarkdownConstraints.BASE,
+                    MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, topBlockConstraints, MarkdownConstraints.BASE),
+                    markersStack)
+        } else if (pos.offsetInCurrentLine == stateInfo.nextConstraints.getIndent()) {
+            stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
+                    stateInfo.nextConstraints.addModifierIfNeeded(pos) ?: stateInfo.nextConstraints,
+                    markersStack)
+        }
+    }
+
     override fun createNewMarkerBlocks(pos: LookaheadText.Position,
                                        productionHolder: ProductionHolder): List<MarkerBlock> {
         if (pos.char == '\n') {
             return NO_BLOCKS
         }
-        stateInfo = MarkerProcessor.StateInfo(topBlockConstraints,
-                topBlockConstraints.addModifierIfNeeded(pos) ?: topBlockConstraints,
-                markersStack)
 
         return super.createNewMarkerBlocks(pos, productionHolder)
     }
