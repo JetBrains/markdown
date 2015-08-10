@@ -1,4 +1,4 @@
-package org.intellij.markdown.parser
+package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
 

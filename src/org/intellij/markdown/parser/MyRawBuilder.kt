@@ -9,7 +9,7 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.Stack
 
-public class MyRawBuilder {
+public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
 
     public fun buildTree(production: List<SequentialParser.Node>): ASTNode {
         val events = constructEvents(production)
@@ -68,7 +68,7 @@ public class MyRawBuilder {
         val endOffset = event.info.range.end
 
         if (type is MarkdownElementType && type.isToken) {
-            return MyASTNodeWrapper(ASTNodeBuilder.createLeafNode(type, startOffset, endOffset), startOffset, endOffset)
+            return MyASTNodeWrapper(nodeBuilder.createLeafNode(type, startOffset, endOffset), startOffset, endOffset)
         }
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
@@ -92,14 +92,14 @@ public class MyRawBuilder {
             }
 //        }
 
-        newNode = ASTNodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
+        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startOffset, endOffset)
     }
 
     private fun addRawTokens(childrenWithWhitespaces: MutableList<ASTNode>, from: Int, to: Int) {
         // Let's for now assume that it's just whitespace
         if (from != to) {
-            childrenWithWhitespaces.add(ASTNodeBuilder.createLeafNode(MarkdownTokenTypes.WHITE_SPACE, from, to))
+            childrenWithWhitespaces.add(nodeBuilder.createLeafNode(MarkdownTokenTypes.WHITE_SPACE, from, to))
         }
     }
 

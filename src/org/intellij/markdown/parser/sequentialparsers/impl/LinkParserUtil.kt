@@ -3,9 +3,9 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.TokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
+import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.ArrayList
 
 public class LinkParserUtil {

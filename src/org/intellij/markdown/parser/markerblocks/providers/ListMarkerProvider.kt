@@ -15,17 +15,23 @@ public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
 
-        if (Character.isWhitespace(pos.char)) {
-            return emptyList()
-        }
-        if (pos.offsetInCurrentLine != 0 && !Character.isWhitespace(pos.currentLine[pos.offsetInCurrentLine - 1])) {
-            return emptyList()
-        }
+//        if (Character.isWhitespace(pos.char)) {
+//            return emptyList()
+//        }
+//        if (pos.offsetInCurrentLine != 0 && !Character.isWhitespace(pos.currentLine[pos.offsetInCurrentLine - 1])) {
+//            return emptyList()
+//        }
 
         val currentConstraints = stateInfo.currentConstraints
         val nextConstraints = stateInfo.nextConstraints
+
+        if (pos.offsetInCurrentLine != currentConstraints.getIndent()) {
+            return emptyList()
+        }
         if (nextConstraints != currentConstraints
                 && nextConstraints.getLastType() != '>' && nextConstraints.getLastExplicit() == true) {
+
+            MarkerBlockProvider.addTokenFromConstraints(productionHolder, pos, currentConstraints, nextConstraints)
 
             val result = ArrayList<MarkerBlock>()
             if (stateInfo.lastBlock !is ListMarkerBlock) {

@@ -1,7 +1,6 @@
 package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.TokensCache
 import java.util.ArrayList
 
 public class SequentialParserUtil {

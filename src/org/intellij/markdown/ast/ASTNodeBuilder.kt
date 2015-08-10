@@ -5,12 +5,12 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 
-public object ASTNodeBuilder {
-    public fun createLeafNode(type: IElementType, startOffset: Int, endOffset: Int): LeafASTNode {
+public open class ASTNodeBuilder {
+    public open fun createLeafNode(type: IElementType, startOffset: Int, endOffset: Int): ASTNode {
         return LeafASTNode(type, startOffset, endOffset)
     }
 
-    public fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
+    public open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
         when (type) {
             MarkdownElementTypes.UNORDERED_LIST,
             MarkdownElementTypes.ORDERED_LIST -> {

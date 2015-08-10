@@ -3,11 +3,12 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Stack
 
-public class MyBuilder {
+public class MyBuilder(private val nodeBuilder: ASTNodeBuilder) {
 
     public fun buildTree(production: List<SequentialParser.Node>, tokensCache: TokensCache): ASTNode {
         val events = constructEvents(production)
@@ -52,7 +53,7 @@ public class MyBuilder {
     private fun flushOneTokenToTree(tokensCache: TokensCache, markersStack: Stack<MutableList<MyASTNodeWrapper>>, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val node = ASTNodeBuilder.createLeafNode(iterator.type!!, iterator.start, iterator.end)
+        val node = nodeBuilder.createLeafNode(iterator.type!!, iterator.start, iterator.end)
         markersStack.peek().add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
     }
 
@@ -99,7 +100,7 @@ public class MyBuilder {
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
-        newNode = ASTNodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
+        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 
@@ -111,7 +112,7 @@ public class MyBuilder {
         }
         while (rawIdx != 0) {
             val rawType = iterator.rawLookup(rawIdx)!!
-            childrenWithWhitespaces.add(ASTNodeBuilder.createLeafNode(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
+            childrenWithWhitespaces.add(nodeBuilder.createLeafNode(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
             rawIdx -= dx
         }
     }

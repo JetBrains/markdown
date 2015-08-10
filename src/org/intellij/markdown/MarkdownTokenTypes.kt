@@ -14,7 +14,7 @@ public interface MarkdownTokenTypes {
         public val SINGLE_QUOTE: IElementType = MarkdownElementType("'", true)
         public val DOUBLE_QUOTE: IElementType = MarkdownElementType("\"", true)
         public val LPAREN: IElementType = MarkdownElementType("(", true)
-        public val RPAREN: IElementType = MarkdownElementType(", true)", true)
+        public val RPAREN: IElementType = MarkdownElementType(")", true)
         public val LBRACKET: IElementType = MarkdownElementType("[", true)
         public val RBRACKET: IElementType = MarkdownElementType("]", true)
         public val LT: IElementType = MarkdownElementType("<", true)
@@ -53,6 +53,11 @@ public interface MarkdownTokenTypes {
         public val HTML_TAG: IElementType = MarkdownElementType("HTML_TAG", true)
 
         public val BAD_CHARACTER: IElementType = MarkdownElementType("BAD_CHARACTER", true)
-        public val WHITE_SPACE: IElementType = MarkdownElementType("WHITE_SPACE", true)
+        public val WHITE_SPACE: IElementType = object : MarkdownElementType("WHITE_SPACE", true) {
+            override fun toString(): String {
+                return "WHITE_SPACE";
+            }
+        }
+
     }
 }

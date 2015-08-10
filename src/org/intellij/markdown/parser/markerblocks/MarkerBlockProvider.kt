@@ -1,9 +1,11 @@
 package org.intellij.markdown.parser.markerblocks
 
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
     fun createMarkerBlocks(pos: LookaheadText.Position,
@@ -11,4 +13,24 @@ public interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
                            stateInfo: T): List<MarkerBlock>
 
     fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean
+
+    companion object {
+        public fun addTokenFromConstraints(proH: ProductionHolder,
+                                           pos: LookaheadText.Position,
+                                           oldC: MarkdownConstraints,
+                                           newC: MarkdownConstraints) {
+            val startOffset = pos.offset - pos.offsetInCurrentLine + oldC.getIndent()
+            val endOffset = pos.offset - pos.offsetInCurrentLine + newC.getIndent()
+
+            val type = when (newC.getLastType()) {
+                '>' ->
+                    MarkdownTokenTypes.BLOCK_QUOTE
+                '.', ')' ->
+                    MarkdownTokenTypes.LIST_NUMBER
+                else ->
+                    MarkdownTokenTypes.LIST_BULLET
+            }
+            proH.addProduction(listOf(SequentialParser.Node(startOffset..endOffset, type)))
+        }
+    }
 }

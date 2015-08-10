@@ -12,13 +12,17 @@ public class BlockQuoteProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        if (Character.isWhitespace(pos.char)) {
-            return emptyList()
-        }
+//        if (Character.isWhitespace(pos.char)) {
+//            return emptyList()
+//        }
 
         val currentConstraints = stateInfo.currentConstraints
         val nextConstraints = stateInfo.nextConstraints
+        if (pos.offsetInCurrentLine != currentConstraints.getIndent()) {
+            return emptyList()
+        }
         if (nextConstraints != currentConstraints && nextConstraints.getLastType() == '>') {
+            MarkerBlockProvider.addTokenFromConstraints(productionHolder, pos, currentConstraints, nextConstraints)
             return listOf(BlockQuoteMarkerBlock(nextConstraints, productionHolder.mark()))
         } else {
             return emptyList()
