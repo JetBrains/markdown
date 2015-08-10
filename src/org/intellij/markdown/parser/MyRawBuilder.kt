@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
@@ -65,6 +66,10 @@ public class MyRawBuilder {
         val type = event.info.`type`
         val startOffset = event.info.range.start
         val endOffset = event.info.range.end
+
+        if (type is MarkdownElementType && type.isToken) {
+            return MyASTNodeWrapper(ASTNodeBuilder.createLeafNode(type, startOffset, endOffset), startOffset, endOffset)
+        }
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
 
