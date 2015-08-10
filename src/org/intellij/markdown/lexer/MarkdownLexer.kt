@@ -1,13 +1,13 @@
 package org.intellij.markdown.lexer
 
 import org.intellij.markdown.IElementType
-
+import org.intellij.markdown.MarkdownTokenTypes
 import java.io.IOException
 import java.io.Reader
 
-import org.intellij.markdown.MarkdownTokenTypes
-
-public class MarkdownLexer(public val originalText: String) {
+public class MarkdownLexer(public val originalText: CharSequence,
+                           private val bufferStart: Int = 0,
+                           private val bufferEnd: Int = originalText.length()) {
 
     private val baseLexer: _MarkdownLexer
 
@@ -22,20 +22,16 @@ public class MarkdownLexer(public val originalText: String) {
 
     init {
         baseLexer = _MarkdownLexer(null : Reader?)
-        baseLexer.reset(originalText, 0, originalText.length(), 0)
+        baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
 
-        init()
-    }
-
-    public fun advance(): Boolean {
-        return locateToken()
-    }
-
-    private fun init() {
         type = advanceBase()
         tokenStart = baseLexer.getTokenStart()
 
         calcNextType()
+    }
+
+    public fun advance(): Boolean {
+        return locateToken()
     }
 
     private fun locateToken(): Boolean {
