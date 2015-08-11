@@ -48,7 +48,7 @@ public class HtmlGeneratorTest : TestCase() {
 
     companion object {
         public fun formatHtmlForTests(html: String): String {
-            val tags = Regex("</?[a-zA-Z1-6]+>")
+            val tags = Regex("</?[^>]+>")
 
             val split = tags.replace(html as CharSequence, { matchResult ->
                 val next = matchResult.next()
