@@ -18,22 +18,6 @@ public class HtmlGeneratorTest : TestCase() {
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
     }
 
-    private fun formatHtmlForTests(html: String): String {
-        val tags = Regex("</?[a-zA-Z1-6]+>")
-
-        val split = tags.replace(html as CharSequence, { matchResult ->
-            val next = matchResult.next()
-            if (html.charAt(matchResult.range.start + 1) != '/'
-                    && next != null
-                    && html.charAt(next.range.start + 1) == '/') {
-                matchResult.value
-            } else {
-                matchResult.value + "\n"
-            }
-        })
-        return split
-    }
-
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/test/data/html").getAbsolutePath();
     }
@@ -60,5 +44,24 @@ public class HtmlGeneratorTest : TestCase() {
 
     public fun testHeaders() {
         defaultTest()
+    }
+
+    companion object {
+        public fun formatHtmlForTests(html: String): String {
+            val tags = Regex("</?[a-zA-Z1-6]+>")
+
+            val split = tags.replace(html as CharSequence, { matchResult ->
+                val next = matchResult.next()
+                if (html.charAt(matchResult.range.start + 1) != '/'
+                        && next != null
+                        && html.charAt(next.range.start + 1) == '/') {
+                    matchResult.value
+                } else {
+                    matchResult.value + "\n"
+                }
+            })
+            return split
+        }
+
     }
 }
