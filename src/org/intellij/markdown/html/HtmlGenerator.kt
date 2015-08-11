@@ -233,6 +233,13 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                         }
                     },
 
+                    MarkdownTokenTypes.HORIZONTAL_RULE to object : GeneratingProvider {
+                        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                            visitor.consumeHtml("<hr />")
+                        }
+
+                    },
+
                     MarkdownElementTypes.PARAGRAPH to SimpleInlineTagProvider("p"),
                     MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
                     MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
