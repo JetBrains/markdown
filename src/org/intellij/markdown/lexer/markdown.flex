@@ -13,7 +13,6 @@ import java.util.Stack;
 %class _MarkdownLexer
 %unicode
 %public
-%column
 
 %function advance
 %type IElementType
@@ -21,17 +20,10 @@ import java.util.Stack;
 %{
   private static class Token implements MarkdownTokenTypes {}
 
-  private int yycolumn = 0;
-
   private Stack<Integer> stateStack = new Stack<Integer>();
 
   private boolean isHeader = false;
 
-  private int currentIndent = 0;
-
-  private Paragraph paragraph = new Paragraph();
-  private BlockQuotes blockQuotes = new BlockQuotes();
-  private CodeFence codeFence = new CodeFence();
   private ParseDelimited parseDelimited = new ParseDelimited();
 
   private static class ParseDelimited {
@@ -40,40 +32,9 @@ import java.util.Stack;
     boolean inlinesAllowed = true;
   }
 
-  private static class Paragraph {
-    boolean currentLineIsNotBlank = false;
-    int lineCount = 0;
-  }
-
-  private static class BlockQuotes {
-    int level = 0;
-    int currentLineLevel = 0;
-
-    void processMarker() {
-      currentLineLevel++;
-      adjustLevel();
-    }
-
-    void adjustLevel() {
-      level = Math.max(level, currentLineLevel);
-    }
-
-    void resetLevel() {
-      level = 0;
-    }
-  }
-
   private static class LinkDef {
     boolean wasUrl;
     boolean wasParen;
-  }
-
-  private static class CodeFence {
-    char fenceChar;
-    int fenceLength;
-    boolean typeWasRead;
-    // for code span
-    int spanLength;
   }
 
   private static class HtmlHelper {
@@ -127,39 +88,7 @@ import java.util.Stack;
     return getDelimiterTokenType(first);
   }
 
-  private void increaseIndent(int delta) {
-    currentIndent = Math.max(currentIndent, (yycolumn & 0xffffc) + delta);
-  }
-
-  private void recalcIndent() {
-    int newIndent = yylength() - 1;
-    if (newIndent < currentIndent) {
-      currentIndent = newIndent & 0xfffc;
-    }
-  }
-
-  private boolean isFourIndent() {
-    return yycolumn >= currentIndent + 2 * blockQuotes.level + 4;
-  }
-
-  private void updateParagraphInfoOnNewline() {
-    if (paragraph.currentLineIsNotBlank) {
-      paragraph.lineCount++;
-      paragraph.currentLineIsNotBlank = false;
-    }
-    else {
-      endParagraph();
-      blockQuotes.resetLevel();
-    }
-  }
-
-  private void endParagraph() {
-    paragraph.lineCount = 0;
-  }
-
   private void processEol() {
-    updateParagraphInfoOnNewline();
-
     int newlinePos = 1;
     while (newlinePos < yylength() && yycharat(newlinePos) != '\n') {
       newlinePos++;
@@ -171,12 +100,10 @@ import java.util.Stack;
       return;
     }
 
-    recalcIndent();
     yybegin(YYINITIAL);
     yypushback(yylength() - 1);
 
     isHeader = false;
-    blockQuotes.currentLineLevel = 0;
   }
 
   private void popState() {
@@ -258,128 +185,20 @@ SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
-%state HTML_BLOCK, TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE, CODE_FENCE
+%state HTML_BLOCK, TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 
 %%
 
 
 
 <YYINITIAL> {
-  {TAG_START} | {TAG_END} {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else {
-      String tagName = getTagName();
-      if (isBlockTag(tagName)) {
-        endParagraph();
-        yybegin(HTML_BLOCK);
-        yypushback(yylength());
-      } else {
-        resetState();
-      }
-    }
-  }
-  {HTML_COMMENT} | {PROCESSING_INSTRUCTION} | {DECLARATION} | {CDATA} {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else {
-      endParagraph();
-      yybegin(HTML_BLOCK);
-      yypushback(yylength());
-    }
-  }
-
-  {WHITE_SPACE}+ {
-    if (paragraph.lineCount == 0 && yycolumn + yylength() >= currentIndent + 2 * blockQuotes.currentLineLevel + 4) {
-      blockQuotes.resetLevel();
-      yybegin(CODE);
-    }
-    return Token.WHITE_SPACE;
-  }
-
-  // Setext headers
-  ("="+ | "-"+) / {WHITE_SPACE}* $ {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else if (paragraph.lineCount == 1 && blockQuotes.level == blockQuotes.currentLineLevel) {
-      return yycharat(0) == '=' ? Token.SETEXT_1 : Token.SETEXT_2;
-    }
-    else if (yycharat(0) == '-' && yylength() >= 3) {
-      endParagraph();
-      return Token.HORIZONTAL_RULE;
-    }
-    else {
-      resetState();
-    }
-  }
-
-  // atx headers
-  "#"{1,6} / {WHITE_SPACE} {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else {
-      isHeader = true;
-      endParagraph();
-      yybegin(AFTER_LINE_START);
-
-      return Token.ATX_HEADER;
-    }
-  }
 
   // blockquote
   ">" {
-    blockQuotes.processMarker();
     return Token.BLOCK_QUOTE;
   }
 
-  // Horizontal rule
-  // TODO solve the problem of $ and EOL (they do not match)
-  ("*" ({WHITE_SPACE}* "*") ({WHITE_SPACE}* "*")+  | "-" ({WHITE_SPACE}* "-") ({WHITE_SPACE}* "-")+  | "___" "_"* ) {WHITE_SPACE}* $ {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else {
-      endParagraph();
-      return Token.HORIZONTAL_RULE;
-    }
-  }
-
-  // Unordered lists
-  [*+-] / {WHITE_SPACE} {
-    increaseIndent(4);
-    return Token.LIST_BULLET;
-  }
-
-  // Ordered lists
-  {DIGIT}+ ("." | ")") {
-    increaseIndent(4);
-    return Token.LIST_NUMBER;
-  }
-
-  // Code fence
-  "~~~" "~"* | "```" "`"* / [^\n\r`]* {EOL} {
-    if (isFourIndent()) {
-      resetState();
-    }
-    else {
-      endParagraph();
-
-      codeFence.fenceChar = yycharat(0);
-      codeFence.fenceLength = yylength();
-      codeFence.typeWasRead = false;
-
-      yybegin(CODE_FENCE);
-      return Token.CODE_FENCE_START;
-    }
-  }
-
-
   . {
-    paragraph.currentLineIsNotBlank = true;
     resetState();
   }
 
@@ -425,14 +244,6 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 }
 
 <AFTER_LINE_START> {
-
-  // atx header end
-  "#"+ {WHITE_SPACE}* $ {
-    if (isHeader) {
-      return Token.ATX_HEADER;
-    }
-    return Token.TEXT;
-  }
 
   {WHITE_SPACE}+ {
     return Token.WHITE_SPACE;
@@ -494,69 +305,6 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
   }
 
   {EOL} | .+ { return Token.HTML_BLOCK; }
-}
-
-<CODE> {
-  ({EOL} {WHITE_SPACE}*)+ {
-    processEol();
-    return Token.EOL;
-  }
-
-  {EOL} | . { return Token.CODE; }
-}
-
-<CODE_FENCE> {
-  ("~~~" "~"* | "```" "`"*) ([^~` \f\t\n\r]|{WHITE_SPACE}+ [^ \f\t\n\r]+) {
-    return Token.CODE;
-  }
-
-  ("~~~" "~"* | "```" "`"*) {WHITE_SPACE}* {
-    if (yycharat(0) == codeFence.fenceChar && yylength() >= codeFence.fenceLength
-        && countChars(yytext(), codeFence.fenceChar) >= codeFence.fenceLength) {
-      yybegin(YYINITIAL);
-      return Token.CODE_FENCE_END;
-    }
-    return Token.CODE;
-  }
-
-  [^ \f\t\n\r]+ {
-    if (!codeFence.typeWasRead) {
-      return Token.FENCE_LANG;
-    }
-    return Token.CODE;
-  }
-
-  {EOL} ({WHITE_SPACE}* ">")* {
-      int newLevel = countChars(yytext(), '>');
-      if (newLevel < blockQuotes.level) {
-        yypushback(yylength() - 1);
-        processEol();
-        return Token.EOL;
-      }
-
-      if (!codeFence.typeWasRead) {
-        codeFence.typeWasRead = true;
-        return Token.EOL;
-      }
-      return Token.CODE;
-  }
-
-  {EOL} ({WHITE_SPACE}{0,3} ("~~~" "~"* | "```" "`"*) {WHITE_SPACE}*)? {
-    if (yylength() > 2 && countChars(yytext(), codeFence.fenceChar) >= codeFence.fenceLength) {
-      yypushback(yylength() - 1);
-      return Token.EOL;
-    }
-
-    if (!codeFence.typeWasRead) {
-      codeFence.typeWasRead = true;
-      return Token.EOL;
-    }
-    return Token.CODE;
-  }
-
-  . {
-    return Token.CODE;
-  }
 }
 
 . { return Token.BAD_CHARACTER; }
