@@ -27,10 +27,10 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     private var nextInterestingPosForExistingMarkers: Int = -1
 
-    private val interruptsParagraph: (LookaheadText.Position) -> Boolean = { position ->
+    private val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean = { position, constraints ->
         var result = false
         for (provider in getMarkerBlockProviders()) {
-            if (provider.interruptsParagraph(position, stateInfo.currentConstraints)) {
+            if (provider.interruptsParagraph(position, constraints)) {
                 result = true
                 break
             }

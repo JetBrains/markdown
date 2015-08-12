@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
                                   marker: ProductionHolder.Marker,
-                                  val interruptsParagraph: (LookaheadText.Position) -> Boolean)
+                                  val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean)
         : MarkerBlockImpl(constraints, marker) {
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
@@ -36,13 +36,13 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        var nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
         if (!nextLineConstraints.upstreamWith(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
         val posToCheck = pos.nextPosition(1 + nextLineConstraints.getIndent())
-        if (posToCheck == null || interruptsParagraph(posToCheck)) {
+        if (posToCheck == null || interruptsParagraph(posToCheck, nextLineConstraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
