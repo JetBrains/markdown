@@ -1,33 +1,22 @@
 Markdown:MARKDOWN_FILE
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('This will be an indented code block')
+  Markdown:PARAGRAPH('This will be an indented code block')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('    <a/>\n    *hi*\n\n    - one')
+  Markdown:CODE_BLOCK('    <a/>\n    *hi*\n\n    - one')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('And this\n    is still text')
+  Markdown:PARAGRAPH('And this\n    is still text')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('so..')
+  Markdown:PARAGRAPH('so..')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('    foo')
+  Markdown:CODE_BLOCK('    foo')
   Markdown:WHITE_SPACE('\n')
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('bar')
+  Markdown:PARAGRAPH('bar')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:ATX_1
-    Markdown:WHITE_SPACE('# Header')
+  Markdown:ATX_1('# Header')
   Markdown:WHITE_SPACE('\n')
-  Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('    foo')
+  Markdown:CODE_BLOCK('    foo')
   Markdown:WHITE_SPACE('\n')
-  Markdown:SETEXT_2
-    Markdown:WHITE_SPACE('Header\n------')
+  Markdown:SETEXT_2('Header\n------')
   Markdown:WHITE_SPACE('\n')
-  Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('    foo')
+  Markdown:CODE_BLOCK('    foo')
   Markdown:WHITE_SPACE('\n')
-  Markdown:HORIZONTAL_RULE
-    Markdown:WHITE_SPACE('----')
+  Markdown:HORIZONTAL_RULE('----')

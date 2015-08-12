@@ -1,0 +1,7 @@
+Markdown:MARKDOWN_FILE
+  Markdown:HORIZONTAL_RULE('***')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('---')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('___')
+  Markdown:EOL('\n')

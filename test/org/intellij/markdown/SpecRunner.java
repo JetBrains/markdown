@@ -17,7 +17,8 @@ public class SpecRunner {
         final String htmlWithoutBody = html.substring("<body>".length(), html.length() - "</body>".length());
 
         final PrintWriter out = new PrintWriter(System.out);
-        out.write(HtmlGeneratorTest.Companion.formatHtmlForTests(htmlWithoutBody));
+//        out.write(HtmlGeneratorTest.Companion.formatHtmlForTests(htmlWithoutBody));
+        out.write(htmlWithoutBody);
         out.close();
     }
 }

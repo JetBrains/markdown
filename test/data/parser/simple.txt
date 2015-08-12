@@ -1,13 +1,9 @@
 Markdown:MARKDOWN_FILE
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('Some text\nSome text')
+  Markdown:PARAGRAPH('Some text\nSome text')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('Some text\n    Some text\n      Some text\n    Some text\n  Some text\nSome text')
+  Markdown:PARAGRAPH('Some text\n    Some text\n      Some text\n    Some text\n  Some text\nSome text')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:CODE_BLOCK
-    Markdown:WHITE_SPACE('    Some text')
+  Markdown:CODE_BLOCK('    Some text')
   Markdown:WHITE_SPACE('\n\n')
-  Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('Some text')
+  Markdown:PARAGRAPH('Some text')
   Markdown:WHITE_SPACE('\n')

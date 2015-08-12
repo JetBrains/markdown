@@ -1,0 +1,260 @@
+Markdown:MARKDOWN_FILE
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Is tight')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('----------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This list')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Is loose')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('----------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This list')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Is also loose')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Yes it is')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('----------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('But this list')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:CODE_SPAN
+          Markdown:BACKTICK('```')
+          Markdown:EOL('\n')
+          WHITE_SPACE('    ')
+          Markdown:TEXT('is not loose at all')
+          Markdown:EOL('\n')
+          WHITE_SPACE('  ')
+          Markdown:BACKTICK('```')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('It')
+        Markdown:'(''')
+        Markdown:TEXT('s tight.')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('------------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('is')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('loose')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('----------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('This is too')
+        Markdown:EOL('\n')
+        Markdown:EMPH('*')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:(('(')
+        Markdown:TEXT('loose one')
+        Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Tight')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('- ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('Loose')
+          Markdown:EOL('\n')
+          Markdown:EOL('\n')
+          WHITE_SPACE('    ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('inside')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('tight')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('-------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Tight')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:BLOCK_QUOTE
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('quote')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  >')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('tight')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Tight')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:BLOCK_QUOTE
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('quote')
+          Markdown:EOL('\n')
+          WHITE_SPACE('  ')
+          Markdown:CODE_SPAN
+            Markdown:BACKTICK('```')
+            Markdown:EOL('\n')
+            WHITE_SPACE('  ')
+            Markdown:TEXT('something second')
+            Markdown:EOL('\n')
+            WHITE_SPACE('  ')
+            Markdown:BACKTICK('```')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('tight')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Loose')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('* ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('tight')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('loose')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('--------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('a')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('- ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('b')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('- ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('c')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('d')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('- ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('e')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('- ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('f')

@@ -144,6 +144,14 @@ public class MarkdownParsingTest : TestCase() {
         defaultTest();
     }
 
+    public fun testTightLooseLists() {
+        defaultTest()
+    }
+
+    public fun testHruleAndSetext() {
+        defaultTest()
+    }
+
     public fun testPuppetApache() {
         defaultTest()
     }

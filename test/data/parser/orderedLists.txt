@@ -1,63 +1,89 @@
 Markdown:MARKDOWN_FILE
   Markdown:ORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('1. ')
+      Markdown:LIST_NUMBER('1. ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('This is ordered list' item')
-    Markdown:WHITE_SPACE('\n')
+        Markdown:TEXT('This is ordered list')
+        Markdown:'(''')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('item')
+    WHITE_SPACE('\n')
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('2. ')
+      Markdown:LIST_NUMBER('2. ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('And another')
-    Markdown:WHITE_SPACE('\n')
+        Markdown:TEXT('And another')
+    WHITE_SPACE('\n')
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('1991. ')
+      Markdown:LIST_NUMBER('1991. ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('And one more\n1986\. And this is not\n1 Also this is not\nAnd this 1. is also not a list')
-  Markdown:WHITE_SPACE('\n\n')
+        Markdown:TEXT('And one more')
+        Markdown:EOL('\n')
+        Markdown:TEXT('1986\.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('And this is not')
+        Markdown:EOL('\n')
+        Markdown:TEXT('1 Also this is not')
+        Markdown:EOL('\n')
+        Markdown:TEXT('And this 1.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('is also not a list')
+  WHITE_SPACE('\n\n')
   Markdown:PARAGRAPH
-    Markdown:WHITE_SPACE('Let's look at the indentation:')
-  Markdown:WHITE_SPACE('\n\n')
+    Markdown:TEXT('Let')
+    Markdown:'(''')
+    Markdown:TEXT('s look at the indentation')
+    Markdown::(':')
+  WHITE_SPACE('\n\n')
   Markdown:ORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('1. ')
+      Markdown:LIST_NUMBER('1. ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('This is the item')
-      Markdown:WHITE_SPACE('\n    ')
+        Markdown:TEXT('This is the item')
+      WHITE_SPACE('\n    ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:WHITE_SPACE('* ')
+          Markdown:LIST_BULLET('* ')
           Markdown:PARAGRAPH
-            Markdown:WHITE_SPACE('And this is subitem')
-          Markdown:WHITE_SPACE('\n\n        ')
+            Markdown:TEXT('And this is subitem')
+          WHITE_SPACE('\n\n        ')
           Markdown:PARAGRAPH
-            Markdown:WHITE_SPACE('(It has some text indented)')
-          Markdown:WHITE_SPACE('\n\n      ')
-          Markdown:CODE_BLOCK
-            Markdown:WHITE_SPACE('      And this *code* has the indent of 12 to be code')
-          Markdown:WHITE_SPACE('\n\n        ')
+            Markdown:(('(')
+            Markdown:TEXT('It has some text indented')
+            Markdown:)(')')
+          WHITE_SPACE('\n\n      ')
+          Markdown:CODE_BLOCK('      And this *code* has the indent of 12 to be code')
+          WHITE_SPACE('\n\n        ')
           Markdown:PARAGRAPH
-            Markdown:WHITE_SPACE('That's the story')
-        Markdown:WHITE_SPACE('\n\n    ')
+            Markdown:TEXT('That')
+            Markdown:'(''')
+            Markdown:TEXT('s the story')
+        WHITE_SPACE('\n\n    ')
         Markdown:LIST_ITEM
-          Markdown:WHITE_SPACE('* ')
+          Markdown:LIST_BULLET('* ')
           Markdown:PARAGRAPH
-            Markdown:WHITE_SPACE('As well as this one')
-      Markdown:WHITE_SPACE('\n\n    ')
+            Markdown:TEXT('As well as this one')
+      WHITE_SPACE('\n\n    ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('And some text in here, which related to the ordered 1. item.')
-      Markdown:WHITE_SPACE('\n\n   ')
-      Markdown:CODE_BLOCK
-        Markdown:WHITE_SPACE('     So the indent of 8 is enough now to be the +code+')
-    Markdown:WHITE_SPACE('\n\n')
+        Markdown:TEXT('And some text in here,')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('which related to the ordered 1.')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('item.')
+      WHITE_SPACE('\n\n   ')
+      Markdown:CODE_BLOCK('     So the indent of 8 is enough now to be the +code+')
+    WHITE_SPACE('\n\n')
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('2. ')
+      Markdown:LIST_NUMBER('2. ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('The second item in here!!')
-      Markdown:WHITE_SPACE('\n\n   ')
-      Markdown:CODE_BLOCK
-        Markdown:WHITE_SPACE('     And it contains some code, indented at 8')
-      Markdown:WHITE_SPACE('\n\n    ')
+        Markdown:TEXT('The second item in here')
+        Markdown:!('!')
+        Markdown:!('!')
+      WHITE_SPACE('\n\n   ')
+      Markdown:CODE_BLOCK('     And it contains some code, indented at 8')
+      WHITE_SPACE('\n\n    ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('That's all folks!')
-  Markdown:WHITE_SPACE('\n')
+        Markdown:TEXT('That')
+        Markdown:'(''')
+        Markdown:TEXT('s all folks')
+        Markdown:!('!')
+  WHITE_SPACE('\n')

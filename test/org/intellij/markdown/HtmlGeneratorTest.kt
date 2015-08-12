@@ -46,6 +46,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest()
     }
 
+    public fun testCodeFence() {
+        defaultTest()
+    }
+
     companion object {
         public fun formatHtmlForTests(html: String): String {
             val tags = Regex("</?[^>]+>")
@@ -55,6 +59,9 @@ public class HtmlGeneratorTest : TestCase() {
                 if (html.charAt(matchResult.range.start + 1) != '/'
                         && next != null
                         && html.charAt(next.range.start + 1) == '/') {
+                    matchResult.value
+                } else if (matchResult.value.contains("pre") && next?.value?.contains("code") == true
+                    || matchResult.value.contains("/code") && next?.value?.contains("/pre") == true) {
                     matchResult.value
                 } else {
                     matchResult.value + "\n"

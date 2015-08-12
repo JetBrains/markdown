@@ -3,6 +3,7 @@
 <li>This list</li>
 <li>Is tight</li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>This list</p>
@@ -11,6 +12,7 @@
 <p>Is loose</p>
 </li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>This list</p>
@@ -20,15 +22,17 @@
 <p>Yes it is</p>
 </li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>But this list</p>
 <pre>
-<code>is not loose at all</code>
+<code>  is not loose at all</code>
 </pre>
 </li>
 <li>It's tight.</li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>This</p>
@@ -40,15 +44,17 @@
 <p>loose</p>
 </li>
 </ul>
+<hr />
 <ul>
 <li>
-<p>This is too</p>
+<p>This is too
+*</p>
 </li>
-<li></li>
 <li>
 <p>(loose one)</p>
 </li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>Tight</p>
@@ -61,6 +67,7 @@
 </li>
 <li>tight</li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>Tight</p>
@@ -70,6 +77,7 @@
 </li>
 <li>tight</li>
 </ul>
+<hr />
 <ul>
 <li>
 <p>Tight</p>
@@ -77,26 +85,36 @@
 <p>quote</p>
 </blockquote>
 <pre>
-<code>  something second</code>
+<code>something second</code>
 </pre>
 </li>
 <li>tight</li>
 </ul>
-
-------------
-
-* Loose
-  * tight
-
-  loose
-
---------------
-
-- a
-  - b
-  - c
-
-- d
-  - e
-  - f
+<hr />
+<ul>
+<li>
+<p>Loose</p>
+<ul>
+<li>tight</li>
+</ul>
+<p>loose</p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p>a</p>
+<ul>
+<li>b</li>
+<li>c</li>
+</ul>
+</li>
+<li>
+<p>d</p>
+<ul>
+<li>e</li>
+<li>f</li>
+</ul>
+</li>
+</ul>
 </body>
