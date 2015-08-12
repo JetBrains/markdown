@@ -8,6 +8,8 @@ import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
+import kotlin.text.MatchResult
+import kotlin.text.Regex
 
 
 public class HtmlGenerator(private val markdownText: String, private val root: ASTNode) {
@@ -199,17 +201,21 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
                     MarkdownElementTypes.CODE_FENCE to object : GeneratingProvider {
                         override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                            val indentBefore = Math.max(0, node.startOffset - text.lastIndexOf('\n', node.startOffset) - 1)
+
                             visitor.consumeHtml("<pre><code>")
                             var state = 0
 
                             var childrenToConsider = node.children
                             if (childrenToConsider.last().type == MarkdownTokenTypes.CODE_FENCE_END) {
-                                childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size() - 2)
+                                childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size() - 1)
                             }
 
                             for (child in childrenToConsider) {
                                 if (state == 1) {
-                                    visitor.consumeHtml(leafText(text, child))
+                                    visitor.consumeHtml(leafText(text, child).toString().
+                                            replace(Regex("(\n|^)" + " ".repeat(indentBefore)),
+                                                    fun(m: MatchResult) = m.groups[1]?.value!!))
                                 }
                                 if (state == 0 && child.type == MarkdownTokenTypes.EOL) {
                                     state = 1
