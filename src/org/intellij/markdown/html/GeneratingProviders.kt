@@ -65,13 +65,13 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
             childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size() - 1)
         }
 
-        var lastChildWasEol = false;
+        var lastChildWasContent = false;
 
         for (child in childrenToConsider) {
             if (state == 1 && child.type in listOf(MarkdownTokenTypes.CODE_FENCE_CONTENT,
                     MarkdownTokenTypes.EOL)) {
                 visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child), indentBefore))
-                lastChildWasEol = child.type == MarkdownTokenTypes.EOL
+                lastChildWasContent = child.type == MarkdownTokenTypes.CODE_FENCE_CONTENT
             }
             if (state == 0 && child.type == MarkdownTokenTypes.FENCE_LANG) {
                 visitor.consumeHtml(" class=\"language-${
@@ -86,7 +86,7 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
         if (state == 0) {
             visitor.consumeHtml(">")
         }
-        if (!lastChildWasEol) {
+        if (lastChildWasContent) {
             visitor.consumeHtml("\n")
         }
         visitor.consumeHtml("</code></pre>")
