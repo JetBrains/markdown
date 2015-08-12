@@ -21,12 +21,12 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
 
     private val markerBlockProviders = listOf(
             CodeBlockProvider(),
+            HorizontalRuleProvider(),
+            SetextHeaderProvider(),
             BlockQuoteProvider(),
             ListMarkerProvider(),
             AtxHeaderProvider(),
             CodeFenceProvider(),
-            SetextHeaderProvider(),
-            HorizontalRuleProvider(),
             HtmlBlockProvider()
     )
 

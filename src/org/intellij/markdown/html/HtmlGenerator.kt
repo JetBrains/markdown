@@ -121,6 +121,14 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
             return entityConverter.replaceEntities(node.getTextInNode(text))
         }
 
+        fun trimIndents(text: CharSequence, indent: Int): CharSequence {
+            if (indent == 0) {
+                return text
+            }
+            val regex = Regex("(\n|^)" + " {0,${indent}}")
+            return regex.replace(text, fun(m: MatchResult) = m.groups[1]?.value!!)
+        }
+
 
         fun initProviders(): Map<IElementType, GeneratingProvider> {
             return hashMapOf(
@@ -164,12 +172,11 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
                     //                    public val LINK_DEFINITION: IElementType = MarkdownElementType("LINK_DEFINITION")
                     MarkdownElementTypes.LINK_LABEL to TransparentInlineHolderProvider(),
-                    MarkdownElementTypes.LINK_DESTINATION to object: TransparentInlineHolderProvider(1, -1) {
+                    MarkdownElementTypes.LINK_DESTINATION to object : TransparentInlineHolderProvider(1, -1) {
                         override fun childrenToRender(node: ASTNode): List<ASTNode> {
                             if (node.children.first().type == MarkdownTokenTypes.LT) {
                                 return super.childrenToRender(node)
-                            }
-                            else {
+                            } else {
                                 return node.children
                             }
                         }
@@ -199,42 +206,13 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     //                    },
                     //                    public val SHORT_REFERENCE_LINK: IElementType = MarkdownElementType("SHORT_REFERENCE_LINK")
 
-                    MarkdownElementTypes.CODE_FENCE to object : GeneratingProvider {
-                        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                            val indentBefore = Math.max(0, node.startOffset - text.lastIndexOf('\n', node.startOffset) - 1)
-
-                            visitor.consumeHtml("<pre><code>")
-                            var state = 0
-
-                            var childrenToConsider = node.children
-                            if (childrenToConsider.last().type == MarkdownTokenTypes.CODE_FENCE_END) {
-                                childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size() - 1)
-                            }
-
-                            for (child in childrenToConsider) {
-                                if (state == 1) {
-                                    visitor.consumeHtml(leafText(text, child).toString().
-                                            replace(Regex("(\n|^)" + " ".repeat(indentBefore)),
-                                                    fun(m: MatchResult) = m.groups[1]?.value!!))
-                                }
-                                if (state == 0 && child.type == MarkdownTokenTypes.EOL) {
-                                    state = 1
-                                }
-                            }
-                            visitor.consumeHtml("</code></pre>")
-                        }
-                    },
+                    MarkdownElementTypes.CODE_FENCE to CodeFenceGeneratingProvider(),
 
                     MarkdownElementTypes.CODE_BLOCK to object : GeneratingProvider {
                         override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
                             visitor.consumeHtml("<pre><code>")
-                            for (child in node.children) {
-                                var html = leafText(text, child)
-                                if (child.type == MarkdownTokenTypes.EOL) {
-                                    html = html.toString().replace("\n(    |\t)".toRegex(), "\n")
-                                }
-                                visitor.consumeHtml(html)
-                            }
+                            visitor.consumeHtml(trimIndents(leafText(text, node), 4))
+                            visitor.consumeHtml("\n")
                             visitor.consumeHtml("</code></pre>")
                         }
                     },

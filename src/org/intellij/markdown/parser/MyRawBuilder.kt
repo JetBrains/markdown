@@ -16,7 +16,8 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
         val markersStack = Stack<MutableList<MyASTNodeWrapper>>()
 
         assert(!events.isEmpty(), "nonsense")
-        assert(events.get(0).info == events.get(events.size() - 1).info, "more than one root?")
+        assert(events.first().info == events.last().info,
+                { -> "more than one root?\nfirst: ${events.first().info}\nlast: ${events.last().info}" })
 
         for (i in events.indices) {
             val event = events.get(i)
@@ -68,7 +69,8 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
         val endOffset = event.info.range.end
 
         if (type is MarkdownElementType && type.isToken) {
-            return MyASTNodeWrapper(nodeBuilder.createLeafNode(type, startOffset, endOffset), startOffset, endOffset)
+            val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)
+            return MyASTNodeWrapper(nodes.first(), startOffset, endOffset)
         }
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
@@ -99,7 +101,7 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
     private fun addRawTokens(childrenWithWhitespaces: MutableList<ASTNode>, from: Int, to: Int) {
         // Let's for now assume that it's just whitespace
         if (from != to) {
-            childrenWithWhitespaces.add(nodeBuilder.createLeafNode(MarkdownTokenTypes.WHITE_SPACE, from, to))
+            childrenWithWhitespaces.addAll(nodeBuilder.createLeafNodes(MarkdownTokenTypes.WHITE_SPACE, from, to))
         }
     }
 
@@ -133,6 +135,10 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
                 }
             }
             return if (isStart()) 1 else -1
+        }
+
+        override fun toString(): String {
+            return "${if (isStart()) "Open" else "Close"}: ${position} (${info})"
         }
     }
 

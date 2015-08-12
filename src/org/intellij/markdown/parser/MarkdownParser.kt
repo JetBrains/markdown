@@ -38,7 +38,7 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
         nodeBuilder = if (parseInlines) {
             InlineExpandingASTNodeBuilder(text)
         } else {
-            ASTNodeBuilder()
+            ASTNodeBuilder(text)
         }
 
         val builder = MyRawBuilder(nodeBuilder)
@@ -55,12 +55,12 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
             val nodes = SequentialParserManager().runParsingSequence(tokensCache,
                     Collections.singletonList(wholeRange))
 
-            return MyBuilder(ASTNodeBuilder()).buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)), tokensCache)
+            return MyBuilder(ASTNodeBuilder(text)).buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)), tokensCache)
         }
     }
 
-    class InlineExpandingASTNodeBuilder(private val text: CharSequence) : ASTNodeBuilder() {
-        override fun createLeafNode(type: IElementType, startOffset: Int, endOffset: Int): ASTNode {
+    class InlineExpandingASTNodeBuilder(text: CharSequence) : ASTNodeBuilder(text) {
+        override fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
             return when (type) {
                 MarkdownElementTypes.PARAGRAPH,
                 MarkdownElementTypes.ATX_1,
@@ -71,9 +71,9 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
                 MarkdownElementTypes.ATX_6,
                 MarkdownElementTypes.SETEXT_1,
                 MarkdownElementTypes.SETEXT_2 ->
-                    parseInline(type, text, startOffset, endOffset)
+                    listOf(parseInline(type, text, startOffset, endOffset))
                 else ->
-                    super.createLeafNode(type, startOffset, endOffset)
+                    super.createLeafNodes(type, startOffset, endOffset)
             }
         }
     }

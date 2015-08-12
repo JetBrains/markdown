@@ -53,8 +53,10 @@ public class MyBuilder(private val nodeBuilder: ASTNodeBuilder) {
     private fun flushOneTokenToTree(tokensCache: TokensCache, markersStack: Stack<MutableList<MyASTNodeWrapper>>, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val node = nodeBuilder.createLeafNode(iterator.type!!, iterator.start, iterator.end)
-        markersStack.peek().add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
+        val nodes = nodeBuilder.createLeafNodes(iterator.type!!, iterator.start, iterator.end)
+        for (node in nodes) {
+            markersStack.peek().add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
+        }
     }
 
     private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
@@ -112,7 +114,7 @@ public class MyBuilder(private val nodeBuilder: ASTNodeBuilder) {
         }
         while (rawIdx != 0) {
             val rawType = iterator.rawLookup(rawIdx)!!
-            childrenWithWhitespaces.add(nodeBuilder.createLeafNode(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
+            childrenWithWhitespaces.addAll(nodeBuilder.createLeafNodes(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
             rawIdx -= dx
         }
     }

@@ -45,6 +45,7 @@ public interface MarkdownTokenTypes {
         public val LIST_NUMBER: IElementType = MarkdownElementType("LIST_NUMBER", true)
         public val FENCE_LANG: IElementType = MarkdownElementType("FENCE_LANG", true)
         public val CODE_FENCE_START: IElementType = MarkdownElementType("CODE_FENCE_START", true)
+        public val CODE_FENCE_CONTENT: IElementType = MarkdownElementType("CODE_FENCE_CONTENT", true)
         public val CODE_FENCE_END: IElementType = MarkdownElementType("CODE_FENCE_END", true)
         public val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE", true)
 

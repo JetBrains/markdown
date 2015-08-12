@@ -14,7 +14,7 @@ import kotlin.text.Regex
 public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder,
                                   private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.char == '\n'
 
     private val endLineRegex = Regex("^ {0,3}${fenceStart}+ *$")
 
@@ -49,15 +49,17 @@ public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
         val nextLineOffset = pos.nextLineOrEofOffset
         realInterestingOffset = nextLineOffset
 
-        if (!nextLineConstraints.upstreamWith(constraints)) {
-            return MarkerBlock.ProcessingResult.CANCEL
-        }
-
         val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length())
         if (endsThisFence(currentLine)) {
-            productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset..pos.nextLineOrEofOffset,
+            productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset + 1..pos.nextLineOrEofOffset,
                     MarkdownTokenTypes.CODE_FENCE_END)))
             scheduleProcessingResult(nextLineOffset, MarkerBlock.ProcessingResult.DEFAULT)
+        } else {
+            val contentRange = Math.min(pos.offset + 1 + constraints.getIndent(), nextLineOffset)..nextLineOffset
+            if (contentRange.start < contentRange.end) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        contentRange, MarkdownTokenTypes.CODE_FENCE_CONTENT)))
+            }
         }
 
         return MarkerBlock.ProcessingResult.CANCEL

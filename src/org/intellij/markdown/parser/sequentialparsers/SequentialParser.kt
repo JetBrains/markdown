@@ -7,7 +7,7 @@ public interface SequentialParser {
 
     public fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): ParsingResult
 
-    public class Node(public val range: Range<Int>, public val type: IElementType)
+    public data class Node(public val range: Range<Int>, public val type: IElementType)
 
     public class ParsingResult {
 

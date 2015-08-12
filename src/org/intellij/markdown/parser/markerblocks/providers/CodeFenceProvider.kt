@@ -15,30 +15,37 @@ public class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        val fenceStart = getFenceStart(pos, stateInfo.currentConstraints)
-        if (fenceStart != null) {
-            productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset..pos.nextLineOrEofOffset,
-                    MarkdownTokenTypes.CODE_FENCE_START)))
-            return listOf(CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder, fenceStart))
+        val fenceAndInfo = getFenceStartAndInfo(pos, stateInfo.currentConstraints)
+        if (fenceAndInfo != null) {
+            createNodesForFenceStart(pos, fenceAndInfo, productionHolder)
+            return listOf(CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder, fenceAndInfo.first))
         } else {
             return emptyList()
         }
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
-        return getFenceStart(pos, constraints) != null
+        return getFenceStartAndInfo(pos, constraints) != null
     }
 
-    private fun getFenceStart(pos: LookaheadText.Position, constraints: MarkdownConstraints): String? {
+    private fun createNodesForFenceStart(pos: LookaheadText.Position, fenceAndInfo: Pair<String, String>, productionHolder: ProductionHolder) {
+        val infoStartPosition = pos.nextLineOrEofOffset - fenceAndInfo.second.length()
+        productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset..infoStartPosition, MarkdownTokenTypes.CODE_FENCE_START)))
+        if (fenceAndInfo.second.length() > 0) {
+            productionHolder.addProduction(listOf(SequentialParser.Node(infoStartPosition..pos.nextLineOrEofOffset, MarkdownTokenTypes.FENCE_LANG)))
+        }
+    }
+
+    private fun getFenceStartAndInfo(pos: LookaheadText.Position, constraints: MarkdownConstraints): Pair<String, String>? {
         if (pos.offsetInCurrentLine != constraints.getIndent()) {
             return null
         }
         val matchResult = REGEX.match(pos.currentLine.subSequence(pos.offsetInCurrentLine, pos.currentLine.length()))
             ?: return null
-        return matchResult.groups[1]?.value
+        return Pair(matchResult.groups[1]?.value!!, matchResult.groups[2]?.value!!)
     }
 
     companion object {
-        val REGEX: Regex = Regex("^ {0,3}(~~~+|```+)[^`]*$")
+        val REGEX: Regex = Regex("^ {0,3}(~~~+|```+)([^`]*)$")
     }
 }
