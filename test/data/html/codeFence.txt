@@ -23,7 +23,7 @@ aaa
 ```
 </code></pre>
 <p>
-<code> </code>
+<code></code>
 
 aaa</p>
 <p>foo</p>

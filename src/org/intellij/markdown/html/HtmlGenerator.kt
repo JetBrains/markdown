@@ -227,7 +227,14 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.PARAGRAPH to SimpleInlineTagProvider("p"),
                     MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
                     MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
-                    MarkdownElementTypes.CODE_SPAN to SimpleInlineTagProvider("code", 1, -1)
+                    MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {
+                        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                            val output = node.children.subList(1, node.children.size() - 1).map { node ->
+                                leafText(text, node)
+                            }.joinToString("").trim()
+                            visitor.consumeHtml("<code>${output}</code>")
+                        }
+                    }
 
             )
         }
