@@ -1,6 +1,7 @@
 package org.intellij.markdown.parser.constraints
 
 import org.intellij.markdown.parser.LookaheadText
+import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
 
 public class MarkdownConstraints private constructor(private var indents: IntArray,
                                                      private var types: CharArray,
@@ -68,6 +69,9 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
     public fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
         if (pos == null || pos.char == '\n')
             return null
+        if (isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
+            return null
+        }
         return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
     }
 
@@ -178,6 +182,9 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints,
                                     base: MarkdownConstraints): MarkdownConstraints {
+            if (isHorizontalRule(line, startOffset)) {
+                return base;
+            }
 
             val prevN = prevLineConstraints.indents.size()
             var indexPrev = 0
@@ -286,6 +293,11 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
         private fun getMarkerType(marker: CharSequence): Char {
             return marker[marker.length() - 1]
         }
+
+        private fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
+            return HorizontalRuleProvider.REGEX.matches(line.subSequence(offset, line.length()))
+        }
+
     }
 
 }

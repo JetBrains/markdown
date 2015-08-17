@@ -26,14 +26,14 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     }
 
     fun matches(pos: LookaheadText.Position): Boolean {
-        if (pos.offsetInCurrentLine != 0) {
+        if (pos.offsetInCurrentLine == -1) {
             return false
         }
-        return REGEX.matches(pos.currentLine)
+        return REGEX.matches(pos.currentLine.subSequence(pos.offsetInCurrentLine, pos.currentLine.length()))
     }
 
     companion object {
-        val REGEX: Regex = run {
+        public val REGEX: Regex = run {
             var variants = ArrayList<String>()
             for (c in arrayOf("-", "_", "\\*")) {
                 variants.add("(${c} *)(${c} *)(${c} *)+")

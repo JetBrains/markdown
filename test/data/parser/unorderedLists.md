@@ -25,3 +25,12 @@ And nested ones?
         And after this EOL it is still a `code`
 
     But this is not, I suppose.
+
+This will concern hrules:
+
+* Foo
+* * *
+* Bar
+
+- Foo
+- * * *
