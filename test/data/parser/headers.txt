@@ -256,6 +256,19 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_2
     Markdown:ATX_HEADER('##')
+  Markdown:EOL('\n')
+  Markdown:ATX_1
+    Markdown:ATX_HEADER('#')
+  Markdown:EOL('\n')
+  Markdown:ATX_3
+    Markdown:ATX_HEADER('###')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+    Markdown:ATX_HEADER('###')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:ATX_2
+    Markdown:ATX_HEADER('##')
     Markdown:ATX_CONTENT
       WHITE_SPACE(' ')
       Markdown:TEXT('atx in the end')

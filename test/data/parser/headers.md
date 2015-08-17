@@ -72,4 +72,8 @@ of dashes"/>
 ## foo #\##
 # foo \#
 
+##
+#
+### ###
+
 ## atx in the end

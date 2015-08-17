@@ -56,6 +56,6 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     }
 
     companion object {
-        val REGEX: Regex = Regex("^#{1,6} ")
+        val REGEX: Regex = Regex("^#{1,6}( |$)")
     }
 }
