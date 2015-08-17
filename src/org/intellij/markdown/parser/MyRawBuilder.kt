@@ -4,64 +4,14 @@ import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
-import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.ArrayList
-import java.util.Collections
-import java.util.Stack
 
-public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
+public class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
 
-    public fun buildTree(production: List<SequentialParser.Node>): ASTNode {
-        val events = constructEvents(production)
-        val markersStack = Stack<MutableList<MyASTNodeWrapper>>()
-
-        assert(!events.isEmpty(), "nonsense")
-        assert(events.first().info == events.last().info,
-                { -> "more than one root?\nfirst: ${events.first().info}\nlast: ${events.last().info}" })
-
-        for (i in events.indices) {
-            val event = events.get(i)
-
-            if (event.isStart() && !event.isEmpty()) {
-                markersStack.push(ArrayList<MyASTNodeWrapper>())
-            } else {
-                val currentNodeChildren = if (event.isEmpty())
-                    ArrayList()
-                else
-                    markersStack.pop()
-                val isTopmostNode = markersStack.isEmpty()
-
-                val newNode = createASTNodeOnClosingEvent(event, currentNodeChildren)
-
-                if (isTopmostNode) {
-                    assert(i + 1 == events.size())
-                    return newNode.astNode
-                } else {
-                    markersStack.peek().add(newNode)
-                }
-            }
-        }
-
-        throw AssertionError("markers stack should close some time thus would not be here!")
+    override fun flushEverythingBeforeEvent(event: TreeBuilder.MyEvent, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?) {
     }
 
-    private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
-        val events = ArrayList<MyEvent>()
-        for (index in production.indices) {
-            val result = production.get(index)
-            val startTokenId = result.range.start
-            val endTokenId = result.range.end
-
-            events.add(MyEvent(startTokenId, index, result))
-            if (endTokenId != startTokenId) {
-                events.add(MyEvent(endTokenId, index, result))
-            }
-        }
-        Collections.sort(events)
-        return events
-    }
-
-    private fun createASTNodeOnClosingEvent(event: MyEvent, currentNodeChildren: List<MyASTNodeWrapper>): MyASTNodeWrapper {
+    override fun createASTNodeOnClosingEvent(event: TreeBuilder.MyEvent, currentNodeChildren: List<TreeBuilder.MyASTNodeWrapper>, isTopmostNode: Boolean): TreeBuilder.MyASTNodeWrapper {
         val newNode: ASTNode
 
         val type = event.info.`type`
@@ -70,7 +20,7 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
 
         if (type is MarkdownElementType && type.isToken) {
             val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)
-            return MyASTNodeWrapper(nodes.first(), startOffset, endOffset)
+            return TreeBuilder.MyASTNodeWrapper(nodes.first(), startOffset, endOffset)
         }
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
@@ -95,7 +45,7 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
 //        }
 
         newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
-        return MyASTNodeWrapper(newNode, startOffset, endOffset)
+        return TreeBuilder.MyASTNodeWrapper(newNode, startOffset, endOffset)
     }
 
     private fun addRawTokens(childrenWithWhitespaces: MutableList<ASTNode>, from: Int, to: Int) {
@@ -104,44 +54,5 @@ public class MyRawBuilder(private val nodeBuilder: ASTNodeBuilder) {
             childrenWithWhitespaces.addAll(nodeBuilder.createLeafNodes(MarkdownTokenTypes.WHITE_SPACE, from, to))
         }
     }
-
-    private class MyEvent(val position: Int,
-                          val timeClosed: Int,
-                          val info: SequentialParser.Node) : Comparable<MyEvent> {
-
-        public fun isStart(): Boolean {
-            return info.range.start == position
-        }
-
-        public fun isEmpty(): Boolean {
-            return info.range.start == info.range.end
-        }
-
-        override fun compareTo(other: MyEvent): Int {
-            if (position != other.position) {
-                return position - other.position
-            }
-            if (isStart() == other.isStart()) {
-                val positionDiff = info.range.start + info.range.end - (other.info.range.start + other.info.range.end)
-                if (positionDiff != 0) {
-                    return -positionDiff
-                }
-
-                val timeDiff = timeClosed - other.timeClosed
-                if (isStart()) {
-                    return -timeDiff
-                } else {
-                    return timeDiff
-                }
-            }
-            return if (isStart()) 1 else -1
-        }
-
-        override fun toString(): String {
-            return "${if (isStart()) "Open" else "Close"}: ${position} (${info})"
-        }
-    }
-
-    private class MyASTNodeWrapper(public val astNode: ASTNode, public val startTokenIndex: Int, public val endTokenIndex: Int)
 
 }

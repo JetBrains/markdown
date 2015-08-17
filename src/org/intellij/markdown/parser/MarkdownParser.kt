@@ -2,6 +2,7 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.MarkdownLexer
@@ -55,7 +56,8 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
             val nodes = SequentialParserManager().runParsingSequence(tokensCache,
                     Collections.singletonList(wholeRange))
 
-            return MyBuilder(ASTNodeBuilder(text)).buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)), tokensCache)
+            return MyBuilder(ASTNodeBuilder(text), tokensCache).
+                    buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
         }
     }
 
@@ -63,14 +65,8 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
         override fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
             return when (type) {
                 MarkdownElementTypes.PARAGRAPH,
-                MarkdownElementTypes.ATX_1,
-                MarkdownElementTypes.ATX_2,
-                MarkdownElementTypes.ATX_3,
-                MarkdownElementTypes.ATX_4,
-                MarkdownElementTypes.ATX_5,
-                MarkdownElementTypes.ATX_6,
-                MarkdownElementTypes.SETEXT_1,
-                MarkdownElementTypes.SETEXT_2 ->
+                MarkdownTokenTypes.ATX_CONTENT,
+                MarkdownTokenTypes.SETEXT_CONTENT ->
                     listOf(parseInline(type, text, startOffset, endOffset))
                 else ->
                     super.createLeafNodes(type, startOffset, endOffset)
