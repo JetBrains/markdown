@@ -16,6 +16,7 @@
 <code>\[\`</code>
 </p>
 <pre><code>\[\]
+&gt; &lt; $
 </code></pre>
 <pre><code>\[\]
 </code></pre>

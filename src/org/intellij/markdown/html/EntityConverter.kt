@@ -22,7 +22,7 @@ public class EntityConverter {
         return result
     }
 
-    public fun replaceEntities(text: CharSequence): String {
+    public fun replaceEntities(text: CharSequence, processEscapes: Boolean): String {
         val result = StringBuilder()
         var i = 0
         while (i < text.length()) {
@@ -32,7 +32,7 @@ public class EntityConverter {
                 i++
                 continue
             }
-            if (c[0] == '\\' && i + 1 < text.length()) {
+            if (processEscapes && c[0] == '\\' && i + 1 < text.length()) {
                 val replacement = replacements.get("\\${text[i + 1]}")
                 if (replacement != null) {
                     result.append(replacement)

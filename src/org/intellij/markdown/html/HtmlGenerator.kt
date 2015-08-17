@@ -130,15 +130,11 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
     companion object {
         private val entityConverter = EntityConverter()
 
-        fun leafText(text: String, node: ASTNode, replaceEntities: Boolean = true): CharSequence {
+        fun leafText(text: String, node: ASTNode, replaceEscapes: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
-            if (!replaceEntities) {
-                return node.getTextInNode(text)
-            } else {
-               return entityConverter.replaceEntities(node.getTextInNode(text))
-            }
+           return entityConverter.replaceEntities(node.getTextInNode(text), replaceEscapes)
         }
 
         fun trimIndents(text: CharSequence, indent: Int): CharSequence {
@@ -186,7 +182,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
                         override fun generateTag(text: String, node: ASTNode): String {
                             val linkText = node.getTextInNode(text)
-                            val link = entityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1))
+                            val link = entityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true)
                             return "<a href=\"$link\">$link</a>"
                         }
                     },
