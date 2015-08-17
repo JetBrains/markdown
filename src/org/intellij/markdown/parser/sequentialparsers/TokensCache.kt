@@ -6,10 +6,11 @@ public abstract class TokensCache {
     abstract val cachedTokens: List<TokenInfo>
     abstract val filteredTokens: List<TokenInfo>
     abstract val originalText: CharSequence
+    abstract val originalTextRange: Range<Int>
 
     public fun getRawCharAt(index: Int): Char {
-        if (index < 0) return 0.toChar()
-        if (index >= originalText.length()) return 0.toChar()
+        if (index < originalTextRange.start) return 0.toChar()
+        if (index > originalTextRange.end) return 0.toChar()
         return originalText.charAt(index)
     }
 
@@ -85,9 +86,9 @@ public abstract class TokensCache {
 
         private fun info(rawSteps: Int): TokenInfo {
             if (index < 0) {
-                return TokenInfo(null, 0, 0, 0, 0)
+                return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
             } else if (index > filteredTokens.size()) {
-                return TokenInfo(null, originalText.length(), 0, 0, 0)
+                return TokenInfo(null, originalTextRange.end + 1, originalTextRange.end + 1, 0, 0)
             }
 
             val rawIndex = if (index < filteredTokens.size())
@@ -96,9 +97,9 @@ public abstract class TokensCache {
                 cachedTokens.size() + rawSteps
 
             if (rawIndex < 0) {
-                return TokenInfo(null, 0, 0, 0, 0)
+                return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
             } else if (rawIndex >= cachedTokens.size()) {
-                return TokenInfo(null, originalText.length(), 0, 0, 0)
+                return TokenInfo(null, originalTextRange.end + 1, originalTextRange.end + 1, 0, 0)
             }
 
             return cachedTokens.get(rawIndex)
@@ -111,14 +112,6 @@ public abstract class TokensCache {
 
         public fun rawStart(steps: Int): Int {
             return info(steps).tokenStart
-        }
-
-        public fun rawText(steps: Int): String? {
-            val info = info(steps)
-            if (info.`type` == null) {
-                return null
-            }
-            return originalText.subSequence(info.tokenStart, info.tokenEnd).toString()
         }
 
         override fun toString(): String {

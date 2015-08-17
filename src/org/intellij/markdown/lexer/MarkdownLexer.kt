@@ -6,8 +6,8 @@ import java.io.IOException
 import java.io.Reader
 
 public class MarkdownLexer(public val originalText: CharSequence,
-                           private val bufferStart: Int = 0,
-                           private val bufferEnd: Int = originalText.length()) {
+                           public val bufferStart: Int = 0,
+                           public val bufferEnd: Int = originalText.length()) {
 
     private val baseLexer: _MarkdownLexer
 
@@ -21,7 +21,7 @@ public class MarkdownLexer(public val originalText: CharSequence,
         private set
 
     init {
-        baseLexer = _MarkdownLexer(null : Reader?)
+        baseLexer = _MarkdownLexer(null as Reader?)
         baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
 
         type = advanceBase()

@@ -9,6 +9,7 @@ public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
     override val cachedTokens: List<TokensCache.TokenInfo>
     override val filteredTokens: List<TokensCache.TokenInfo>
     override val originalText: CharSequence
+    override val originalTextRange: Range<Int>
 
     init {
         val (_cachedTokens, _filteredTokens) = cacheTokens(lexer)
@@ -16,6 +17,7 @@ public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
         cachedTokens = _cachedTokens
         filteredTokens = _filteredTokens
         originalText = lexer.originalText
+        originalTextRange = lexer.bufferStart..lexer.bufferEnd - 1
 
         verify()
     }
