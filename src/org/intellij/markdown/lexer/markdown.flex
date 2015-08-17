@@ -215,7 +215,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
   }
 
   // Escaping
-  \\[\\`*_{}\[\]()#+-.,!:@#$%&~<>/] {
+  \\[\\\"'`*_{}\[\]()#+.,!:@#$%&~<>/-] {
     return getReturnGeneralized(Token.TEXT);
   }
 
@@ -249,7 +249,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
     return Token.WHITE_SPACE;
   }
 
-  \" | "'"| "\\" | "(" | ")" | "[" | "]" | "<" | ">" {
+  \" | "'"| "(" | ")" | "[" | "]" | "<" | ">" {
     return getDelimiterTokenType(yycharat(0));
   }
   ":" { return Token.COLON; }
@@ -307,4 +307,4 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
   {EOL} | .+ { return Token.HTML_BLOCK; }
 }
 
-. { return Token.BAD_CHARACTER; }
+. { return Token.TEXT; }

@@ -16,7 +16,7 @@ public class EntityConverter {
 
         val result = HashMap<String, String>()
         for (char in escapeAllowedString) {
-            result.put("\\${char}", explicitReplacements.get(char) ?: "" + char)
+            result.put("\\${char}", explicitReplacements.get("" + char) ?: "" + char)
         }
         result.putAll(explicitReplacements)
         return result
@@ -26,17 +26,22 @@ public class EntityConverter {
         val result = StringBuilder()
         var i = 0
         while (i < text.length()) {
-            val c = "" + text.charAt(i)
+            val c = "" + text[i]
             if (replacements.containsKey(c)) {
                 result.append(replacements.get(c));
-            }
-            else if (c.charAt(0) == '\\' && i + 1 < text.length() && replacements.containsKey("\\${c}")) {
-                result.append(replacements.get("\\${c}"))
                 i++
+                continue
             }
-            else {
-                result.append(c);
+            if (c[0] == '\\' && i + 1 < text.length()) {
+                val replacement = replacements.get("\\${text[i + 1]}")
+                if (replacement != null) {
+                    result.append(replacement)
+                    i += 2
+                    continue
+                }
             }
+
+            result.append(c);
             i++
         }
         return result.toString()

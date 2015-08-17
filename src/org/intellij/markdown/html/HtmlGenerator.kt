@@ -130,11 +130,15 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
     companion object {
         private val entityConverter = EntityConverter()
 
-        fun leafText(text: String, node: ASTNode): CharSequence {
+        fun leafText(text: String, node: ASTNode, replaceEntities: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
-            return entityConverter.replaceEntities(node.getTextInNode(text))
+            if (!replaceEntities) {
+                return node.getTextInNode(text)
+            } else {
+               return entityConverter.replaceEntities(node.getTextInNode(text))
+            }
         }
 
         fun trimIndents(text: CharSequence, indent: Int): CharSequence {
@@ -209,7 +213,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
                             val destinationText = destinationNode?.getTextInNode(text) ?: ""
                             val titleText = if (titleNode != null)
-                                " title=\"${leafText(text, titleNode)}\""
+                                " title=\"${leafText(text, titleNode, false)}\""
                             else
                                 ""
 
@@ -229,7 +233,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.CODE_BLOCK to object : GeneratingProvider {
                         override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
                             visitor.consumeHtml("<pre><code>")
-                            visitor.consumeHtml(trimIndents(leafText(text, node), 4))
+                            visitor.consumeHtml(trimIndents(leafText(text, node, false), 4))
                             visitor.consumeHtml("\n")
                             visitor.consumeHtml("</code></pre>")
                         }
@@ -248,7 +252,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {
                         override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
                             val output = node.children.subList(1, node.children.size() - 1).map { node ->
-                                leafText(text, node)
+                                leafText(text, node, false)
                             }.joinToString("").trim()
                             visitor.consumeHtml("<code>${output}</code>")
                         }

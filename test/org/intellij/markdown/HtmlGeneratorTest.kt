@@ -50,6 +50,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest()
     }
 
+    public fun testEscaping() {
+        defaultTest()
+    }
+
     companion object {
         public fun formatHtmlForTests(html: String): String {
             val tags = Regex("</?[^>]+>")

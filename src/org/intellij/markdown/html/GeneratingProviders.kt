@@ -49,7 +49,7 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
         for (child in childrenToConsider) {
             if (state == 1 && child.type in listOf(MarkdownTokenTypes.CODE_FENCE_CONTENT,
                     MarkdownTokenTypes.EOL)) {
-                visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child), indentBefore))
+                visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), indentBefore))
                 lastChildWasContent = child.type == MarkdownTokenTypes.CODE_FENCE_CONTENT
             }
             if (state == 0 && child.type == MarkdownTokenTypes.FENCE_LANG) {

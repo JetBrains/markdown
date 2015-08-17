@@ -1,0 +1,24 @@
+<body>
+<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~</p>
+<p>\→\A\a\ \3\φ\«</p>
+<p>*not emphasized*
+&lt;br/&gt; not a tag
+[not a link](/foo)
+`not code`
+1. not a list
+* not a list
+# not a header
+[foo]: /url &quot;not a reference&quot;</p>
+<p>
+\<em>emphasis</em>
+</p>
+<p>
+<code>\[\`</code>
+</p>
+<pre><code>\[\]
+</code></pre>
+<pre><code>\[\]
+</code></pre>
+<pre><code class="language-foo+bar">foo
+</code></pre>
+</body>
