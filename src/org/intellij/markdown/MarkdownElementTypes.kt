@@ -35,14 +35,14 @@ public interface MarkdownElementTypes {
 
         public val AUTOLINK: IElementType = MarkdownElementType("AUTOLINK")
 
-        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1", true)
-        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2", true)
+        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1")
+        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2")
 
-        public val ATX_1: IElementType = MarkdownElementType("ATX_1", true)
-        public val ATX_2: IElementType = MarkdownElementType("ATX_2", true)
-        public val ATX_3: IElementType = MarkdownElementType("ATX_3", true)
-        public val ATX_4: IElementType = MarkdownElementType("ATX_4", true)
-        public val ATX_5: IElementType = MarkdownElementType("ATX_5", true)
-        public val ATX_6: IElementType = MarkdownElementType("ATX_6", true)
+        public val ATX_1: IElementType = MarkdownElementType("ATX_1")
+        public val ATX_2: IElementType = MarkdownElementType("ATX_2")
+        public val ATX_3: IElementType = MarkdownElementType("ATX_3")
+        public val ATX_4: IElementType = MarkdownElementType("ATX_4")
+        public val ATX_5: IElementType = MarkdownElementType("ATX_5")
+        public val ATX_6: IElementType = MarkdownElementType("ATX_6")
     }
 }

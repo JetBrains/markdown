@@ -111,6 +111,22 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
+    open class TrimmingTransparentInlineHolderProvider() : TransparentInlineHolderProvider() {
+        override fun childrenToRender(node: ASTNode): List<ASTNode> {
+            val children = node.children
+            var from = 0
+            while (from < children.size() && children[from].type == MarkdownTokenTypes.WHITE_SPACE) {
+                from++
+            }
+            var to = children.size()
+            while (to > from && children[to - 1].type == MarkdownTokenTypes.WHITE_SPACE) {
+                to--
+            }
+
+            return children.subList(from, to)
+        }
+    }
+
     companion object {
         private val entityConverter = EntityConverter()
 
@@ -151,15 +167,17 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
                     MarkdownElementTypes.LIST_ITEM to ListItemGeneratingProvider(),
 
-                    MarkdownElementTypes.SETEXT_1 to SimpleInlineTagProvider("h1", 0, -2),
-                    MarkdownElementTypes.SETEXT_2 to SimpleInlineTagProvider("h2", 0, -2),
+                    MarkdownTokenTypes.SETEXT_CONTENT to TrimmingTransparentInlineHolderProvider(),
+                    MarkdownElementTypes.SETEXT_1 to SimpleTagProvider("h1"),
+                    MarkdownElementTypes.SETEXT_2 to SimpleTagProvider("h2"),
 
-                    MarkdownElementTypes.ATX_1 to ATXGeneratingProvider("h1"),
-                    MarkdownElementTypes.ATX_2 to ATXGeneratingProvider("h2"),
-                    MarkdownElementTypes.ATX_3 to ATXGeneratingProvider("h3"),
-                    MarkdownElementTypes.ATX_4 to ATXGeneratingProvider("h4"),
-                    MarkdownElementTypes.ATX_5 to ATXGeneratingProvider("h5"),
-                    MarkdownElementTypes.ATX_6 to ATXGeneratingProvider("h6"),
+                    MarkdownTokenTypes.ATX_CONTENT to TrimmingTransparentInlineHolderProvider(),
+                    MarkdownElementTypes.ATX_1 to SimpleTagProvider("h1"),
+                    MarkdownElementTypes.ATX_2 to SimpleTagProvider("h2"),
+                    MarkdownElementTypes.ATX_3 to SimpleTagProvider("h3"),
+                    MarkdownElementTypes.ATX_4 to SimpleTagProvider("h4"),
+                    MarkdownElementTypes.ATX_5 to SimpleTagProvider("h5"),
+                    MarkdownElementTypes.ATX_6 to SimpleTagProvider("h6"),
 
                     MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
                         override fun generateTag(text: String, node: ASTNode): String {

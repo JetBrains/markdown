@@ -14,9 +14,8 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         if (matches(pos)) {
-            return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints,
-                    productionHolder,
-                    calcHeaderSize(pos)))
+            val headerSize = calcHeaderSize(pos)
+            return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder, headerSize, calcTailStartPos(pos, headerSize), pos.nextLineOrEofOffset))
         } else {
             return emptyList()
         }
@@ -24,7 +23,7 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     }
 
     private fun calcHeaderSize(pos: LookaheadText.Position): Int {
-        val line = pos.textFromPosition
+        val line = pos.currentLineFromPosition
         var result = 0
         while (result < line.length() && line[result] == '#') {
             result++
@@ -32,12 +31,28 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         return result
     }
 
+    private fun calcTailStartPos(pos: LookaheadText.Position, headerSize: Int): Int {
+        val line = pos.currentLineFromPosition
+        var offset = line.length() - 1
+        while (offset > headerSize && Character.isWhitespace(line[offset])) {
+            offset--
+        }
+        while (offset > headerSize && line[offset] == '#' && line[offset - 1] != '\\') {
+            offset--
+        }
+        if (offset + 1 < line.length() && Character.isWhitespace(line[offset]) && line[offset + 1] == '#') {
+            return pos.offset + offset + 1
+        } else {
+            return pos.offset + line.length()
+        }
+    }
+
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         return matches(pos)
     }
 
     private fun matches(pos: LookaheadText.Position): Boolean {
-        return pos.offsetInCurrentLine != -1 && REGEX.hasMatch(pos.textFromPosition)
+        return pos.offsetInCurrentLine != -1 && REGEX.hasMatch(pos.currentLineFromPosition)
     }
 
     companion object {

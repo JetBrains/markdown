@@ -54,6 +54,9 @@ public class LookaheadText(public val text: String) {
         public val currentLine: String
             get() = lines.get(lineN)
 
+        public val currentLineFromPosition: String
+            get() = currentLine.substring(offsetInCurrentLine)
+
         public val nextLine: String?
             get() = if (lineN + 1 < lines.size()) {
                 lines.get(lineN + 1)

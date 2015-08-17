@@ -64,4 +64,12 @@ Foo *bar*
 ---
 of dashes"/>
 
+### foo ### b
+
+# foo#
+
+### foo \###
+## foo #\##
+# foo \#
+
 ## atx in the end

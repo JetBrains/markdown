@@ -31,6 +31,10 @@ public interface MarkdownTokenTypes {
 
         public val LINK_ID: IElementType = MarkdownElementType("LINK_ID", true)
         public val ATX_HEADER: IElementType = MarkdownElementType("ATX_HEADER", true)
+        public val ATX_CONTENT: IElementType = MarkdownElementType("ATX_CONTENT", true)
+        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1", true)
+        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2", true)
+        public val SETEXT_CONTENT: IElementType = MarkdownElementType("SETEXT_CONTENT", true)
         public val EMPH: IElementType = MarkdownElementType("EMPH", true)
 
         public val BACKTICK: IElementType = MarkdownElementType("BACKTICK", true)
@@ -40,8 +44,6 @@ public interface MarkdownTokenTypes {
         public val LIST_BULLET: IElementType = MarkdownElementType("LIST_BULLET", true)
         public val URL: IElementType = MarkdownElementType("URL", true)
         public val HORIZONTAL_RULE: IElementType = MarkdownElementType("HORIZONTAL_RULE", true)
-        public val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1", true)
-        public val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2", true)
         public val LIST_NUMBER: IElementType = MarkdownElementType("LIST_NUMBER", true)
         public val FENCE_LANG: IElementType = MarkdownElementType("FENCE_LANG", true)
         public val CODE_FENCE_START: IElementType = MarkdownElementType("CODE_FENCE_START", true)

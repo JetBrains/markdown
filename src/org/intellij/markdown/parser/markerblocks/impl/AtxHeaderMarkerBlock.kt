@@ -2,21 +2,35 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
-                                  headerSize: Int)
+                                  headerSize: Int,
+                                  tailStartPos: Int,
+                                  endOfLinePos: Int)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+
+    init {
+        val curPos = productionHolder.currentPosition
+        productionHolder.addProduction(listOf(SequentialParser.Node(
+                curPos..curPos + headerSize, MarkdownTokenTypes.ATX_HEADER
+        ), SequentialParser.Node(
+                curPos + headerSize..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
+        ), SequentialParser.Node(
+                tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
+        )))
+    }
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     private val nodeType = calcNodeType(headerSize)
-
-    private val startPosition = productionHolder.currentPosition + headerSize
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {

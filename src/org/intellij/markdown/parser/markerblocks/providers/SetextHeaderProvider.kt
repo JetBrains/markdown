@@ -16,6 +16,9 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
         if (stateInfo.paragraphBlock != null) {
             return emptyList()
         }
+        if (stateInfo.nextConstraints != stateInfo.currentConstraints) {
+            return emptyList()
+        }
         if (pos.offsetInCurrentLine == 0 && pos.nextLine?.matches(REGEX) == true) {
             return listOf(SetextHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder))
         } else {

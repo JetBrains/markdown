@@ -2,15 +2,20 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
-                                     productionHolder: ProductionHolder)
+                                     private val productionHolder: ProductionHolder)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+
+    private val contentMarker = productionHolder.mark()
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
@@ -36,10 +41,20 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
         val startSpaces = pos.charsToNonWhitespace()
                 ?: return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DROP, MarkerBlock.EventAction.PROPAGATE)
 
-        if (pos.nextPosition(startSpaces)?.char == '-') {
+        val setextMarkerStart = pos.nextPosition(startSpaces)
+        if (setextMarkerStart?.char == '-') {
             nodeType = MarkdownElementTypes.SETEXT_2
         }
 
+        val setextMarkerStartOffset = setextMarkerStart?.offset ?: pos.offset
+        val markerNodeType = if (nodeType == MarkdownElementTypes.SETEXT_2)
+            MarkdownTokenTypes.SETEXT_2
+        else
+            MarkdownTokenTypes.SETEXT_1
+
+        contentMarker.done(MarkdownTokenTypes.SETEXT_CONTENT)
+        productionHolder.addProduction(listOf(SequentialParser.Node(
+                setextMarkerStartOffset..pos.nextLineOrEofOffset, markerNodeType)))
         scheduleProcessingResult(pos.nextLineOrEofOffset, MarkerBlock.ProcessingResult.DEFAULT)
         return MarkerBlock.ProcessingResult.CANCEL
     }
