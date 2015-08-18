@@ -14,7 +14,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        if (matches(pos)) {
+        if (matches(pos, stateInfo.currentConstraints)) {
             return listOf(HorizontalRuleMarkerBlock(stateInfo.currentConstraints, productionHolder.mark()))
         } else {
             return emptyList()
@@ -22,11 +22,11 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
-        return matches(pos)
+        return matches(pos, constraints)
     }
 
-    fun matches(pos: LookaheadText.Position): Boolean {
-        if (pos.offsetInCurrentLine == -1) {
+    fun matches(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
+        if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return false
         }
         return REGEX.matches(pos.currentLine.subSequence(pos.offsetInCurrentLine, pos.currentLine.length()))

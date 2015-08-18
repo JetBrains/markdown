@@ -116,6 +116,6 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Foo')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      WHITE_SPACE('-')
-      Markdown:HORIZONTAL_RULE(' * * *')
+      Markdown:LIST_BULLET('- ')
+      Markdown:HORIZONTAL_RULE('* * *')
   Markdown:EOL('\n')
