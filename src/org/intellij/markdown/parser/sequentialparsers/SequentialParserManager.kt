@@ -7,7 +7,6 @@ public class SequentialParserManager {
     protected fun getParserSequence(): List<SequentialParser> {
         return listOf(AutolinkParser(),
                       BacktickParser(),
-                      LinkDefinitionParser(),
                       InlineLinkParser(),
                       ReferenceLinkParser(),
                       EmphStrongParser())

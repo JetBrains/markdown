@@ -27,7 +27,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
             ListMarkerProvider(),
             AtxHeaderProvider(),
             CodeFenceProvider(),
-            HtmlBlockProvider()
+            HtmlBlockProvider(),
+            LinkReferenceDefinitionProvider()
     )
 
     override fun getPriorityList(): List<Pair<IElementType, Int>> {

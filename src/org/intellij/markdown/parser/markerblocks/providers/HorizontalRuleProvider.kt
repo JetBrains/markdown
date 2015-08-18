@@ -29,7 +29,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return false
         }
-        return REGEX.matches(pos.currentLine.subSequence(pos.offsetInCurrentLine, pos.currentLine.length()))
+        return REGEX.matches(pos.currentLineFromPosition)
     }
 
     companion object {
