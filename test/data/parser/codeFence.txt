@@ -78,9 +78,10 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:SETEXT_2
-    Markdown:TEXT('foo')
+    Markdown:SETEXT_CONTENT
+      Markdown:TEXT('foo')
     Markdown:EOL('\n')
-    Markdown:TEXT('---')
+    Markdown:SETEXT_2('---')
   Markdown:EOL('\n')
   Markdown:CODE_FENCE
     Markdown:CODE_FENCE_START('~~~')
@@ -90,9 +91,10 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_END('~~~')
   Markdown:EOL('\n')
   Markdown:ATX_1
-    Markdown:TEXT('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('baz')
+    Markdown:ATX_HEADER('#')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('baz')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:CODE_FENCE

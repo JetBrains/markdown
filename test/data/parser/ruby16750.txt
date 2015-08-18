@@ -1,6 +1,15 @@
 Markdown:MARKDOWN_FILE
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:WHITE_SPACE('- ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
-        Markdown:WHITE_SPACE('Sometexttext - abababa\n               - cacacac')
+        Markdown:TEXT('Sometexttext')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('-')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('abababa')
+        Markdown:EOL('\n')
+        WHITE_SPACE('               ')
+        Markdown:TEXT('-')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('cacacac')

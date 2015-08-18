@@ -55,16 +55,15 @@ Markdown:MARKDOWN_FILE
       Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('But this list')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:CODE_FENCE
+        Markdown:CODE_FENCE_START('```')
         Markdown:EOL('\n')
         WHITE_SPACE('  ')
-        Markdown:CODE_SPAN
-          Markdown:BACKTICK('```')
-          Markdown:EOL('\n')
-          WHITE_SPACE('    ')
-          Markdown:TEXT('is not loose at all')
-          Markdown:EOL('\n')
-          WHITE_SPACE('  ')
-          Markdown:BACKTICK('```')
+        Markdown:CODE_FENCE_CONTENT('  is not loose at all')
+        Markdown:EOL('\n')
+        Markdown:CODE_FENCE_END('  ```')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('- ')
@@ -179,16 +178,15 @@ Markdown:MARKDOWN_FILE
         Markdown:BLOCK_QUOTE('> ')
         Markdown:PARAGRAPH
           Markdown:TEXT('quote')
-          Markdown:EOL('\n')
-          WHITE_SPACE('  ')
-          Markdown:CODE_SPAN
-            Markdown:BACKTICK('```')
-            Markdown:EOL('\n')
-            WHITE_SPACE('  ')
-            Markdown:TEXT('something second')
-            Markdown:EOL('\n')
-            WHITE_SPACE('  ')
-            Markdown:BACKTICK('```')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:CODE_FENCE
+        Markdown:CODE_FENCE_START('```')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:CODE_FENCE_CONTENT('something second')
+        Markdown:EOL('\n')
+        Markdown:CODE_FENCE_END('  ```')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('- ')

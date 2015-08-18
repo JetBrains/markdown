@@ -1,4 +1,10 @@
 Markdown:MARKDOWN_FILE
-  Markdown:WHITE_SPACE('  \n  ')
-  Markdown:PARAGRAPH('Text  ')
-  Markdown:WHITE_SPACE('\n   \n')
+  WHITE_SPACE('  ')
+  Markdown:EOL('\n')
+  WHITE_SPACE('  ')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Text')
+    WHITE_SPACE('  ')
+  Markdown:EOL('\n')
+  WHITE_SPACE('   ')
+  Markdown:EOL('\n')

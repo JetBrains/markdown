@@ -135,10 +135,8 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('ok')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  WHITE_SPACE('    ')
-  Markdown:CODE_BLOCK
-    Markdown:CODE('[foo]: /url "title"')
-    Markdown:EOL('\n')
+  Markdown:CODE_BLOCK('    [foo]: /url "title"')
+  Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('Foo')
@@ -155,12 +153,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:SHORT_REFERENCE_LINK
-      Markdown:LINK_LABEL
-        Markdown:[('[')
-        Markdown:TEXT('Foo')
-        Markdown:](']')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:SHORT_REFERENCE_LINK
+        Markdown:LINK_LABEL
+          Markdown:[('[')
+          Markdown:TEXT('Foo')
+          Markdown:](']')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:SHORT_REFERENCE_LINK
@@ -173,8 +172,7 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('/url')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
-    Markdown:BLOCK_QUOTE('>')
-    WHITE_SPACE(' ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('bar')
   Markdown:EOL('\n')
@@ -216,8 +214,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
-    Markdown:BLOCK_QUOTE('>')
-    WHITE_SPACE(' ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:SHORT_REFERENCE_LINK
         Markdown:LINK_LABEL
