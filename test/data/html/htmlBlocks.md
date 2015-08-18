@@ -71,10 +71,6 @@ bar
 > <div>
 > foo
 
-- <div>
-- foo
-
-bar
 
 <div class
 foo

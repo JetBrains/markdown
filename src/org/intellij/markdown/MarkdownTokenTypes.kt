@@ -9,7 +9,7 @@ public interface MarkdownTokenTypes {
 
         public val BLOCK_QUOTE: IElementType = MarkdownElementType("BLOCK_QUOTE", true)
 
-        public val HTML_BLOCK: IElementType = MarkdownElementType("HTML_BLOCK", true)
+        public val HTML_BLOCK_CONTENT: IElementType = MarkdownElementType("HTML_BLOCK_CONTENT", true)
 
         public val SINGLE_QUOTE: IElementType = MarkdownElementType("'", true)
         public val DOUBLE_QUOTE: IElementType = MarkdownElementType("\"", true)
@@ -40,7 +40,6 @@ public interface MarkdownTokenTypes {
         public val BACKTICK: IElementType = MarkdownElementType("BACKTICK", true)
         public val ESCAPED_BACKTICKS: IElementType = MarkdownElementType("ESCAPED_BACKTICKS", true)
 
-        public val TAG_NAME: IElementType = MarkdownElementType("TAG_NAME", true)
         public val LIST_BULLET: IElementType = MarkdownElementType("LIST_BULLET", true)
         public val URL: IElementType = MarkdownElementType("URL", true)
         public val HORIZONTAL_RULE: IElementType = MarkdownElementType("HORIZONTAL_RULE", true)

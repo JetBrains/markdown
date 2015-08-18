@@ -32,6 +32,17 @@ internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li"
     }
 }
 
+internal class HtmlBlockGeneratingProvider : HtmlGenerator.GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        for (child in node.children) {
+            if (child.type in listOf(MarkdownTokenTypes.EOL, MarkdownTokenTypes.HTML_BLOCK_CONTENT)) {
+                visitor.consumeHtml(child.getTextInNode(text))
+            }
+        }
+        visitor.consumeHtml("\n")
+    }
+}
+
 internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length()

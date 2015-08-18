@@ -18,6 +18,8 @@ public interface MarkdownElementTypes {
 
         public val CODE_SPAN: IElementType = MarkdownElementType("CODE_SPAN")
 
+        public val HTML_BLOCK: IElementType = MarkdownElementType("HTML_BLOCK")
+
         public val PARAGRAPH: IElementType = MarkdownElementType("PARAGRAPH", true)
 
         public val EMPH: IElementType = MarkdownElementType("EMPH")

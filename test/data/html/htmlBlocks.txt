@@ -1,28 +1,35 @@
+<body>
 <table>
+
   <tr>
+
     <td>
            hi
     </td>
+
   </tr>
+
 </table>
 
-okay.
-
+<p>okay.</p>
  <div>
+
   *hello*
-         <foo><a>
+         <foo>
+<a>
 
 <DIV CLASS="foo">
 
-*Markdown*
-
+<p>
+<em>Markdown</em>
+</p>
 </DIV>
 
 <div></div>
+
 ``` c
 int x = 33;
 ```
-
 <!-- Foo
 bar
    baz -->
@@ -47,9 +54,9 @@ else
 
   <!-- foo -->
 
-    <!-- foo -->
-
-Foo
+<pre><code>&lt;!-- foo --&gt;
+</code></pre>
+<p>Foo</p>
 <div>
 bar
 </div>
@@ -57,24 +64,25 @@ bar
 <div>
 bar
 </div>
+
 *foo*
-
 <a href="foo">
 *bar*
 </a>
 
 </ins>
+
 *bar*
-
-<del>*foo*</del>
-
-> <div>
-> foo
-
-- <div>
-- foo
-
-bar
-
+<p>
+<del>
+<em>foo</em>
+</del>
+</p>
+<blockquote>
+<div>
+foo
+</blockquote>
 <div class
 foo
+
+</body>

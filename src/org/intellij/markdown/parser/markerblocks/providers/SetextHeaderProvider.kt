@@ -16,11 +16,13 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
         if (stateInfo.paragraphBlock != null) {
             return emptyList()
         }
-        if (stateInfo.nextConstraints != stateInfo.currentConstraints) {
+        val currentConstaints = stateInfo.currentConstraints
+        if (stateInfo.nextConstraints != currentConstaints) {
             return emptyList()
         }
-        if (pos.offsetInCurrentLine == 0 && pos.nextLine?.matches(REGEX) == true) {
-            return listOf(SetextHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder))
+        if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, currentConstaints)
+                && getNextLineFromConstraints(pos, currentConstaints)?.matches(REGEX) == true) {
+            return listOf(SetextHeaderMarkerBlock(currentConstaints, productionHolder))
         } else {
             return emptyList()
         }
@@ -28,6 +30,16 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         return false
+    }
+
+    private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): String? {
+        val line = pos.nextLine ?: return null
+        val nextLineConstraints = MarkdownConstraints.fillFromPrevious(line, 0, constraints, MarkdownConstraints.BASE)
+        if (nextLineConstraints.extendsPrev(nextLineConstraints)) {
+            return line.substring(nextLineConstraints.getIndent())
+        } else {
+            return null
+        }
     }
 
     companion object {

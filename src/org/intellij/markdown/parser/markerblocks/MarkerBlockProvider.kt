@@ -32,5 +32,9 @@ public interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
             }
             proH.addProduction(listOf(SequentialParser.Node(startOffset..endOffset, type)))
         }
+
+        public fun isStartOfLineWithConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
+            return pos.offsetInCurrentLine == constraints.getIndent()
+        }
     }
 }

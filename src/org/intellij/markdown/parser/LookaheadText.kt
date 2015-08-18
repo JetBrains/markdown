@@ -29,9 +29,6 @@ public class LookaheadText(public val text: String) {
             }'"
         }
 
-        public val textFromPosition: CharSequence
-            get() = text.subSequence(globalPos, text.length())
-
         public val offset: Int
             get() = globalPos
 
@@ -48,9 +45,6 @@ public class LookaheadText(public val text: String) {
         public val nextLineOrEofOffset: Int
             get() = globalPos + (currentLine.length() - localPos)
 
-        public val eofOffset: Int
-            get() = text.length()
-
         public val currentLine: String
             get() = lines.get(lineN)
 
@@ -64,6 +58,12 @@ public class LookaheadText(public val text: String) {
                 null
             }
 
+        public val prevLine: String?
+            get() = if (lineN > 0) {
+                lines.get(lineN - 1)
+            } else {
+                null
+            }
 
         public val char: Char
             get() = text.charAt(globalPos)

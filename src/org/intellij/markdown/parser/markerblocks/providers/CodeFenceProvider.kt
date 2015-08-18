@@ -37,7 +37,7 @@ public class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     }
 
     private fun getFenceStartAndInfo(pos: LookaheadText.Position, constraints: MarkdownConstraints): Pair<String, String>? {
-        if (pos.offsetInCurrentLine != constraints.getIndent()) {
+        if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return null
         }
         val matchResult = REGEX.match(pos.currentLine.subSequence(pos.offsetInCurrentLine, pos.currentLine.length()))

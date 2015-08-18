@@ -23,8 +23,15 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
     inner class HtmlGeneratingVisitor : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
-            providers.get(node.type)?.processNode(this, markdownText, node)
-                    ?: node.acceptChildren(this)
+            @suppress("USELESS_ELVIS")
+            (providers.get(node.type)?.processNode(this, markdownText, node)
+                    ?: node.acceptChildren(this))
+        }
+
+        public fun visitLeaf(node: ASTNode) {
+            @suppress("USELESS_ELVIS")
+            (providers.get(node.type)?.processNode(this, markdownText, node)
+                    ?: consumeHtml(leafText(markdownText, node)))
         }
 
         public final fun consumeHtml(html: CharSequence) {
@@ -65,7 +72,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
             for (child in childrenToRender(node)) {
                 if (child is LeafASTNode) {
-                    visitor.consumeHtml(leafText(text, child))
+                    visitor.visitLeaf(child)
                 } else {
                     child.accept(visitor)
                 }
@@ -150,11 +157,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
             return hashMapOf(
 
                     MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
-                    MarkdownTokenTypes.HTML_BLOCK to object : GeneratingProvider {
-                        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                            visitor.consumeHtml(node.getTextInNode(text));
-                        }
-                    },
+                    MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
                     MarkdownTokenTypes.HTML_TAG to object : GeneratingProvider {
                         override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
                             visitor.consumeHtml(node.getTextInNode(text));

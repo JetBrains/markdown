@@ -21,7 +21,7 @@ public object MarkdownParserUtil {
 
         while (isClearLine(currentPos)) {
             currentPos = currentPos.nextLinePosition()
-                    ?: break
+                    ?: break//return 5
 
             result++
             if (result > 4) {
