@@ -176,4 +176,3 @@ Markdown:MARKDOWN_FILE
     Markdown:HTML_BLOCK_CONTENT('<div class')
     Markdown:EOL('\n')
     Markdown:HTML_BLOCK_CONTENT('foo')
-    Markdown:EOL('\n')

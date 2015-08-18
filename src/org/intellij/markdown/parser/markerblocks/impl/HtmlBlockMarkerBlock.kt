@@ -14,8 +14,14 @@ import kotlin.text.Regex
 
 public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder,
-                                  private val endCheckingRegex: Regex?)
+                                  private val endCheckingRegex: Regex?,
+                                  startPosition: LookaheadText.Position)
 : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    init {
+        productionHolder.addProduction(listOf(SequentialParser.Node(
+                startPosition.offset..startPosition.nextLineOrEofOffset, MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
+    }
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
@@ -29,9 +35,6 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
 
         val prevLine = pos.prevLine ?: return MarkerBlock.ProcessingResult.DEFAULT
-        productionHolder.addProduction(listOf(SequentialParser.Node(
-                pos.offset - prevLine.length() + constraints.getIndent()..pos.offset, MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
-
         if (!MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, constraints, MarkdownConstraints.BASE).extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
@@ -41,6 +44,13 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
         } else if (endCheckingRegex != null && endCheckingRegex.match(prevLine) != null) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
+
+        if (pos.currentLine.isNotEmpty()) {
+            productionHolder.addProduction(listOf(SequentialParser.Node(
+                    pos.offset + 1 + constraints.getIndent()..pos.nextLineOrEofOffset, MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
+        }
+
+
         return MarkerBlock.ProcessingResult.CANCEL
     }
 
