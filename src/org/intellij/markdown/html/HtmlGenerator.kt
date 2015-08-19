@@ -207,6 +207,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 },
 
                 MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
+                MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
 
                 MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {

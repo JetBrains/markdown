@@ -49,6 +49,10 @@ foo <a href="/uri">bar</a>
 <p>Foo
   bar: /url</p>
 <p>BazFoo bar</p>
-<p>Foo</p>
-<p>Foo</p>
+<p>
+<a href="/url" title="title">Foo</a>
+</p>
+<p>
+<a href="/url" title="title">Foo</a>
+</p>
 </body>
