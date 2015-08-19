@@ -5,6 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
+import org.intellij.markdown.parser.LinkMap
 
 internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li") {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
@@ -81,4 +82,23 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
         }
         visitor.consumeHtml("</code></pre>")
     }
+}
+
+internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
+: HtmlGenerator.TransparentInlineHolderProvider() {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        val linkLabelNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_LABEL })
+                ?: return super.processNode(visitor, text, node)
+        val linkInfo = linkMap.getLinkInfo(linkLabelNode.getTextInNode(text))
+                ?: return super.processNode(visitor, text, node)
+        val linkTextNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TEXT })
+
+        val titleText = linkInfo.title?.let { " title=\"${it}\"" } ?: ""
+        visitor.consumeHtml("<a href=\"${linkInfo.destination}\"${titleText}>")
+
+        (linkTextNode ?: linkLabelNode).accept(visitor)
+
+        visitor.consumeHtml("</a>")
+    }
+
 }

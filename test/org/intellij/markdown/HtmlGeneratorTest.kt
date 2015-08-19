@@ -2,6 +2,7 @@ package org.intellij.markdown;
 
 import junit.framework.TestCase
 import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
 import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcessor
 import java.io.File
@@ -11,7 +12,7 @@ public class HtmlGeneratorTest : TestCase() {
     private fun defaultTest() {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
         val tree = MarkdownParser(CommonMarkMarkerProcessor.Factory).buildMarkdownTreeFromString(src);
-        val html = HtmlGenerator(src, tree).generateHtml()
+        val html = HtmlGenerator(src, tree, LinkMap.buildLinkMap(tree, src)).generateHtml()
 
         val result = formatHtmlForTests(html)
 
@@ -55,6 +56,10 @@ public class HtmlGeneratorTest : TestCase() {
     }
 
     public fun testHtmlBlocks() {
+        defaultTest()
+    }
+
+    public fun testLinks() {
         defaultTest()
     }
 
