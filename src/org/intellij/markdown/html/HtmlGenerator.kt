@@ -148,7 +148,21 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
                 MarkdownElementTypes.BLOCK_QUOTE to SimpleTagProvider("blockquote"),
 
-                MarkdownElementTypes.ORDERED_LIST to SimpleTagProvider("ol"),
+                MarkdownElementTypes.ORDERED_LIST to object : SimpleTagProvider("ol") {
+                    override fun openTag(text: String, node: ASTNode): String {
+                        node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
+                                ?.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)
+                                ?.getTextInNode(text)?.toString()?.trim()?.let {
+                            val number = it.substring(0, it.length() - 1).trimStart('0')
+                            if (number.equals("1")) {
+                                return "<ol>"
+                            }
+
+                            return "<ol start=\"${ if (number.isEmpty()) "0" else number }\">"
+                        }
+                        return "<ol>"
+                    }
+                },
                 MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
                 MarkdownElementTypes.LIST_ITEM to ListItemGeneratingProvider(),
 

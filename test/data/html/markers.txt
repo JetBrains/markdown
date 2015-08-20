@@ -19,8 +19,13 @@ This is lazy third line</p>
 <li>This is numered list</li>
 <li>And the second point</li>
 </ol>
-<pre>
-<code>This is *code* fence</code>
-</pre>
+<ol start="0">
+<li>Another list</li>
+</ol>
+<ol>
+<li>Another list</li>
+</ol>
+<pre><code>This is *code* fence
+</code></pre>
 <p>And that's all!</p>
 </body>

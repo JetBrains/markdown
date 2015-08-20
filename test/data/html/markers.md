@@ -15,6 +15,12 @@ This is lazy third line
 1. This is numered list
 2. And the second point
 
+
+0. Another list
+
+
+001. Another list
+
 ```
 This is *code* fence
 ```
