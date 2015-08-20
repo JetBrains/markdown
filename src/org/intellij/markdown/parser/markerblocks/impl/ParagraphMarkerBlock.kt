@@ -41,7 +41,7 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        val posToCheck = pos.nextPosition(1 + nextLineConstraints.getIndent())
+        val posToCheck = pos.nextPosition(1 + nextLineConstraints.getIndentAdapted(pos.currentLine))
         if (posToCheck == null || interruptsParagraph(posToCheck, nextLineConstraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

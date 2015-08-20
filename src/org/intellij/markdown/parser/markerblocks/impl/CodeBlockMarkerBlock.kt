@@ -38,7 +38,7 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
             ?: return MarkerBlock.ProcessingResult.DEFAULT
 
         val nextConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
-        val shifted = nonemptyPos.nextPosition(1 + nextConstraints.getIndent())
+        val shifted = nonemptyPos.nextPosition(1 + nextConstraints.getIndentAdapted(nonemptyPos.currentLine))
         val nonWhitespace = shifted?.nextPosition(shifted.charsToNonWhitespace() ?: 0)
             ?: return MarkerBlock.ProcessingResult.DEFAULT
 

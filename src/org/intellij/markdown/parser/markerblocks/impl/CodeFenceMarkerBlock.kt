@@ -49,7 +49,7 @@ public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
         val nextLineOffset = pos.nextLineOrEofOffset
         realInterestingOffset = nextLineOffset
 
-        val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length())
+        val currentLine = nextLineConstraints.eatItselfFromString(pos.currentLine)
         if (endsThisFence(currentLine)) {
             productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset + 1..pos.nextLineOrEofOffset,
                     MarkdownTokenTypes.CODE_FENCE_END)))

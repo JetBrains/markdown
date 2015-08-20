@@ -82,7 +82,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         }
 
         if (pos.char == '\n') {
-            return pos.nextPosition(stateInfo.nextConstraints.getIndent() + 1)
+            return pos.nextPosition(stateInfo.nextConstraints.getIndentAdapted(pos.currentLine) + 1)
         }
 
         return pos.nextPosition()

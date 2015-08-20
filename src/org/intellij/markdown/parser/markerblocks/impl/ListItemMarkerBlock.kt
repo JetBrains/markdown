@@ -29,7 +29,7 @@ public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        val nonemptyPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos)
+        val nonemptyPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos, eolN)
                 ?: return MarkerBlock.ProcessingResult.DEFAULT
         val nextLineConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
         if (!nextLineConstraints.extendsPrev(constraints)) {

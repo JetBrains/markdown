@@ -7,12 +7,24 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                                                      private var types: CharArray,
                                                      private var isExplicit: BooleanArray) {
 
+    public fun eatItselfFromString(s: CharSequence) : CharSequence {
+        if (s.length() < getIndent()) {
+            return ""
+        } else {
+            return s.subSequence(getIndent(), s.length())
+        }
+    }
+
     public fun getIndent(): Int {
         if (indents.size() == 0) {
             return 0
         }
 
         return indents.last()
+    }
+
+    public fun getIndentAdapted(s: CharSequence): Int {
+        return Math.min(getIndent(), s.length())
     }
 
     public fun getLastType(): Char? {
@@ -129,7 +141,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
         offset++
 
         var spacesAfter = 0
-        if (offset < line.length() && line[offset] == ' ') {
+        if (offset >= line.length() || line[offset] == ' ') {
             spacesAfter = 1
         }
 
@@ -170,7 +182,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
             var result = fillFromPrevious(line, 0, prevLineConstraints, BASE)
 
             while (true) {
-                val offset = result.getIndent()
+                val offset = result.getIndentAdapted(line)
                 result = result.addModifierIfNeeded(pos.nextPosition(1 + offset))
                         ?: break
             }
@@ -235,6 +247,10 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                         offset++;
                         deltaRemaining--
                     }
+                    if (offset == line.length()) {
+                        deltaRemaining = 0
+                    }
+
                     if (deltaRemaining > 0) {
                         break
                     }
@@ -244,7 +260,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
 
                 var result = constraints
                 if (bqIndent != null) {
-                    val bonusForTheBlockquote = if (offset < line.length() && line[offset] == ' ')
+                    val bonusForTheBlockquote = if (offset >= line.length() || line[offset] == ' ')
                         1
                     else
                         0

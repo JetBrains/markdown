@@ -31,8 +31,11 @@ public object MarkdownParserUtil {
         return result
     }
 
-    public fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position): LookaheadText.Position? {
+    public fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position, eolsToSkip: Int): LookaheadText.Position? {
         var currentPos = pos;
+        repeat(eolsToSkip - 1) {
+            currentPos = pos.nextLinePosition() ?: return null
+        }
         while (currentPos.charsToNonWhitespace() == null) {
             currentPos = currentPos.nextLinePosition()
                     ?: return null
@@ -63,8 +66,7 @@ public object MarkdownParserUtil {
         var currentPos = pos;
 
         while (true) {
-            currentPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(currentPos)
-                    ?: return null
+//            currentPos = currentPos.nextLinePosition() ?: return null
 
             val nextLineConstraints = MarkdownConstraints.fromBase(currentPos, constraints)
             // kinda equals
@@ -72,10 +74,9 @@ public object MarkdownParserUtil {
                 return null
             }
 
-            val stringAfterConstaints = currentPos.currentLine.subSequence(nextLineConstraints.getIndent(),
-                    currentPos.currentLine.length())
+            val stringAfterConstraints = nextLineConstraints.eatItselfFromString(currentPos.currentLine)
 
-            if (!MarkdownParserUtil.isEmptyOrSpaces(stringAfterConstaints)) {
+            if (!MarkdownParserUtil.isEmptyOrSpaces(stringAfterConstraints)) {
                 return currentPos
             } else {
                 currentPos = currentPos.nextLinePosition()

@@ -1,0 +1,18 @@
+Markdown:MARKDOWN_FILE
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('   > ')
+    Markdown:BLOCK_QUOTE
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:ORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_NUMBER('1.  ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('one')
+          Markdown:EOL('\n')
+          WHITE_SPACE('>>')
+          Markdown:EOL('\n')
+          WHITE_SPACE('>>     ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('two')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')

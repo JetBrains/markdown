@@ -21,7 +21,7 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
             return emptyList()
         }
         if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, currentConstaints)
-                && getNextLineFromConstraints(pos, currentConstaints)?.matches(REGEX) == true) {
+                && getNextLineFromConstraints(pos, currentConstaints)?.let { REGEX.matches(it) } == true) {
             return listOf(SetextHeaderMarkerBlock(currentConstaints, productionHolder))
         } else {
             return emptyList()
@@ -32,11 +32,11 @@ public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInf
         return false
     }
 
-    private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): String? {
+    private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): CharSequence? {
         val line = pos.nextLine ?: return null
         val nextLineConstraints = MarkdownConstraints.fillFromPrevious(line, 0, constraints, MarkdownConstraints.BASE)
         if (nextLineConstraints.extendsPrev(constraints)) {
-            return line.substring(nextLineConstraints.getIndent())
+            return nextLineConstraints.eatItselfFromString(line)
         } else {
             return null
         }

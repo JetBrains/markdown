@@ -20,7 +20,7 @@ public interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
                                            oldC: MarkdownConstraints,
                                            newC: MarkdownConstraints) {
             val startOffset = pos.offset - pos.offsetInCurrentLine + oldC.getIndent()
-            val endOffset = pos.offset - pos.offsetInCurrentLine + newC.getIndent()
+            val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + newC.getIndent(), pos.nextLineOrEofOffset)
 
             val type = when (newC.getLastType()) {
                 '>' ->
