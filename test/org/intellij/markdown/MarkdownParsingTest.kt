@@ -30,7 +30,7 @@ public class MarkdownParsingTest : TestCase() {
         if (sb.length() > 0) {
             sb.append('\n');
         }
-        (depth * 2).times { sb.append(' '); }
+        repeat(depth * 2) { sb.append(' '); }
 
         sb.append(tree.type.toString());
         if (tree is LeafASTNode) {
