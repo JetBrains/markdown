@@ -8,6 +8,7 @@ import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
+import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 import kotlin.text.MatchResult
 import kotlin.text.Regex
@@ -181,8 +182,8 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
                     override fun generateTag(text: String, node: ASTNode): String {
                         val linkText = node.getTextInNode(text)
-                        val link = entityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true)
-                        return "<a href=\"$link\">$link</a>"
+                        val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true, false)
+                        return "<a href=\"${LinkMap.normalizeDestination(linkText)}\">$link</a>"
                     }
                 },
 
@@ -190,16 +191,16 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 MarkdownElementTypes.LINK_LABEL to TransparentInlineHolderProvider(),
                 MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
                 MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
-//                MarkdownElementTypes.LINK_DESTINATION to object : TransparentInlineHolderProvider(1, -1) {
-//                    override fun childrenToRender(node: ASTNode): List<ASTNode> {
-//                        if (node.children.first().type == MarkdownTokenTypes.LT) {
-//                            return super.childrenToRender(node)
-//                        } else {
-//                            return node.children
-//                        }
-//                    }
-//                },
-//                //                    MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(1, -1),
+                //                MarkdownElementTypes.LINK_DESTINATION to object : TransparentInlineHolderProvider(1, -1) {
+                //                    override fun childrenToRender(node: ASTNode): List<ASTNode> {
+                //                        if (node.children.first().type == MarkdownTokenTypes.LT) {
+                //                            return super.childrenToRender(node)
+                //                        } else {
+                //                            return node.children
+                //                        }
+                //                    }
+                //                },
+                //                //                    MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(1, -1),
 
                 MarkdownElementTypes.INLINE_LINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
@@ -210,7 +211,7 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                             LinkMap.normalizeDestination(it)
                         } ?: ""
                         val titleText = if (titleNode != null)
-                            " title=\"${leafText(text, titleNode, false).let { LinkMap.normalizeTitle(it) }}\""
+                            " title=\"${titleNode.getTextInNode(text).let { LinkMap.normalizeTitle(it) }}\""
                         else
                             ""
 
@@ -270,13 +271,11 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
     }
 
     companion object {
-        private val entityConverter = EntityConverter()
-
-        fun leafText(text: String, node: ASTNode, replaceEscapes: Boolean = true): CharSequence {
+        fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
-           return entityConverter.replaceEntities(node.getTextInNode(text), replaceEscapes)
+            return EntityConverter.replaceEntities(node.getTextInNode(text), replaceEscapesAndEntities, replaceEscapesAndEntities)
         }
 
         fun trimIndents(text: CharSequence, indent: Int): CharSequence {

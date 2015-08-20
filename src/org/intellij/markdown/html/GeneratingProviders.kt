@@ -5,6 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
+import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
 internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li") {
@@ -97,8 +98,8 @@ internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
                 ?: return fallbackProvider.processNode(visitor, text, node)
         val linkTextNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TEXT })
 
-        val titleText = linkInfo.title?.let { " title=\"${it}\"" } ?: ""
-        visitor.consumeHtml("<a href=\"${linkInfo.destination}\"${titleText}>")
+        val titleText = linkInfo.title?.let { " title=\"${EntityConverter.replaceEntities(it, true, true)}\"" } ?: ""
+        visitor.consumeHtml("<a href=\"${EntityConverter.replaceEntities(linkInfo.destination, true, true)}\"${titleText}>")
 
         processLabel(visitor, text, linkTextNode ?: linkLabelNode)
 

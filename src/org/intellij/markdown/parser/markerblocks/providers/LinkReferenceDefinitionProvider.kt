@@ -21,6 +21,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
         }
 
         val matchResult = LINK_DEFINITION_REGEX.match(pos.textFromPosition) ?: return emptyList()
+        var furthestOffset = 0
         for (i in 1..matchResult.groups.size() - 1) {
             matchResult.groups[i]?.let { group ->
                 productionHolder.addProduction(listOf(SequentialParser.Node(
@@ -30,10 +31,11 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
                     3 -> MarkdownElementTypes.LINK_TITLE
                     else -> throw AssertionError("There are no more than three groups in this regex")
                 })))
+                furthestOffset = group.range.end
             }
         }
 
-        val matchLength = matchResult.range.end - matchResult.range.start + 1
+        val matchLength = furthestOffset - matchResult.range.start + 1
         val endPosition = pos.nextPosition(matchLength)
 
         if (endPosition != null && !isEndOfLine(endPosition)) {
@@ -51,14 +53,14 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
         val WHSP = "[ \\t]*"
 
         val NOT_CHARS = { c: String ->
-            val nonWhitespace = "(?:[^ \\t\\n$c]|\\\\[$c])"
-            val anyChar = "(?:[^$c\\n]|\\\\[$c])"
+            val nonWhitespace = "(?:\\\\[$c]|[^ \\t\\n$c])"
+            val anyChar = "(?:\\\\[$c]|[^$c\\n])"
             "$anyChar*(?:\\n$anyChar*$nonWhitespace$WHSP)*(?:\\n$WHSP)?"
         }
 
         val LINK_LABEL = "\\[${NOT_CHARS("\\[\\]")}\\]"
 
-        val NONCONTROL = "(?:[^ \\n\\t\\(\\)]|\\\\[\\(\\)])"
+        val NONCONTROL = "(?:\\\\[\\(\\)]|[^ \\n\\t\\(\\)])"
 
         val LINK_DESTINATION = "(?:<(?:\\\\[<>]|[^<>])*>|${NONCONTROL}*\\(${NONCONTROL}*\\)${NONCONTROL}*|${NONCONTROL}+)"
 
@@ -69,7 +71,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
         val LINK_DEFINITION_REGEX = Regex(
                 "^ {0,3}(${LINK_LABEL}):" +
                         "${NO_MORE_ONE_NEWLINE}(${LINK_DESTINATION})" +
-                        "(?:${NO_MORE_ONE_NEWLINE}(${LINK_TITLE}))?"
+                        "(?:${NO_MORE_ONE_NEWLINE}(${LINK_TITLE})$WHSP(?:\\n|$))?"
         )
 
         fun addToRangeAndWiden(range: IntRange, t: Int): IntRange {

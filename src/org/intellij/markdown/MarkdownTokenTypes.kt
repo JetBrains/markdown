@@ -24,8 +24,6 @@ public interface MarkdownTokenTypes {
         public val EXCLAMATION_MARK: IElementType = MarkdownElementType("!", true)
 
 
-        public val HTML_ENTITY: IElementType = MarkdownElementType("HTML_ENTITY", true)
-
         public val HARD_LINE_BREAK: IElementType = MarkdownElementType("BR", true)
         public val EOL: IElementType = MarkdownElementType("EOL", true)
 

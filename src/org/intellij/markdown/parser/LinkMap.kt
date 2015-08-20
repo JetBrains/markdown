@@ -4,6 +4,8 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
+import org.intellij.markdown.html.entities.EntityConverter
+import java.net.URLEncoder
 import java.util.HashMap
 import java.util.Locale
 import kotlin.text.Regex
@@ -40,9 +42,23 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
             return SPACES_REGEX.replace(label, " ").toLowerCase(Locale.US)
         }
 
-        public fun normalizeDestination(s: CharSequence): CharSequence = clearBounding(s, "<>")
+        public fun normalizeDestination(s: CharSequence): CharSequence {
+            val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, true)
+            val sb = StringBuilder()
+            for (c in dest) {
+                val code = c.toInt()
+                if (code == 32) {
+                    sb.append("%20")
+                } else if (code < 32 || code >= 128 || "\".<>\\^_`{|}~".contains(c)) {
+                    sb.append(URLEncoder.encode("${c}", "UTF-8"))
+                } else {
+                    sb.append(c)
+                }
+            }
+            return sb.toString()
+        }
 
-        public fun normalizeTitle(s: CharSequence): CharSequence = clearBounding(s, "\"\"", "''", "()")
+        public fun normalizeTitle(s: CharSequence): CharSequence = EntityConverter.replaceEntities(clearBounding(s, "\"\"", "''", "()"), true, true)
 
         private fun clearBounding(s: CharSequence, vararg boundQuotes: String): CharSequence {
             if (s.length() == 0) {

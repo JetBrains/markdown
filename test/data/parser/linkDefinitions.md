@@ -1,3 +1,8 @@
+[foo]: /url
+"title" ok
+
+[foo]: /url\bar\*baz "foo\"bar\baz"
+
 [foo]: /url "title"
 
    [foo]:
