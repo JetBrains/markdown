@@ -40,3 +40,18 @@ Foo
 [*foo*]: /url "title"
 
 [foo`]: /url "tit`le"
+
+[Foo
+  bar]: /url 'tit
+            le
+            le
+            le'
+
+
+[Foo
+  bar]: /url 'tit
+            le
+            le
+
+            le'
+

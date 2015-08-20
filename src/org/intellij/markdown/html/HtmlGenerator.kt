@@ -173,9 +173,9 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 },
 
 
-                MarkdownElementTypes.LINK_LABEL to TransparentInlineHolderProvider(1, -1),
-                MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(1, -1),
-                MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(1, -1),
+                MarkdownElementTypes.LINK_LABEL to TransparentInlineHolderProvider(),
+                MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
+                MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
 //                MarkdownElementTypes.LINK_DESTINATION to object : TransparentInlineHolderProvider(1, -1) {
 //                    override fun childrenToRender(node: ASTNode): List<ASTNode> {
 //                        if (node.children.first().type == MarkdownTokenTypes.LT) {
@@ -201,7 +201,10 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                             ""
 
                         visitor.consumeHtml("<a href=\"${destinationText}\"${titleText}>")
-                        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.accept(visitor)
+
+                        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.let { label ->
+                            ReferenceLinksGeneratingProvider.processLabel(visitor, text, label)
+                        }
                         visitor.consumeHtml("</a>")
                     }
                 },

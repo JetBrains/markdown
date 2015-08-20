@@ -46,13 +46,16 @@ foo <a href="/uri">bar</a>
 <p>
 <a href="/url" title="title">foo</a>
 </p>
-<p>Foo
-  bar: /url</p>
-<p>BazFoo bar</p>
 <p>
-<a href="/url" title="title">Foo</a>
+<a href="/url">Baz</a>
 </p>
 <p>
 <a href="/url" title="title">Foo</a>
 </p>
+<p>
+<a href="/url" title="title">Foo</a>
+</p>
+<p>[fooe]: /url 'title</p>
+<p>with blank line'</p>
+<p>[fooe]</p>
 </body>

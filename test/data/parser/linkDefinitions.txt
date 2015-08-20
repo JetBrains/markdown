@@ -43,12 +43,21 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_DESTINATION('/url')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
-    WHITE_SPACE(':')
-    Markdown:EOL('\n')
-    Markdown:EOL('\n')
-    Markdown:LINK_DESTINATION('[foo]')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown::(':')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
@@ -154,3 +163,40 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_DESTINATION('/url')
     WHITE_SPACE(' ')
     Markdown:LINK_TITLE('"tit`le"')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[Foo\n  bar]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('/url')
+    WHITE_SPACE(' ')
+    Markdown:LINK_TITLE(''tit\n            le\n            le\n            le'')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('Foo')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:TEXT('bar')
+        Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('/url')
+    WHITE_SPACE(' ')
+    Markdown:'(''')
+    Markdown:TEXT('tit')
+    Markdown:EOL('\n')
+    WHITE_SPACE('            ')
+    Markdown:TEXT('le')
+    Markdown:EOL('\n')
+    WHITE_SPACE('            ')
+    Markdown:TEXT('le')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:CODE_BLOCK('            le'')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')

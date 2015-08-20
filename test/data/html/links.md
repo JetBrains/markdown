@@ -38,3 +38,9 @@
 [foo]: /url "title"
 
 [Foo]
+
+[fooe]: /url 'title
+
+with blank line'
+
+[fooe]

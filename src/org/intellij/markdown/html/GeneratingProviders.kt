@@ -86,19 +86,30 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
 
 internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
 : HtmlGenerator.TransparentInlineHolderProvider() {
+
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val linkLabelNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_LABEL })
-                ?: return super.processNode(visitor, text, node)
+                ?: return fallbackProvider.processNode(visitor, text, node)
         val linkInfo = linkMap.getLinkInfo(linkLabelNode.getTextInNode(text))
-                ?: return super.processNode(visitor, text, node)
+                ?: return fallbackProvider.processNode(visitor, text, node)
         val linkTextNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TEXT })
 
         val titleText = linkInfo.title?.let { " title=\"${it}\"" } ?: ""
         visitor.consumeHtml("<a href=\"${linkInfo.destination}\"${titleText}>")
 
-        (linkTextNode ?: linkLabelNode).accept(visitor)
+        processLabel(visitor, text, linkTextNode ?: linkLabelNode)
 
         visitor.consumeHtml("</a>")
+    }
+
+    companion object {
+        val fallbackProvider = HtmlGenerator.TransparentInlineHolderProvider()
+
+        val labelProvider = HtmlGenerator.TransparentInlineHolderProvider(1, -1)
+
+        public fun processLabel(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+            labelProvider.processNode(visitor, text, node)
+        }
     }
 
 }
