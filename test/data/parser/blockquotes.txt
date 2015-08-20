@@ -160,8 +160,7 @@ Markdown:MARKDOWN_FILE
     Markdown:PARAGRAPH
       Markdown:TEXT('bar')
       Markdown:EOL('\n')
-      WHITE_SPACE(' ')
-      Markdown:>('>')
+      Markdown:BLOCK_QUOTE(' >')
       WHITE_SPACE(' ')
       Markdown:TEXT('baz')
   Markdown:EOL('\n')

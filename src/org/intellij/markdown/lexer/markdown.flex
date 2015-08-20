@@ -185,7 +185,7 @@ SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
-%state HTML_BLOCK, TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
+%state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 
 %%
 
@@ -194,7 +194,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 <YYINITIAL> {
 
   // blockquote
-  ">" {
+  {WHITE_SPACE}{0,3} ">" {
     return Token.BLOCK_QUOTE;
   }
 
@@ -296,15 +296,6 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
     return parseDelimited.returnType;
   }
 
-}
-
-<HTML_BLOCK> {
-  {EOL} {WHITE_SPACE}* {EOL} {
-    yybegin(YYINITIAL);
-    yypushback(yylength());
-  }
-
-  {EOL} | .+ { return Token.HTML_BLOCK; }
 }
 
 . { return Token.TEXT; }

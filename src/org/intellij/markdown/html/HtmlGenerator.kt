@@ -234,6 +234,11 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     }
 
                 },
+                MarkdownTokenTypes.HARD_LINE_BREAK to object : GeneratingProvider {
+                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                        visitor.consumeHtml("<br />")
+                    }
+                },
 
                 MarkdownElementTypes.PARAGRAPH to SimpleInlineTagProvider("p"),
                 MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
