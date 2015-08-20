@@ -7,17 +7,19 @@ Markdown:MARKDOWN_FILE
     Markdown:INLINE_LINK
       Markdown:LINK_TEXT
         Markdown:[('[')
-        Markdown:!('!')
-        Markdown:SHORT_REFERENCE_LINK
-          Markdown:LINK_LABEL
-            Markdown:[('[')
-            Markdown:TEXT('Build Status')
-            Markdown:](']')
-        Markdown:(('(')
-        Markdown:TEXT('https')
-        Markdown::(':')
-        Markdown:TEXT('//travis-ci.org/puppetlabs/puppetlabs-apache.png?branch=master')
-        Markdown:)(')')
+        Markdown:IMAGE
+          Markdown:!('!')
+          Markdown:INLINE_LINK
+            Markdown:LINK_TEXT
+              Markdown:[('[')
+              Markdown:TEXT('Build Status')
+              Markdown:](']')
+            Markdown:(('(')
+            Markdown:LINK_DESTINATION
+              Markdown:TEXT('https')
+              Markdown::(':')
+              Markdown:TEXT('//travis-ci.org/puppetlabs/puppetlabs-apache.png?branch=master')
+            Markdown:)(')')
         Markdown:](']')
       Markdown:(('(')
       Markdown:LINK_DESTINATION
@@ -33,8 +35,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('1.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('1. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -51,8 +52,7 @@ Markdown:MARKDOWN_FILE
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('2.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('2. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -69,8 +69,7 @@ Markdown:MARKDOWN_FILE
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('3.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('3. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -86,11 +85,10 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('#setup')
           Markdown:)(')')
       Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+      WHITE_SPACE('   ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -106,10 +104,9 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#beginning-with-apache')
               Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -126,8 +123,7 @@ Markdown:MARKDOWN_FILE
               Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('4.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('4. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -143,11 +139,10 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('#usage')
           Markdown:)(')')
       Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+      WHITE_SPACE('   ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -159,11 +154,10 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#classes-and-defined-types')
               Markdown:)(')')
           Markdown:EOL('\n')
-          WHITE_SPACE('        ')
+          WHITE_SPACE('      ')
           Markdown:UNORDERED_LIST
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -178,10 +172,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#class-apache')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -203,10 +196,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('mods')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -224,10 +216,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#defined-type-apachemod')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -248,10 +239,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#classes-apachemodname')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -272,10 +262,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#class-apachemodpagespeed')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -296,10 +285,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#class-apachemodphp')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -320,10 +308,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#class-apachemodssl')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -344,10 +331,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#class-apachemodwsgi')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -365,10 +351,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#defined-type-apachevhost')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -391,10 +376,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#parameter-directories-for-apachevhost')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -409,10 +393,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#ssl-parameters-for-apachevhost')
                   Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -428,10 +411,9 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#virtual-host-examples')
               Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -443,11 +425,10 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#load-balancing')
               Markdown:)(')')
           Markdown:EOL('\n')
-          WHITE_SPACE('        ')
+          WHITE_SPACE('      ')
           Markdown:UNORDERED_LIST
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -465,10 +446,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#defined-type-apachebalancer')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -486,10 +466,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#defined-type-apachebalancermember')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -506,8 +485,7 @@ Markdown:MARKDOWN_FILE
                   Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('5.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('5. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -523,11 +501,10 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('#reference')
           Markdown:)(')')
       Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+      WHITE_SPACE('   ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -539,11 +516,10 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#classes')
               Markdown:)(')')
           Markdown:EOL('\n')
-          WHITE_SPACE('        ')
+          WHITE_SPACE('      ')
           Markdown:UNORDERED_LIST
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -555,10 +531,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#public-classes')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -570,10 +545,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#private-classes')
                   Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -585,11 +559,10 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#defined-types')
               Markdown:)(')')
           Markdown:EOL('\n')
-          WHITE_SPACE('        ')
+          WHITE_SPACE('      ')
           Markdown:UNORDERED_LIST
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -601,10 +574,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#public-defined-types')
                   Markdown:)(')')
             Markdown:EOL('\n')
-            WHITE_SPACE('        ')
+            WHITE_SPACE('      ')
             Markdown:LIST_ITEM
-              Markdown:LIST_BULLET('*')
-              WHITE_SPACE(' ')
+              Markdown:LIST_BULLET('  * ')
               Markdown:PARAGRAPH
                 Markdown:INLINE_LINK
                   Markdown:LINK_TEXT
@@ -616,10 +588,9 @@ Markdown:MARKDOWN_FILE
                     Markdown:TEXT('#private-defined-types')
                   Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -632,8 +603,7 @@ Markdown:MARKDOWN_FILE
               Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('6.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('6. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -652,8 +622,7 @@ Markdown:MARKDOWN_FILE
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_NUMBER('7.')
-      WHITE_SPACE(' ')
+      Markdown:LIST_NUMBER('7. ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -669,11 +638,10 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('#development')
           Markdown:)(')')
       Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+      WHITE_SPACE('   ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -685,10 +653,9 @@ Markdown:MARKDOWN_FILE
                 Markdown:TEXT('#contributing')
               Markdown:)(')')
         Markdown:EOL('\n')
-        WHITE_SPACE('    ')
+        WHITE_SPACE('   ')
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET(' * ')
           Markdown:PARAGRAPH
             Markdown:INLINE_LINK
               Markdown:LINK_TEXT
@@ -743,8 +710,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('configuration files and directories')
         WHITE_SPACE(' ')
@@ -752,11 +718,10 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('created and written to')
         Markdown:)(')')
       Markdown:EOL('\n')
-      WHITE_SPACE('    ')
+      WHITE_SPACE('  ')
       Markdown:UNORDERED_LIST
         Markdown:LIST_ITEM
-          Markdown:LIST_BULLET('*')
-          WHITE_SPACE(' ')
+          Markdown:LIST_BULLET('  * ')
           Markdown:PARAGRAPH
             Markdown:STRONG
               Markdown:EMPH('*')
@@ -776,32 +741,27 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('managed by Puppet will be purged.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('package/service/configuration files for Apache')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Apache modules')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('virtual hosts')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('listened-to ports')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -823,7 +783,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache':  }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache':  }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -853,7 +813,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache':\n      default_mods        => false,\n      default_confd_files => false,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      default_mods        => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      default_confd_files => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -888,7 +854,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache': }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache': }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -903,7 +869,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'first.example.com':\n      port    => '80',\n      docroot => '/var/www/first',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'first.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port    => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/var/www/first',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -938,7 +910,17 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'second.example.com':\n      port          => '80',\n      docroot       => '/var/www/second',\n      docroot_owner => 'third',\n      docroot_group => 'third',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'second.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port          => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot       => '/var/www/second',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot_owner => 'third',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot_group => 'third',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -951,7 +933,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'ssl.example.com':\n      port    => '443',\n      docroot => '/var/www/ssl',\n      ssl     => true,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'ssl.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port    => '443',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/var/www/ssl',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl     => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -964,7 +954,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'fourth.example.com':\n      port     => '443',\n      docroot  => '/var/www/fourth',\n      ssl      => true,\n      ssl_cert => '/etc/ssl/fourth.example.com.cert',\n      ssl_key  => '/etc/ssl/fourth.example.com.key',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'fourth.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port     => '443',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot  => '/var/www/fourth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl      => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_cert => '/etc/ssl/fourth.example.com.cert',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_key  => '/etc/ssl/fourth.example.com.key',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -985,7 +987,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'subdomain.example.com':\n      ip      => '127.0.0.1',\n      port    => '80',\n      docroot => '/var/www/subdomain',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'subdomain.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip      => '127.0.0.1',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port    => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/var/www/subdomain',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1015,7 +1025,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'subdomain.loc':\n      vhost_name       => '*',\n      port             => '80',\n      virtual_docroot' => '/var/www/%-2+',\n      docroot          => '/var/www',\n      serveraliases    => ['*.loc',],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'subdomain.loc':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      vhost_name       => '*',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port             => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      virtual_docroot' => '/var/www/%-2+',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot          => '/var/www',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      serveraliases    => ['*.loc',],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1028,7 +1050,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'suphp.example.com':\n      port                => '80',\n      docroot             => '/home/appuser/myphpapp',\n      suphp_addhandler    => 'x-httpd-php',\n      suphp_engine        => 'on',\n      suphp_configpath    => '/etc/php5/apache2',\n      directories         => { path => '/home/appuser/myphpapp',\n        'suphp'           => { user => 'myappuser', group => 'myappgroup' },\n      }\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'suphp.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port                => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot             => '/home/appuser/myphpapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_addhandler    => 'x-httpd-php',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_engine        => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_configpath    => '/etc/php5/apache2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories         => { path => '/home/appuser/myphpapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'suphp'           => { user => 'myappuser', group => 'myappgroup' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1041,7 +1081,37 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'wsgi.example.com':\n      port                        => '80',\n      docroot                     => '/var/www/pythonapp',\n      wsgi_application_group      => '%{GLOBAL}',\n      wsgi_daemon_process         => 'wsgi',\n      wsgi_daemon_process_options => {\n        processes    => '2',\n        threads      => '15',\n        display-name => '%{GROUP}',\n       },\n      wsgi_import_script          => '/var/www/demo.wsgi',\n      wsgi_import_script_options  =>\n        { process-group => 'wsgi', application-group => '%{GLOBAL}' },\n      wsgi_process_group          => 'wsgi',\n      wsgi_script_aliases         => { '/' => '/var/www/demo.wsgi' },\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'wsgi.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port                        => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot                     => '/var/www/pythonapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_application_group      => '%{GLOBAL}',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_daemon_process         => 'wsgi',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_daemon_process_options => {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        processes    => '2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        threads      => '15',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        display-name => '%{GROUP}',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('       },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_import_script          => '/var/www/demo.wsgi',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_import_script_options  =>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { process-group => 'wsgi', application-group => '%{GLOBAL}' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_process_group          => 'wsgi',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_script_aliases         => { '/' => '/var/www/demo.wsgi' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1073,7 +1143,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'wordpress.example.com':\n      port                => '80',\n      docroot             => '/var/www/wordpress',\n      fallbackresource    => '/index.php',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'wordpress.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port                => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot             => '/var/www/wordpress',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      fallbackresource    => '/index.php',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1683,7 +1761,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'default-ssl':\n      port            => 443,\n      ssl             => true,\n      docroot         => $docroot,\n      scriptalias     => $scriptalias,\n      serveradmin     => $serveradmin,\n      access_log_file => "ssl_${access_log_file}",\n      }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'default-ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port            => 443,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl             => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot         => $docroot,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      scriptalias     => $scriptalias,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      serveradmin     => $serveradmin,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      access_log_file => "ssl_${access_log_file}",')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -1952,7 +2044,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('  $log_formats = { vhost_common => '%v %h %l %u %t \"%r\" %>s %b' }')
+    Markdown:CODE_FENCE_CONTENT('  $log_formats = { vhost_common => '%v %h %l %u %t \"%r\" %>s %b' }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -2162,8 +2254,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2177,8 +2268,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2192,8 +2282,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2207,8 +2296,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2222,8 +2310,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2690,7 +2777,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache::default_mods': }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache::default_mods': }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -2745,7 +2832,9 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::mod { 'rewrite': }\n    apache::mod { 'ldap': }')
+    Markdown:CODE_FENCE_CONTENT('    apache::mod { 'rewrite': }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::mod { 'ldap': }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -2795,8 +2884,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2804,8 +2892,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2813,8 +2900,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2824,8 +2910,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2835,8 +2920,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2847,8 +2931,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2856,8 +2939,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2865,8 +2947,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2874,8 +2955,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2883,8 +2963,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2892,8 +2971,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2903,8 +2981,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2914,8 +2991,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2923,8 +2999,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2932,8 +3007,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2942,8 +3016,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2953,8 +3026,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2962,8 +3034,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2971,8 +3042,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2980,8 +3050,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2989,8 +3058,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -2998,8 +3066,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3007,8 +3074,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3016,8 +3082,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3025,8 +3090,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3034,8 +3098,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3043,8 +3106,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3055,8 +3117,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3064,8 +3125,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3074,8 +3134,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3108,8 +3167,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3118,8 +3176,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3127,8 +3184,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3136,8 +3192,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3173,8 +3228,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3183,8 +3237,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3193,8 +3246,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3204,8 +3256,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3215,8 +3266,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3226,8 +3276,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3237,8 +3286,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3246,8 +3294,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3255,8 +3302,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3264,8 +3310,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3274,8 +3319,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3283,8 +3327,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3292,8 +3335,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3327,8 +3369,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3337,8 +3378,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3346,8 +3386,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3356,8 +3395,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3367,8 +3405,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3377,8 +3414,7 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('*')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3411,8 +3447,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -3515,7 +3550,75 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache::mod::pagespeed':\n      inherit_vhost_config          => 'on',\n      filter_xhtml                  => false,\n      cache_path                    => '/var/cache/mod_pagespeed/',\n      log_dir                       => '/var/log/pagespeed',\n      memache_servers               => [],\n      rewrite_level                 => 'CoreFilters',\n      disable_filters               => [],\n      enable_filters                => [],\n      forbid_filters                => [],\n      rewrite_deadline_per_flush_ms => 10,\n      additional_domains            => undef,\n      file_cache_size_kb            => 102400,\n      file_cache_clean_interval_ms  => 3600000,\n      lru_cache_per_process         => 1024,\n      lru_cache_byte_limit          => 16384,\n      css_flatten_max_bytes         => 2048,\n      css_inline_max_bytes          => 2048,\n      css_image_inline_max_bytes    => 2048,\n      image_inline_max_bytes        => 2048,\n      js_inline_max_bytes           => 2048,\n      css_outline_min_bytes         => 3000,\n      js_outline_min_bytes          => 3000,\n      inode_limit                   => 500000,\n      image_max_rewrites_at_once    => 8,\n      num_rewrite_threads           => 4,\n      num_expensive_rewrite_threads => 4,\n      collect_statistics            => 'on',\n      statistics_logging            => 'on',\n      allow_view_stats              => [],\n      allow_pagespeed_console       => [],\n      allow_pagespeed_message       => [],\n      message_buffer_size           => 100000,\n      additional_configuration      => { }\n    }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache::mod::pagespeed':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      inherit_vhost_config          => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      filter_xhtml                  => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      cache_path                    => '/var/cache/mod_pagespeed/',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      log_dir                       => '/var/log/pagespeed',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      memache_servers               => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrite_level                 => 'CoreFilters',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      disable_filters               => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      enable_filters                => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      forbid_filters                => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrite_deadline_per_flush_ms => 10,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      additional_domains            => undef,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      file_cache_size_kb            => 102400,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      file_cache_clean_interval_ms  => 3600000,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      lru_cache_per_process         => 1024,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      lru_cache_byte_limit          => 16384,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      css_flatten_max_bytes         => 2048,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      css_inline_max_bytes          => 2048,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      css_image_inline_max_bytes    => 2048,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      image_inline_max_bytes        => 2048,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      js_inline_max_bytes           => 2048,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      css_outline_min_bytes         => 3000,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      js_outline_min_bytes          => 3000,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      inode_limit                   => 500000,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      image_max_rewrites_at_once    => 8,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      num_rewrite_threads           => 4,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      num_expensive_rewrite_threads => 4,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      collect_statistics            => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      statistics_logging            => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      allow_view_stats              => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      allow_pagespeed_console       => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      allow_pagespeed_message       => [],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      message_buffer_size           => 100000,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      additional_configuration      => { }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -3570,7 +3673,13 @@ Markdown:MARKDOWN_FILE
   Markdown:CODE_FENCE
     Markdown:CODE_FENCE_START('```')
     Markdown:EOL('\n')
-    Markdown:CODE('  class {'::apache::mod::php':\n    package_name => "php54-php",\n    path         => "${::apache::params::lib_path}/libphp54-php5.so",\n  }')
+    Markdown:CODE_FENCE_CONTENT('  class {'::apache::mod::php':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    package_name => "php54-php",')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    path         => "${::apache::params::lib_path}/libphp54-php5.so",')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -3602,7 +3711,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache::mod::ssl':\n      ssl_compression => false,\n      ssl_options     => [ 'StdEnvVars' ],\n  }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache::mod::ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_compression => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_options     => [ 'StdEnvVars' ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -3717,7 +3832,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache::mod::wsgi':\n      wsgi_socket_prefix => "\${APACHE_RUN_DIR}WSGI",\n      wsgi_python_home   => '/path/to/venv',\n      wsgi_python_path   => '/path/to/venv/site-packages',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache::mod::wsgi':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_socket_prefix => "\${APACHE_RUN_DIR}WSGI",')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_python_home   => '/path/to/venv',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_python_path   => '/path/to/venv/site-packages',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -3841,7 +3964,11 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    class { 'apache':\n      default_vhost => false,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    class { 'apache':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      default_vhost => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -4225,7 +4352,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('aliases => [\n  { aliasmatch => '^/image/(.*)\.jpg$',\n    path       => '/files/jpg.images/$1.jpg',\n  }\n  { alias      => '/image',\n    path       => '/ftp/pub/image',\n  },\n],')
+    Markdown:CODE_FENCE_CONTENT('aliases => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  { aliasmatch => '^/image/(.*)\.jpg$',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    path       => '/files/jpg.images/$1.jpg',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  { alias      => '/image',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    path       => '/ftp/pub/image',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('],')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -4817,7 +4958,17 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      error_documents => [\n        { 'error_code' => '503', 'document' => '/service-unavail' },\n        { 'error_code' => '407', 'document' => 'https://example.com/proxy/login' },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      error_documents => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { 'error_code' => '503', 'document' => '/service-unavail' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { 'error_code' => '407', 'document' => 'https://example.com/proxy/login' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5025,8 +5176,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('user')
         WHITE_SPACE(' ')
@@ -5035,8 +5185,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('group')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5044,8 +5193,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5053,8 +5201,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5062,8 +5209,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5071,8 +5217,7 @@ Markdown:MARKDOWN_FILE
           Markdown:BACKTICK('`')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5084,8 +5229,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -5106,7 +5250,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot => '/path/to/directory',\n      itk     => {\n        user  => 'someuser',\n        group => 'somegroup',\n      },\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      itk     => {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        user  => 'someuser',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        group => 'somegroup',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5289,7 +5445,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      options => ['Indexes','FollowSymLinks','MultiViews'],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      options => ['Indexes','FollowSymLinks','MultiViews'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5619,7 +5781,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('apache::vhost { 'site.name.fdqn':\n  …\n  proxy_pass => [\n    { 'path' => '/a', 'url' => 'http://backend-a/' },\n    { 'path' => '/b', 'url' => 'http://backend-b/' },\n    { 'path' => '/c', 'url' => 'http://backend-a/c' },\n  ],\n}')
+    Markdown:CODE_FENCE_CONTENT('apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  proxy_pass => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    { 'path' => '/a', 'url' => 'http://backend-a/' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    { 'path' => '/b', 'url' => 'http://backend-b/' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    { 'path' => '/c', 'url' => 'http://backend-a/c' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('}')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5723,7 +5899,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      redirect_source => ['/images','/downloads'],\n      redirect_dest   => ['http://img.example.com/','http://downloads.example.com/'],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirect_source => ['/images','/downloads'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirect_dest   => ['http://img.example.com/','http://downloads.example.com/'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5753,7 +5937,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      redirect_status => ['temp','permanent'],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirect_status => ['temp','permanent'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5794,7 +5984,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      redirectmatch_status => ['404','404'],\n      redirectmatch_regexp => ['\.git(/.*|$)/','\.svn(/.*|$)'],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirectmatch_status => ['404','404'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirectmatch_regexp => ['\.git(/.*|$)/','\.svn(/.*|$)'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5846,7 +6044,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      request_headers => [\n        'append MirrorID "mirror 12"',\n        'unset MirrorID',\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      request_headers => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'append MirrorID "mirror 12"',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'unset MirrorID',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5912,7 +6122,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      rewrites => [ { rewrite_rule => ['^index\.html$ welcome.html'] } ]\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrites => [ { rewrite_rule => ['^index\.html$ welcome.html'] } ]')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5933,7 +6149,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      rewrites => [\n        {\n          comment      => 'redirect IE',\n          rewrite_cond => ['%{HTTP_USER_AGENT} ^MSIE'],\n          rewrite_rule => ['^index\.html$ welcome.html'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrites => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          comment      => 'redirect IE',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_cond => ['%{HTTP_USER_AGENT} ^MSIE'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_rule => ['^index\.html$ welcome.html'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5954,7 +6188,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      rewrites => [\n        {\n          comment      => 'Lynx or Mozilla v1/2',\n          rewrite_cond => ['%{HTTP_USER_AGENT} ^Lynx/ [OR]', '%{HTTP_USER_AGENT} ^Mozilla/[12]'],\n          rewrite_rule => ['^index\.html$ welcome.html'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrites => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          comment      => 'Lynx or Mozilla v1/2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_cond => ['%{HTTP_USER_AGENT} ^Lynx/ [OR]', '%{HTTP_USER_AGENT} ^Mozilla/[12]'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_rule => ['^index\.html$ welcome.html'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -5967,7 +6219,43 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'site.name.fdqn':\n      …\n      rewrites => [\n        {\n          comment      => 'Lynx or Mozilla v1/2',\n          rewrite_cond => ['%{HTTP_USER_AGENT} ^Lynx/ [OR]', '%{HTTP_USER_AGENT} ^Mozilla/[12]'],\n          rewrite_rule => ['^index\.html$ welcome.html'],\n        },\n        {\n          comment      => 'Internet Explorer',\n          rewrite_cond => ['%{HTTP_USER_AGENT} ^MSIE'],\n          rewrite_rule => ['^index\.html$ /index.IE.html [L]'],\n        },\n        {\n          rewrite_base => /apps/,\n          rewrite_rule => ['^index\.cgi$ index.php', '^index\.html$ index.php', '^index\.asp$ index.html'],\n        },\n     ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'site.name.fdqn':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rewrites => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          comment      => 'Lynx or Mozilla v1/2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_cond => ['%{HTTP_USER_AGENT} ^Lynx/ [OR]', '%{HTTP_USER_AGENT} ^Mozilla/[12]'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_rule => ['^index\.html$ welcome.html'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          comment      => 'Internet Explorer',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_cond => ['%{HTTP_USER_AGENT} ^MSIE'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_rule => ['^index\.html$ /index.IE.html [L]'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_base => /apps/,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          rewrite_rule => ['^index\.cgi$ index.php', '^index\.html$ index.php', '^index\.asp$ index.html'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('     ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6072,7 +6360,41 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    scriptaliases => [\n      {\n        alias => '/myscript',\n        path  => '/usr/share/myscript',\n      },\n      {\n        aliasmatch => '^/foo(.*)',\n        path       => '/usr/share/fooscripts$1',\n      },\n      {\n        aliasmatch => '^/bar/(.*)',\n        path       => '/usr/share/bar/wrapper.sh/$1',\n      },\n      {\n        alias => '/neatscript',\n        path  => '/usr/share/neatscript',\n      },\n    ]')
+    Markdown:CODE_FENCE_CONTENT('    scriptaliases => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        alias => '/myscript',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        path  => '/usr/share/myscript',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        aliasmatch => '^/foo(.*)',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        path       => '/usr/share/fooscripts$1',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        aliasmatch => '^/bar/(.*)',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        path       => '/usr/share/bar/wrapper.sh/$1',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        alias => '/neatscript',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        path  => '/usr/share/neatscript',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    ]')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6335,7 +6657,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'suphp.example.com':\n      port                => '80',\n      docroot             => '/home/appuser/myphpapp',\n      suphp_addhandler    => 'x-httpd-php',\n      suphp_engine        => 'on',\n      suphp_configpath    => '/etc/php5/apache2',\n      directories         => { path => '/home/appuser/myphpapp',\n        'suphp'           => { user => 'myappuser', group => 'myappgroup' },\n      }\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'suphp.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port                => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot             => '/home/appuser/myphpapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_addhandler    => 'x-httpd-php',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_engine        => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      suphp_configpath    => '/etc/php5/apache2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories         => { path => '/home/appuser/myphpapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'suphp'           => { user => 'myappuser', group => 'myappgroup' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6418,7 +6758,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'subdomain.loc':\n      vhost_name       => '*',\n      port             => '80',\n      virtual_docroot' => '/var/www/%-2+',\n      docroot          => '/var/www',\n      serveraliases    => ['*.loc',],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'subdomain.loc':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      vhost_name       => '*',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port             => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      virtual_docroot' => '/var/www/%-2+',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot          => '/var/www',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      serveraliases    => ['*.loc',],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6593,7 +6945,29 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'wsgi.example.com':\n      port                        => '80',\n      docroot                     => '/var/www/pythonapp',\n      wsgi_daemon_process         => 'wsgi',\n      wsgi_daemon_process_options =>\n        { processes    => '2',\n          threads      => '15',\n          display-name => '%{GROUP}',\n         },\n      wsgi_process_group          => 'wsgi',\n      wsgi_script_aliases         => { '/' => '/var/www/demo.wsgi' },\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'wsgi.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port                        => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot                     => '/var/www/pythonapp',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_daemon_process         => 'wsgi',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_daemon_process_options =>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { processes    => '2',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          threads      => '15',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          display-name => '%{GROUP}',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('         },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_process_group          => 'wsgi',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      wsgi_script_aliases         => { '/' => '/var/www/demo.wsgi' },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6743,7 +7117,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path => '/path/to/directory', <key> => <value> },\n        { path => '/path/to/another/directory', <key> => <value> },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path => '/path/to/directory', <key> => <value> },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path => '/path/to/another/directory', <key> => <value> },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6841,7 +7227,23 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'files.example.net':\n      docroot     => '/var/www/files',\n      directories => [\n        { 'path'     => '/var/www/files',\n          'provider' => 'files',\n          'deny'     => 'from all'\n         },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'files.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/var/www/files',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { 'path'     => '/var/www/files',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          'provider' => 'files',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          'deny'     => 'from all'')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('         },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6881,7 +7283,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('  apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [ { path => '/path/to/directory', handler => value } ],\n}')
+    Markdown:CODE_FENCE_CONTENT('  apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [ { path => '/path/to/directory', handler => value } ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('}')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -6977,7 +7385,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path        => '/path/to/directory',\n          addhandlers => [{ handler => 'cgi-script', extensions => ['.cgi']}],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path        => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          addhandlers => [{ handler => 'cgi-script', extensions => ['.cgi']}],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7030,7 +7452,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path  => '/path/to/directory',\n          allow => 'from example.org',\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path  => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          allow => 'from example.org',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7069,7 +7505,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot      => '/path/to/directory',\n      directories  => [\n        { path           => '/path/to/directory',\n          allow_override => ['AuthConfig', 'Indexes'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot      => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories  => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path           => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          allow_override => ['AuthConfig', 'Indexes'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7562,7 +8012,35 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('  apache::vhost { 'monitor':\n    …\n    custom_fragment => '\n  <Location /balancer-manager>\n    SetHandler balancer-manager\n    Order allow,deny\n    Allow from all\n  </Location>\n  <Location /server-status>\n    SetHandler server-status\n    Order allow,deny\n    Allow from all\n  </Location>\n  ProxyStatus On',\n}')
+    Markdown:CODE_FENCE_CONTENT('  apache::vhost { 'monitor':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    custom_fragment => '')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  <Location /balancer-manager>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    SetHandler balancer-manager')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    Order allow,deny')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    Allow from all')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  </Location>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  <Location /server-status>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    SetHandler server-status')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    Order allow,deny')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    Allow from all')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  </Location>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  ProxyStatus On',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('}')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7615,7 +8093,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path => '/path/to/directory',\n          deny => 'from example.org',\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          deny => 'from example.org',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7652,7 +8144,27 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      directories => [\n        { path            => '/srv/www',\n          error_documents => [\n            { 'error_code' => '503',\n              'document'   => '/service-unavail',\n            },\n          ],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path            => '/srv/www',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          error_documents => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('            { 'error_code' => '503',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('              'document'   => '/service-unavail',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('            },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7689,7 +8201,19 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => {\n        path    => '/path/to/directory',\n        headers => 'Set X-Robots-Tag "noindex, noarchive, nosnippet"',\n      },\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => {')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        path    => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        headers => 'Set X-Robots-Tag "noindex, noarchive, nosnippet"',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7725,7 +8249,23 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path          => '/path/to/directory',\n          options       => ['Indexes','FollowSymLinks','MultiViews'],\n          index_options => ['IgnoreCase', 'FancyIndexing', 'FoldersFirst', 'NameWidth=*', 'DescriptionWidth=*', 'SuppressHTMLPreamble'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path          => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          options       => ['Indexes','FollowSymLinks','MultiViews'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          index_options => ['IgnoreCase', 'FancyIndexing', 'FoldersFirst', 'NameWidth=*', 'DescriptionWidth=*', 'SuppressHTMLPreamble'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7766,7 +8306,23 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path                => '/path/to/directory',\n          order               => 'Allow,Deny',\n          index_order_default => ['Descending', 'Date'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path                => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          order               => 'Allow,Deny',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          index_order_default => ['Descending', 'Date'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7799,7 +8355,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path    => '/path/to/directory',\n          options => ['Indexes','FollowSymLinks','MultiViews'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path    => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          options => ['Indexes','FollowSymLinks','MultiViews'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7847,7 +8417,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path  => '/path/to/directory',\n          order => 'Allow,Deny',\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path  => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          order => 'Allow,Deny',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7891,7 +8475,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path       => '/path/to/directory',\n          sethandler => 'None',\n        }\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path       => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          sethandler => 'None',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -7954,7 +8552,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path              => '/path/to/directory',\n          passenger_enabled => 'on',\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path              => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          passenger_enabled => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8084,7 +8696,27 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'secure.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path        => '/path/to/directory',\n          ssl_options => '+ExportCertData',\n        },\n        { path        => '/path/to/different/dir',\n          ssl_options => [ '-StdEnvVars', '+ExportCertData'],\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'secure.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path        => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          ssl_options => '+ExportCertData',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path        => '/path/to/different/dir',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          ssl_options => [ '-StdEnvVars', '+ExportCertData'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8157,7 +8789,27 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'secure.example.net':\n      docroot     => '/path/to/directory',\n      directories => [\n        { path  => '/path/to/directory',\n          suphp =>\n            { user  =>  'myappuser',\n              group => 'myappgroup',\n            },\n        },\n      ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'secure.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      directories => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        { path  => '/path/to/directory',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          suphp =>')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('            { user  =>  'myappuser',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('              group => 'myappgroup',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('            },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        },')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8698,7 +9350,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      …\n      ssl_verify_client => 'optional',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_verify_client => 'optional',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8748,7 +9406,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      …\n      ssl_verify_depth => 1,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_verify_depth => 1,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8803,7 +9467,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      …\n      ssl_options => '+ExportCertData',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_options => '+ExportCertData',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8817,7 +9487,13 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sample.example.net':\n      …\n      ssl_options => [ '+StrictRequire', '+ExportCertData' ],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sample.example.net':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      …')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl_options => [ '+StrictRequire', '+ExportCertData' ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8906,7 +9582,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'third.example.com':\n      port        => '80',\n      docroot     => '/var/www/third',\n      serveradmin => 'admin@example.com',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'third.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port        => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/var/www/third',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      serveradmin => 'admin@example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8922,7 +9606,21 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sixth.example.com':\n      serveraliases => [\n        'sixth.example.org',\n        'sixth.example.net',\n      ],\n      port          => '80',\n      docroot       => '/var/www/fifth',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sixth.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      serveraliases => [')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'sixth.example.org',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        'sixth.example.net',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port          => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot       => '/var/www/fifth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8938,7 +9636,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'eleventh.example.com':\n      port        => '80',\n      docroot     => '/var/www/eleventh',\n      scriptalias => '/usr/lib/cgi-bin',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'eleventh.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port        => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot     => '/var/www/eleventh',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      scriptalias => '/usr/lib/cgi-bin',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8954,7 +9660,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'fifteenth.example.com':\n      port           => '80',\n      docroot        => '/var/www/fifteenth',\n      rack_base_uris => ['/rackapp1', '/rackapp2'],\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'fifteenth.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port           => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot        => '/var/www/fifteenth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      rack_base_uris => ['/rackapp1', '/rackapp2'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8970,7 +9684,32 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    #The non-ssl vhost\n    apache::vhost { 'first.example.com non-ssl':\n      servername => 'first.example.com',\n      port       => '80',\n      docroot    => '/var/www/first',\n    }\n\n    #The SSL vhost at the same domain\n    apache::vhost { 'first.example.com ssl':\n      servername => 'first.example.com',\n      port       => '443',\n      docroot    => '/var/www/first',\n      ssl        => true,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    #The non-ssl vhost')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'first.example.com non-ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername => 'first.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/first',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    #The SSL vhost at the same domain')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'first.example.com ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername => 'first.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '443',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/first',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl        => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -8986,7 +9725,31 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'sixteenth.example.com non-ssl':\n      servername      => 'sixteenth.example.com',\n      port            => '80',\n      docroot         => '/var/www/sixteenth',\n      redirect_status => 'permanent',\n      redirect_dest   => 'https://sixteenth.example.com/'\n    }\n    apache::vhost { 'sixteenth.example.com ssl':\n      servername => 'sixteenth.example.com',\n      port       => '443',\n      docroot    => '/var/www/sixteenth',\n      ssl        => true,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sixteenth.example.com non-ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername      => 'sixteenth.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port            => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot         => '/var/www/sixteenth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirect_status => 'permanent',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      redirect_dest   => 'https://sixteenth.example.com/'')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'sixteenth.example.com ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername => 'sixteenth.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '443',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/sixteenth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl        => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9008,7 +9771,9 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::listen { '80': }\n    apache::listen { '81': }')
+    Markdown:CODE_FENCE_CONTENT('    apache::listen { '80': }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::listen { '81': }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9021,7 +9786,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'first.example.com':\n      ip       => '10.0.0.10',\n      docroot  => '/var/www/first',\n      ip_based => true,\n    }\n    apache::vhost { 'second.example.com':\n      ip       => '10.0.0.11',\n      docroot  => '/var/www/second',\n      ip_based => true,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'first.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip       => '10.0.0.10',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot  => '/var/www/first',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip_based => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'second.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip       => '10.0.0.11',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot  => '/var/www/second',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip_based => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9043,7 +9826,35 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'The first IP-based vhost, non-ssl':\n      servername => 'first.example.com',\n      ip         => '10.0.0.10',\n      port       => '80',\n      ip_based   => true,\n      docroot    => '/var/www/first',\n    }\n    apache::vhost { 'The first IP-based vhost, ssl':\n      servername => 'first.example.com',\n      ip         => '10.0.0.10',\n      port       => '443',\n      ip_based   => true,\n      docroot    => '/var/www/first-ssl',\n      ssl        => true,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'The first IP-based vhost, non-ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername => 'first.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip         => '10.0.0.10',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip_based   => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/first',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'The first IP-based vhost, ssl':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      servername => 'first.example.com',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip         => '10.0.0.10',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '443',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip_based   => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/first-ssl',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ssl        => true,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9058,7 +9869,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'second.example.com':\n      ip      => '10.0.0.20',\n      port    => '80',\n      docroot => '/var/www/second',\n    }\n    apache::vhost { 'third.example.com':\n      ip      => '10.0.0.20',\n      port    => '80',\n      docroot => '/var/www/third',\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'second.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip      => '10.0.0.20',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port    => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/var/www/second',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'third.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      ip      => '10.0.0.20',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port    => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot => '/var/www/third',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9105,7 +9934,25 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::vhost { 'fourth.example.com':\n      port       => '80',\n      docroot    => '/var/www/fourth',\n      add_listen => false,\n    }\n    apache::vhost { 'fifth.example.com':\n      port       => '80',\n      docroot    => '/var/www/fifth',\n      add_listen => false,\n    }')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'fourth.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/fourth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      add_listen => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::vhost { 'fifth.example.com':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      port       => '80',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      docroot    => '/var/www/fifth',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      add_listen => false,')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9549,7 +10396,15 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('      @@apache::balancermember { "${::fqdn}-puppet00":\n        balancer_cluster => 'puppet00',\n        url              => "ajp://${::fqdn}:8009"\n        options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],\n      }')
+    Markdown:CODE_FENCE_CONTENT('      @@apache::balancermember { "${::fqdn}-puppet00":')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        balancer_cluster => 'puppet00',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        url              => "ajp://${::fqdn}:8009"')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9566,7 +10421,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('      apache::balancer { 'puppet00': }')
+    Markdown:CODE_FENCE_CONTENT('      apache::balancer { 'puppet00': }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9581,7 +10436,17 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('    apache::balancer { 'puppet00': }\n    apache::balancermember { "${::fqdn}-puppet00":\n        balancer_cluster => 'puppet00',\n        url              => "ajp://${::fqdn}:8009"\n        options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],\n      }')
+    Markdown:CODE_FENCE_CONTENT('    apache::balancer { 'puppet00': }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('    apache::balancermember { "${::fqdn}-puppet00":')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        balancer_cluster => 'puppet00',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        url              => "ajp://${::fqdn}:8009"')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9618,7 +10483,11 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('      apache::balancer { 'puppet01':\n        proxy_set => {'stickysession' => 'JSESSIONID'},\n      }')
+    Markdown:CODE_FENCE_CONTENT('      apache::balancer { 'puppet01':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        proxy_set => {'stickysession' => 'JSESSIONID'},')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('      }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -9637,8 +10506,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -9657,8 +10525,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Guides the basic setup of Apache.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9710,8 +10577,7 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -9744,8 +10610,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9768,8 +10633,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('s Apache 2.4.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9787,8 +10651,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Includes conf.d files for FreeBSD.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9804,8 +10667,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Installs the Apache modules required to run the default configuration.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9819,8 +10681,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Installs and configures basic Apache packages.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9834,8 +10695,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Manages Apache parameters.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9859,8 +10719,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9874,8 +10733,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Creates an Apache balancer cluster.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9910,8 +10768,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9966,8 +10823,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -9996,8 +10852,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('class.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -10069,8 +10924,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -10090,8 +10944,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -10122,8 +10975,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('module for FreeBSD only.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -10380,7 +11232,45 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_START('```')
     Markdown:FENCE_LANG('puppet')
     Markdown:EOL('\n')
-    Markdown:CODE('        exec { 'set_apache_defaults':\n          command => 'semanage fcontext -a -t httpd_sys_content_t "/custom/path(/.*)?"',\n          path    => '/bin:/usr/bin/:/sbin:/usr/sbin',\n          require => Package['policycoreutils-python'],\n        }\n        package { 'policycoreutils-python': ensure => installed }\n        exec { 'restorecon_apache':\n          command => 'restorecon -Rv /apache_spec',\n          path    => '/bin:/usr/bin/:/sbin:/usr/sbin',\n          before  => Service['httpd'],\n          require => Class['apache'],\n        }\n        class { 'apache': }\n        host { 'test.server': ip => '127.0.0.1' }\n        file { '/custom/path': ensure => directory, }\n        file { '/custom/path/include': ensure => present, content => '#additional_includes' }\n        apache::vhost { 'test.server':\n          docroot             => '/custom/path',\n          additional_includes => '/custom/path/include',\n        }')
+    Markdown:CODE_FENCE_CONTENT('        exec { 'set_apache_defaults':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          command => 'semanage fcontext -a -t httpd_sys_content_t "/custom/path(/.*)?"',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          path    => '/bin:/usr/bin/:/sbin:/usr/sbin',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          require => Package['policycoreutils-python'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        package { 'policycoreutils-python': ensure => installed }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        exec { 'restorecon_apache':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          command => 'restorecon -Rv /apache_spec',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          path    => '/bin:/usr/bin/:/sbin:/usr/sbin',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          before  => Service['httpd'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          require => Class['apache'],')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        class { 'apache': }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        host { 'test.server': ip => '127.0.0.1' }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        file { '/custom/path': ensure => directory, }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        file { '/custom/path/include': ensure => present, content => '#additional_includes' }')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        apache::vhost { 'test.server':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          docroot             => '/custom/path',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('          additional_includes => '/custom/path/include',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('        }')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -10501,27 +11391,14 @@ Markdown:MARKDOWN_FILE
     Markdown::(':')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  WHITE_SPACE('    ')
-  Markdown:CODE_BLOCK
-    Markdown:CODE('gem install bundler')
-    Markdown:EOL('\n')
-    WHITE_SPACE('    ')
-    Markdown:CODE('bundle install')
-    Markdown:EOL('\n')
-    WHITE_SPACE('    ')
-    Markdown:CODE('bundle exec rake spec')
-    Markdown:EOL('\n')
-    WHITE_SPACE('    ')
-    Markdown:CODE('bundle exec rspec spec/acceptance')
-    Markdown:EOL('\n')
-    WHITE_SPACE('    ')
-    Markdown:CODE('RS_DEBUG=yes bundle exec rspec spec/acceptance')
-    Markdown:EOL('\n')
+  Markdown:CODE_BLOCK('    gem install bundler\n    bundle install\n    bundle exec rake spec\n    bundle exec rspec spec/acceptance\n    RS_DEBUG=yes bundle exec rspec spec/acceptance')
+  Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Passenger')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Passenger')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10588,19 +11465,20 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Parameters for')
-    WHITE_SPACE(' ')
-    Markdown:CODE_SPAN
-      Markdown:BACKTICK('`')
-      Markdown:TEXT('apache')
-      Markdown::(':')
-      Markdown::(':')
-      Markdown:TEXT('mod')
-      Markdown::(':')
-      Markdown::(':')
-      Markdown:TEXT('passenger')
-      Markdown:BACKTICK('`')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Parameters for')
+      WHITE_SPACE(' ')
+      Markdown:CODE_SPAN
+        Markdown:BACKTICK('`')
+        Markdown:TEXT('apache')
+        Markdown::(':')
+        Markdown::(':')
+        Markdown:TEXT('mod')
+        Markdown::(':')
+        Markdown::(':')
+        Markdown:TEXT('passenger')
+        Markdown:BACKTICK('`')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10626,7 +11504,15 @@ Markdown:MARKDOWN_FILE
   Markdown:CODE_FENCE
     Markdown:CODE_FENCE_START('```')
     Markdown:EOL('\n')
-    Markdown:CODE('class {'apache::mod::passenger':\n  passenger_high_performance  => 'on',\n  rails_autodetect            => 'off',\n  mod_lib_path                => '/usr/lib/apache2/custom_modules',\n}')
+    Markdown:CODE_FENCE_CONTENT('class {'apache::mod::passenger':')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  passenger_high_performance  => 'on',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  rails_autodetect            => 'off',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('  mod_lib_path                => '/usr/lib/apache2/custom_modules',')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('}')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_END('```')
   Markdown:EOL('\n')
@@ -10637,8 +11523,9 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_2
     Markdown:ATX_HEADER('##')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Parameters used with passenger.conf')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Parameters used with passenger.conf')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10660,12 +11547,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('high')
-    Markdown:EMPH('_')
-    Markdown:TEXT('performance')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('high')
+      Markdown:EMPH('_')
+      Markdown:TEXT('performance')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10695,14 +11583,15 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('max')
-    Markdown:EMPH('_')
-    Markdown:TEXT('pool')
-    Markdown:EMPH('_')
-    Markdown:TEXT('size')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('max')
+      Markdown:EMPH('_')
+      Markdown:TEXT('pool')
+      Markdown:EMPH('_')
+      Markdown:TEXT('size')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10729,14 +11618,15 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('pool')
-    Markdown:EMPH('_')
-    Markdown:TEXT('idle')
-    Markdown:EMPH('_')
-    Markdown:TEXT('time')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('pool')
+      Markdown:EMPH('_')
+      Markdown:TEXT('idle')
+      Markdown:EMPH('_')
+      Markdown:TEXT('time')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10753,12 +11643,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('max')
-    Markdown:EMPH('_')
-    Markdown:TEXT('requests')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('max')
+      Markdown:EMPH('_')
+      Markdown:TEXT('requests')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10783,14 +11674,15 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('stat')
-    Markdown:EMPH('_')
-    Markdown:TEXT('throttle')
-    Markdown:EMPH('_')
-    Markdown:TEXT('rate')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('stat')
+      Markdown:EMPH('_')
+      Markdown:TEXT('throttle')
+      Markdown:EMPH('_')
+      Markdown:TEXT('rate')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10826,10 +11718,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('rack')
-    Markdown:EMPH('_')
-    Markdown:TEXT('autodetect')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('rack')
+      Markdown:EMPH('_')
+      Markdown:TEXT('autodetect')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10861,10 +11754,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('rails')
-    Markdown:EMPH('_')
-    Markdown:TEXT('autodetect')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('rails')
+      Markdown:EMPH('_')
+      Markdown:TEXT('autodetect')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10891,14 +11785,15 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('passenger')
-    Markdown:EMPH('_')
-    Markdown:TEXT('use')
-    Markdown:EMPH('_')
-    Markdown:TEXT('global')
-    Markdown:EMPH('_')
-    Markdown:TEXT('queue')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('passenger')
+      Markdown:EMPH('_')
+      Markdown:TEXT('use')
+      Markdown:EMPH('_')
+      Markdown:TEXT('global')
+      Markdown:EMPH('_')
+      Markdown:TEXT('queue')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10919,8 +11814,9 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_2
     Markdown:ATX_HEADER('##')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Parameters used to load the module')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Parameters used to load the module')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10931,10 +11827,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('package')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('package')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10943,12 +11840,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('package')
-    Markdown:EMPH('_')
-    Markdown:TEXT('ensure')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('package')
+      Markdown:EMPH('_')
+      Markdown:TEXT('ensure')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10964,10 +11862,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('id')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('id')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -10985,12 +11884,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('lib')
-    Markdown:EMPH('_')
-    Markdown:TEXT('path')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('lib')
+      Markdown:EMPH('_')
+      Markdown:TEXT('path')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11015,10 +11915,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('lib')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('lib')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11036,10 +11937,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('mod')
-    Markdown:EMPH('_')
-    Markdown:TEXT('path')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('mod')
+      Markdown:EMPH('_')
+      Markdown:TEXT('path')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11070,8 +11972,9 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Dependencies')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Dependencies')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11083,8 +11986,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -11099,8 +12001,7 @@ Markdown:MARKDOWN_FILE
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:INLINE_LINK
           Markdown:LINK_TEXT
@@ -11121,8 +12022,9 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Attribution')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Attribution')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11150,32 +12052,28 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('https')
         Markdown::(':')
         Markdown:TEXT('//github.com/puppetlabs/puppetlabs-apache')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('https')
         Markdown::(':')
         Markdown:TEXT('//github.com/nesi/puppetlabs-apache')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('http')
         Markdown::(':')
         Markdown:TEXT('//www.nesi.org.nz//')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('https')
         Markdown::(':')
@@ -11184,8 +12082,9 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_1
     Markdown:ATX_HEADER('#')
-    WHITE_SPACE(' ')
-    Markdown:TEXT('Copyright and License')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('Copyright and License')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -11286,8 +12185,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Added test support for OSX.')
   Markdown:EOL('\n')
@@ -11302,8 +12200,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Not supported on Windows.')
   Markdown:EOL('\n')
@@ -11327,8 +12224,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Added test support for Ubuntu Trusty.')
   Markdown:EOL('\n')
@@ -11367,14 +12263,12 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Huge amount of tests backported from 1.1.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Documentation rewrite.')
   Markdown:EOL('\n')
@@ -11389,8 +12283,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('*')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Not supported on Windows.')
   Markdown:EOL('\n')
@@ -11417,8 +12310,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('LANG')
         WHITE_SPACE(' ')
@@ -11437,14 +12329,12 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('fragments.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Corrected pluginsync documentation.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Ensure concat')
         Markdown::(':')
@@ -11486,16 +12376,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('New parameters in concat')
         Markdown::(':')
     Markdown:EOL('\n')
-    WHITE_SPACE(' ')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET(' - ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -11505,10 +12392,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
         Markdown:TEXT('specify if concat should replace existing files.')
     Markdown:EOL('\n')
-    WHITE_SPACE(' ')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET(' - ')
       Markdown:PARAGRAPH
         Markdown:CODE_SPAN
           Markdown:BACKTICK('`')
@@ -11521,14 +12406,12 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('controls if fragments should contain a newline at the end.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Improved README documentation.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Add rspec')
         Markdown::(':')
@@ -11546,17 +12429,14 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Gracefully handle')
         WHITE_SPACE(' ')
-        BAD_CHARACTER('\')
-        Markdown:TEXT('n in a fragment resource name.')
+        Markdown:TEXT('\n in a fragment resource name.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Adding more helpful message for')
         WHITE_SPACE(' ')
@@ -11569,8 +12449,7 @@ Markdown:MARKDOWN_FILE
         Markdown:'(''')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Allow passing')
         WHITE_SPACE(' ')
@@ -11593,26 +12472,23 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('defining resource defaults.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Added')
         WHITE_SPACE(' ')
         Markdown:TEXT('-r flag to read so that filenames with')
         WHITE_SPACE(' ')
-        BAD_CHARACTER('\')
+        Markdown:TEXT('\')
         WHITE_SPACE(' ')
         Markdown:TEXT('will be read correctly.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('sort always uses LANG=C.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Allow WARNMSG to contain/start with')
         WHITE_SPACE(' ')
@@ -11622,8 +12498,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('Replace while-read pattern with for-do in order to support Solaris.')
   Markdown:EOL('\n')
@@ -11634,8 +12509,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:UNORDERED_LIST
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/02/19')
         WHITE_SPACE(' ')
@@ -11644,8 +12518,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('initial release')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/03/12')
         WHITE_SPACE(' ')
@@ -11654,12 +12527,12 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('add support for 0.24.8 and newer')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('make the location of sort configurable')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('add the ability to add shell comment based warnings to')
         Markdown:EOL('\n')
@@ -11667,13 +12540,12 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('top of files')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('add the ablity to create empty files')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/04/05')
         WHITE_SPACE(' ')
@@ -11685,12 +12557,12 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('of the code')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('Better and safer boolean handling for warn and force')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('Don')
         Markdown:'(''')
@@ -11702,7 +12574,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('top of the script')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('Use file{}')
         WHITE_SPACE(' ')
@@ -11717,7 +12589,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('resulting file at any time.')
         Markdown:EOL('\n')
         WHITE_SPACE('             ')
-        Markdown:LIST_BULLET('-')
+        Markdown:TEXT('-')
         WHITE_SPACE(' ')
         Markdown:TEXT('You can specify ensure')
         WHITE_SPACE(' ')
@@ -11737,8 +12609,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('to include the contents of a symlink into the final file.')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/04/16')
         WHITE_SPACE(' ')
@@ -11757,8 +12628,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('$name')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/05/22')
         WHITE_SPACE(' ')
@@ -11770,8 +12640,7 @@ Markdown:MARKDOWN_FILE
         Markdown:>('>')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/07/14')
         WHITE_SPACE(' ')
@@ -11780,8 +12649,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Add support for setting the filebucket behavior of files')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/10/04')
         WHITE_SPACE(' ')
@@ -11790,8 +12658,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Make the warning message configurable')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2010/12/03')
         WHITE_SPACE(' ')
@@ -11804,8 +12671,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('thanks Jonathan Boyett')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/02/03')
         WHITE_SPACE(' ')
@@ -11814,8 +12680,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Make the shell script more portable and add a config option for root group')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/06/21')
         WHITE_SPACE(' ')
@@ -11824,8 +12689,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Make base dir root readable only for security')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/06/23')
         WHITE_SPACE(' ')
@@ -11834,8 +12698,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Set base directory using a fact instead of hardcoding it')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/06/23')
         WHITE_SPACE(' ')
@@ -11844,8 +12707,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Support operating as non privileged user')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/06/23')
         WHITE_SPACE(' ')
@@ -11854,8 +12716,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Support dash instead of bash or sh')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/07/11')
         WHITE_SPACE(' ')
@@ -11864,8 +12725,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Better solaris support')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/12/05')
         WHITE_SPACE(' ')
@@ -11874,8 +12734,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Use fully qualified variables')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2011/12/13')
         WHITE_SPACE(' ')
@@ -11884,8 +12743,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Improve Nexenta support')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/04/11')
         WHITE_SPACE(' ')
@@ -11894,8 +12752,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Do not use any GNU specific extensions in the shell script')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/03/24')
         WHITE_SPACE(' ')
@@ -11904,8 +12761,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Comply to community style guides')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/05/23')
         WHITE_SPACE(' ')
@@ -11914,8 +12770,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Better errors when basedir isnt set')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/05/31')
         WHITE_SPACE(' ')
@@ -11924,8 +12779,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Add spec tests')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/07/11')
         WHITE_SPACE(' ')
@@ -11937,8 +12791,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('setup in concat improving UX')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/08/14')
         WHITE_SPACE(' ')
@@ -11947,8 +12800,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('Puppet Lint improvements')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/08/30')
         WHITE_SPACE(' ')
@@ -11959,8 +12811,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('$name')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/08/30')
         WHITE_SPACE(' ')
@@ -11969,8 +12820,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('More Puppet Lint cleanup')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/09/04')
         WHITE_SPACE(' ')
@@ -11979,8 +12829,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('RELEASE 0.2.0')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
-      Markdown:LIST_BULLET('-')
-      WHITE_SPACE(' ')
+      Markdown:LIST_BULLET('- ')
       Markdown:PARAGRAPH
         Markdown:TEXT('2012/12/12')
         WHITE_SPACE(' ')
@@ -11993,4 +12842,4 @@ Markdown:MARKDOWN_FILE
         Markdown:)(')')
         WHITE_SPACE(' ')
         Markdown:TEXT('$replace parameter to concat')
-        Markdown:EOL('\n')
+  Markdown:EOL('\n')

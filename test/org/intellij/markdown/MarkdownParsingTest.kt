@@ -84,7 +84,7 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     public fun testTrailingSpace() {
-        assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')\n  WHITE_SPACE(' ')",
+        assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')\n    WHITE_SPACE(' ')",
                 getParsedTreeText("Test "));
     }
 

@@ -102,8 +102,9 @@ Markdown:MARKDOWN_FILE
       Markdown:LIST_BULLET('* ')
       Markdown:PARAGRAPH
         Markdown:TEXT('This is too')
-        Markdown:EOL('\n')
-        Markdown:EMPH('*')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('*')
     Markdown:EOL('\n')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
