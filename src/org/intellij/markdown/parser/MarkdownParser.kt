@@ -9,7 +9,7 @@ import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
-import java.util.Collections
+import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
 public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorFactory) {
 
@@ -54,7 +54,7 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
 
             val wholeRange = 0..tokensCache.filteredTokens.size()
             val nodes = SequentialParserManager().runParsingSequence(tokensCache,
-                    Collections.singletonList(wholeRange))
+                    SequentialParserUtil.filterBlockquotes(tokensCache, wholeRange))
 
             return MyBuilder(ASTNodeBuilder(text), tokensCache).
                     buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
