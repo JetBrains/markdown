@@ -202,30 +202,12 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 //                },
                 //                //                    MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(1, -1),
 
-                MarkdownElementTypes.INLINE_LINK to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        val destinationNode = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-                        val titleNode = node.findChildOfType(MarkdownElementTypes.LINK_TITLE)
-
-                        val destinationText = destinationNode?.getTextInNode(text)?.let {
-                            LinkMap.normalizeDestination(it)
-                        } ?: ""
-                        val titleText = if (titleNode != null)
-                            " title=\"${titleNode.getTextInNode(text).let { LinkMap.normalizeTitle(it) }}\""
-                        else
-                            ""
-
-                        visitor.consumeHtml("<a href=\"${destinationText}\"${titleText}>")
-
-                        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.let { label ->
-                            ReferenceLinksGeneratingProvider.processLabel(visitor, text, label)
-                        }
-                        visitor.consumeHtml("</a>")
-                    }
-                },
+                MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(),
 
                 MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
                 MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
+
+                MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap),
 
                 MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {

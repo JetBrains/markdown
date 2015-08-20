@@ -6,10 +6,11 @@ import java.util.ArrayList
 public class SequentialParserManager {
     protected fun getParserSequence(): List<SequentialParser> {
         return listOf(AutolinkParser(),
-                      BacktickParser(),
-                      InlineLinkParser(),
-                      ReferenceLinkParser(),
-                      EmphStrongParser())
+                BacktickParser(),
+                ImageParser(),
+                InlineLinkParser(),
+                ReferenceLinkParser(),
+                EmphStrongParser())
     }
 
     public fun runParsingSequence(tokensCache: TokensCache, rangesToParse: Collection<Range<Int>>): Collection<SequentialParser.Node> {

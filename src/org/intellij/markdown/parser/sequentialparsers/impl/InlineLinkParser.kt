@@ -34,42 +34,42 @@ public class InlineLinkParser : SequentialParser {
         return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
     }
 
-    private fun parseInlineLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
-        val startIndex = iterator.index
-        var it = iterator
+    companion object {
+        fun parseInlineLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+            val startIndex = iterator.index
+            var it = iterator
 
-        val afterText = LinkParserUtil.parseLinkText(result, delegateIndices, it)
-        if (afterText == null) {
-            return null
-        }
-        it = afterText
-        if (it.rawLookup(1) != MarkdownTokenTypes.LPAREN) {
-            return null
-        }
+            val afterText = LinkParserUtil.parseLinkText(result, delegateIndices, it)
+                    ?: return null
+            it = afterText
+            if (it.rawLookup(1) != MarkdownTokenTypes.LPAREN) {
+                return null
+            }
 
-        it = it.advance().advance()
-        if (it.type == MarkdownTokenTypes.EOL) {
-            it = it.advance()
-        }
-        val afterDestination = LinkParserUtil.parseLinkDestination(result, it)
-        if (afterDestination != null) {
-            it = afterDestination.advance()
+            it = it.advance().advance()
             if (it.type == MarkdownTokenTypes.EOL) {
                 it = it.advance()
             }
-        }
-        val afterTitle = LinkParserUtil.parseLinkTitle(result, it)
-        if (afterTitle != null) {
-            it = afterTitle.advance()
-            if (it.type == MarkdownTokenTypes.EOL) {
-                it = it.advance()
+            val afterDestination = LinkParserUtil.parseLinkDestination(result, it)
+            if (afterDestination != null) {
+                it = afterDestination.advance()
+                if (it.type == MarkdownTokenTypes.EOL) {
+                    it = it.advance()
+                }
             }
-        }
-        if (it.type != MarkdownTokenTypes.RPAREN) {
-            return null
-        }
+            val afterTitle = LinkParserUtil.parseLinkTitle(result, it)
+            if (afterTitle != null) {
+                it = afterTitle.advance()
+                if (it.type == MarkdownTokenTypes.EOL) {
+                    it = it.advance()
+                }
+            }
+            if (it.type != MarkdownTokenTypes.RPAREN) {
+                return null
+            }
 
-        result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK))
-        return it
+            result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK))
+            return it
+        }
     }
 }

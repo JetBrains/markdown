@@ -34,69 +34,72 @@ public class ReferenceLinkParser : SequentialParser {
         return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
     }
 
-    private fun parseReferenceLink(resultNodes: MutableCollection<SequentialParser.Node>, localDelegates: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
-        var result: TokensCache.Iterator?
+    companion object {
+        fun parseReferenceLink(resultNodes: MutableCollection<SequentialParser.Node>, localDelegates: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+            var result: TokensCache.Iterator?
 
-        result = parseFullReferenceLink(resultNodes, localDelegates, iterator)
-        if (result != null) {
-            return result
-        }
-        resultNodes.clear()
-        localDelegates.clear()
-        result = parseShortReferenceLink(resultNodes, localDelegates, iterator)
-        if (result != null) {
-            return result
-        }
-        return null
-    }
-
-    private fun parseFullReferenceLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
-        val startIndex = iterator.index
-        var it : TokensCache.Iterator? = iterator
-
-        it = LinkParserUtil.parseLinkText(result, delegateIndices, it!!)
-        if (it == null) {
-            return null
-        }
-        it = it.advance()
-
-        if (it.type == MarkdownTokenTypes.EOL) {
-            it = it.advance()
-        }
-
-        it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it)
-        if (it == null) {
+            result = parseFullReferenceLink(resultNodes, localDelegates, iterator)
+            if (result != null) {
+                return result
+            }
+            resultNodes.clear()
+            localDelegates.clear()
+            result = parseShortReferenceLink(resultNodes, localDelegates, iterator)
+            if (result != null) {
+                return result
+            }
             return null
         }
 
-        result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.FULL_REFERENCE_LINK))
-        return it
-    }
+        private fun parseFullReferenceLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+            val startIndex = iterator.index
+            var it : TokensCache.Iterator? = iterator
 
-    private fun parseShortReferenceLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
-        val startIndex = iterator.index
-        var it : TokensCache.Iterator? = iterator
-
-        it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it!!)
-        if (it == null) {
-            return null
-        }
-
-        val shortcutLinkEnd = it
-
-        it = it.advance()
-        if (it.type == MarkdownTokenTypes.EOL) {
+            it = LinkParserUtil.parseLinkText(result, delegateIndices, it!!)
+            if (it == null) {
+                return null
+            }
             it = it.advance()
+
+            if (it.type == MarkdownTokenTypes.EOL) {
+                it = it.advance()
+            }
+
+            it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it)
+            if (it == null) {
+                return null
+            }
+
+            result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.FULL_REFERENCE_LINK))
+            return it
         }
 
-        if (it.type == MarkdownTokenTypes.LBRACKET && it.rawLookup(1) == MarkdownTokenTypes.RBRACKET) {
+        private fun parseShortReferenceLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+            val startIndex = iterator.index
+            var it : TokensCache.Iterator? = iterator
+
+            it = LinkParserUtil.parseLinkLabel(result, delegateIndices, it!!)
+            if (it == null) {
+                return null
+            }
+
+            val shortcutLinkEnd = it
+
             it = it.advance()
-        } else {
-            it = shortcutLinkEnd
+            if (it.type == MarkdownTokenTypes.EOL) {
+                it = it.advance()
+            }
+
+            if (it.type == MarkdownTokenTypes.LBRACKET && it.rawLookup(1) == MarkdownTokenTypes.RBRACKET) {
+                it = it.advance()
+            } else {
+                it = shortcutLinkEnd
+            }
+
+            result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK))
+            return it
         }
 
-        result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK))
-        return it
     }
 
 }

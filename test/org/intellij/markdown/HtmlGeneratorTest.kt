@@ -75,6 +75,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest()
     }
 
+    public fun testImages() {
+        defaultTest()
+    }
+
     companion object {
         public fun formatHtmlForTests(html: String): String {
             val tags = Regex("</?[^>]+>")

@@ -168,6 +168,10 @@ public class MarkdownParsingTest : TestCase() {
         defaultTest()
     }
 
+    public fun testImages() {
+        defaultTest()
+    }
+
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/test/data/parser").getAbsolutePath();
     }

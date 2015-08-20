@@ -1,0 +1,94 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:INLINE_LINK
+        Markdown:LINK_TEXT
+          Markdown:[('[')
+          Markdown:TEXT('foo')
+          Markdown:](']')
+        Markdown:(('(')
+        Markdown:LINK_DESTINATION
+          Markdown:TEXT('/url')
+        WHITE_SPACE(' ')
+        Markdown:LINK_TITLE
+          Markdown:"('"')
+          Markdown:TEXT('title')
+          Markdown:"('"')
+        Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:SHORT_REFERENCE_LINK
+        Markdown:LINK_LABEL
+          Markdown:[('[')
+          Markdown:TEXT('foo')
+          WHITE_SPACE(' ')
+          Markdown:EMPH
+            Markdown:EMPH('*')
+            Markdown:TEXT('bar')
+            Markdown:EMPH('*')
+          Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[foo *bar*]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('train.jpg')
+    WHITE_SPACE(' ')
+    Markdown:LINK_TITLE('"train & tracks"')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:INLINE_LINK
+        Markdown:LINK_TEXT
+          Markdown:[('[')
+          Markdown:TEXT('foo')
+          WHITE_SPACE(' ')
+          Markdown:!('!')
+          Markdown:INLINE_LINK
+            Markdown:LINK_TEXT
+              Markdown:[('[')
+              Markdown:TEXT('bar')
+              Markdown:](']')
+            Markdown:(('(')
+            Markdown:LINK_DESTINATION
+              Markdown:TEXT('/url')
+            Markdown:)(')')
+          Markdown:](']')
+        Markdown:(('(')
+        Markdown:LINK_DESTINATION
+          Markdown:TEXT('/url2')
+        Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:INLINE_LINK
+        Markdown:LINK_TEXT
+          Markdown:[('[')
+          Markdown:](']')
+        Markdown:(('(')
+        Markdown:LINK_DESTINATION
+          Markdown:TEXT('/url')
+        Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('\!\[foo')
+    Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('\!')
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+  Markdown:EOL('\n')

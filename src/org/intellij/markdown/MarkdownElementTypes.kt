@@ -34,6 +34,7 @@ public interface MarkdownElementTypes {
         public val INLINE_LINK: IElementType = MarkdownElementType("INLINE_LINK")
         public val FULL_REFERENCE_LINK: IElementType = MarkdownElementType("FULL_REFERENCE_LINK")
         public val SHORT_REFERENCE_LINK: IElementType = MarkdownElementType("SHORT_REFERENCE_LINK")
+        public val IMAGE: IElementType = MarkdownElementType("IMAGE")
 
         public val AUTOLINK: IElementType = MarkdownElementType("AUTOLINK")
 

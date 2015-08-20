@@ -173,8 +173,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
-    Markdown:BLOCK_QUOTE('>')
-    WHITE_SPACE(' ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:INLINE_LINK
         Markdown:LINK_TEXT

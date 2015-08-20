@@ -3,10 +3,12 @@ package org.intellij.markdown.html
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import kotlin.text.Regex
 
 internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li") {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
@@ -88,32 +90,93 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
     }
 }
 
-internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
-: HtmlGenerator.TransparentInlineHolderProvider() {
-
+internal abstract class LinkGeneratingProvider : HtmlGenerator.GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        val linkLabelNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_LABEL })
+        val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
-        val linkInfo = linkMap.getLinkInfo(linkLabelNode.getTextInNode(text))
-                ?: return fallbackProvider.processNode(visitor, text, node)
-        val linkTextNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TEXT })
+        renderLink(visitor, text, info)
+    }
 
-        val titleText = linkInfo.title?.let { " title=\"${EntityConverter.replaceEntities(it, true, true)}\"" } ?: ""
-        visitor.consumeHtml("<a href=\"${EntityConverter.replaceEntities(linkInfo.destination, true, true)}\"${titleText}>")
-
-        processLabel(visitor, text, linkTextNode ?: linkLabelNode)
-
+    open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, info: RenderInfo) {
+        visitor.consumeHtml("<a href=\"${info.destination}\"")
+        info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
+        visitor.consumeHtml(">")
+        labelProvider.processNode(visitor, text, info.label)
         visitor.consumeHtml("</a>")
     }
+
+    abstract fun getRenderInfo(text: String, node: ASTNode): RenderInfo?
+
+    data class RenderInfo(val label: ASTNode, val destination: CharSequence, val title: CharSequence?)
 
     companion object {
         val fallbackProvider = HtmlGenerator.TransparentInlineHolderProvider()
 
         val labelProvider = HtmlGenerator.TransparentInlineHolderProvider(1, -1)
+    }
+}
 
-        public fun processLabel(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-            labelProvider.processNode(visitor, text, node)
+internal class InlineLinkGeneratingProvider : LinkGeneratingProvider() {
+    override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
+        val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
+                ?: return null
+        return LinkGeneratingProvider.RenderInfo(
+                label,
+                node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(text)?.let {
+                    LinkMap.normalizeDestination(it)
+                } ?: "",
+                node.findChildOfType(MarkdownElementTypes.LINK_TITLE)?.getTextInNode(text)?.let {
+                    LinkMap.normalizeTitle(it)
+                }
+        )
+    }
+}
+
+internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
+: LinkGeneratingProvider() {
+    override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
+        val label = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_LABEL })
+                ?: return null
+        val linkInfo = linkMap.getLinkInfo(label.getTextInNode(text))
+                ?: return null
+        val linkTextNode = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TEXT })
+
+        return LinkGeneratingProvider.RenderInfo(
+                linkTextNode ?: label,
+                EntityConverter.replaceEntities(linkInfo.destination, true, true),
+                linkInfo.title?.let { EntityConverter.replaceEntities(it, true, true) }
+        )
+    }
+}
+
+internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvider() {
+    val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap)
+    val inlineLinkProvider = InlineLinkGeneratingProvider()
+
+    override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
+        node.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.let { linkNode ->
+            return inlineLinkProvider.getRenderInfo(text, linkNode)
         }
+        (node.findChildOfType(MarkdownElementTypes.FULL_REFERENCE_LINK)
+                ?: node.findChildOfType(MarkdownElementTypes.SHORT_REFERENCE_LINK))
+                ?.let { linkNode ->
+            return referenceLinkProvider.getRenderInfo(text, linkNode)
+        }
+        return null
     }
 
+    override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, info: LinkGeneratingProvider.RenderInfo) {
+        visitor.consumeHtml("<img src=\"${info.destination}\" alt=\"${getPlainTextFrom(info.label, text)}\"")
+        info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
+        visitor.consumeHtml(" />")
+    }
+
+    private fun getPlainTextFrom(node: ASTNode, text: String): CharSequence {
+        return REGEX.replace(node.getTextInNode(text), "")
+    }
+
+    companion object {
+        val REGEX = Regex("[^a-zA-Z0-9 ]")
+    }
 }
+
