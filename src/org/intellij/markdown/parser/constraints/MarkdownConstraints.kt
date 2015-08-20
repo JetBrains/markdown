@@ -103,9 +103,6 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                 ?: return null
 
         offset += marker.length()
-        if (offset >= line.length())
-            return null
-
         var spacesAfter = 0
         while (offset < line.length() && line[offset] == ' ') {
             spacesAfter++

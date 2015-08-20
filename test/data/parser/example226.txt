@@ -1,0 +1,28 @@
+Markdown:MARKDOWN_FILE
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('-')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('foo')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('-')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:CODE_FENCE
+        Markdown:CODE_FENCE_START('```')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:CODE_FENCE_CONTENT('bar')
+        Markdown:EOL('\n')
+        Markdown:CODE_FENCE_END('  ```')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('-')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:CODE_BLOCK('    baz')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')

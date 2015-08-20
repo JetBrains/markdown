@@ -12,7 +12,7 @@ internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li"
         assert(node is ListItemCompositeNode)
 
         visitor.consumeHtml(openTag(text, node))
-        if (node.children.size() == 2 // Bullet + content
+        if (node.children.count { it.type != MarkdownTokenTypes.EOL && it.type != MarkdownTokenTypes.WHITE_SPACE } == 2 // Bullet + content
                 && node.children.last().type == MarkdownElementTypes.PARAGRAPH
                 && !(node as ListItemCompositeNode).parent!!.loose) {
             SilentParagraphGeneratingProvider.processNode(visitor, text, node.children.last())
