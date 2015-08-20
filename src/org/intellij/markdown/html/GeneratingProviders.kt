@@ -12,13 +12,16 @@ internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li"
         assert(node is ListItemCompositeNode)
 
         visitor.consumeHtml(openTag(text, node))
-        if (node.children.count { it.type != MarkdownTokenTypes.EOL && it.type != MarkdownTokenTypes.WHITE_SPACE } == 2 // Bullet + content
-                && node.children.last().type == MarkdownElementTypes.PARAGRAPH
-                && !(node as ListItemCompositeNode).parent!!.loose) {
-            SilentParagraphGeneratingProvider.processNode(visitor, text, node.children.last())
-        } else {
-            node.acceptChildren(visitor)
+        val isLoose = (node as ListItemCompositeNode).parent!!.loose
+
+        for (child in node.children) {
+            if (child.type == MarkdownElementTypes.PARAGRAPH && !isLoose) {
+                SilentParagraphGeneratingProvider.processNode(visitor, text, child)
+            } else {
+                child.accept(visitor)
+            }
         }
+
         visitor.consumeHtml(closeTag(text, node))
     }
 

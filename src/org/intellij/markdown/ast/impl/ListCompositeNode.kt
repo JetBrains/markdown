@@ -35,18 +35,22 @@ public class ListCompositeNode(type: IElementType, children: List<ASTNode>) : Co
     companion object {
         private fun hasLooseContent(node: ASTNode): Boolean {
             var newlines = 0
+            var seenNonWhitespace = false
             for (child in node.children) {
                 when (child.type) {
                     MarkdownTokenTypes.EOL -> {
                         ++newlines
-                        if (newlines > 1) {
-                            return true
-                        }
                     }
+                    MarkdownTokenTypes.LIST_BULLET,
+                    MarkdownTokenTypes.LIST_NUMBER,
                     MarkdownTokenTypes.WHITE_SPACE -> {
                         // do nothing;
                     }
                     else -> {
+                        if (seenNonWhitespace && newlines > 1) {
+                            return true
+                        }
+                        seenNonWhitespace = true
                         newlines = 0
                     }
                 }
