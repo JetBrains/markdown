@@ -29,16 +29,43 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return false
         }
-        return REGEX.matches(pos.currentLineFromPosition)
+        return isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)
     }
 
     companion object {
         public val REGEX: Regex = run {
             var variants = ArrayList<String>()
             for (c in arrayOf("-", "_", "\\*")) {
-                variants.add("(${c} *)(${c} *)(${c} *)+")
+                variants.add("(${c} *){3,}")
             }
             Regex("^ {0,3}(" + variants.join("|") + ")$")
         }
+
+        public fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
+//                        return HorizontalRuleProvider.REGEX.matches(line.subSequence(offset, line.length()))
+            var hrChar: Char? = null
+            var startSpace = 0
+            var charCount = 1
+            for (i in offset..line.length() - 1) {
+                val c = line[i]
+                if (hrChar == null) {
+                    if (c == '*' || c == '-' || c == '_') {
+                        hrChar = c
+                    } else if (startSpace < 3 && c == ' ') {
+                        startSpace++
+                    } else {
+                        return false
+                    }
+                } else {
+                    if (c == hrChar) {
+                        charCount++
+                    } else if (c != ' ' && c != '\t') {
+                        return false
+                    }
+                }
+            }
+            return charCount >= 3
+        }
+
     }
 }

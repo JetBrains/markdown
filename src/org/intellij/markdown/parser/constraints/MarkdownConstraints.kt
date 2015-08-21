@@ -81,7 +81,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
     public fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
         if (pos == null || pos.char == '\n')
             return null
-        if (isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
+        if (HorizontalRuleProvider.isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
             return null
         }
         return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
@@ -191,7 +191,7 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints,
                                     base: MarkdownConstraints): MarkdownConstraints {
-            if (isHorizontalRule(line, startOffset)) {
+            if (HorizontalRuleProvider.isHorizontalRule(line, startOffset)) {
                 return base;
             }
 
@@ -305,10 +305,6 @@ public class MarkdownConstraints private constructor(private var indents: IntArr
 
         private fun getMarkerType(marker: CharSequence): Char {
             return marker[marker.length() - 1]
-        }
-
-        private fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
-            return HorizontalRuleProvider.REGEX.matches(line.subSequence(offset, line.length()))
         }
 
     }
