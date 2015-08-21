@@ -55,7 +55,7 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ProcessingResult.CANCEL
     }
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.offset + 1
     }
 

@@ -93,7 +93,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             cachedPermutation = getPrioritizedMarkerPermutation()
         }
 
-        var result: Int? = null
+        var result: Int = -1
         for (index in cachedPermutation!!) {
             if (index >= markersStack.size()) {
                 continue
@@ -101,11 +101,11 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
             val markerBlock = markersStack.get(index)
             val offset = markerBlock.getNextInterestingOffset(pos)
-            if (result == null || offset != null && result > offset) {
+            if (result == -1 || offset != -1 && result > offset) {
                 result = offset
             }
         }
-        return if (result == null)
+        return if (result == -1)
             Int.MAX_VALUE
         else
             result
@@ -159,8 +159,8 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     }
 
-    private fun applyProcessingResult(index: Int?, markerBlock: MarkerBlock, processingResult: MarkerBlock.ProcessingResult) {
-        closeChildren(index!!, processingResult.childrenAction)
+    private fun applyProcessingResult(index: Int, markerBlock: MarkerBlock, processingResult: MarkerBlock.ProcessingResult) {
+        closeChildren(index, processingResult.childrenAction)
 
         // process self
         if (markerBlock.acceptAction(processingResult.selfAction)) {

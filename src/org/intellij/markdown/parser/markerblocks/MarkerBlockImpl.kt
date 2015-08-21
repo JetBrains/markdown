@@ -9,16 +9,16 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
                                       protected val marker: ProductionHolder.Marker) : MarkerBlock {
 
-    private var lastInterestingOffset: Int? = -1
+    private var lastInterestingOffset: Int = -2
 
     private var scheduledResult: MarkerBlock.ProcessingResult? = null
 
-    final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int {
         if (scheduledResult != null) {
             return pos.offset + 1
         }
 
-        if (lastInterestingOffset != null && lastInterestingOffset!! <= pos.offset) {
+        if (lastInterestingOffset != -1 && lastInterestingOffset <= pos.offset) {
             lastInterestingOffset = calcNextInterestingOffset(pos)
         }
         return lastInterestingOffset
@@ -30,10 +30,10 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        if (lastInterestingOffset == null || lastInterestingOffset!! > pos.offset) {
+        if (lastInterestingOffset == -1 || lastInterestingOffset > pos.offset) {
             return MarkerBlock.ProcessingResult.PASS
         }
-        if (lastInterestingOffset!! < pos.offset && !isInterestingOffset(pos)) {
+        if (lastInterestingOffset < pos.offset && !isInterestingOffset(pos)) {
             return MarkerBlock.ProcessingResult.PASS
         }
         if (scheduledResult != null) {
@@ -68,7 +68,7 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
     protected abstract fun doProcessToken(pos: LookaheadText.Position,
                                           currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult
 
-    protected abstract fun calcNextInterestingOffset(pos: LookaheadText.Position): Int?
+    protected abstract fun calcNextInterestingOffset(pos: LookaheadText.Position): Int
 
     public abstract fun getDefaultNodeType(): IElementType
 }

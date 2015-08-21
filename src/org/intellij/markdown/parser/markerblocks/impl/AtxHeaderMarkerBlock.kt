@@ -52,7 +52,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ClosingAction.DONE
     }
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.offset + 1
     }
 

@@ -18,7 +18,7 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.offset + 1
     }
 

@@ -20,7 +20,7 @@ public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
 
     private var realInterestingOffset = -1
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.offset + 1
     }
 

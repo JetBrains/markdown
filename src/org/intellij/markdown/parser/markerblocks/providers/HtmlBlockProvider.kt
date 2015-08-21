@@ -12,7 +12,7 @@ import kotlin.text.Regex
 public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val matchingGroup = matches(pos, stateInfo.currentConstraints)
-        if (matchingGroup != null) {
+        if (matchingGroup != -1) {
             return listOf(HtmlBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos))
         }
         return emptyList()
@@ -22,12 +22,12 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         return matches(pos, constraints) in 0..5
     }
 
-    private fun matches(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int? {
+    private fun matches(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int {
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
-            return null
+            return -1
         }
         val matchResult = FIND_START_REGEX.match(pos.currentLineFromPosition)
-                ?: return null
+                ?: return -1
         assert(matchResult.groups.size() == OPEN_CLOSE_REGEXES.size() + 1,
                 "There are some excess capturing groups probably!")
         for (i in 1..OPEN_CLOSE_REGEXES.size()) {
@@ -36,7 +36,7 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
             }
         }
         assert(false, "Match found but all groups are empty!")
-        return null
+        return -1
     }
 
     companion object {

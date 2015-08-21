@@ -7,7 +7,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 public interface MarkerBlock {
 
-    public fun getNextInterestingOffset(pos: LookaheadText.Position): Int?
+    public fun getNextInterestingOffset(pos: LookaheadText.Position): Int
 
     public fun isInterestingOffset(pos: LookaheadText.Position): Boolean
 

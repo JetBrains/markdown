@@ -23,7 +23,7 @@ public class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marke
         return MarkerBlock.ProcessingResult.DEFAULT
     }
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.offset + 1
     }
 

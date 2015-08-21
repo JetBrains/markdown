@@ -11,8 +11,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 public class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        return pos.nextLineOffset
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
+        return pos.nextLineOffset ?: -1
     }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {

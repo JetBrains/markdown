@@ -17,8 +17,8 @@ public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ClosingAction.DONE
     }
 
-    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int? {
-        return pos.nextLineOffset
+    override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
+        return pos.nextLineOffset ?: -1
     }
 
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
