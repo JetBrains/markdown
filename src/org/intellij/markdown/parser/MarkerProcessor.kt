@@ -13,13 +13,9 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     protected val markersStack: MutableList<MarkerBlock> = ArrayList()
 
-    private var cachedPermutation: List<Int>? = null
-
     protected var topBlockConstraints: MarkdownConstraints = startConstraints
 
     protected abstract val stateInfo: T
-
-    protected abstract fun getPrioritizedMarkerPermutation(): List<Int>
 
     protected abstract fun getMarkerBlockProviders(): List<MarkerBlockProvider<T>>
 
@@ -89,17 +85,9 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
     }
 
     private fun calculateNextPosForExistingMarkers(pos: LookaheadText.Position): Int {
-        if (cachedPermutation == null) {
-            cachedPermutation = getPrioritizedMarkerPermutation()
-        }
-
         var result: Int = -1
-        for (index in cachedPermutation!!) {
-            if (index >= markersStack.size()) {
-                continue
-            }
 
-            val markerBlock = markersStack.get(index)
+        for (markerBlock in markersStack) {
             val offset = markerBlock.getNextInterestingOffset(pos)
             if (result == -1 || offset != -1 && result > offset) {
                 result = offset
@@ -113,7 +101,6 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     public fun addNewMarkerBlock(newMarkerBlock: MarkerBlock) {
         markersStack.add(newMarkerBlock)
-        cachedPermutation = null
         relaxTopConstraints()
     }
 
@@ -125,38 +112,27 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
      * @return true if some markerBlock has canceled the event, false otherwise
      */
     private fun processMarkers(pos: LookaheadText.Position): Boolean {
-        if (cachedPermutation == null) {
-            cachedPermutation = getPrioritizedMarkerPermutation()
-        }
-
-        try {
-            val currentPermutation = cachedPermutation!!
-            for (index in currentPermutation) {
-                if (index >= markersStack.size()) {
-                    continue
-                }
-
-                val markerBlock = markersStack.get(index)
-                val processingResult = markerBlock.processToken(pos, stateInfo.currentConstraints)
-                if (processingResult == MarkerBlock.ProcessingResult.PASS) {
-                    continue
-                }
-
-                applyProcessingResult(index, markerBlock, processingResult)
-
-                if (processingResult.eventAction == MarkerBlock.EventAction.CANCEL) {
-                    return true
-                }
+        var index = markersStack.size()
+        while (index > 0) {
+            index--
+            if (index >= markersStack.size()) {
+                continue
             }
 
-            return false
-        } finally {
-            // Stack was changed
-            if (cachedPermutation == null || markersStack.size() != cachedPermutation!!.size()) {
-                cachedPermutation = null
+            val markerBlock = markersStack.get(index)
+            val processingResult = markerBlock.processToken(pos, stateInfo.currentConstraints)
+            if (processingResult == MarkerBlock.ProcessingResult.PASS) {
+                continue
+            }
+
+            applyProcessingResult(index, markerBlock, processingResult)
+
+            if (processingResult.eventAction == MarkerBlock.EventAction.CANCEL) {
+                return true
             }
         }
 
+        return false
     }
 
     private fun applyProcessingResult(index: Int, markerBlock: MarkerBlock, processingResult: MarkerBlock.ProcessingResult) {
