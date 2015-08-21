@@ -12,7 +12,7 @@ public object MarkdownParserUtil {
         var result = 1
 
         val isClearLine: (LookaheadText.Position) -> Boolean = { pos ->
-            val currentConstraints = MarkdownConstraints.fromBase(pos, constraints)
+            val currentConstraints = MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, constraints, MarkdownConstraints.BASE)
 
             currentConstraints.upstreamWith(constraints) && (
                     currentConstraints.getIndent() >= pos.currentLine.length() ||

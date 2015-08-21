@@ -34,7 +34,7 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun doProcessToken(pos: LookaheadText.Position,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (pos.char != '\n') {
+        if (pos.offsetInCurrentLine != -1) {
             return MarkerBlock.ProcessingResult.CANCEL
         }
 

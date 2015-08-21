@@ -100,12 +100,15 @@ public class LookaheadText(public val text: String) {
 
         public fun charsToNonWhitespace(): Int? {
             val line = currentLine
-            var i = 0
-            while (localPos + i < line.length()) {
-                if (localPos + i >= 0 && line.charAt(localPos + i) != ' ' && line.charAt(localPos + i) != '\t') {
-                    return i
+            var offset = localPos
+            while (offset < line.length()) {
+                if (offset >= 0) {
+                    val c = line[offset]
+                    if (c != ' ' && c != '\t') {
+                        return offset - localPos
+                    }
                 }
-                i++
+                offset++
             }
             return null
         }

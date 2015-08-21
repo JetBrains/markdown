@@ -58,7 +58,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun doProcessToken(pos: LookaheadText.Position,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (pos.char == '\n') {
+        if (pos.offsetInCurrentLine == -1) {
             return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DONE, MarkerBlock.EventAction.PROPAGATE)
         }
         return MarkerBlock.ProcessingResult.CANCEL;

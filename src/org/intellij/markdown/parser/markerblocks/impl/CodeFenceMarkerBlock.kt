@@ -35,7 +35,7 @@ public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
         }
 
         // Eat everything if we're on code line
-        if (pos.char != '\n') {
+        if (pos.offsetInCurrentLine != -1) {
             return MarkerBlock.ProcessingResult.CANCEL
         }
 

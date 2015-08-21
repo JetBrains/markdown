@@ -94,7 +94,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             }
         }
         return if (result == -1)
-            Int.MAX_VALUE
+            Integer.MAX_VALUE
         else
             result
     }

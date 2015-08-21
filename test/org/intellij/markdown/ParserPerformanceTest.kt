@@ -32,6 +32,10 @@ public class ParserPerformanceTest : TestCase() {
         defaultTest(false)
     }
 
+    public fun testCommonMarkSpec() {
+        defaultTest(false)
+    }
+
     companion object {
         val WARM_UP_NUM = 10
         val TEST_NUM = 100

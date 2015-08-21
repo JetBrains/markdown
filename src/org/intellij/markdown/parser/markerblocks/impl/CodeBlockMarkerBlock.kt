@@ -28,7 +28,7 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
         }
 
         // Eat everything if we're on code line
-        if (pos.char != '\n') {
+        if (pos.offsetInCurrentLine != -1) {
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
