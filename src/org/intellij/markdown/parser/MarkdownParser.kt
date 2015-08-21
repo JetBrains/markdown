@@ -17,7 +17,7 @@ public class MarkdownParser(private val markerProcessorFactory: MarkerProcessorF
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
     }
 
-    public fun parse(root: IElementType, text: String, parseInlines: Boolean): ASTNode {
+    public fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
         val productionHolder = ProductionHolder()
         val markerProcessor = markerProcessorFactory.createMarkerProcessor(productionHolder)
 
