@@ -1,9 +1,7 @@
 package org.intellij.markdown.parser
 
-import kotlin.text.Regex
-
 public class LookaheadText(public val text: String) {
-    private val lines: List<String> = text.split(Regex("\n"))
+    private val lines: List<String> = text.split('\n')
 
     public val startPosition: Position? = if (text.isNotEmpty())
         Position(0, -1, -1).nextPosition()
