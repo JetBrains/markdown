@@ -10,6 +10,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker)
 : MarkerBlockImpl(myConstraints, marker) {
+    override fun allowsSubBlocks(): Boolean = false
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {

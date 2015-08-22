@@ -13,8 +13,7 @@ public class CodeBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                     productionHolder: ProductionHolder,
                                     stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        if (stateInfo.nextConstraints.getIndent() > pos.offsetInCurrentLine
-                || stateInfo.paragraphBlock != null) {
+        if (stateInfo.nextConstraints.getIndent() > pos.offsetInCurrentLine) {
             return emptyList()
         }
 

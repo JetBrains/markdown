@@ -13,6 +13,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                      private val productionHolder: ProductionHolder)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    override fun allowsSubBlocks(): Boolean = false
 
     private val contentMarker = productionHolder.mark()
 

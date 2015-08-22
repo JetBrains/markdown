@@ -13,6 +13,8 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
                                   marker: ProductionHolder.Marker,
                                   val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean)
         : MarkerBlockImpl(constraints, marker) {
+    override fun allowsSubBlocks(): Boolean = false
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {

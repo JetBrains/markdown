@@ -120,7 +120,15 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
-    open class TrimmingTransparentInlineHolderProvider() : TransparentInlineHolderProvider() {
+    open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvider() {
+        override fun openTag(text: String, node: ASTNode): String {
+            return ""
+        }
+
+        override fun closeTag(text: String, node: ASTNode): String {
+            return ""
+        }
+
         override fun childrenToRender(node: ASTNode): List<ASTNode> {
             val children = node.children
             var from = 0
@@ -167,11 +175,11 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                 MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
                 MarkdownElementTypes.LIST_ITEM to ListItemGeneratingProvider(),
 
-                MarkdownTokenTypes.SETEXT_CONTENT to TrimmingTransparentInlineHolderProvider(),
+                MarkdownTokenTypes.SETEXT_CONTENT to TrimmingInlineHolderProvider(),
                 MarkdownElementTypes.SETEXT_1 to SimpleTagProvider("h1"),
                 MarkdownElementTypes.SETEXT_2 to SimpleTagProvider("h2"),
 
-                MarkdownTokenTypes.ATX_CONTENT to TrimmingTransparentInlineHolderProvider(),
+                MarkdownTokenTypes.ATX_CONTENT to TrimmingInlineHolderProvider(),
                 MarkdownElementTypes.ATX_1 to SimpleTagProvider("h1"),
                 MarkdownElementTypes.ATX_2 to SimpleTagProvider("h2"),
                 MarkdownElementTypes.ATX_3 to SimpleTagProvider("h3"),
@@ -237,7 +245,15 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
                     }
                 },
 
-                MarkdownElementTypes.PARAGRAPH to SimpleInlineTagProvider("p"),
+                MarkdownElementTypes.PARAGRAPH to object: TrimmingInlineHolderProvider() {
+                    override fun openTag(text: String, node: ASTNode): String {
+                        return "<p>"
+                    }
+
+                    override fun closeTag(text: String, node: ASTNode): String {
+                        return "</p>"
+                    }
+                },
                 MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
                 MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
                 MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {

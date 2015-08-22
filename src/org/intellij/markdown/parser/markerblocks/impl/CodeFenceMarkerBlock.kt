@@ -14,6 +14,8 @@ import kotlin.text.Regex
 public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder,
                                   private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    override fun allowsSubBlocks(): Boolean = false
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.char == '\n'
 
     private val endLineRegex = Regex("^ {0,3}${fenceStart}+ *$")

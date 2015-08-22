@@ -12,6 +12,8 @@ public class LinkReferenceDefinitionMarkerBlock(myConstraints: MarkdownConstrain
                                                 marker: ProductionHolder.Marker,
                                                 private val endPosition: Int)
 : MarkerBlockImpl(myConstraints, marker) {
+    override fun allowsSubBlocks(): Boolean = false
+
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
     }

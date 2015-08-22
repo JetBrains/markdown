@@ -11,6 +11,8 @@ public interface MarkerBlock {
 
     public fun isInterestingOffset(pos: LookaheadText.Position): Boolean
 
+    public fun allowsSubBlocks(): Boolean
+
     public fun processToken(pos: LookaheadText.Position,
                             currentConstraints: MarkdownConstraints): ProcessingResult
 

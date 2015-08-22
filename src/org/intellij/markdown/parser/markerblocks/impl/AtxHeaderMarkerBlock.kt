@@ -16,6 +16,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   tailStartPos: Int,
                                   endOfLinePos: Int)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    override fun allowsSubBlocks(): Boolean = false
 
     init {
         val curPos = productionHolder.currentPosition

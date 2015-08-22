@@ -22,6 +22,8 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
                 startPosition.offset..startPosition.nextLineOrEofOffset, MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
     }
 
+    override fun allowsSubBlocks(): Boolean = false
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {

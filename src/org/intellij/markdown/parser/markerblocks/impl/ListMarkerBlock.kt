@@ -13,6 +13,8 @@ public class ListMarkerBlock(myConstraints: MarkdownConstraints,
                              marker: ProductionHolder.Marker,
                              private val listType: Char)
     : MarkerBlockImpl(myConstraints, marker) {
+    override fun allowsSubBlocks(): Boolean = true
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {

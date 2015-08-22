@@ -11,6 +11,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
                                  marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+    override fun allowsSubBlocks(): Boolean = true
+
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
