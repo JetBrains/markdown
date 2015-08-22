@@ -19,9 +19,12 @@ public class AutolinkParser : SequentialParser {
 
             if (iterator.type == MarkdownTokenTypes.LT && iterator.rawLookup(1) == MarkdownTokenTypes.AUTOLINK) {
                 val start = i
-                while (iterator.type != MarkdownTokenTypes.GT) {
+                while (iterator.type != MarkdownTokenTypes.GT && iterator.type != null) {
                     iterator = iterator.advance()
                     i++
+                }
+                if (iterator.type == null) {
+                    i--
                 }
                 result.withNode(SequentialParser.Node(indices.get(start)..indices.get(i) + 1, MarkdownElementTypes.AUTOLINK))
             } else {
