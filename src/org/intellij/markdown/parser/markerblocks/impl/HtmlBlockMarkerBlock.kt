@@ -58,7 +58,7 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
     }
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
-        return pos.offset + 1
+        return pos.nextLineOrEofOffset
     }
 
     override fun getDefaultNodeType(): IElementType {

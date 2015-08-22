@@ -26,7 +26,7 @@ public class LinkReferenceDefinitionMarkerBlock(myConstraints: MarkdownConstrain
     }
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
-        return pos.offset + 1
+        return endPosition
     }
 
     override fun getDefaultNodeType(): IElementType {

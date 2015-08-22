@@ -17,7 +17,7 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
     private var realInterestingOffset = -1
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
-        return pos.offset + 1
+        return pos.nextLineOrEofOffset
     }
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
