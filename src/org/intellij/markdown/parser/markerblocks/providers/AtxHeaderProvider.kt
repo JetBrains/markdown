@@ -13,22 +13,17 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        if (matches(pos)) {
-            val headerSize = calcHeaderSize(pos)
-            return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints, productionHolder, headerSize, calcTailStartPos(pos, headerSize), pos.nextLineOrEofOffset))
+        val headerRange = matches(pos)
+        if (headerRange != null) {
+            return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints,
+                    productionHolder,
+                    headerRange,
+                    calcTailStartPos(pos, headerRange.end),
+                    pos.nextLineOrEofOffset))
         } else {
             return emptyList()
         }
 
-    }
-
-    private fun calcHeaderSize(pos: LookaheadText.Position): Int {
-        val line = pos.currentLineFromPosition
-        var result = 0
-        while (result < line.length() && line[result] == '#') {
-            result++
-        }
-        return result
     }
 
     private fun calcTailStartPos(pos: LookaheadText.Position, headerSize: Int): Int {
@@ -48,14 +43,20 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
-        return matches(pos)
+        return matches(pos) != null
     }
 
-    private fun matches(pos: LookaheadText.Position): Boolean {
-        return pos.offsetInCurrentLine != -1 && REGEX.hasMatch(pos.currentLineFromPosition)
+    private fun matches(pos: LookaheadText.Position): Range<Int>? {
+        if (pos.offsetInCurrentLine != -1) {
+            val matchResult = REGEX.match(pos.currentLineFromPosition)
+            if (matchResult != null) {
+                return matchResult.groups[1]!!.range
+            }
+        }
+        return null
     }
 
     companion object {
-        val REGEX: Regex = Regex("^#{1,6}( |$)")
+        val REGEX: Regex = Regex("^ {0,3}(#{1,6})( |$)")
     }
 }

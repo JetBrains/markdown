@@ -12,7 +12,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                   productionHolder: ProductionHolder,
-                                  headerSize: Int,
+                                  headerRange: Range<Int>,
                                   tailStartPos: Int,
                                   endOfLinePos: Int)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
@@ -21,9 +21,9 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
     init {
         val curPos = productionHolder.currentPosition
         productionHolder.addProduction(listOf(SequentialParser.Node(
-                curPos..curPos + headerSize, MarkdownTokenTypes.ATX_HEADER
+                curPos + headerRange.start..curPos + headerRange.end + 1, MarkdownTokenTypes.ATX_HEADER
         ), SequentialParser.Node(
-                curPos + headerSize..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
+                curPos + headerRange.end + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
         ), SequentialParser.Node(
                 tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
         )))
@@ -31,7 +31,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
-    private val nodeType = calcNodeType(headerSize)
+    private val nodeType = calcNodeType(headerRange.end - headerRange.start + 1)
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {

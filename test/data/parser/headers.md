@@ -49,6 +49,8 @@ atx headers:
 
 ## atx h2 with *emph* ##
 
+  #### atx with two spaces in the beginning
+
 ### foo ### b
 
     ## And this is not a header; it's a CODE

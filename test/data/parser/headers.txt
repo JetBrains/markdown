@@ -158,6 +158,14 @@ Markdown:MARKDOWN_FILE
     Markdown:ATX_HEADER('##')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
+  Markdown:ATX_4
+    WHITE_SPACE('  ')
+    Markdown:ATX_HEADER('####')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('atx with two spaces in the beginning')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
   Markdown:ATX_3
     Markdown:ATX_HEADER('###')
     Markdown:ATX_CONTENT
