@@ -212,8 +212,8 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
     Markdown:BLOCK_QUOTE('> ')
-    WHITE_SPACE('   ')
     Markdown:PARAGRAPH
+      WHITE_SPACE('   ')
       Markdown:TEXT('not code')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

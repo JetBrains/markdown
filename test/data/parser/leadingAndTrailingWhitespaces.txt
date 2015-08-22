@@ -1,8 +1,8 @@
 Markdown:MARKDOWN_FILE
   WHITE_SPACE('  ')
   Markdown:EOL('\n')
-  WHITE_SPACE('  ')
   Markdown:PARAGRAPH
+    WHITE_SPACE('  ')
     Markdown:TEXT('Text')
     WHITE_SPACE('  ')
   Markdown:EOL('\n')

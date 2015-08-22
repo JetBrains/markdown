@@ -12137,8 +12137,8 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('You may obtain a copy of the License at')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  WHITE_SPACE('  ')
   Markdown:PARAGRAPH
+    WHITE_SPACE('  ')
     Markdown:TEXT('http')
     Markdown::(':')
     Markdown:TEXT('//www.apache.org/licenses/LICENSE-2.0')

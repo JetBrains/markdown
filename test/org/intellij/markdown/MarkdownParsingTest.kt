@@ -79,7 +79,7 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     public fun testLeadingSpace() {
-        assertEquals("Markdown:MARKDOWN_FILE\n  WHITE_SPACE(' ')\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')",
+        assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    WHITE_SPACE(' ')\n    Markdown:TEXT('Test')",
                 getParsedTreeText(" Test"));
     }
 
