@@ -11,7 +11,14 @@ public class ParserPerformanceTest : TestCase() {
     }
 
     private fun defaultTest(fullParse: Boolean) {
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText();
+        val fileName = testName.let {
+            if (it.endsWith("Full")) {
+                it.substring(0, it.length() - 4)
+            } else {
+                it
+            }
+        }
+        val src = File(getTestDataPath() + "/" + fileName + ".md").readText();
 
         val runnable = { i: Int ->
             val root = MarkdownParser(CommonMarkMarkerProcessor.Factory).
@@ -25,15 +32,23 @@ public class ParserPerformanceTest : TestCase() {
         repeat(TEST_NUM, runnable)
         val testTime = System.nanoTime() - startTime
 
-        println("$testName: ${(testTime / TEST_NUM / 1e6)}ms")
+        println("$fileName: ${(testTime / TEST_NUM / 1e6)}ms")
     }
 
     public fun testGitBook() {
         defaultTest(false)
     }
 
+    public fun testGitBookFull() {
+        defaultTest(true)
+    }
+
     public fun testCommonMarkSpec() {
         defaultTest(false)
+    }
+
+    public fun testCommonMarkSpecFull() {
+        defaultTest(true)
     }
 
     companion object {
