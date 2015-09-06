@@ -3,9 +3,9 @@ package org.intellij.markdown.parser.constraints
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
 
-public class MarkdownConstraints private constructor(private var indents: IntArray,
-                                                     private var types: CharArray,
-                                                     private var isExplicit: BooleanArray) {
+public class MarkdownConstraints private constructor(private val indents: IntArray,
+                                                     private val types: CharArray,
+                                                     private val isExplicit: BooleanArray) {
 
     public fun eatItselfFromString(s: CharSequence) : CharSequence {
         if (s.length() < getIndent()) {
