@@ -10,8 +10,6 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
-import kotlin.text.MatchResult
-import kotlin.text.Regex
 
 
 public class HtmlGenerator(private val markdownText: String, private val root: ASTNode, private val linkMap: LinkMap) {
@@ -280,8 +278,37 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
             if (indent == 0) {
                 return text
             }
-            val regex = Regex("(\n|^)" + " {0,${indent}}")
-            return regex.replace(text, fun(m: MatchResult) = m.groups[1]?.value!!)
+
+            val buffer = StringBuilder()
+
+            var lastFlushed = 0
+            var offset = 0
+            while (offset < text.length()) {
+                if (offset == 0 || text[offset - 1] == '\n') {
+                    buffer.append(text.subSequence(lastFlushed, offset))
+                    var indentRemaining = indent
+
+                    trimIndentLoop@
+                    while (indentRemaining > 0 && offset < text.length()) {
+                        when (text[offset]) {
+                            ' ' -> indentRemaining--
+                            '\t' -> indentRemaining -= 4
+                            else -> break@trimIndentLoop
+                        }
+                        offset++
+                    }
+
+                    if (indentRemaining < 0) {
+                        buffer.append(" ".repeat(-indentRemaining))
+                    }
+                    lastFlushed = offset
+                }
+
+                offset++
+            }
+
+            buffer.append(text.subSequence(lastFlushed, text.length()))
+            return buffer
         }
 
     }
