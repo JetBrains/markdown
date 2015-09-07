@@ -286,20 +286,20 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
             while (offset < text.length()) {
                 if (offset == 0 || text[offset - 1] == '\n') {
                     buffer.append(text.subSequence(lastFlushed, offset))
-                    var indentRemaining = indent
+                    var indentEaten = 0
 
-                    trimIndentLoop@
-                    while (indentRemaining > 0 && offset < text.length()) {
+                    eatIndentLoop@
+                    while (indentEaten < indent && offset < text.length()) {
                         when (text[offset]) {
-                            ' ' -> indentRemaining--
-                            '\t' -> indentRemaining -= 4
-                            else -> break@trimIndentLoop
+                            ' ' -> indentEaten++
+                            '\t' -> indentEaten += 4 - indentEaten % 4
+                            else -> break@eatIndentLoop
                         }
                         offset++
                     }
 
-                    if (indentRemaining < 0) {
-                        buffer.append(" ".repeat(-indentRemaining))
+                    if (indentEaten > indent) {
+                        buffer.append(" ".repeat(indentEaten - indent))
                     }
                     lastFlushed = offset
                 }

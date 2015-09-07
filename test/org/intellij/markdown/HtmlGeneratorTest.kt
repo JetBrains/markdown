@@ -71,6 +71,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest()
     }
 
+    public fun testExample2() {
+        defaultTest()
+    }
+
     public fun testEntities() {
         defaultTest()
     }

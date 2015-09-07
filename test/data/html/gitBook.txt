@@ -1034,13 +1034,13 @@ Commit:     Junio C Hamano &lt;gitster@pobox.com&gt;
 CommitDate: Mon Apr 29 08:07:22 2013 -0700
 
     git-completion.bash: lexical sorting for diff.statGraphWidth
-
+    
     df44483a (diff --stat: add config option to limit graph width,
     2012-03-01) added the option diff.startGraphWidth to the list of
     configuration variables in git-completion.bash, but failed to notice
     that the list is sorted alphabetically.  Move it to its rightful place
     in the list.
-
+    
     Signed-off-by: Ramkumar Ramachandra &lt;artagnon@gmail.com&gt;
     Signed-off-by: Junio C Hamano &lt;gitster@pobox.com&gt;
 </code></pre>
@@ -4774,8 +4774,8 @@ pick 310154e updated README formatting and added blame
 pick a5f4a0d added cat-file
 </code></pre>
 <p>When you save and exit the editor, Git rewinds you back to the last commit in that list and drops you on the command line with the following message:</p>
-<!-- This is actually weird, as the SHA-1 of 7482e0d is not present in the list,
-nor is the commit message. Please review
+<!-- This is actually weird, as the SHA-1 of 7482e0d is not present in the list, 
+nor is the commit message. Please review 
 -->
 
 <pre><code>$ git rebase -i HEAD~3
@@ -6781,7 +6781,7 @@ Here is example to experiment with</p>
 
 if git rev-parse --git-dir &gt; /dev/null 2&gt;&amp;1 &amp;&amp; [[ $1 == &quot;info&quot; ]] ; then
   git svn info
-else
+else 
   /usr/local/bin/svn &quot;$@&quot;
 fi
 </code></pre>

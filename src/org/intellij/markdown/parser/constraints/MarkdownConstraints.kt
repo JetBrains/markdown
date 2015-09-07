@@ -111,7 +111,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
         while (offset < line.length()) {
             when (line[offset]) {
                 ' ' -> spacesAfter++
-                '\t' -> spacesAfter += 4
+                '\t' -> spacesAfter += 4 - spacesAfter % 4
                 else -> break@afterSpaces
             }
             offset++
@@ -243,7 +243,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
                     while (spacesSeen < k && offset < line.length()) {
                         when (line[offset]) {
                             ' ' -> spacesSeen++
-                            '\t' -> spacesSeen += 4
+                            '\t' -> spacesSeen += 4 - spacesSeen % 4
                             else -> break@afterSpaces
                         }
                         offset++
