@@ -90,6 +90,21 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('I suppose.')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:SETEXT_2
+        Markdown:SETEXT_CONTENT
+          Markdown:TEXT('Bar')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:SETEXT_2('---')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('baz')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('This will concern hrules')
     Markdown::(':')

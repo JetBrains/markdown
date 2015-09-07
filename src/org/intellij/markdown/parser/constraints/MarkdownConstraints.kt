@@ -207,10 +207,6 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints,
                                     base: MarkdownConstraints): MarkdownConstraints {
-            if (HorizontalRuleProvider.isHorizontalRule(line, startOffset)) {
-                return base;
-            }
-
             val prevN = prevLineConstraints.indents.size()
             var indexPrev = 0
 

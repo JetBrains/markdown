@@ -26,6 +26,10 @@ And nested ones?
 
     But this is not, I suppose.
 
+- Bar
+  ---
+  baz
+
 This will concern hrules:
 
 * Foo
