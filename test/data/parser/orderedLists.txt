@@ -111,3 +111,10 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('s all folks')
         Markdown:!('!')
   Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('1234567890.')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('Not a list item anymore')
+    Markdown:!('!')
+  Markdown:EOL('\n')

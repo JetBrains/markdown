@@ -324,6 +324,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
                 offset++
             }
             if (offset > pos.offsetInCurrentLine
+                    && offset - pos.offsetInCurrentLine <= 9
                     && offset < line.length()
                     && (line[offset] == '.' || line[offset] == ')')) {
                 return line.subSequence(pos.offsetInCurrentLine, offset + 1)
