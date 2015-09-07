@@ -1,0 +1,15 @@
+Markdown:MARKDOWN_FILE
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:CODE_BLOCK('    indented code')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('   ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('paragraph')
+      Markdown:EOL('\n')
+      Markdown:EOL('\n')
+      WHITE_SPACE('   ')
+      Markdown:CODE_BLOCK('    more code')
+  Markdown:EOL('\n')

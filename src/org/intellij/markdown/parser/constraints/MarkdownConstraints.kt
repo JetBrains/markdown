@@ -107,6 +107,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
         offset += marker.length()
         var spacesAfter = 0
 
+        val markerEndOffset = offset
         afterSpaces@
         while (offset < line.length()) {
             when (line[offset]) {
@@ -125,7 +126,8 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
         if (spacesAfter >= 5 && offset < line.length() // 2. Starts with an indented code
                 || offset == line.length()) {
             // 3. Starts with an empty string
-            return MarkdownConstraints(this, spacesBefore + marker.length() + 1, getMarkerType(marker), true, offset)
+            return MarkdownConstraints(this, spacesBefore + marker.length() + 1, getMarkerType(marker), true,
+                    Math.min(offset, markerEndOffset + 1))
         }
 
         return null
