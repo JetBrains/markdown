@@ -89,15 +89,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
     }
 
     private fun calculateNextPosForExistingMarkers(pos: LookaheadText.Position): Int {
-        var result: Int = -1
-
-        result = markersStack.lastOrNull()?.getNextInterestingOffset(pos) ?: pos.nextLineOrEofOffset
-//        for (markerBlock in markersStack) {
-//            val offset = markerBlock.getNextInterestingOffset(pos)
-//            if (result == -1 || offset != -1 && result > offset) {
-//                result = offset
-//            }
-//        }
+        val result = markersStack.lastOrNull()?.getNextInterestingOffset(pos) ?: pos.nextLineOrEofOffset
         return if (result == -1)
             Integer.MAX_VALUE
         else
