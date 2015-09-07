@@ -13,10 +13,11 @@ public object MarkdownParserUtil {
 
         val isClearLine: (LookaheadText.Position) -> Boolean = { pos ->
             val currentConstraints = MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, constraints, MarkdownConstraints.BASE)
+            val constraintsLength = currentConstraints.getCharsEaten(pos.currentLine)
 
             currentConstraints.upstreamWith(constraints) && (
-                    currentConstraints.getIndent() >= pos.currentLine.length() ||
-                    pos.nextPosition(1 + currentConstraints.getIndent())?.charsToNonWhitespace() == null)
+                    constraintsLength >= pos.currentLine.length() ||
+                    pos.nextPosition(1 + constraintsLength)?.charsToNonWhitespace() == null)
         }
 
         while (isClearLine(currentPos)) {
@@ -43,13 +44,19 @@ public object MarkdownParserUtil {
         return currentPos
     }
 
-    public fun getIndentBeforeRawToken(pos: LookaheadText.Position): Int {
-        return pos.offsetInCurrentLine
-    }
-
     public fun hasCodeBlockIndent(pos: LookaheadText.Position,
                                   constraints: MarkdownConstraints): Boolean {
-        return getIndentBeforeRawToken(pos) >= constraints.getIndent() + 4
+        val constraintsLength = constraints.getCharsEaten(pos.currentLine)
+
+        if (pos.offsetInCurrentLine >= constraintsLength + 4) {
+            return true
+        }
+        for (i in constraintsLength..pos.offsetInCurrentLine) {
+            if (pos.currentLine[i] == '\t') {
+                return true
+            }
+        }
+        return false
     }
 
     public fun isEmptyOrSpaces(s: CharSequence): Boolean {

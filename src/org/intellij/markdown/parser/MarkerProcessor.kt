@@ -47,7 +47,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
         if (//!Character.isWhitespace(pos.char) &&
                 //stateInfo.paragraphBlock == null &&
-                pos.offsetInCurrentLine >= stateInfo.nextConstraints.getIndent()
+                pos.offsetInCurrentLine >= stateInfo.nextConstraints.getCharsEaten(pos.currentLine)
                 && pos.charsToNonWhitespace() != null) {
             return listOf(ParagraphMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), interruptsParagraph))
         }
@@ -80,7 +80,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
         if (pos.offsetInCurrentLine == -1
                 || MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.currentConstraints)) {
-            val delta = stateInfo.nextConstraints.getIndentAdapted(pos.currentLine) - pos.offsetInCurrentLine
+            val delta = stateInfo.nextConstraints.getCharsEaten(pos.currentLine) - pos.offsetInCurrentLine
             if (delta > 0)
                 return pos.nextPosition(delta)
         }

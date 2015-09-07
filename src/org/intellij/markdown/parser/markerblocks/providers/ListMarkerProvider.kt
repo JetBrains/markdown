@@ -25,7 +25,7 @@ public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         val currentConstraints = stateInfo.currentConstraints
         val nextConstraints = stateInfo.nextConstraints
 
-        if (pos.offsetInCurrentLine != currentConstraints.getIndent()) {
+        if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, currentConstraints)) {
             return emptyList()
         }
         if (nextConstraints != currentConstraints

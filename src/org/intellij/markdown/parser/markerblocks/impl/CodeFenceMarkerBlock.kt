@@ -57,7 +57,7 @@ public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                     MarkdownTokenTypes.CODE_FENCE_END)))
             scheduleProcessingResult(nextLineOffset, MarkerBlock.ProcessingResult.DEFAULT)
         } else {
-            val contentRange = Math.min(pos.offset + 1 + constraints.getIndent(), nextLineOffset)..nextLineOffset
+            val contentRange = Math.min(pos.offset + 1 + constraints.getCharsEaten(pos.currentLine), nextLineOffset)..nextLineOffset
             if (contentRange.start < contentRange.end) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         contentRange, MarkdownTokenTypes.CODE_FENCE_CONTENT)))

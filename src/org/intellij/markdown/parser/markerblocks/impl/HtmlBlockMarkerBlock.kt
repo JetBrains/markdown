@@ -49,7 +49,7 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
         if (pos.currentLine.isNotEmpty()) {
             productionHolder.addProduction(listOf(SequentialParser.Node(
-                    pos.offset + 1 + constraints.getIndentAdapted(pos.currentLine)..pos.nextLineOrEofOffset,
+                    pos.offset + 1 + constraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset,
                     MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
         }
 

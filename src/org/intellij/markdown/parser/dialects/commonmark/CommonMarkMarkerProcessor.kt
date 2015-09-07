@@ -36,7 +36,7 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
             stateInfo = MarkerProcessor.StateInfo(MarkdownConstraints.BASE,
                     MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, topBlockConstraints, MarkdownConstraints.BASE),
                     markersStack)
-        } else if (pos.offsetInCurrentLine == stateInfo.nextConstraints.getIndent()) {
+        } else if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.nextConstraints)) {
             stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
                     stateInfo.nextConstraints.addModifierIfNeeded(pos) ?: stateInfo.nextConstraints,
                     markersStack)

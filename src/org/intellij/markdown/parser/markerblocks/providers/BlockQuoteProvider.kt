@@ -18,7 +18,7 @@ public class BlockQuoteProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
 
         val currentConstraints = stateInfo.currentConstraints
         val nextConstraints = stateInfo.nextConstraints
-        if (pos.offsetInCurrentLine != currentConstraints.getIndent()) {
+        if (pos.offsetInCurrentLine != currentConstraints.getCharsEaten(pos.currentLine)) {
             return emptyList()
         }
         if (nextConstraints != currentConstraints && nextConstraints.getLastType() == '>') {

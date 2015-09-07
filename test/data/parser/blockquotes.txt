@@ -110,9 +110,9 @@ Markdown:MARKDOWN_FILE
         Markdown:PARAGRAPH
           Markdown:TEXT('This is the first list item.')
       Markdown:EOL('\n')
-      WHITE_SPACE('>')
+      WHITE_SPACE('> ')
       Markdown:LIST_ITEM
-        Markdown:LIST_NUMBER(' 2.   ')
+        Markdown:LIST_NUMBER('2.   ')
         Markdown:PARAGRAPH
           Markdown:TEXT('This is the second list item.')
     Markdown:EOL('\n')
