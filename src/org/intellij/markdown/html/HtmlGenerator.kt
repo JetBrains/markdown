@@ -4,7 +4,6 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
@@ -36,105 +35,6 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
 
         public final fun consumeHtml(html: CharSequence) {
             htmlString.append(html)
-        }
-    }
-
-    abstract class OpenCloseGeneratingProvider : GeneratingProvider {
-        abstract fun openTag(text: String, node: ASTNode): String;
-        abstract fun closeTag(text: String, node: ASTNode): String;
-
-        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-            visitor.consumeHtml(openTag(text, node))
-            node.acceptChildren(visitor)
-            visitor.consumeHtml(closeTag(text, node))
-        }
-    }
-
-    abstract class NonRecursiveGeneratingProvider : GeneratingProvider {
-        abstract fun generateTag(text: String, node: ASTNode): CharSequence;
-
-        final override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-            visitor.consumeHtml(generateTag(text, node))
-        }
-    }
-
-    abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvider() {
-        open fun childrenToRender(node: ASTNode): List<ASTNode> {
-            return node.children
-        }
-
-        override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-            visitor.consumeHtml(openTag(text, node))
-
-            for (child in childrenToRender(node)) {
-                if (child is LeafASTNode) {
-                    visitor.visitLeaf(child)
-                } else {
-                    child.accept(visitor)
-                }
-            }
-
-            visitor.consumeHtml(closeTag(text, node))
-        }
-    }
-
-    open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
-        override fun openTag(text: String, node: ASTNode): String {
-            return "<$tagName>"
-        }
-
-        override fun closeTag(text: String, node: ASTNode): String {
-            return "</$tagName>"
-        }
-    }
-
-    open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0, val renderTo: Int = 0)
-    : InlineHolderGeneratingProvider() {
-        override fun childrenToRender(node: ASTNode): List<ASTNode> {
-            return node.children.subList(renderFrom, node.children.size() + renderTo)
-        }
-
-        override fun openTag(text: String, node: ASTNode): String {
-            return "<$tagName>"
-        }
-
-        override fun closeTag(text: String, node: ASTNode): String {
-            return "</$tagName>"
-        }
-    }
-
-    open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo: Int = 0)
-    : SimpleInlineTagProvider("", renderFrom, renderTo) {
-        override fun openTag(text: String, node: ASTNode): String {
-            return ""
-        }
-
-        override fun closeTag(text: String, node: ASTNode): String {
-            return ""
-        }
-    }
-
-    open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvider() {
-        override fun openTag(text: String, node: ASTNode): String {
-            return ""
-        }
-
-        override fun closeTag(text: String, node: ASTNode): String {
-            return ""
-        }
-
-        override fun childrenToRender(node: ASTNode): List<ASTNode> {
-            val children = node.children
-            var from = 0
-            while (from < children.size() && children[from].type == MarkdownTokenTypes.WHITE_SPACE) {
-                from++
-            }
-            var to = children.size()
-            while (to > from && children[to - 1].type == MarkdownTokenTypes.WHITE_SPACE) {
-                to--
-            }
-
-            return children.subList(from, to)
         }
     }
 
