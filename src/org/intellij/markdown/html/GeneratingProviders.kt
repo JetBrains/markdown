@@ -39,7 +39,7 @@ internal class ListItemGeneratingProvider : HtmlGenerator.SimpleTagProvider("li"
     }
 }
 
-internal class HtmlBlockGeneratingProvider : HtmlGenerator.GeneratingProvider {
+internal class HtmlBlockGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         for (child in node.children) {
             if (child.type in listOf(MarkdownTokenTypes.EOL, MarkdownTokenTypes.HTML_BLOCK_CONTENT)) {
@@ -50,7 +50,7 @@ internal class HtmlBlockGeneratingProvider : HtmlGenerator.GeneratingProvider {
     }
 }
 
-internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
+internal class CodeFenceGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length()
 
@@ -90,7 +90,7 @@ internal class CodeFenceGeneratingProvider : HtmlGenerator.GeneratingProvider {
     }
 }
 
-internal abstract class LinkGeneratingProvider : HtmlGenerator.GeneratingProvider {
+internal abstract class LinkGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)

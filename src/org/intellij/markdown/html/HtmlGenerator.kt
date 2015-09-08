@@ -39,10 +39,6 @@ public class HtmlGenerator(private val markdownText: String, private val root: A
         }
     }
 
-    interface GeneratingProvider {
-        fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode)
-    }
-
     abstract class OpenCloseGeneratingProvider : GeneratingProvider {
         abstract fun openTag(text: String, node: ASTNode): String;
         abstract fun closeTag(text: String, node: ASTNode): String;
