@@ -11,9 +11,12 @@ import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
 
-public class HtmlGenerator(private val markdownText: String, private val root: ASTNode, private val linkMap: LinkMap) {
+public class HtmlGenerator(private val markdownText: String,
+                           private val root: ASTNode,
+                           private val linkMap: LinkMap,
+                           val additionalProviders: Map<IElementType, GeneratingProvider> = emptyMap()) {
     private val htmlString: StringBuilder = StringBuilder()
-    private val providers: Map<IElementType, GeneratingProvider> = initProviders()
+    private val providers: Map<IElementType, GeneratingProvider> = initProviders() + additionalProviders
 
     public fun generateHtml(): String {
         HtmlGeneratingVisitor().visitNode(root)
