@@ -1,22 +1,21 @@
 package org.intellij.markdown.html
 
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
+import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
 
 public class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
-                           private val linkMap: LinkMap,
-                           val additionalProviders: Map<IElementType, GeneratingProvider> = emptyMap()) {
+                           flavour: MarkdownFlavourDescriptor,
+                           linkMap: LinkMap = LinkMap.buildLinkMap(root, markdownText)) {
+    private val providers: Map<IElementType, GeneratingProvider> = flavour.createHtmlGeneratingProviders(linkMap)
     private val htmlString: StringBuilder = StringBuilder()
-    private val providers: Map<IElementType, GeneratingProvider> = initProviders() + additionalProviders
 
     public fun generateHtml(): String {
         HtmlGeneratingVisitor().visitNode(root)
@@ -41,139 +40,15 @@ public class HtmlGenerator(private val markdownText: String,
         }
     }
 
-    fun initProviders(): Map<IElementType, GeneratingProvider> {
-        return hashMapOf(
-
-                MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
-                MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
-                MarkdownTokenTypes.HTML_TAG to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        visitor.consumeHtml(node.getTextInNode(text));
-                    }
-                },
-
-                MarkdownElementTypes.BLOCK_QUOTE to SimpleTagProvider("blockquote"),
-
-                MarkdownElementTypes.ORDERED_LIST to object : SimpleTagProvider("ol") {
-                    override fun openTag(text: String, node: ASTNode): String {
-                        node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
-                                ?.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)
-                                ?.getTextInNode(text)?.toString()?.trim()?.let {
-                            val number = it.substring(0, it.length() - 1).trimStart('0')
-                            if (number.equals("1")) {
-                                return "<ol>"
-                            }
-
-                            return "<ol start=\"${ if (number.isEmpty()) "0" else number }\">"
-                        }
-                        return "<ol>"
-                    }
-                },
-                MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
-                MarkdownElementTypes.LIST_ITEM to ListItemGeneratingProvider(),
-
-                MarkdownTokenTypes.SETEXT_CONTENT to TrimmingInlineHolderProvider(),
-                MarkdownElementTypes.SETEXT_1 to SimpleTagProvider("h1"),
-                MarkdownElementTypes.SETEXT_2 to SimpleTagProvider("h2"),
-
-                MarkdownTokenTypes.ATX_CONTENT to TrimmingInlineHolderProvider(),
-                MarkdownElementTypes.ATX_1 to SimpleTagProvider("h1"),
-                MarkdownElementTypes.ATX_2 to SimpleTagProvider("h2"),
-                MarkdownElementTypes.ATX_3 to SimpleTagProvider("h3"),
-                MarkdownElementTypes.ATX_4 to SimpleTagProvider("h4"),
-                MarkdownElementTypes.ATX_5 to SimpleTagProvider("h5"),
-                MarkdownElementTypes.ATX_6 to SimpleTagProvider("h6"),
-
-                MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
-                    override fun generateTag(text: String, node: ASTNode): String {
-                        val linkText = node.getTextInNode(text)
-                        val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true, false)
-                        return "<a href=\"${LinkMap.normalizeDestination(linkText)}\">$link</a>"
-                    }
-                },
-
-
-                MarkdownElementTypes.LINK_LABEL to TransparentInlineHolderProvider(),
-                MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
-                MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
-                //                MarkdownElementTypes.LINK_DESTINATION to object : TransparentInlineHolderProvider(1, -1) {
-                //                    override fun childrenToRender(node: ASTNode): List<ASTNode> {
-                //                        if (node.children.first().type == MarkdownTokenTypes.LT) {
-                //                            return super.childrenToRender(node)
-                //                        } else {
-                //                            return node.children
-                //                        }
-                //                    }
-                //                },
-                //                //                    MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(1, -1),
-
-                MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(),
-
-                MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
-                MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
-
-                MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap),
-
-                MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    }
-                },
-
-                MarkdownElementTypes.CODE_FENCE to CodeFenceGeneratingProvider(),
-
-                MarkdownElementTypes.CODE_BLOCK to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        visitor.consumeHtml("<pre><code>")
-                        visitor.consumeHtml(trimIndents(leafText(text, node, false), 4))
-                        visitor.consumeHtml("\n")
-                        visitor.consumeHtml("</code></pre>")
-                    }
-                },
-
-                MarkdownTokenTypes.HORIZONTAL_RULE to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        visitor.consumeHtml("<hr />")
-                    }
-
-                },
-                MarkdownTokenTypes.HARD_LINE_BREAK to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        visitor.consumeHtml("<br />")
-                    }
-                },
-
-                MarkdownElementTypes.PARAGRAPH to object: TrimmingInlineHolderProvider() {
-                    override fun openTag(text: String, node: ASTNode): String {
-                        return "<p>"
-                    }
-
-                    override fun closeTag(text: String, node: ASTNode): String {
-                        return "</p>"
-                    }
-                },
-                MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
-                MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
-                MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {
-                    override fun processNode(visitor: HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        val output = node.children.subList(1, node.children.size() - 1).map { node ->
-                            leafText(text, node, false)
-                        }.joinToString("").trim()
-                        visitor.consumeHtml("<code>${output}</code>")
-                    }
-                }
-
-        )
-    }
-
     companion object {
-        fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
+        public fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
             return EntityConverter.replaceEntities(node.getTextInNode(text), replaceEscapesAndEntities, replaceEscapesAndEntities)
         }
 
-        fun trimIndents(text: CharSequence, indent: Int): CharSequence {
+        public fun trimIndents(text: CharSequence, indent: Int): CharSequence {
             if (indent == 0) {
                 return text
             }

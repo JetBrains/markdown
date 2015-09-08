@@ -1,17 +1,9 @@
 package org.intellij.markdown.parser.sequentialparsers
 
-import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.util.ArrayList
 
-public class SequentialParserManager {
-    protected fun getParserSequence(): List<SequentialParser> {
-        return listOf(AutolinkParser(),
-                BacktickParser(),
-                ImageParser(),
-                InlineLinkParser(),
-                ReferenceLinkParser(),
-                EmphStrongParser())
-    }
+public abstract class SequentialParserManager {
+    abstract fun getParserSequence(): List<SequentialParser>;
 
     public fun runParsingSequence(tokensCache: TokensCache, rangesToParse: Collection<Range<Int>>): Collection<SequentialParser.Node> {
         val result = ArrayList<SequentialParser.Node>()

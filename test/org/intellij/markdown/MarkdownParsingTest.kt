@@ -3,8 +3,8 @@ package org.intellij.markdown;
 import junit.framework.TestCase
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
-import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcessor
 import java.io.File
 import kotlin.test.assertEquals
 
@@ -18,7 +18,7 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     private fun getParsedTreeText(inputText: String): String {
-        val tree = MarkdownParser(CommonMarkMarkerProcessor.Factory).buildMarkdownTreeFromString(inputText);
+        val tree = MarkdownParser(CommonMarkFlavourDescriptor()).buildMarkdownTreeFromString(inputText);
         return treeToStr(inputText, tree);
     }
 

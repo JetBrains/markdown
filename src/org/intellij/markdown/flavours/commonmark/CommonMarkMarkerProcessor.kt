@@ -1,4 +1,4 @@
-package org.intellij.markdown.parser.dialects.commonmark
+package org.intellij.markdown.flavours.commonmark
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor

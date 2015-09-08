@@ -1,8 +1,8 @@
 package org.intellij.markdown
 
 import junit.framework.TestCase
+import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
-import org.intellij.markdown.parser.dialects.commonmark.CommonMarkMarkerProcessor
 import java.io.File
 
 public class ParserPerformanceTest : TestCase() {
@@ -21,7 +21,7 @@ public class ParserPerformanceTest : TestCase() {
         val src = File(getTestDataPath() + "/" + fileName + ".md").readText();
 
         val runnable = { i: Int ->
-            val root = MarkdownParser(CommonMarkMarkerProcessor.Factory).
+            val root = MarkdownParser(CommonMarkFlavourDescriptor()).
                     parse(MarkdownElementTypes.MARKDOWN_FILE, src, fullParse)
             assert(root.children.size() > 0)
         }
