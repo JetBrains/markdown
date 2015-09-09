@@ -2,6 +2,7 @@ package org.intellij.markdown.lexer;
 
 import org.intellij.markdown.MarkdownTokenTypes;
 import org.intellij.markdown.IElementType;
+import org.intellij.markdown.lexer.GeneratedLexer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,8 @@ import java.util.Stack;
 
 %function advance
 %type IElementType
+
+%implements GeneratedLexer
 
 %{
   private static class Token implements MarkdownTokenTypes {}

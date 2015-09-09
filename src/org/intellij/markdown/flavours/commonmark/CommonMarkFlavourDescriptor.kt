@@ -9,13 +9,20 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.*
 import org.intellij.markdown.html.entities.EntityConverter
+import org.intellij.markdown.lexer.MarkdownLexer
+import org.intellij.markdown.lexer._MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
+import java.io.Reader
 
 public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
     override val markerProcessorFactory = CommonMarkMarkerProcessor.Factory
+
+    override fun createInlinesLexer(): MarkdownLexer {
+        return MarkdownLexer(_MarkdownLexer(null as Reader?))
+    }
 
     override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {

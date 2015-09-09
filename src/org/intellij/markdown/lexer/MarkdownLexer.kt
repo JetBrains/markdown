@@ -3,27 +3,33 @@ package org.intellij.markdown.lexer
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import java.io.IOException
-import java.io.Reader
 
-public class MarkdownLexer(public val originalText: CharSequence,
-                           public val bufferStart: Int = 0,
-                           public val bufferEnd: Int = originalText.length()) {
-
-    private val baseLexer: _MarkdownLexer
+public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
     public var type: IElementType? = null
         private set
     private var nextType: IElementType? = null
+
+    public var originalText: CharSequence = ""
+        private set
+    public var bufferStart: Int = 0
+        private set
+    public var bufferEnd: Int = 0
+        private set
 
     public var tokenStart: Int = 0
         private set
     public var tokenEnd: Int = 0
         private set
 
-    init {
-        baseLexer = _MarkdownLexer(null as Reader?)
-        baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
+    public fun start(originalText: CharSequence,
+                     bufferStart: Int = 0,
+                     bufferEnd: Int = originalText.length()) {
+        this.originalText = originalText
+        this.bufferStart = bufferStart
+        this.bufferEnd = bufferEnd
 
+        baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
         type = advanceBase()
         tokenStart = baseLexer.getTokenStart()
 

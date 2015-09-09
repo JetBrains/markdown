@@ -6,7 +6,6 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
-import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
@@ -48,7 +47,8 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
     }
 
     public fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
-        val lexer = MarkdownLexer(text, textStart, textEnd)
+        val lexer = flavour.createInlinesLexer()
+        lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)
 
         val wholeRange = 0..tokensCache.filteredTokens.size()
