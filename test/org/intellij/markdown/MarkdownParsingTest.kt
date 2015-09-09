@@ -3,6 +3,7 @@ package org.intellij.markdown;
 import junit.framework.TestCase
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
@@ -10,15 +11,16 @@ import kotlin.test.assertEquals
 
 public class MarkdownParsingTest : TestCase() {
 
-    private fun defaultTest() {
+    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
-        val result = getParsedTreeText(src);
+        val result = getParsedTreeText(src, flavour);
 
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
     }
 
-    private fun getParsedTreeText(inputText: String): String {
-        val tree = MarkdownParser(CommonMarkFlavourDescriptor()).buildMarkdownTreeFromString(inputText);
+    private fun getParsedTreeText(inputText: String,
+                                  flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()): String {
+        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(inputText);
         return treeToStr(inputText, tree);
     }
 

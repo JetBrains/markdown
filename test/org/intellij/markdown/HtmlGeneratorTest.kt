@@ -1,6 +1,7 @@
 package org.intellij.markdown;
 
 import junit.framework.TestCase
+import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
@@ -8,9 +9,8 @@ import java.io.File
 import kotlin.text.Regex
 
 public class HtmlGeneratorTest : TestCase() {
-    private fun defaultTest() {
+    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
-        val flavour = CommonMarkFlavourDescriptor()
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src);
         val html = HtmlGenerator(src, tree, flavour).generateHtml()
 
