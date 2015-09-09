@@ -3,6 +3,7 @@ package org.intellij.markdown;
 import junit.framework.TestCase
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
@@ -81,6 +82,10 @@ public class HtmlGeneratorTest : TestCase() {
 
     public fun testImages() {
         defaultTest()
+    }
+
+    public fun testStrikethrough() {
+        defaultTest(GFMFlavourDescriptor())
     }
 
     public fun testGitBook() {

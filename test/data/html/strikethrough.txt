@@ -1,0 +1,38 @@
+<body>
+<p>
+<span class="user-del">Simple</span>
+</p>
+<p>~Simple~</p>
+<p>~~ Simple ~~</p>
+<p>
+<span class="user-del">Two (so many) words</span>
+</p>
+<p>
+<span class="user-del">^_^</span>
+</p>
+<p>
+aba<span class="user-del">asbas</span>
+asbd</p>
+<p>
+<span class="user-del">:</span>
+~</p>
+<p>
+x~<span class="user-del">:</span>
+</p>
+<p>
+<span class="user-del">baba</span>
+<span class="user-del">abab</span>
+</p>
+<p>
+a<em>a</em>
+a<span class="user-del">
+a<em>a</em>
+a</span>
+<em>a</em>
+</p>
+<p>
+~~a<em>a</em>
+a a<em>a</em>
+a ~~</p>
+<p>end.</p>
+</body>
