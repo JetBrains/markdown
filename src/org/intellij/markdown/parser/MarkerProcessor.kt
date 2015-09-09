@@ -7,7 +7,7 @@ import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
 import java.util.ArrayList
 
 public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
-                                                                     private val startConstraints: MarkdownConstraints) {
+                                                                     protected val startConstraints: MarkdownConstraints) {
 
     protected val NO_BLOCKS: List<MarkerBlock> = emptyList()
 

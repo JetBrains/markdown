@@ -3,12 +3,22 @@ package org.intellij.markdown.parser.constraints
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
 
-public class MarkdownConstraints private constructor(private val indents: IntArray,
-                                                     private val types: CharArray,
-                                                     private val isExplicit: BooleanArray,
-                                                     private val charsEaten: Int) {
+public open class MarkdownConstraints protected constructor(private val indents: IntArray,
+                                                            private val types: CharArray,
+                                                            private val isExplicit: BooleanArray,
+                                                            private val charsEaten: Int) {
 
-    public fun eatItselfFromString(s: CharSequence) : CharSequence {
+    open val base: MarkdownConstraints
+        get() = BASE
+
+    public open fun createNewConstraints(indents: IntArray,
+                                         types: CharArray,
+                                         isExplicit: BooleanArray,
+                                         charsEaten: Int): MarkdownConstraints {
+        return MarkdownConstraints(indents, types, isExplicit, charsEaten)
+    }
+
+    public fun eatItselfFromString(s: CharSequence): CharSequence {
         if (s.length() < charsEaten) {
             return ""
         } else {
@@ -87,6 +97,27 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
         }
         return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
     }
+
+    protected open fun fetchListMarker(pos: LookaheadText.Position): CharSequence? {
+        if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
+            return pos.char.toString()
+        }
+
+        val line = pos.currentLine
+        var offset = pos.offsetInCurrentLine
+        while (offset < line.length() && line[offset] in '0'..'9') {
+            offset++
+        }
+        if (offset > pos.offsetInCurrentLine
+                && offset - pos.offsetInCurrentLine <= 9
+                && offset < line.length()
+                && (line[offset] == '.' || line[offset] == ')')) {
+            return line.subSequence(pos.offsetInCurrentLine, offset + 1)
+        } else {
+            return null
+        }
+    }
+
 
     private fun tryAddListItem(pos: LookaheadText.Position): MarkdownConstraints? {
         val line = pos.currentLine
@@ -185,14 +216,14 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
             _indents[n] = parent.getIndent() + newIndentDelta
             _types[n] = newType
             _isExplicit[n] = newExplicit
-            return MarkdownConstraints(_indents, _types, _isExplicit, newOffset)
+            return parent.createNewConstraints(_indents, _types, _isExplicit, newOffset)
         }
 
         public fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
             assert(pos.char == '\n')
 
             val line = pos.currentLine
-            var result = fillFromPrevious(line, 0, prevLineConstraints, BASE)
+            var result = fillFromPrevious(line, 0, prevLineConstraints)
 
             while (true) {
                 val offset = result.getCharsEaten(line)
@@ -205,8 +236,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
 
         public fun fillFromPrevious(line: String,
                                     startOffset: Int,
-                                    prevLineConstraints: MarkdownConstraints,
-                                    base: MarkdownConstraints): MarkdownConstraints {
+                                    prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
             val prevN = prevLineConstraints.indents.size()
             var indexPrev = 0
 
@@ -263,7 +293,7 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
                 val bqIndent: Int?
                 if (prevLineConstraints.types[indexPrev] == BQ_CHAR) {
                     bqIndent = getBlockQuoteIndent(offset)
-                        ?: return constraints
+                            ?: return constraints
                     offset += bqIndent
                     indexPrev++
                 } else {
@@ -301,33 +331,13 @@ public class MarkdownConstraints private constructor(private val indents: IntArr
                 return result
             }
 
-            var result = base
+            var result = prevLineConstraints.base
             while (true) {
                 val nextConstraints = fillMaybeBlockquoteAndListIndents(result)
                 if (nextConstraints == result) {
                     return result
                 }
                 result = nextConstraints
-            }
-        }
-
-        private fun fetchListMarker(pos: LookaheadText.Position): CharSequence? {
-            if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
-                return pos.char.toString()
-            }
-
-            val line = pos.currentLine
-            var offset = pos.offsetInCurrentLine
-            while (offset < line.length() && line[offset] in '0'..'9') {
-                offset++
-            }
-            if (offset > pos.offsetInCurrentLine
-                    && offset - pos.offsetInCurrentLine <= 9
-                    && offset < line.length()
-                    && (line[offset] == '.' || line[offset] == ')')) {
-                return line.subSequence(pos.offsetInCurrentLine, offset + 1)
-            } else {
-                return null
             }
         }
 

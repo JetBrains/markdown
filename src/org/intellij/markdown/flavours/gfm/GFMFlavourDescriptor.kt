@@ -5,18 +5,28 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.commonmark.CommonMarkMarkerProcessor
 import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
 import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.SimpleInlineTagProvider
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
+import org.intellij.markdown.parser.MarkerProcessor
+import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.io.Reader
 
 public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
+    override val markerProcessorFactory = object : MarkerProcessorFactory {
+        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
+            return CommonMarkMarkerProcessor(productionHolder, GFMConstraints.BASE)
+        }
+    }
+
     override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_GFMLexer(null as Reader?))
     }

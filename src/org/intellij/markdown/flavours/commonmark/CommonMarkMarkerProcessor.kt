@@ -9,10 +9,10 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
 
-public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
-: MarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, MarkdownConstraints.BASE) {
-    override var stateInfo: MarkerProcessor.StateInfo = MarkerProcessor.StateInfo(MarkdownConstraints.BASE,
-            MarkdownConstraints.BASE,
+public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
+: MarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, constraintsBase) {
+    override var stateInfo: MarkerProcessor.StateInfo = MarkerProcessor.StateInfo(startConstraints,
+            startConstraints,
             markersStack)
 
     private val markerBlockProviders = listOf(
@@ -33,8 +33,8 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
 
     override fun updateStateInfo(pos: LookaheadText.Position) {
         if (pos.char == '\n') {
-            stateInfo = MarkerProcessor.StateInfo(MarkdownConstraints.BASE,
-                    MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, topBlockConstraints, MarkdownConstraints.BASE),
+            stateInfo = MarkerProcessor.StateInfo(startConstraints,
+                    MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, topBlockConstraints),
                     markersStack)
         } else if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.nextConstraints)) {
             stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
@@ -54,7 +54,7 @@ public class CommonMarkMarkerProcessor(productionHolder: ProductionHolder)
 
     public object Factory : MarkerProcessorFactory {
         override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
-            return CommonMarkMarkerProcessor(productionHolder)
+            return CommonMarkMarkerProcessor(productionHolder, MarkdownConstraints.BASE)
         }
     }
 }

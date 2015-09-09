@@ -37,7 +37,7 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
 
         val prevLine = pos.prevLine ?: return MarkerBlock.ProcessingResult.DEFAULT
-        if (!MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, constraints, MarkdownConstraints.BASE).extendsPrev(constraints)) {
+        if (!MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, constraints).extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
