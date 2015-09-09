@@ -88,6 +88,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    public fun testGfmAutolink() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     public fun testGitBook() {
         defaultTest()
     }

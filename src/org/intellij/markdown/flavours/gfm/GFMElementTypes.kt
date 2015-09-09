@@ -6,6 +6,8 @@ import org.intellij.markdown.MarkdownElementType
 public interface GFMTokenTypes {
     companion object {
         public val TILDE: IElementType = MarkdownElementType("~", true);
+
+        public val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true);
     }
 }
 

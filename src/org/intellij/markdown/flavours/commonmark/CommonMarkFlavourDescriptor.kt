@@ -26,7 +26,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
 
     override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
-            return listOf(AutolinkParser(),
+            return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK)),
                     BacktickParser(),
                     ImageParser(),
                     InlineLinkParser(),

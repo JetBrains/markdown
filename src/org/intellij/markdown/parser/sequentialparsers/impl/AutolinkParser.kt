@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.sequentialparsers.impl
 
+import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -7,7 +8,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.ArrayList
 
-public class AutolinkParser : SequentialParser {
+public class AutolinkParser(private val typesAfterLT: List<IElementType>) : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResult()
         val delegateIndices = ArrayList<Int>()
@@ -17,7 +18,7 @@ public class AutolinkParser : SequentialParser {
         while (i < indices.size()) {
             var iterator: TokensCache.Iterator = tokens.ListIterator(indices, i)
 
-            if (iterator.type == MarkdownTokenTypes.LT && iterator.rawLookup(1) == MarkdownTokenTypes.AUTOLINK) {
+            if (iterator.type == MarkdownTokenTypes.LT && iterator.rawLookup(1) in typesAfterLT) {
                 val start = i
                 while (iterator.type != MarkdownTokenTypes.GT && iterator.type != null) {
                     iterator = iterator.advance()

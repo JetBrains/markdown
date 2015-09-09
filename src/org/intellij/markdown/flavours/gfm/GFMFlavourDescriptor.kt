@@ -1,10 +1,13 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
 import org.intellij.markdown.html.GeneratingProvider
+import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.SimpleInlineTagProvider
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
@@ -20,7 +23,7 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
     override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
-            return listOf(AutolinkParser(),
+            return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
                     BacktickParser(),
                     ImageParser(),
                     InlineLinkParser(),
@@ -35,6 +38,13 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
                 GFMElementTypes.STRIKETHROUGH to object: SimpleInlineTagProvider("span", 2, -2) {
                     override fun openTag(text: String, node: ASTNode): String {
                         return "<span class=\"user-del\">"
+                    }
+                },
+
+                GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
+                    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                        val linkDestination = node.getTextInNode(text)
+                        visitor.consumeHtml("<a href=\"$linkDestination\">$linkDestination</a>")
                     }
                 }
         )

@@ -1,0 +1,34 @@
+<body>
+<p>
+<a href="http://vk.com">http://vk.com</a>
+</p>
+<p>
+<a href="www.aaa.bbb">www.aaa.bbb</a>
+</p>
+<p>
+This is bold: <em>
+<a href="www.gohere.yea">www.gohere.yea</a>
+</em>
+</p>
+<p>
+<a href="http://foo.bar">
+<a href="www.not.rendered.as.autolink.yo">www.not.rendered.as.autolink.yo</a>
+</a>
+</p>
+<p>
+[<a href="www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
+]</p>
+<p>
+[<a href="www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
+][]</p>
+<p>
+[<a href="www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
+][<a href="www.and.this.too">www.and.this.too</a>
+]</p>
+<p>
+<a href="http://plain.auto.link">http://plain.auto.link</a>
+</p>
+<p>
+This is code <code>http://vk.com</code>
+ really</p>
+</body>

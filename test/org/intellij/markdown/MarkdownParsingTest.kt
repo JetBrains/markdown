@@ -183,6 +183,10 @@ public class MarkdownParsingTest : TestCase() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    public fun testGfmAutolink() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/test/data/parser").getAbsolutePath();
     }
