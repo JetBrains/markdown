@@ -1,5 +1,6 @@
 package org.intellij.markdown.flavours.commonmark
 
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
@@ -8,6 +9,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : MarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, constraintsBase) {
@@ -41,6 +43,28 @@ public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, 
                     stateInfo.nextConstraints.addModifierIfNeeded(pos) ?: stateInfo.nextConstraints,
                     markersStack)
         }
+    }
+
+    override fun populateConstraintsTokens(pos: LookaheadText.Position,
+                                           constraints: MarkdownConstraints,
+                                           productionHolder: ProductionHolder) {
+        if (constraints.getIndent() == 0) {
+            return
+        }
+
+        val startOffset = pos.offset
+        val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
+                pos.nextLineOrEofOffset)
+
+        val type = when (constraints.getLastType()) {
+            '>' ->
+                MarkdownTokenTypes.BLOCK_QUOTE
+            '.', ')' ->
+                MarkdownTokenTypes.LIST_NUMBER
+            else ->
+                MarkdownTokenTypes.LIST_BULLET
+        }
+        productionHolder.addProduction(listOf(SequentialParser.Node(startOffset..endOffset, type)))
     }
 
     override fun createNewMarkerBlocks(pos: LookaheadText.Position,

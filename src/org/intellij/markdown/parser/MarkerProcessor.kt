@@ -21,6 +21,10 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
     protected abstract fun updateStateInfo(pos: LookaheadText.Position)
 
+    protected abstract fun populateConstraintsTokens(pos: LookaheadText.Position,
+                                                     constraints: MarkdownConstraints,
+                                                     productionHolder: ProductionHolder)
+
     private var nextInterestingPosForExistingMarkers: Int = -1
 
     private val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean = { position, constraints ->
@@ -81,8 +85,12 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         if (pos.offsetInCurrentLine == -1
                 || MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.currentConstraints)) {
             val delta = stateInfo.nextConstraints.getCharsEaten(pos.currentLine) - pos.offsetInCurrentLine
-            if (delta > 0)
+            if (delta > 0) {
+                if (pos.offsetInCurrentLine != -1 && stateInfo.nextConstraints.getIndent() <= topBlockConstraints.getIndent()) {
+                    populateConstraintsTokens(pos, stateInfo.nextConstraints, productionHolder)
+                }
                 return pos.nextPosition(delta)
+            }
         }
 
         return pos.nextPosition(nextInterestingPosForExistingMarkers - pos.offset)

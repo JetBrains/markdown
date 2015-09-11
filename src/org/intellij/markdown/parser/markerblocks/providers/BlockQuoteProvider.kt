@@ -22,7 +22,6 @@ public class BlockQuoteProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return emptyList()
         }
         if (nextConstraints != currentConstraints && nextConstraints.getLastType() == '>') {
-            MarkerBlockProvider.addTokenFromConstraints(productionHolder, pos, currentConstraints, nextConstraints)
             return listOf(BlockQuoteMarkerBlock(nextConstraints, productionHolder.mark()))
         } else {
             return emptyList()

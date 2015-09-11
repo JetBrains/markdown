@@ -31,8 +31,6 @@ public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         if (nextConstraints != currentConstraints
                 && nextConstraints.getLastType() != '>' && nextConstraints.getLastExplicit() == true) {
 
-            MarkerBlockProvider.addTokenFromConstraints(productionHolder, pos, currentConstraints, nextConstraints)
-
             val result = ArrayList<MarkerBlock>()
             if (stateInfo.lastBlock !is ListMarkerBlock) {
                 result.add(ListMarkerBlock(nextConstraints, productionHolder.mark(), nextConstraints.getLastType()!!))

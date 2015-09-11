@@ -38,7 +38,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
         return Math.min(charsEaten, s.length())
     }
 
-    public fun getLastType(): Char? {
+    public open fun getLastType(): Char? {
         return types.lastOrNull()
     }
 
@@ -98,9 +98,9 @@ public open class MarkdownConstraints protected constructor(private val indents:
         return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
     }
 
-    protected open fun fetchListMarker(pos: LookaheadText.Position): CharSequence? {
+    protected open fun fetchListMarker(pos: LookaheadText.Position): ListMarkerInfo? {
         if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
-            return pos.char.toString()
+            return ListMarkerInfo(pos.char.toString(), pos.char, 1)
         }
 
         val line = pos.currentLine
@@ -112,11 +112,15 @@ public open class MarkdownConstraints protected constructor(private val indents:
                 && offset - pos.offsetInCurrentLine <= 9
                 && offset < line.length()
                 && (line[offset] == '.' || line[offset] == ')')) {
-            return line.subSequence(pos.offsetInCurrentLine, offset + 1)
+            return ListMarkerInfo(line.subSequence(pos.offsetInCurrentLine, offset + 1),
+                    line[offset],
+                    offset + 1 - pos.offsetInCurrentLine)
         } else {
             return null
         }
     }
+
+    data class ListMarkerInfo(val markerText: CharSequence, val markerType: Char, val markerIndent: Int)
 
 
     private fun tryAddListItem(pos: LookaheadText.Position): MarkdownConstraints? {
@@ -132,10 +136,10 @@ public open class MarkdownConstraints protected constructor(private val indents:
         if (offset == line.length())
             return null
 
-        val marker = fetchListMarker(pos.nextPosition(spacesBefore)!!)
+        val markerInfo = fetchListMarker(pos.nextPosition(spacesBefore)!!)
                 ?: return null
 
-        offset += marker.length()
+        offset += markerInfo.markerText.length()
         var spacesAfter = 0
 
         val markerEndOffset = offset
@@ -152,12 +156,12 @@ public open class MarkdownConstraints protected constructor(private val indents:
         // By the classification http://spec.commonmark.org/0.20/#list-items
         // 1. Basic case
         if (spacesAfter > 0 && spacesAfter < 5 && offset < line.length()) {
-            return MarkdownConstraints(this, spacesBefore + marker.length() + spacesAfter, getMarkerType(marker), true, offset)
+            return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + spacesAfter, markerInfo.markerType, true, offset)
         }
         if (spacesAfter >= 5 && offset < line.length() // 2. Starts with an indented code
                 || offset == line.length()) {
             // 3. Starts with an empty string
-            return MarkdownConstraints(this, spacesBefore + marker.length() + 1, getMarkerType(marker), true,
+            return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + 1, markerInfo.markerType, true,
                     Math.min(offset, markerEndOffset + 1))
         }
 
@@ -339,10 +343,6 @@ public open class MarkdownConstraints protected constructor(private val indents:
                 }
                 result = nextConstraints
             }
-        }
-
-        private fun getMarkerType(marker: CharSequence): Char {
-            return marker[marker.length() - 1]
         }
 
     }
