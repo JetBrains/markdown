@@ -8,6 +8,8 @@ public interface GFMTokenTypes {
         public val TILDE: IElementType = MarkdownElementType("~", true);
 
         public val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true);
+
+        public val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true);
     }
 }
 

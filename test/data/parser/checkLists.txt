@@ -1,0 +1,151 @@
+Markdown:MARKDOWN_FILE
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:PARAGRAPH
+        Markdown:[('[')
+        Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:PARAGRAPH
+        Markdown:[('[')
+        WHITE_SPACE('   ')
+        Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:CHECK_BOX('[x] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:CHECK_BOX('[X] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:PARAGRAPH
+        Markdown:SHORT_REFERENCE_LINK
+          Markdown:LINK_LABEL
+            Markdown:[('[')
+            Markdown:TEXT('X')
+            WHITE_SPACE(' ')
+            Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:[('[')
+        Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:[('[')
+        WHITE_SPACE('   ')
+        Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[x] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[X] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:SHORT_REFERENCE_LINK
+          Markdown:LINK_LABEL
+            Markdown:[('[')
+            Markdown:TEXT('X')
+            WHITE_SPACE(' ')
+            Markdown:](']')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Check list')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('a bigger project')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET(' - ')
+          Markdown:CHECK_BOX('[ ] ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('first subtask')
+            WHITE_SPACE(' ')
+            Markdown:TEXT('#1234')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET(' - ')
+          Markdown:CHECK_BOX('[ ] ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('follow up subtask')
+            WHITE_SPACE(' ')
+            Markdown:TEXT('#4321')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET(' - ')
+          Markdown:CHECK_BOX('[ ] ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('final subtask cc')
+            WHITE_SPACE(' ')
+            Markdown:TEXT('@mention')
+    Markdown:EOL('\n')
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:CHECK_BOX('[ ] ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('a separate task')
+  Markdown:EOL('\n')
