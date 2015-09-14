@@ -1,6 +1,7 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
@@ -48,7 +49,9 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
                         val linkDestination = node.getTextInNode(text)
                         visitor.consumeHtml("<a href=\"$linkDestination\">$linkDestination</a>")
                     }
-                }
+                },
+
+                MarkdownElementTypes.LIST_ITEM to CheckedListItemGeneratingProvider()
         )
     }
 }
