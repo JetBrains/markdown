@@ -155,7 +155,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             var latterIndex = markersStack.size() - 1
             while (latterIndex > index) {
                 val result = markersStack.get(latterIndex).acceptAction(childrenAction)
-                assert(result, "If closing action is not NOTHING, marker should be gone")
+                assert(result) { "If closing action is not NOTHING, marker should be gone" }
 
                 markersStack.remove(latterIndex)
                 --latterIndex

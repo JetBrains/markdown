@@ -192,6 +192,6 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/parser").getAbsolutePath();
+        return File(getIntellijMarkdownHome() + "/test/data/parser").absolutePath;
     }
 }

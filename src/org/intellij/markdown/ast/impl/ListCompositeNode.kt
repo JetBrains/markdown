@@ -16,7 +16,7 @@ public class ListCompositeNode(type: IElementType, children: List<ASTNode>) : Co
         }
     }
 
-    public val loose: Boolean by Delegates.lazy { isLoose() }
+    public val loose: Boolean by lazy(LazyThreadSafetyMode.NONE) { isLoose() }
 
     private fun isLoose(): Boolean {
         if (hasLooseContent(this)) {

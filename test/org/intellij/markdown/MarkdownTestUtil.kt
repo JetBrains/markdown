@@ -27,7 +27,7 @@ public fun TestCase.getIntellijMarkdownHome(): String {
 
 val TestCase.testName : String
     get() {
-        val name = getName()
+        val name = name
         assert(name.startsWith("test"))
         return name.substring("test".length()).decapitalize()
     }

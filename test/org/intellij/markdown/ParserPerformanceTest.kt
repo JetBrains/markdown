@@ -7,7 +7,7 @@ import java.io.File
 
 public class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/performance").getAbsolutePath();
+        return File(getIntellijMarkdownHome() + "/test/data/performance").absolutePath;
     }
 
     private fun defaultTest(fullParse: Boolean) {
