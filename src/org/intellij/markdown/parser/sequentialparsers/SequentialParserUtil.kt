@@ -1,7 +1,7 @@
 package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.MarkdownTokenTypes
-import java.util.ArrayList
+import java.util.*
 
 public class SequentialParserUtil {
     companion object {
@@ -12,8 +12,7 @@ public class SequentialParserUtil {
                     result.add(i)
                 }
             }
-            result.sorted()
-            return result
+            return result.sorted()
         }
 
         public fun indicesToTextRanges(indices: List<Int>): Collection<Range<Int>> {

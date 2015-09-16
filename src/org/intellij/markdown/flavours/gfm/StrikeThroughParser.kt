@@ -5,7 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.ArrayList
+import java.util.*
 
 public class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
@@ -49,7 +49,7 @@ public class StrikeThroughParser : SequentialParser {
             for (delta in 0..1) {
                 delegateIndices.add(indices.get(lastOpenedPos + delta))
             }
-            delegateIndices.sorted()
+            Collections.sort(delegateIndices)
         }
 
         return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
