@@ -19,7 +19,7 @@ public class HtmlIndentTrimmerTest : TestCase() {
     }
 
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/htmlTrimming").getAbsolutePath();
+        return File(getIntellijMarkdownHome() + "/test/data/htmlTrimming").absolutePath;
     }
 
     public fun testSimple() {

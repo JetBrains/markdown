@@ -49,7 +49,7 @@ public class StrikeThroughParser : SequentialParser {
             for (delta in 0..1) {
                 delegateIndices.add(indices.get(lastOpenedPos + delta))
             }
-            delegateIndices.sort()
+            delegateIndices.sorted()
         }
 
         return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))

@@ -12,7 +12,7 @@ public class SequentialParserUtil {
                     result.add(i)
                 }
             }
-            result.sort()
+            result.sorted()
             return result
         }
 

@@ -21,7 +21,7 @@ public class HtmlGeneratorTest : TestCase() {
     }
 
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/html").getAbsolutePath();
+        return File(getIntellijMarkdownHome() + "/test/data/html").absolutePath;
     }
 
     public fun testSimple() {

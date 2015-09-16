@@ -24,13 +24,13 @@ public class HtmlGenerator(private val markdownText: String,
 
     inner class HtmlGeneratingVisitor : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
-            @suppress("USELESS_ELVIS")
+            @Suppress("USELESS_ELVIS")
             (providers.get(node.type)?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this))
         }
 
         public fun visitLeaf(node: ASTNode) {
-            @suppress("USELESS_ELVIS")
+            @Suppress("USELESS_ELVIS")
             (providers.get(node.type)?.processNode(this, markdownText, node)
                     ?: consumeHtml(leafText(markdownText, node)))
         }

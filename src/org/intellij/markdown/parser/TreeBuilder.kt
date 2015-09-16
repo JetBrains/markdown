@@ -13,7 +13,7 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         val events = constructEvents(production)
         val markersStack = Stack<Pair<MyEvent, MutableList<MyASTNodeWrapper>>>()
 
-        assert(!events.isEmpty(), "nonsense")
+        assert(!events.isEmpty()) { "nonsense" }
         assert(events.first().info == events.last().info,
                 { -> "more than one root?\nfirst: ${events.first().info}\nlast: ${events.last().info}" })
 
