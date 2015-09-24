@@ -13,7 +13,8 @@ import org.intellij.markdown.parser.LinkMap
 public class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
                            flavour: MarkdownFlavourDescriptor,
-                           linkMap: LinkMap = LinkMap.buildLinkMap(root, markdownText)) {
+                           linkMap: LinkMap = LinkMap.buildLinkMap(root, markdownText),
+                           private val includeSrcPositions: Boolean = false) {
     private val providers: Map<IElementType, GeneratingProvider> = flavour.createHtmlGeneratingProviders(linkMap)
     private val htmlString: StringBuilder = StringBuilder()
 
@@ -33,6 +34,31 @@ public class HtmlGenerator(private val markdownText: String,
             @Suppress("USELESS_ELVIS")
             (providers.get(node.type)?.processNode(this, markdownText, node)
                     ?: consumeHtml(leafText(markdownText, node)))
+        }
+
+        public final fun consumeTagOpen(node: ASTNode,
+                                        tagName: CharSequence,
+                                        vararg attributes: CharSequence?,
+                                        autoClose: Boolean = false) {
+            htmlString.append("<$tagName")
+            for (attribute in attributes) {
+                if (attribute != null) {
+                    htmlString.append(" $attribute")
+                }
+            }
+            if (includeSrcPositions) {
+                htmlString.append(" ${getSrcPosAttribute(node)}")
+            }
+
+            if (autoClose) {
+                htmlString.append(" />")
+            } else {
+                htmlString.append(">")
+            }
+        }
+
+        public final fun consumeTagClose(tagName: CharSequence) {
+            htmlString.append("</$tagName>")
         }
 
         public final fun consumeHtml(html: CharSequence) {

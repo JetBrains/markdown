@@ -11,8 +11,7 @@ import org.intellij.markdown.html.InlineHolderGeneratingProvider
 import org.intellij.markdown.html.SimpleTagProvider
 
 internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
-    override fun openTag(text: String, node: ASTNode): String {
-        return ""
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
@@ -20,15 +19,17 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
 
         val checkBoxElement = node.findChildOfType(GFMTokenTypes.CHECK_BOX)
         val inputHtml: CharSequence
+        val listItemClass: CharSequence?
         if (checkBoxElement != null) {
-            visitor.consumeHtml("<li class=\"task-list-item\">")
-
+            listItemClass = "class=\"task-list-item\""
             val checkedString = getIsCheckedString(checkBoxElement, text)
-            inputHtml = "<input type=\"checkbox\" class=\"task-list-item-checkbox\"${checkedString} disabled />"
+            inputHtml = "<input type=\"checkbox\" class=\"task-list-item-checkbox\"$checkedString disabled />"
         } else {
-            visitor.consumeHtml("<li>")
+            listItemClass = null
             inputHtml = ""
         }
+
+        visitor.consumeTagOpen(node, "li", listItemClass)
 
         val isLoose = (node as ListItemCompositeNode).parent!!.loose
 
@@ -51,7 +52,7 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
             }
         }
 
-        visitor.consumeHtml(closeTag(text, node))
+        closeTag(visitor, text, node)
     }
 
     private fun getIsCheckedString(node: ASTNode?, text: String): String {
@@ -65,12 +66,17 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
 
     private class SubParagraphGeneratingProvider(val wrapInParagraph: Boolean, val inputHtml: String)
     : InlineHolderGeneratingProvider() {
-        override fun openTag(text: String, node: ASTNode): String {
-            return (if (wrapInParagraph) "<p>" else "") + inputHtml
+        override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+            if (wrapInParagraph) {
+                visitor.consumeTagOpen(node, "p")
+            }
+            visitor.consumeHtml(inputHtml)
         }
 
-        override fun closeTag(text: String, node: ASTNode): String {
-            return if (wrapInParagraph) "</p>" else ""
+        override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+            if (wrapInParagraph) {
+                visitor.consumeTagClose("p")
+            }
         }
     }
 }

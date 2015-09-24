@@ -49,18 +49,17 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.BLOCK_QUOTE to SimpleTagProvider("blockquote"),
 
             MarkdownElementTypes.ORDERED_LIST to object : SimpleTagProvider("ol") {
-                override fun openTag(text: String, node: ASTNode): String {
+                override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                    var attribute: String? = null
                     node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
                             ?.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)
                             ?.getTextInNode(text)?.toString()?.trim()?.let {
                         val number = it.substring(0, it.length() - 1).trimStart('0')
-                        if (number.equals("1")) {
-                            return "<ol>"
+                        if (!number.equals("1")) {
+                            attribute = "start=\"${ if (number.isEmpty()) "0" else number }\""
                         }
-
-                        return "<ol start=\"${ if (number.isEmpty()) "0" else number }\">"
                     }
-                    return "<ol>"
+                    visitor.consumeTagOpen(node, "ol", attribute)
                 }
             },
             MarkdownElementTypes.UNORDERED_LIST to SimpleTagProvider("ul"),
@@ -78,12 +77,15 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.ATX_5 to SimpleTagProvider("h5"),
             MarkdownElementTypes.ATX_6 to SimpleTagProvider("h6"),
 
-            MarkdownElementTypes.AUTOLINK to object : NonRecursiveGeneratingProvider() {
-                override fun generateTag(text: String, node: ASTNode): String {
+            MarkdownElementTypes.AUTOLINK to object : GeneratingProvider {
+                override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     val linkText = node.getTextInNode(text)
                     val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true, false)
-                    return "<a ${HtmlGenerator.getSrcPosAttribute(node)} href=\"${LinkMap.normalizeDestination(linkText)}\">$link</a>"
+                    visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText)}\"")
+                    visitor.consumeHtml(link);
+                    visitor.consumeTagClose("a")
                 }
+
             },
 
 
@@ -107,10 +109,12 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
 
             MarkdownElementTypes.CODE_BLOCK to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    visitor.consumeHtml("<pre><code ${HtmlGenerator.getSrcPosAttribute(node)}>")
+                    visitor.consumeHtml("<pre>")
+                    visitor.consumeTagOpen(node, "code")
                     visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, node, false), 4))
                     visitor.consumeHtml("\n")
-                    visitor.consumeHtml("</code></pre>")
+                    visitor.consumeTagClose("code")
+                    visitor.consumeHtml("</pre>")
                 }
             },
 
@@ -127,12 +131,12 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             },
 
             MarkdownElementTypes.PARAGRAPH to object : TrimmingInlineHolderProvider() {
-                override fun openTag(text: String, node: ASTNode): String {
-                    return "<p ${HtmlGenerator.getSrcPosAttribute(node)}>"
+                override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                    visitor.consumeTagOpen(node, "p")
                 }
 
-                override fun closeTag(text: String, node: ASTNode): String {
-                    return "</p>"
+                override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+                    visitor.consumeTagClose("p")
                 }
             },
             MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
@@ -142,7 +146,9 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                     val output = node.children.subList(1, node.children.size() - 1).map { node ->
                         HtmlGenerator.leafText(text, node, false)
                     }.joinToString("").trim()
-                    visitor.consumeHtml("<code ${HtmlGenerator.getSrcPosAttribute(node)}>${output}</code>")
+                    visitor.consumeTagOpen(node, "code")
+                    visitor.consumeHtml(output)
+                    visitor.consumeTagClose("code")
                 }
             }
 

@@ -9,24 +9,17 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import java.util.*
 import kotlin.text.Regex
 
 public abstract class OpenCloseGeneratingProvider : GeneratingProvider {
-    abstract fun openTag(text: String, node: ASTNode): String;
-    abstract fun closeTag(text: String, node: ASTNode): String;
+    abstract fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode);
+    abstract fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode);
 
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        visitor.consumeHtml(openTag(text, node))
+        openTag(visitor, text, node)
         node.acceptChildren(visitor)
-        visitor.consumeHtml(closeTag(text, node))
-    }
-}
-
-public abstract class NonRecursiveGeneratingProvider : GeneratingProvider {
-    abstract fun generateTag(text: String, node: ASTNode): CharSequence;
-
-    final override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        visitor.consumeHtml(generateTag(text, node))
+        closeTag(visitor, text, node)
     }
 }
 
@@ -36,7 +29,7 @@ public abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvid
     }
 
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        visitor.consumeHtml(openTag(text, node))
+        openTag(visitor, text, node)
 
         for (child in childrenToRender(node)) {
             if (child is LeafASTNode) {
@@ -46,53 +39,52 @@ public abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvid
             }
         }
 
-        visitor.consumeHtml(closeTag(text, node))
+        closeTag(visitor, text, node)
     }
 }
 
 public open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
-    override fun openTag(text: String, node: ASTNode): String {
-        return "<$tagName ${HtmlGenerator.getSrcPosAttribute(node)}>"
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagOpen(node, tagName)
     }
 
-    override fun closeTag(text: String, node: ASTNode): String {
-        return "</$tagName>"
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagClose(tagName)
     }
+
 }
 
 public open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0, val renderTo: Int = 0)
 : InlineHolderGeneratingProvider() {
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagOpen(node, tagName)
+    }
+
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagClose(tagName)
+    }
+
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
         return node.children.subList(renderFrom, node.children.size() + renderTo)
     }
 
-    override fun openTag(text: String, node: ASTNode): String {
-        return "<$tagName ${HtmlGenerator.getSrcPosAttribute(node)}>"
-    }
 
-    override fun closeTag(text: String, node: ASTNode): String {
-        return "</$tagName>"
-    }
 }
 
 public open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo: Int = 0)
 : SimpleInlineTagProvider("", renderFrom, renderTo) {
-    override fun openTag(text: String, node: ASTNode): String {
-        return ""
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 
-    override fun closeTag(text: String, node: ASTNode): String {
-        return ""
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 }
 
 public open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvider() {
-    override fun openTag(text: String, node: ASTNode): String {
-        return ""
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 
-    override fun closeTag(text: String, node: ASTNode): String {
-        return ""
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
@@ -114,7 +106,7 @@ internal class ListItemGeneratingProvider : SimpleTagProvider("li") {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         assert(node is ListItemCompositeNode)
 
-        visitor.consumeHtml(openTag(text, node))
+        openTag(visitor, text, node)
         val isLoose = (node as ListItemCompositeNode).parent!!.loose
 
         for (child in node.children) {
@@ -125,16 +117,14 @@ internal class ListItemGeneratingProvider : SimpleTagProvider("li") {
             }
         }
 
-        visitor.consumeHtml(closeTag(text, node))
+        closeTag(visitor, text, node)
     }
 
     object SilentParagraphGeneratingProvider : InlineHolderGeneratingProvider() {
-        override fun openTag(text: String, node: ASTNode): String {
-            return ""
+        override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         }
 
-        override fun closeTag(text: String, node: ASTNode): String {
-            return ""
+        override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         }
     }
 }
@@ -154,7 +144,8 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length()
 
-        visitor.consumeHtml("<pre><code ${HtmlGenerator.getSrcPosAttribute(node)}")
+        visitor.consumeHtml("<pre>")
+
         var state = 0
 
         var childrenToConsider = node.children
@@ -164,6 +155,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
 
         var lastChildWasContent = false;
 
+        val attributes = ArrayList<String>()
         for (child in childrenToConsider) {
             if (state == 1 && child.type in listOf(MarkdownTokenTypes.CODE_FENCE_CONTENT,
                     MarkdownTokenTypes.EOL)) {
@@ -171,17 +163,17 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
                 lastChildWasContent = child.type == MarkdownTokenTypes.CODE_FENCE_CONTENT
             }
             if (state == 0 && child.type == MarkdownTokenTypes.FENCE_LANG) {
-                visitor.consumeHtml(" class=\"language-${
+                attributes.add("class=\"language-${
                 HtmlGenerator.leafText(text, child).toString().trim().split(' ')[0]
                 }\"");
             }
             if (state == 0 && child.type == MarkdownTokenTypes.EOL) {
+                visitor.consumeTagOpen(node, "code", *attributes.toTypedArray())
                 state = 1
-                visitor.consumeHtml(">")
             }
         }
         if (state == 0) {
-            visitor.consumeHtml(">")
+            visitor.consumeTagOpen(node, "code", *attributes.toTypedArray())
         }
         if (lastChildWasContent) {
             visitor.consumeHtml("\n")
@@ -198,11 +190,9 @@ internal abstract class LinkGeneratingProvider : GeneratingProvider {
     }
 
     open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: RenderInfo) {
-        visitor.consumeHtml("<a ${HtmlGenerator.getSrcPosAttribute(node)} href=\"${info.destination}\"")
-        info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
-        visitor.consumeHtml(">")
+        visitor.consumeTagOpen(node, "a", "href=\"${info.destination}\"", info.title?.let { "title=\"$it\"" })
         labelProvider.processNode(visitor, text, info.label)
-        visitor.consumeHtml("</a>")
+        visitor.consumeTagClose("a")
     }
 
     abstract fun getRenderInfo(text: String, node: ASTNode): RenderInfo?
@@ -266,9 +256,11 @@ internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvide
     }
 
     override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: LinkGeneratingProvider.RenderInfo) {
-        visitor.consumeHtml("<img ${HtmlGenerator.getSrcPosAttribute(node)} src=\"${info.destination}\" alt=\"${getPlainTextFrom(info.label, text)}\"")
-        info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
-        visitor.consumeHtml(" />")
+        visitor.consumeTagOpen(node, "img",
+                "src=\"${info.destination}\"",
+                "alt=\"${getPlainTextFrom(info.label, text)}\"",
+                info.title?.let { "title=\"$it\"" },
+                autoClose = true)
     }
 
     private fun getPlainTextFrom(node: ASTNode, text: String): CharSequence {
