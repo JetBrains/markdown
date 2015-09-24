@@ -40,14 +40,14 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
         return super.createHtmlGeneratingProviders(linkMap) + hashMapOf(
                 GFMElementTypes.STRIKETHROUGH to object: SimpleInlineTagProvider("span", 2, -2) {
                     override fun openTag(text: String, node: ASTNode): String {
-                        return "<span class=\"user-del\">"
+                        return "<span ${HtmlGenerator.getSrcPosAttribute(node)} class=\"user-del\">"
                     }
                 },
 
                 GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         val linkDestination = node.getTextInNode(text)
-                        visitor.consumeHtml("<a href=\"$linkDestination\">$linkDestination</a>")
+                        visitor.consumeHtml("<a ${HtmlGenerator.getSrcPosAttribute(node)} href=\"$linkDestination\">$linkDestination</a>")
                     }
                 },
 

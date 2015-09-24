@@ -82,7 +82,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                 override fun generateTag(text: String, node: ASTNode): String {
                     val linkText = node.getTextInNode(text)
                     val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true, false)
-                    return "<a href=\"${LinkMap.normalizeDestination(linkText)}\">$link</a>"
+                    return "<a ${HtmlGenerator.getSrcPosAttribute(node)} href=\"${LinkMap.normalizeDestination(linkText)}\">$link</a>"
                 }
             },
 
@@ -107,7 +107,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
 
             MarkdownElementTypes.CODE_BLOCK to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    visitor.consumeHtml("<pre><code>")
+                    visitor.consumeHtml("<pre><code ${HtmlGenerator.getSrcPosAttribute(node)}>")
                     visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, node, false), 4))
                     visitor.consumeHtml("\n")
                     visitor.consumeHtml("</code></pre>")
@@ -128,7 +128,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
 
             MarkdownElementTypes.PARAGRAPH to object : TrimmingInlineHolderProvider() {
                 override fun openTag(text: String, node: ASTNode): String {
-                    return "<p>"
+                    return "<p ${HtmlGenerator.getSrcPosAttribute(node)}>"
                 }
 
                 override fun closeTag(text: String, node: ASTNode): String {
@@ -142,7 +142,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                     val output = node.children.subList(1, node.children.size() - 1).map { node ->
                         HtmlGenerator.leafText(text, node, false)
                     }.joinToString("").trim()
-                    visitor.consumeHtml("<code>${output}</code>")
+                    visitor.consumeHtml("<code ${HtmlGenerator.getSrcPosAttribute(node)}>${output}</code>")
                 }
             }
 

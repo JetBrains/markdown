@@ -52,7 +52,7 @@ public abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvid
 
 public open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
     override fun openTag(text: String, node: ASTNode): String {
-        return "<$tagName>"
+        return "<$tagName ${HtmlGenerator.getSrcPosAttribute(node)}>"
     }
 
     override fun closeTag(text: String, node: ASTNode): String {
@@ -67,7 +67,7 @@ public open class SimpleInlineTagProvider(val tagName: String, val renderFrom: I
     }
 
     override fun openTag(text: String, node: ASTNode): String {
-        return "<$tagName>"
+        return "<$tagName ${HtmlGenerator.getSrcPosAttribute(node)}>"
     }
 
     override fun closeTag(text: String, node: ASTNode): String {
@@ -154,7 +154,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length()
 
-        visitor.consumeHtml("<pre><code")
+        visitor.consumeHtml("<pre><code ${HtmlGenerator.getSrcPosAttribute(node)}")
         var state = 0
 
         var childrenToConsider = node.children
@@ -194,11 +194,11 @@ internal abstract class LinkGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
-        renderLink(visitor, text, info)
+        renderLink(visitor, text, node, info)
     }
 
-    open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, info: RenderInfo) {
-        visitor.consumeHtml("<a href=\"${info.destination}\"")
+    open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: RenderInfo) {
+        visitor.consumeHtml("<a ${HtmlGenerator.getSrcPosAttribute(node)} href=\"${info.destination}\"")
         info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
         visitor.consumeHtml(">")
         labelProvider.processNode(visitor, text, info.label)
@@ -265,8 +265,8 @@ internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvide
         return null
     }
 
-    override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, info: LinkGeneratingProvider.RenderInfo) {
-        visitor.consumeHtml("<img src=\"${info.destination}\" alt=\"${getPlainTextFrom(info.label, text)}\"")
+    override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: LinkGeneratingProvider.RenderInfo) {
+        visitor.consumeHtml("<img ${HtmlGenerator.getSrcPosAttribute(node)} src=\"${info.destination}\" alt=\"${getPlainTextFrom(info.label, text)}\"")
         info.title?.let { visitor.consumeHtml(" title=\"$it\"") }
         visitor.consumeHtml(" />")
     }

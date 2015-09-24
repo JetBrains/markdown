@@ -41,11 +41,17 @@ public class HtmlGenerator(private val markdownText: String,
     }
 
     companion object {
+        public val SRC_ATTRIBUTE_NAME = "md-src-pos"
+
         public fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
             return EntityConverter.replaceEntities(node.getTextInNode(text), replaceEscapesAndEntities, replaceEscapesAndEntities)
+        }
+
+        public fun getSrcPosAttribute(node: ASTNode): CharSequence {
+            return "$SRC_ATTRIBUTE_NAME=\"${node.startOffset}..${node.endOffset}\""
         }
 
         public fun trimIndents(text: CharSequence, indent: Int): CharSequence {
