@@ -1,6 +1,6 @@
 package org.intellij.markdown
 
-public interface MarkdownTokenTypes {
+public open class MarkdownTokenTypes {
     companion object {
 
         public val TEXT: IElementType = MarkdownElementType("TEXT", true)

@@ -3,14 +3,14 @@ package org.intellij.markdown.flavours.gfm
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementType
 
-public interface GFMTokenTypes {
-    companion object {
-        public val TILDE: IElementType = MarkdownElementType("~", true);
+public object GFMTokenTypes {
 
-        public val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true);
+    public val TILDE: IElementType = MarkdownElementType("~", true);
 
-        public val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true);
-    }
+    public val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true);
+
+    public val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true);
+
 }
 
 public interface GFMElementTypes {

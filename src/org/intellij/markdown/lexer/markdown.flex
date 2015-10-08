@@ -21,7 +21,7 @@ import java.util.Stack;
 %implements GeneratedLexer
 
 %{
-  private static class Token implements MarkdownTokenTypes {}
+  private static class Token extends MarkdownTokenTypes {}
 
   private Stack<Integer> stateStack = new Stack<Integer>();
 
