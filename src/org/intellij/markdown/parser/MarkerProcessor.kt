@@ -4,7 +4,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
-import java.util.ArrayList
+import java.util.*
 
 public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
                                                                      protected val startConstraints: MarkdownConstraints) {
@@ -171,9 +171,9 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             markersStack.last().getBlockConstraints()
     }
 
-    public open data class StateInfo(public val currentConstraints: MarkdownConstraints,
-                                     public val nextConstraints: MarkdownConstraints,
-                                     private val markersStack: List<MarkerBlock>) {
+    public open class StateInfo(public val currentConstraints: MarkdownConstraints,
+                                public val nextConstraints: MarkdownConstraints,
+                                private val markersStack: List<MarkerBlock>) {
 
         public val paragraphBlock: ParagraphMarkerBlock?
             get() = markersStack.firstOrNull { block -> block is ParagraphMarkerBlock } as ParagraphMarkerBlock?
@@ -181,6 +181,18 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         public val lastBlock: MarkerBlock?
             get() = markersStack.lastOrNull()
 
-    }
+        override fun equals(other: Any?): Boolean {
+            val otherStateInfo = other as? StateInfo ?: return false
+            return currentConstraints == otherStateInfo.currentConstraints &&
+                    nextConstraints == otherStateInfo.nextConstraints &&
+                    markersStack == otherStateInfo.markersStack
+        }
 
+        override fun hashCode(): Int {
+            var result = currentConstraints.hashCode()
+            result = result * 37 + nextConstraints.hashCode()
+            result = result * 37 + markersStack.hashCode()
+            return result
+        }
+    }
 }
