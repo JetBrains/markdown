@@ -13,8 +13,8 @@ public class LookaheadText(public val text: String) {
                                                      private val localPos: Int, // -1 if on newline before
                                                      private val globalPos: Int) {
         init {
-            assert(lineN < lines.size())
-            assert(localPos >= -1 && localPos < lines.get(lineN).length())
+            assert(lineN < lines.size)
+            assert(localPos >= -1 && localPos < lines.get(lineN).length)
         }
 
         override fun toString(): String {
@@ -34,26 +34,26 @@ public class LookaheadText(public val text: String) {
             get() = localPos
 
         public val nextLineOffset: Int?
-            get() = if (lineN + 1 < lines.size()) {
-                globalPos + (currentLine.length() - localPos)
+            get() = if (lineN + 1 < lines.size) {
+                globalPos + (currentLine.length - localPos)
             } else {
                 null
             }
 
         public val nextLineOrEofOffset: Int
-            get() = globalPos + (currentLine.length() - localPos)
+            get() = globalPos + (currentLine.length - localPos)
 
         public val textFromPosition: CharSequence
-            get() = text.subSequence(globalPos, text.length())
+            get() = text.subSequence(globalPos, text.length)
 
         public val currentLine: String
             get() = lines.get(lineN)
 
         public val currentLineFromPosition: CharSequence
-            get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length())
+            get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
 
         public val nextLine: String?
-            get() = if (lineN + 1 < lines.size()) {
+            get() = if (lineN + 1 < lines.size) {
                 lines.get(lineN + 1)
             } else {
                 null
@@ -67,14 +67,14 @@ public class LookaheadText(public val text: String) {
             }
 
         public val char: Char
-            get() = text.charAt(globalPos)
+            get() = text[globalPos]
 
         public fun nextPosition(delta: Int = 1): Position? {
             var remaining = delta
             var currentPosition = this
 
             while (true) {
-                if (currentPosition.localPos + remaining < currentPosition.currentLine.length()) {
+                if (currentPosition.localPos + remaining < currentPosition.currentLine.length) {
                     return Position(currentPosition.lineN,
                             currentPosition.localPos + remaining,
                             currentPosition.globalPos + remaining)
@@ -83,7 +83,7 @@ public class LookaheadText(public val text: String) {
                     if (nextLine == null) {
                         return null
                     } else {
-                        val payload = currentPosition.currentLine.length() - currentPosition.localPos
+                        val payload = currentPosition.currentLine.length - currentPosition.localPos
 
                         currentPosition = Position(currentPosition.lineN + 1, -1, currentPosition.globalPos + payload)
                         remaining -= payload
@@ -101,7 +101,7 @@ public class LookaheadText(public val text: String) {
         public fun charsToNonWhitespace(): Int? {
             val line = currentLine
             var offset = localPos
-            while (offset < line.length()) {
+            while (offset < line.length) {
                 if (offset >= 0) {
                     val c = line[offset]
                     if (c != ' ' && c != '\t') {

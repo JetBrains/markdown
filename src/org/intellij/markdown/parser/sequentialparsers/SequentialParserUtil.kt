@@ -28,7 +28,7 @@ public class SequentialParserUtil {
 
             var starting = 0
             for (i in indices.indices) {
-                if (i + 1 == indices.size() || indices.get(i) + 1 != indices.get(i + 1)) {
+                if (i + 1 == indices.size || indices.get(i) + 1 != indices.get(i + 1)) {
                     result.add(indices.get(starting)..indices.get(i) + 1)
                     starting = i + 1
                 }

@@ -117,10 +117,10 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
      * @return true if some markerBlock has canceled the event, false otherwise
      */
     private fun processMarkers(pos: LookaheadText.Position): Boolean {
-        var index = markersStack.size()
+        var index = markersStack.size
         while (index > 0) {
             index--
-            if (index >= markersStack.size()) {
+            if (index >= markersStack.size) {
                 continue
             }
 
@@ -145,19 +145,19 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
 
         // process self
         if (markerBlock.acceptAction(processingResult.selfAction)) {
-            markersStack.remove(index)
+            markersStack.removeAt(index)
             relaxTopConstraints()
         }
     }
 
     private fun closeChildren(index: Int, childrenAction: MarkerBlock.ClosingAction) {
         if (childrenAction != MarkerBlock.ClosingAction.NOTHING) {
-            var latterIndex = markersStack.size() - 1
+            var latterIndex = markersStack.size - 1
             while (latterIndex > index) {
                 val result = markersStack.get(latterIndex).acceptAction(childrenAction)
                 assert(result) { "If closing action is not NOTHING, marker should be gone" }
 
-                markersStack.remove(latterIndex)
+                markersStack.removeAt(latterIndex)
                 --latterIndex
             }
             relaxTopConstraints()

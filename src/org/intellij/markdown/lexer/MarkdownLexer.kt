@@ -24,7 +24,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
     public fun start(originalText: CharSequence,
                      bufferStart: Int = 0,
-                     bufferEnd: Int = originalText.length()) {
+                     bufferEnd: Int = originalText.length) {
         this.originalText = originalText
         this.bufferStart = bufferStart
         this.bufferEnd = bufferEnd

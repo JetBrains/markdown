@@ -29,7 +29,7 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
             pos = markerProcessor.processPosition(pos)
         }
 
-        productionHolder.updatePosition(text.length())
+        productionHolder.updatePosition(text.length)
         markerProcessor.flushMarkers()
 
         rootMarker.done(root)
@@ -51,7 +51,7 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
         lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)
 
-        val wholeRange = 0..tokensCache.filteredTokens.size()
+        val wholeRange = 0..tokensCache.filteredTokens.size
         val nodes = flavour.sequentialParserManager.runParsingSequence(tokensCache,
                 SequentialParserUtil.filterBlockquotes(tokensCache, wholeRange))
 

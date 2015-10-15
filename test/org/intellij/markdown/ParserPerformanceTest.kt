@@ -13,7 +13,7 @@ public class ParserPerformanceTest : TestCase() {
     private fun defaultTest(fullParse: Boolean) {
         val fileName = testName.let {
             if (it.endsWith("Full")) {
-                it.substring(0, it.length() - 4)
+                it.substring(0, it.length - 4)
             } else {
                 it
             }
@@ -23,7 +23,7 @@ public class ParserPerformanceTest : TestCase() {
         val runnable = { i: Int ->
             val root = MarkdownParser(CommonMarkFlavourDescriptor()).
                     parse(MarkdownElementTypes.MARKDOWN_FILE, src, fullParse)
-            assert(root.children.size() > 0)
+            assert(root.children.size > 0)
         }
 
         repeat(WARM_UP_NUM, runnable)

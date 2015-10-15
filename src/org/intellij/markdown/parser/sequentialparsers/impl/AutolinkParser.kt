@@ -15,7 +15,7 @@ public class AutolinkParser(private val typesAfterLT: List<IElementType>) : Sequ
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 
         var i = 0
-        while (i < indices.size()) {
+        while (i < indices.size) {
             var iterator: TokensCache.Iterator = tokens.ListIterator(indices, i)
 
             if (iterator.type == MarkdownTokenTypes.LT && iterator.rawLookup(1) in typesAfterLT) {

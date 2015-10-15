@@ -38,7 +38,7 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 val newNode = createASTNodeOnClosingEvent(event, currentNodeChildren, isTopmostNode)
 
                 if (isTopmostNode) {
-                    assert(i + 1 == events.size())
+                    assert(i + 1 == events.size)
                     return newNode.astNode
                 } else {
                     markersStack.peek().second.add(newNode)

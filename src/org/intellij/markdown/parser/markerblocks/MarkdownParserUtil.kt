@@ -16,7 +16,7 @@ public object MarkdownParserUtil {
             val constraintsLength = currentConstraints.getCharsEaten(pos.currentLine)
 
             currentConstraints.upstreamWith(constraints) && (
-                    constraintsLength >= pos.currentLine.length() ||
+                    constraintsLength >= pos.currentLine.length ||
                     pos.nextPosition(1 + constraintsLength)?.charsToNonWhitespace() == null)
         }
 

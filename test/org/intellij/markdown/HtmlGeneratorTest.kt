@@ -110,9 +110,9 @@ public class HtmlGeneratorTest : TestCase() {
 
             val split = tags.replace(html as CharSequence, { matchResult ->
                 val next = matchResult.next()
-                if (html.charAt(matchResult.range.start + 1) != '/'
+                if (html[matchResult.range.start + 1] != '/'
                         && next != null
-                        && html.charAt(next.range.start + 1) == '/') {
+                        && html[next.range.start + 1] == '/') {
                     matchResult.value
                 } else if (matchResult.value.contains("pre") && next?.value?.contains("code") == true
                     || matchResult.value.contains("/code") && next?.value?.contains("/pre") == true) {

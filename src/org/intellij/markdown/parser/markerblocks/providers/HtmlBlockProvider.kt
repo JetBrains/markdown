@@ -28,8 +28,8 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         }
         val matchResult = FIND_START_REGEX.match(pos.currentLineFromPosition)
                 ?: return -1
-        assert(matchResult.groups.size() == OPEN_CLOSE_REGEXES.size() + 1) { "There are some excess capturing groups probably!" }
-        for (i in 1..OPEN_CLOSE_REGEXES.size()) {
+        assert(matchResult.groups.size == OPEN_CLOSE_REGEXES.size + 1) { "There are some excess capturing groups probably!" }
+        for (i in 1..OPEN_CLOSE_REGEXES.size) {
             if (matchResult.groups[i] != null) {
                 return i - 1
             }

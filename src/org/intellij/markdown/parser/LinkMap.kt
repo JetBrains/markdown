@@ -61,12 +61,12 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
         public fun normalizeTitle(s: CharSequence): CharSequence = EntityConverter.replaceEntities(clearBounding(s, "\"\"", "''", "()"), true, true)
 
         private fun clearBounding(s: CharSequence, vararg boundQuotes: String): CharSequence {
-            if (s.length() == 0) {
+            if (s.length == 0) {
                 return s
             }
             for (quotePair in boundQuotes) {
-                if (s[0] == quotePair[0] && s[s.length() - 1] == quotePair[1]) {
-                    return s.subSequence(1, s.length() - 1)
+                if (s[0] == quotePair[0] && s[s.length - 1] == quotePair[1]) {
+                    return s.subSequence(1, s.length - 1)
                 }
             }
             return s
