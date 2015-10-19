@@ -12,9 +12,9 @@ public class GFMConstraints(indents: IntArray,
         get() = BASE
 
     override fun createNewConstraints(indents: IntArray, types: CharArray, isExplicit: BooleanArray, charsEaten: Int): MarkdownConstraints {
-        val initialType = types[types.size() - 1]
+        val initialType = types[types.size - 1]
         val originalType = toOriginalType(initialType)
-        types[types.size() - 1] = originalType
+        types[types.size - 1] = originalType
         return GFMConstraints(indents, types, isExplicit, charsEaten, initialType != originalType)
     }
 

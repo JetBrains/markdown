@@ -27,7 +27,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     public fun getIndent(): Int {
-        if (indents.size() == 0) {
+        if (indents.size == 0) {
             return 0
         }
 
@@ -51,19 +51,19 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     public fun extendsPrev(other: MarkdownConstraints): Boolean {
-        return startsWith(other) && !containsListMarkers(other.types.size())
+        return startsWith(other) && !containsListMarkers(other.types.size)
     }
 
     public fun extendsList(other: MarkdownConstraints): Boolean {
-        if (other.types.size() == 0) {
+        if (other.types.size == 0) {
             throw IllegalArgumentException("List constraints should contain at least one item")
         }
-        return startsWith(other) && !containsListMarkers(other.types.size() - 1)
+        return startsWith(other) && !containsListMarkers(other.types.size - 1)
     }
 
     private fun startsWith(other: MarkdownConstraints): Boolean {
-        val n = indents.size()
-        val m = other.indents.size()
+        val n = indents.size
+        val m = other.indents.size
 
         if (n < m) {
             return false
@@ -77,7 +77,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     private fun containsListMarkers(): Boolean {
-        return containsListMarkers(types.size())
+        return containsListMarkers(types.size)
     }
 
     private fun containsListMarkers(upToIndex: Int): Boolean {
@@ -209,7 +209,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
                                         newType: Char,
                                         newExplicit: Boolean,
                                         newOffset: Int): MarkdownConstraints {
-            val n = parent.indents.size()
+            val n = parent.indents.size
             val _indents = IntArray(n + 1)
             val _types = CharArray(n + 1)
             val _isExplicit = BooleanArray(n + 1)
@@ -241,7 +241,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
         public fun fillFromPrevious(line: String,
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
-            val prevN = prevLineConstraints.indents.size()
+            val prevN = prevLineConstraints.indents.size
             var indexPrev = 0
 
             val getBlockQuoteIndent = { startOffset: Int ->
