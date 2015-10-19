@@ -33,3 +33,17 @@ R5: **foo bar**
 R6: __foo bar__
 
 __foo, __bar__, baz__
+
+* a *
+
+a*"foo"*
+
+a**"foo"**
+
+*(*foo)
+
+*(*foo*)*
+
+**foo bar **
+
+foo__bar__

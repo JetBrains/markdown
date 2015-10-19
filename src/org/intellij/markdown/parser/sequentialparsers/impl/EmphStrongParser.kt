@@ -5,7 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.Stack
+import java.util.*
 
 public class EmphStrongParser : SequentialParser {
 
@@ -25,7 +25,7 @@ public class EmphStrongParser : SequentialParser {
                 continue
             }
 
-            var numCanEnd = canEndNumber(tokens, iterator)
+            var numCanEnd = canEndNumber(iterator)
             if (numCanEnd != 0 && myType == getType(iterator) && !openingOnes.isEmpty()) {
                 while (numCanEnd > 0 && !openingOnes.isEmpty()) {
                     val lastOpening = openingOnes.pop()
@@ -46,7 +46,7 @@ public class EmphStrongParser : SequentialParser {
                 continue
             }
 
-            val numCanStart = canStartNumber(tokens, iterator)
+            val numCanStart = canStartNumber(iterator)
             if (numCanStart != 0) {
                 if (myType.toInt() == 0) {
                     myType = getType(iterator)
@@ -64,19 +64,47 @@ public class EmphStrongParser : SequentialParser {
         return result
     }
 
-    private fun canStartNumber(tokens: TokensCache, iterator: TokensCache.Iterator): Int {
+    private fun canStartNumber(iterator: TokensCache.Iterator): Int {
+        var leftIt = iterator
+        while (leftIt.rawLookup(-1) == MarkdownTokenTypes.EMPH && getType(leftIt) == leftIt.charLookup(-1)) {
+            leftIt = leftIt.rollback()
+        }
+
         var it = iterator
-        if (getType(it) == ITALIC && it.rawLookup(-1) != null) {
-            if (Character.isLetterOrDigit(tokens.getRawCharAt(it.start - 1))) {
-                return 0
+        for (i in 0..50 - 1) {
+            if (it.rawLookup(1) != MarkdownTokenTypes.EMPH || getType(it) != getType(it.advance())) {
+                if (!isLeftFlankingRun(leftIt, it)) {
+                    return 0
+                }
+                if (getType(it) == ITALIC && isRightFlankingRun(leftIt, it) && !SequentialParserUtil.isPunctuation(leftIt, -1)) {
+                    return 0
+                }
+
+                return i + 1
+
             }
+            it = it.advance()
+        }
+
+        return 50
+    }
+
+    private fun canEndNumber(iterator: TokensCache.Iterator): Int {
+        var it = iterator
+        if (SequentialParserUtil.isWhitespace(it, -1)) {
+            return 0
         }
 
         for (i in 0..50 - 1) {
-            if (SequentialParserUtil.isWhitespace(it, 1)) {
-                return 0
-            }
             if (it.rawLookup(1) != MarkdownTokenTypes.EMPH || getType(it) != getType(it.advance())) {
+                if (!isRightFlankingRun(iterator, it)) {
+                    return 0
+                }
+
+                if (getType(it) == ITALIC && isLeftFlankingRun(iterator, it) && !SequentialParserUtil.isPunctuation(it, 1)) {
+                    return 0
+                }
+
                 return i + 1
             }
             it = it.advance()
@@ -85,23 +113,22 @@ public class EmphStrongParser : SequentialParser {
         return 50
     }
 
-    private fun canEndNumber(tokens: TokensCache, iterator: TokensCache.Iterator): Int {
-        var it = iterator
-        if (SequentialParserUtil.isWhitespace(it, -1)) {
-            return 0
-        }
+    /**
+     * see <http://spec.commonmark.org/0.22/#left-flanking-delimiter-run>
+     */
+    private fun isLeftFlankingRun(leftIt: TokensCache.Iterator, rightIt: TokensCache.Iterator): Boolean {
+        return !SequentialParserUtil.isWhitespace(rightIt, 1) &&
+                (!SequentialParserUtil.isPunctuation(rightIt, 1)
+                        || SequentialParserUtil.isWhitespace(leftIt, -1)
+                        || SequentialParserUtil.isPunctuation(leftIt, -1))
+    }
 
-        for (i in 0..50 - 1) {
-            if (it.rawLookup(1) != MarkdownTokenTypes.EMPH || getType(it) != getType(it.advance())) {
-                if (getType(it) == ITALIC && Character.isLetterOrDigit(tokens.getRawCharAt(it.end))) {
-                    return 0
-                }
-                return i + 1
-            }
-            it = it.advance()
-        }
-
-        return 50
+    private fun isRightFlankingRun(leftIt: TokensCache.Iterator, rightIt: TokensCache.Iterator): Boolean {
+        return leftIt.charLookup(-1) != getType(leftIt) &&
+                !SequentialParserUtil.isWhitespace(leftIt, -1) &&
+                (!SequentialParserUtil.isPunctuation(leftIt, -1)
+                        || SequentialParserUtil.isWhitespace(rightIt, 1)
+                        || SequentialParserUtil.isPunctuation(rightIt, 1))
     }
 
     private fun getType(info: TokensCache.Iterator): Char {

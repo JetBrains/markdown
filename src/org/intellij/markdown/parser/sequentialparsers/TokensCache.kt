@@ -114,6 +114,17 @@ public abstract class TokensCache {
             return info(steps).tokenStart
         }
 
+        public open fun charLookup(steps: Int): Char {
+            if (steps == 1) {
+                return getRawCharAt(end)
+            } else if (steps == -1) {
+                return getRawCharAt(start - 1)
+            } else {
+                val pos = if (steps > 0) rawStart(steps) else rawStart(steps + 1) - 1
+                return getRawCharAt(pos);
+            }
+        }
+
         override fun toString(): String {
             return "Iterator: " + index + ": " + type
         }

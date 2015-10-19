@@ -5,6 +5,14 @@ import java.util.*
 
 public class SequentialParserUtil {
     companion object {
+        private val PUNCTUATION_MASK: Int = (1 shl Character.DASH_PUNCTUATION.toInt()) or
+                (1 shl Character.START_PUNCTUATION.toInt())     or
+                (1 shl Character.END_PUNCTUATION.toInt())       or
+                (1 shl Character.CONNECTOR_PUNCTUATION.toInt()) or
+                (1 shl Character.OTHER_PUNCTUATION.toInt())     or
+                (1 shl Character.INITIAL_QUOTE_PUNCTUATION.toInt()) or
+                (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt())
+
         public fun textRangesToIndices(ranges: Collection<Range<Int>>): List<Int> {
             val result = ArrayList<Int>()
             for (range in ranges) {
@@ -30,22 +38,16 @@ public class SequentialParserUtil {
         }
 
         public fun isWhitespace(info: TokensCache.Iterator, lookup: Int): Boolean {
-            val `type` = info.rawLookup(lookup)
-            if (`type` == null) {
-                return false
-            }
-            if (`type` == MarkdownTokenTypes.EOL || `type` == MarkdownTokenTypes.WHITE_SPACE) {
-                return true
-            }
-            if (lookup == -1) {
-                return info.rollback().text.endsWith(' ', ignoreCase = false)
-            } else {
-                return info.advance().text.startsWith(' ', ignoreCase = false)
-            }
+            val char = info.charLookup(lookup)
+            return char == 0.toChar() || Character.isSpaceChar(char) || Character.isWhitespace(char);
         }
 
+        public fun isPunctuation(info: TokensCache.Iterator, lookup: Int): Boolean {
+            val char = info.charLookup(lookup)
+            return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0;
+        }
 
-        public fun filterBlockquotes(tokensCache: TokensCache, textRange: Range<Int>): Collection<Range<Int>> {
+       public fun filterBlockquotes(tokensCache: TokensCache, textRange: Range<Int>): Collection<Range<Int>> {
             val result = ArrayList<Range<Int>>()
             var lastStart = textRange.start
 
