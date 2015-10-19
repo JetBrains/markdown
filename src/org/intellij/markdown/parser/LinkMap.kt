@@ -26,7 +26,7 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
                                 node.children.first({ it.type == MarkdownElementTypes.LINK_LABEL }).getTextInNode(text)
                         )
                         if (!map.containsKey(linkLabel)) {
-                            map.put(linkLabel, LinkInfo(node, text))
+                            map.put(linkLabel, LinkInfo.create(node, text))
                         }
                     }
                     else {
@@ -76,11 +76,16 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
 
     }
 
-    public data class LinkInfo internal constructor(val node: ASTNode, fileText: CharSequence) {
-        val destination: CharSequence = normalizeDestination(
-                node.children.first({ it.type == MarkdownElementTypes.LINK_DESTINATION }).getTextInNode(fileText))
-        val title: CharSequence? = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TITLE })
-                ?.getTextInNode(fileText)?.let { normalizeTitle(it) }
+    public data class LinkInfo private constructor(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
+        companion object {
+            internal fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
+                val destination: CharSequence = normalizeDestination(
+                        node.children.first({ it.type == MarkdownElementTypes.LINK_DESTINATION }).getTextInNode(fileText))
+                val title: CharSequence? = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TITLE })
+                        ?.getTextInNode(fileText)?.let { normalizeTitle(it) }
+                return LinkInfo(node, destination, title)
+            }
+        }
     }
 }
 
