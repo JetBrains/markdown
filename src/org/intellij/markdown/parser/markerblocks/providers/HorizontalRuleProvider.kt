@@ -38,7 +38,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
             for (c in arrayOf("-", "_", "\\*")) {
                 variants.add("(${c} *){3,}")
             }
-            Regex("^ {0,3}(" + variants.join("|") + ")$")
+            Regex("^ {0,3}(" + variants.joinToString("|") + ")$")
         }
 
         public fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {

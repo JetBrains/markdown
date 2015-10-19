@@ -8,12 +8,12 @@ public class HtmlIndentTrimmerTest : TestCase() {
     private fun defaultTest(maxIndent: Int) {
         val src = File(getTestDataPath() + "/" + testName + ".txt").readText();
 
-        val result = StringBuilder {
+        val result = buildString {
             for (indent in 0..maxIndent) {
                 append(HtmlGenerator.trimIndents(src, indent))
-                append("\n----------(${indent})-----------\n")
+                append("\n----------($indent)-----------\n")
             }
-        }.toString()
+        }
 
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + "_after.txt", result);
     }

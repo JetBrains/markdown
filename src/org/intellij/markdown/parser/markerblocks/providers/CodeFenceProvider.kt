@@ -40,7 +40,7 @@ public class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return null
         }
-        val matchResult = REGEX.match(pos.currentLineFromPosition)
+        val matchResult = REGEX.find(pos.currentLineFromPosition)
             ?: return null
         return Pair(matchResult.groups[1]?.value!!, matchResult.groups[2]?.value!!)
     }

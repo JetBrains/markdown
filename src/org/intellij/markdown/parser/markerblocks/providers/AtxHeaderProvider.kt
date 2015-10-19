@@ -48,7 +48,7 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
 
     private fun matches(pos: LookaheadText.Position): Range<Int>? {
         if (pos.offsetInCurrentLine != -1) {
-            val matchResult = REGEX.match(pos.currentLineFromPosition)
+            val matchResult = REGEX.find(pos.currentLineFromPosition)
             if (matchResult != null) {
                 return matchResult.groups[1]!!.range
             }

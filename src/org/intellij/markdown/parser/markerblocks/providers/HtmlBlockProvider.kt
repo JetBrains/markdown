@@ -26,7 +26,7 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return -1
         }
-        val matchResult = FIND_START_REGEX.match(pos.currentLineFromPosition)
+        val matchResult = FIND_START_REGEX.find(pos.currentLineFromPosition)
                 ?: return -1
         assert(matchResult.groups.size == OPEN_CLOSE_REGEXES.size + 1) { "There are some excess capturing groups probably!" }
         for (i in 1..OPEN_CLOSE_REGEXES.size) {
