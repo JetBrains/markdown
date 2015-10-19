@@ -55,7 +55,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
         do {
             tokenEnd = baseLexer.getTokenEnd()
             nextType = advanceBase()
-        } while (nextType == `type` && TOKENS_TO_MERGE.contains(`type`))
+        } while (type.let { nextType == it && it != null && it in TOKENS_TO_MERGE })
     }
 
     private fun advanceBase(): IElementType? {
