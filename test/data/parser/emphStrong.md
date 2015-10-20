@@ -47,3 +47,5 @@ a**"foo"**
 **foo bar **
 
 foo__bar__
+
+*_foo_*

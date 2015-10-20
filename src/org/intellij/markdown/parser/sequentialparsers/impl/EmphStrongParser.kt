@@ -14,8 +14,7 @@ public class EmphStrongParser : SequentialParser {
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 
-        var myType: Char = 0.toChar()
-        val openingOnes = Stack<Pair<Int, Int>>()
+        val openingOnes = ArrayList<OpeningEmphInfo>()
 
         var i = 0
         while (i < indices.size()) {
@@ -25,38 +24,42 @@ public class EmphStrongParser : SequentialParser {
                 continue
             }
 
+            var thisEmphWasEaten = false
+
             var numCanEnd = canEndNumber(iterator)
-            if (numCanEnd != 0 && myType == getType(iterator) && !openingOnes.isEmpty()) {
-                while (numCanEnd > 0 && !openingOnes.isEmpty()) {
-                    val lastOpening = openingOnes.pop()
-                    val toMakeMax = Math.min(lastOpening.second, numCanEnd)
-                    val toMake = if (toMakeMax % 2 == 0) 2 else 1
-                    val from = lastOpening.first + (lastOpening.second - toMake)
-                    val to = i + toMake - 1
-
-                    val nodeType = if (toMake == 2) MarkdownElementTypes.STRONG else MarkdownElementTypes.EMPH
-                    result.withNode(SequentialParser.Node(indices.get(from)..indices.get(to) + 1, nodeType))
-
-                    i += toMake
-                    numCanEnd -= toMake
-                    if (lastOpening.second > toMake) {
-                        openingOnes.push(Pair(lastOpening.first, lastOpening.second - toMake))
-                    }
+            while (numCanEnd > 0) {
+                val stackIndex = openingOnes.indexOfLast { it.type == getType(iterator) }
+                if (stackIndex == -1) {
+                    break
                 }
+                val opening = openingOnes[stackIndex]
+
+                val toMakeMax = Math.min(opening.numChars, numCanEnd)
+                val toMake = if (toMakeMax % 2 == 0) 2 else 1
+                val from = opening.pos + (opening.numChars - toMake)
+                val to = i + toMake - 1
+
+                val nodeType = if (toMake == 2) MarkdownElementTypes.STRONG else MarkdownElementTypes.EMPH
+                result.withNode(SequentialParser.Node(indices.get(from)..indices.get(to) + 1, nodeType))
+                openingOnes.subList(stackIndex, openingOnes.size()).clear()
+
+                thisEmphWasEaten = true
+                i += toMake
+                numCanEnd -= toMake
+                if (opening.numChars > toMake) {
+                    openingOnes.add(OpeningEmphInfo(opening.pos, opening.numChars - toMake, opening.type))
+                }
+            }
+
+            if (thisEmphWasEaten) {
                 continue
             }
 
             val numCanStart = canStartNumber(iterator)
             if (numCanStart != 0) {
-                if (myType.toInt() == 0) {
-                    myType = getType(iterator)
-                } else if (myType != getType(iterator)) {
-                    i++
-                    continue
-                }
-
-                openingOnes.push(Pair(i, numCanStart))
+                openingOnes.add(OpeningEmphInfo(i, numCanStart, getType(iterator)))
                 i += numCanStart
+                continue
             }
             i++
         }
@@ -134,6 +137,8 @@ public class EmphStrongParser : SequentialParser {
     private fun getType(info: TokensCache.Iterator): Char {
         return info.text.charAt(0)
     }
+
+    private data class OpeningEmphInfo(val pos: Int, val numChars: Int, val type: Char)
 
     companion object {
 

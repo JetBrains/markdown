@@ -257,3 +257,13 @@ Markdown:MARKDOWN_FILE
     Markdown:EMPH('_')
     Markdown:EMPH('_')
   Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:EMPH
+      Markdown:EMPH('*')
+      Markdown:EMPH
+        Markdown:EMPH('_')
+        Markdown:TEXT('foo')
+        Markdown:EMPH('_')
+      Markdown:EMPH('*')
+  Markdown:EOL('\n')
