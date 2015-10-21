@@ -84,6 +84,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest()
     }
 
+    public fun testRuby17052() {
+        defaultTest()
+    }
+
     public fun testStrikethrough() {
         defaultTest(GFMFlavourDescriptor())
     }
