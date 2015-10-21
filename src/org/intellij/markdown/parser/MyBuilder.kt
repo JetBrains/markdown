@@ -36,12 +36,12 @@ public class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tok
         val startTokenId = event.info.range.start
         val endTokenId = event.info.range.end
 
-        val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
+        val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 
         if (isTopmostNode) {
             addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, +1)
         }
-        for (i in 1..currentNodeChildren.size() - 1) {
+        for (i in 1..currentNodeChildren.size - 1) {
             val prev = currentNodeChildren.get(i - 1)
             val next = currentNodeChildren.get(i)
 

@@ -15,7 +15,7 @@ public class StrikeThroughParser : SequentialParser {
         var lastOpenedPos: Int? = null
 
         var i = 0
-        while (i < indices.size()) {
+        while (i < indices.size) {
             val iterator = tokens.ListIterator(indices, i)
             if (iterator.type != GFMTokenTypes.TILDE) {
                 delegateIndices.add(indices.get(i))

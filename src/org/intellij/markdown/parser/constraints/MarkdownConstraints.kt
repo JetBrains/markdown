@@ -19,15 +19,15 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     public fun eatItselfFromString(s: CharSequence): CharSequence {
-        if (s.length() < charsEaten) {
+        if (s.length < charsEaten) {
             return ""
         } else {
-            return s.subSequence(charsEaten, s.length())
+            return s.subSequence(charsEaten, s.length)
         }
     }
 
     public fun getIndent(): Int {
-        if (indents.size() == 0) {
+        if (indents.size == 0) {
             return 0
         }
 
@@ -35,7 +35,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     public fun getCharsEaten(s: CharSequence): Int {
-        return Math.min(charsEaten, s.length())
+        return Math.min(charsEaten, s.length)
     }
 
     public open fun getLastType(): Char? {
@@ -51,19 +51,19 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     public fun extendsPrev(other: MarkdownConstraints): Boolean {
-        return startsWith(other) && !containsListMarkers(other.types.size())
+        return startsWith(other) && !containsListMarkers(other.types.size)
     }
 
     public fun extendsList(other: MarkdownConstraints): Boolean {
-        if (other.types.size() == 0) {
+        if (other.types.size == 0) {
             throw IllegalArgumentException("List constraints should contain at least one item")
         }
-        return startsWith(other) && !containsListMarkers(other.types.size() - 1)
+        return startsWith(other) && !containsListMarkers(other.types.size - 1)
     }
 
     private fun startsWith(other: MarkdownConstraints): Boolean {
-        val n = indents.size()
-        val m = other.indents.size()
+        val n = indents.size
+        val m = other.indents.size
 
         if (n < m) {
             return false
@@ -77,7 +77,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     private fun containsListMarkers(): Boolean {
-        return containsListMarkers(types.size())
+        return containsListMarkers(types.size)
     }
 
     private fun containsListMarkers(upToIndex: Int): Boolean {
@@ -105,12 +105,12 @@ public open class MarkdownConstraints protected constructor(private val indents:
 
         val line = pos.currentLine
         var offset = pos.offsetInCurrentLine
-        while (offset < line.length() && line[offset] in '0'..'9') {
+        while (offset < line.length && line[offset] in '0'..'9') {
             offset++
         }
         if (offset > pos.offsetInCurrentLine
                 && offset - pos.offsetInCurrentLine <= 9
-                && offset < line.length()
+                && offset < line.length
                 && (line[offset] == '.' || line[offset] == ')')) {
             return ListMarkerInfo(line.subSequence(pos.offsetInCurrentLine, offset + 1),
                     line[offset],
@@ -129,22 +129,22 @@ public open class MarkdownConstraints protected constructor(private val indents:
         var offset = pos.offsetInCurrentLine
         var spacesBefore = 0
         // '\t' can be omitted here since it'll add at least 4 indent
-        while (offset < line.length() && line[offset] == ' ' && spacesBefore < 3) {
+        while (offset < line.length && line[offset] == ' ' && spacesBefore < 3) {
             spacesBefore++
             offset++
         }
-        if (offset == line.length())
+        if (offset == line.length)
             return null
 
         val markerInfo = fetchListMarker(pos.nextPosition(spacesBefore)!!)
                 ?: return null
 
-        offset += markerInfo.markerText.length()
+        offset += markerInfo.markerText.length
         var spacesAfter = 0
 
         val markerEndOffset = offset
         afterSpaces@
-        while (offset < line.length()) {
+        while (offset < line.length) {
             when (line[offset]) {
                 ' ' -> spacesAfter++
                 '\t' -> spacesAfter += 4 - spacesAfter % 4
@@ -155,11 +155,11 @@ public open class MarkdownConstraints protected constructor(private val indents:
 
         // By the classification http://spec.commonmark.org/0.20/#list-items
         // 1. Basic case
-        if (spacesAfter > 0 && spacesAfter < 5 && offset < line.length()) {
+        if (spacesAfter > 0 && spacesAfter < 5 && offset < line.length) {
             return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + spacesAfter, markerInfo.markerType, true, offset)
         }
-        if (spacesAfter >= 5 && offset < line.length() // 2. Starts with an indented code
-                || offset == line.length()) {
+        if (spacesAfter >= 5 && offset < line.length // 2. Starts with an indented code
+                || offset == line.length) {
             // 3. Starts with an empty string
             return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + 1, markerInfo.markerType, true,
                     Math.min(offset, markerEndOffset + 1))
@@ -174,20 +174,20 @@ public open class MarkdownConstraints protected constructor(private val indents:
         var offset = pos.offsetInCurrentLine
         var spacesBefore = 0
         // '\t' can be omitted here since it'll add at least 4 indent
-        while (offset < line.length() && line[offset] == ' ' && spacesBefore < 3) {
+        while (offset < line.length && line[offset] == ' ' && spacesBefore < 3) {
             spacesBefore++
             offset++
         }
-        if (offset == line.length() || line[offset] != BQ_CHAR) {
+        if (offset == line.length || line[offset] != BQ_CHAR) {
             return null
         }
         offset++
 
         var spacesAfter = 0
-        if (offset >= line.length() || line[offset] == ' ' || line[offset] == '\t') {
+        if (offset >= line.length || line[offset] == ' ' || line[offset] == '\t') {
             spacesAfter = 1
 
-            if (offset < line.length()) {
+            if (offset < line.length) {
                 offset++
             }
         }
@@ -209,7 +209,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
                                         newType: Char,
                                         newExplicit: Boolean,
                                         newOffset: Int): MarkdownConstraints {
-            val n = parent.indents.size()
+            val n = parent.indents.size
             val _indents = IntArray(n + 1)
             val _types = CharArray(n + 1)
             val _isExplicit = BooleanArray(n + 1)
@@ -241,7 +241,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
         public fun fillFromPrevious(line: String,
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
-            val prevN = prevLineConstraints.indents.size()
+            val prevN = prevLineConstraints.indents.size
             var indexPrev = 0
 
             val getBlockQuoteIndent = { startOffset: Int ->
@@ -249,12 +249,12 @@ public open class MarkdownConstraints protected constructor(private val indents:
                 var blockQuoteIndent = 0
 
                 // '\t' can be omitted here since it'll add at least 4 indent
-                while (blockQuoteIndent < 3 && offset < line.length() && line[offset] == ' ') {
+                while (blockQuoteIndent < 3 && offset < line.length && line[offset] == ' ') {
                     blockQuoteIndent++
                     offset++
                 }
 
-                if (offset < line.length() && line[offset] == BQ_CHAR) {
+                if (offset < line.length && line[offset] == BQ_CHAR) {
                     blockQuoteIndent + 1
                 } else {
                     null
@@ -272,7 +272,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
                     val oldSpacesSeen = spacesSeen
                     val oldOffset = offset
                     afterSpaces@
-                    while (spacesSeen < k && offset < line.length()) {
+                    while (spacesSeen < k && offset < line.length) {
                         when (line[offset]) {
                             ' ' -> spacesSeen++
                             '\t' -> spacesSeen += 4 - spacesSeen % 4
@@ -280,7 +280,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
                         }
                         offset++
                     }
-                    if (offset == line.length()) {
+                    if (offset == line.length) {
                         spacesSeen = Integer.MAX_VALUE
                     }
 

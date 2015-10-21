@@ -12,9 +12,9 @@ public class GFMConstraints(indents: IntArray,
         get() = BASE
 
     override fun createNewConstraints(indents: IntArray, types: CharArray, isExplicit: BooleanArray, charsEaten: Int): MarkdownConstraints {
-        val initialType = types[types.size() - 1]
+        val initialType = types[types.size - 1]
         val originalType = toOriginalType(initialType)
-        types[types.size() - 1] = originalType
+        types[types.size - 1] = originalType
         return GFMConstraints(indents, types, isExplicit, charsEaten, initialType != originalType)
     }
 
@@ -27,19 +27,19 @@ public class GFMConstraints(indents: IntArray,
                 ?: return null
 
         val line = pos.currentLine
-        var offset = pos.offsetInCurrentLine + baseMarkerInfo.markerText.length()
+        var offset = pos.offsetInCurrentLine + baseMarkerInfo.markerText.length
 
-        while (offset < line.length() && (line[offset] == ' ' || line[offset] == '\t')) {
+        while (offset < line.length && (line[offset] == ' ' || line[offset] == '\t')) {
             offset++
         }
 
-        if (offset + 3 <= line.length()
+        if (offset + 3 <= line.length
                 && line[offset] == '['
                 && line[offset + 2] == ']'
                 && (line[offset + 1] == 'x' || line[offset + 1] == 'X' || line[offset + 1] == ' ')) {
             return MarkdownConstraints.ListMarkerInfo(line.subSequence(pos.offsetInCurrentLine, offset + 3),
                     toCheckboxType(baseMarkerInfo.markerType),
-                    baseMarkerInfo.markerText.length())
+                    baseMarkerInfo.markerText.length)
         } else {
             return baseMarkerInfo
         }

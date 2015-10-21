@@ -24,7 +24,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
     public fun start(originalText: CharSequence,
                      bufferStart: Int = 0,
-                     bufferEnd: Int = originalText.length()) {
+                     bufferEnd: Int = originalText.length) {
         this.originalText = originalText
         this.bufferStart = bufferStart
         this.bufferEnd = bufferEnd
@@ -55,7 +55,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
         do {
             tokenEnd = baseLexer.getTokenEnd()
             nextType = advanceBase()
-        } while (nextType == `type` && TOKENS_TO_MERGE.contains(`type`))
+        } while (type.let { nextType == it && it != null && it in TOKENS_TO_MERGE })
     }
 
     private fun advanceBase(): IElementType? {

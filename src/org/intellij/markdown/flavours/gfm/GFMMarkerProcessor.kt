@@ -21,10 +21,10 @@ public class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsB
 
         val line = pos.currentLine
         var offset = pos.offsetInCurrentLine
-        while (offset < line.length() && line[offset] != '[') {
+        while (offset < line.length && line[offset] != '[') {
             offset++
         }
-        if (offset == line.length()) {
+        if (offset == line.length) {
             super.populateConstraintsTokens(pos, constraints, productionHolder)
             return
         }

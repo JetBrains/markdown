@@ -11,7 +11,7 @@ public abstract class TokensCache {
     public fun getRawCharAt(index: Int): Char {
         if (index < originalTextRange.start) return 0.toChar()
         if (index > originalTextRange.end) return 0.toChar()
-        return originalText.charAt(index)
+        return originalText[index]
     }
 
     protected fun verify() {
@@ -27,8 +27,8 @@ public abstract class TokensCache {
         if (startIndex < 0) {
             return -1
         }
-        if (startIndex >= indices.size()) {
-            return filteredTokens.size()
+        if (startIndex >= indices.size) {
+            return filteredTokens.size
         }
         return indices.get(startIndex)
     }
@@ -87,18 +87,18 @@ public abstract class TokensCache {
         private fun info(rawSteps: Int): TokenInfo {
             if (index < 0) {
                 return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
-            } else if (index > filteredTokens.size()) {
+            } else if (index > filteredTokens.size) {
                 return TokenInfo(null, originalTextRange.end + 1, originalTextRange.end + 1, 0, 0)
             }
 
-            val rawIndex = if (index < filteredTokens.size())
+            val rawIndex = if (index < filteredTokens.size)
                 filteredTokens.get(index).rawIndex + rawSteps
             else
-                cachedTokens.size() + rawSteps
+                cachedTokens.size + rawSteps
 
             if (rawIndex < 0) {
                 return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
-            } else if (rawIndex >= cachedTokens.size()) {
+            } else if (rawIndex >= cachedTokens.size) {
                 return TokenInfo(null, originalTextRange.end + 1, originalTextRange.end + 1, 0, 0)
             }
 

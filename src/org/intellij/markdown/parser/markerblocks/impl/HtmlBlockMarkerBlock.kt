@@ -43,7 +43,7 @@ public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
         if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
             return MarkerBlock.ProcessingResult.DEFAULT
-        } else if (endCheckingRegex != null && endCheckingRegex.match(prevLine) != null) {
+        } else if (endCheckingRegex != null && endCheckingRegex.find(prevLine) != null) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 

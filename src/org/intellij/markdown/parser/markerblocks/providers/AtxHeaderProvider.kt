@@ -28,17 +28,17 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
 
     private fun calcTailStartPos(pos: LookaheadText.Position, headerSize: Int): Int {
         val line = pos.currentLineFromPosition
-        var offset = line.length() - 1
+        var offset = line.length - 1
         while (offset > headerSize && Character.isWhitespace(line[offset])) {
             offset--
         }
         while (offset > headerSize && line[offset] == '#' && line[offset - 1] != '\\') {
             offset--
         }
-        if (offset + 1 < line.length() && Character.isWhitespace(line[offset]) && line[offset + 1] == '#') {
+        if (offset + 1 < line.length && Character.isWhitespace(line[offset]) && line[offset + 1] == '#') {
             return pos.offset + offset + 1
         } else {
-            return pos.offset + line.length()
+            return pos.offset + line.length
         }
     }
 
@@ -48,7 +48,7 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
 
     private fun matches(pos: LookaheadText.Position): Range<Int>? {
         if (pos.offsetInCurrentLine != -1) {
-            val matchResult = REGEX.match(pos.currentLineFromPosition)
+            val matchResult = REGEX.find(pos.currentLineFromPosition)
             if (matchResult != null) {
                 return matchResult.groups[1]!!.range
             }

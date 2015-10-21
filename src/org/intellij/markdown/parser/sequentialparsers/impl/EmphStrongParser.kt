@@ -17,7 +17,7 @@ public class EmphStrongParser : SequentialParser {
         val openingOnes = ArrayList<OpeningEmphInfo>()
 
         var i = 0
-        while (i < indices.size()) {
+        while (i < indices.size) {
             val iterator = tokens.ListIterator(indices, i)
             if (iterator.type != MarkdownTokenTypes.EMPH) {
                 i++
@@ -41,7 +41,7 @@ public class EmphStrongParser : SequentialParser {
 
                 val nodeType = if (toMake == 2) MarkdownElementTypes.STRONG else MarkdownElementTypes.EMPH
                 result.withNode(SequentialParser.Node(indices.get(from)..indices.get(to) + 1, nodeType))
-                openingOnes.subList(stackIndex, openingOnes.size()).clear()
+                openingOnes.subList(stackIndex, openingOnes.size).clear()
 
                 thisEmphWasEaten = true
                 i += toMake
@@ -135,7 +135,7 @@ public class EmphStrongParser : SequentialParser {
     }
 
     private fun getType(info: TokensCache.Iterator): Char {
-        return info.text.charAt(0)
+        return info.text[0]
     }
 
     private data class OpeningEmphInfo(val pos: Int, val numChars: Int, val type: Char)

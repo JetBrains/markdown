@@ -20,9 +20,9 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
             return emptyList()
         }
 
-        val matchResult = LINK_DEFINITION_REGEX.match(pos.textFromPosition) ?: return emptyList()
+        val matchResult = LINK_DEFINITION_REGEX.find(pos.textFromPosition) ?: return emptyList()
         var furthestOffset = 0
-        for (i in 1..matchResult.groups.size() - 1) {
+        for (i in 1..matchResult.groups.size - 1) {
             matchResult.groups[i]?.let { group ->
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         addToRangeAndWiden(group.range, pos.offset), when (i) {

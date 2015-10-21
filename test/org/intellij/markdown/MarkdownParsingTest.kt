@@ -30,7 +30,7 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     private fun treeToStr(src: String, tree: ASTNode, sb: StringBuilder, depth: Int): StringBuilder {
-        if (sb.length() > 0) {
+        if (sb.length > 0) {
             sb.append('\n');
         }
         repeat(depth * 2) { sb.append(' '); }

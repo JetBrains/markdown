@@ -89,13 +89,13 @@ public class HtmlGenerator(private val markdownText: String,
 
             var lastFlushed = 0
             var offset = 0
-            while (offset < text.length()) {
+            while (offset < text.length) {
                 if (offset == 0 || text[offset - 1] == '\n') {
                     buffer.append(text.subSequence(lastFlushed, offset))
                     var indentEaten = 0
 
                     eatIndentLoop@
-                    while (indentEaten < indent && offset < text.length()) {
+                    while (indentEaten < indent && offset < text.length) {
                         when (text[offset]) {
                             ' ' -> indentEaten++
                             '\t' -> indentEaten += 4 - indentEaten % 4
@@ -113,7 +113,7 @@ public class HtmlGenerator(private val markdownText: String,
                 offset++
             }
 
-            buffer.append(text.subSequence(lastFlushed, text.length()))
+            buffer.append(text.subSequence(lastFlushed, text.length))
             return buffer
         }
 

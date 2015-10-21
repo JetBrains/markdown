@@ -23,14 +23,14 @@ public class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder
             return TreeBuilder.MyASTNodeWrapper(nodes.first(), startOffset, endOffset)
         }
 
-        val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size())
+        val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 
 //        if (currentNodeChildren.isNotEmpty()) {
             addRawTokens(childrenWithWhitespaces,
                     startOffset,
                     currentNodeChildren.firstOrNull()?.startTokenIndex ?: endOffset)
 
-            for (i in 1..currentNodeChildren.size() - 1) {
+            for (i in 1..currentNodeChildren.size - 1) {
                 val prev = currentNodeChildren.get(i - 1)
                 val next = currentNodeChildren.get(i)
 

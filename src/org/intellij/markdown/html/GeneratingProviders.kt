@@ -65,7 +65,7 @@ public open class SimpleInlineTagProvider(val tagName: String, val renderFrom: I
     }
 
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
-        return node.children.subList(renderFrom, node.children.size() + renderTo)
+        return node.children.subList(renderFrom, node.children.size + renderTo)
     }
 
 
@@ -90,10 +90,10 @@ public open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvide
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
         val children = node.children
         var from = 0
-        while (from < children.size() && children[from].type == MarkdownTokenTypes.WHITE_SPACE) {
+        while (from < children.size && children[from].type == MarkdownTokenTypes.WHITE_SPACE) {
             from++
         }
-        var to = children.size()
+        var to = children.size
         while (to > from && children[to - 1].type == MarkdownTokenTypes.WHITE_SPACE) {
             to--
         }
@@ -142,7 +142,7 @@ internal class HtmlBlockGeneratingProvider : GeneratingProvider {
 
 internal class CodeFenceGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length()
+        val indentBefore = node.getTextInNode(text).commonPrefixWith(" ".repeat(10)).length
 
         visitor.consumeHtml("<pre>")
 
@@ -150,7 +150,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
 
         var childrenToConsider = node.children
         if (childrenToConsider.last().type == MarkdownTokenTypes.CODE_FENCE_END) {
-            childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size() - 1)
+            childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size - 1)
         }
 
         var lastChildWasContent = false;

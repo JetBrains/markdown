@@ -15,7 +15,7 @@ public class BacktickParser : SequentialParser {
         val delegateIndices = ArrayList<Int>()
 
         var i = 0
-        while (i < indices.size()) {
+        while (i < indices.size) {
             val iterator = tokens.ListIterator(indices, i)
             if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
 
@@ -35,7 +35,7 @@ public class BacktickParser : SequentialParser {
     }
 
     private fun findOfSize(tokens: TokensCache, indices: List<Int>, from: Int, length: Int): Int {
-        for (i in from..indices.size() - 1) {
+        for (i in from..indices.size - 1) {
             val iterator = tokens.ListIterator(indices, i)
             if (iterator.type != MarkdownTokenTypes.BACKTICK && iterator.type != MarkdownTokenTypes.ESCAPED_BACKTICKS) {
                 continue
@@ -61,6 +61,6 @@ public class BacktickParser : SequentialParser {
             }
         }
 
-        return tokenText.length() - toSubtract
+        return tokenText.length - toSubtract
     }
 }

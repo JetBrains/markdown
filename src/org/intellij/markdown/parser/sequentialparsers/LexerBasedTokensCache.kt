@@ -33,11 +33,11 @@ public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
             val filteredTokens = ArrayList<TokensCache.TokenInfo>()
 
             while (lexer.type != null) {
-                val info = TokensCache.TokenInfo(lexer.type!!, lexer.tokenStart, lexer.tokenEnd, cachedTokens.size(), -1)
+                val info = TokensCache.TokenInfo(lexer.type!!, lexer.tokenStart, lexer.tokenEnd, cachedTokens.size, -1)
                 cachedTokens.add(info)
 
                 if (!isWhitespace(info.type)) {
-                    info.normIndex = filteredTokens.size()
+                    info.normIndex = filteredTokens.size
                     filteredTokens.add(info)
                 }
 

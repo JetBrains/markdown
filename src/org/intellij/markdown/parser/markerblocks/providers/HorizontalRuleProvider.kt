@@ -38,7 +38,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
             for (c in arrayOf("-", "_", "\\*")) {
                 variants.add("(${c} *){3,}")
             }
-            Regex("^ {0,3}(" + variants.join("|") + ")$")
+            Regex("^ {0,3}(" + variants.joinToString("|") + ")$")
         }
 
         public fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
@@ -46,7 +46,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
             var hrChar: Char? = null
             var startSpace = 0
             var charCount = 1
-            for (i in offset..line.length() - 1) {
+            for (i in offset..line.length - 1) {
                 val c = line[i]
                 if (hrChar == null) {
                     if (c == '*' || c == '-' || c == '_') {

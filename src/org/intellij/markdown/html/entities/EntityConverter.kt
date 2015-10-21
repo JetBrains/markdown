@@ -20,7 +20,7 @@ public object EntityConverter {
         else
             REGEX).replace(text, { match ->
             val g = match.groups
-            if (g.size() > 5 && g[5] != null) {
+            if (g.size > 5 && g[5] != null) {
                 val char = g[5]!!.value[0]
                 replacements[char] ?: char.toString()
             } else

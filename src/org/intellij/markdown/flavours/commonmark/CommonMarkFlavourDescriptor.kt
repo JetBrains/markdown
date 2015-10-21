@@ -54,7 +54,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                     node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
                             ?.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)
                             ?.getTextInNode(text)?.toString()?.trim()?.let {
-                        val number = it.substring(0, it.length() - 1).trimStart('0')
+                        val number = it.substring(0, it.length - 1).trimStart('0')
                         if (!number.equals("1")) {
                             attribute = "start=\"${ if (number.isEmpty()) "0" else number }\""
                         }
@@ -80,7 +80,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.AUTOLINK to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     val linkText = node.getTextInNode(text)
-                    val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length() - 1), true, false)
+                    val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length - 1), true, false)
                     visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText)}\"")
                     visitor.consumeHtml(link);
                     visitor.consumeTagClose("a")
@@ -143,7 +143,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
             MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    val output = node.children.subList(1, node.children.size() - 1).map { node ->
+                    val output = node.children.subList(1, node.children.size - 1).map { node ->
                         HtmlGenerator.leafText(text, node, false)
                     }.joinToString("").trim()
                     visitor.consumeTagOpen(node, "code")
