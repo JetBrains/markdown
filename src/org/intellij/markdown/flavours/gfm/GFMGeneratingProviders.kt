@@ -89,23 +89,23 @@ internal class TablesGeneratingProvider : GeneratingProvider {
         assert(node.type == GFMElementTypes.TABLE)
 
         val alignmentInfo = getAlignmentInfo(text, node)
-        var openedTBody = false
+        var rowsPopulated = 0
 
         visitor.consumeTagOpen(node, "table")
         for (child in node.children) {
             if (child.type == GFMElementTypes.HEADER) {
                 visitor.consumeHtml("<thead>")
-                populateRow(visitor, child, "th", alignmentInfo)
+                populateRow(visitor, child, "th", alignmentInfo, -1)
                 visitor.consumeHtml("</thead>")
             } else if (child.type == GFMElementTypes.ROW) {
-                if (!openedTBody) {
-                    openedTBody = true
+                if (rowsPopulated == 0) {
                     visitor.consumeHtml("<tbody>")
                 }
-                populateRow(visitor, child, "td", alignmentInfo)
+                rowsPopulated++
+                populateRow(visitor, child, "td", alignmentInfo, rowsPopulated)
             }
         }
-        if (openedTBody) {
+        if (rowsPopulated > 0) {
             visitor.consumeHtml("</tbody>")
         }
         visitor.consumeTagClose("table")
@@ -114,8 +114,11 @@ internal class TablesGeneratingProvider : GeneratingProvider {
     private fun populateRow(visitor: HtmlGenerator.HtmlGeneratingVisitor,
                             node: ASTNode,
                             cellName: String,
-                            alignmentInfo: List<Alignment>) {
-        visitor.consumeTagOpen(node, "tr")
+                            alignmentInfo: List<Alignment>,
+                            rowNumber: Int) {
+        val parityAttribute = if (rowNumber > 0 && rowNumber % 2 == 0) "class=\"intellij-row-even\"" else null
+
+        visitor.consumeTagOpen(node, "tr", parityAttribute)
         for (child in node.children.filter { it.type == GFMTokenTypes.CELL }.withIndex()) {
             val alignment = alignmentInfo[child.index]
             val alignmentAttribute = if (alignment.isDefault) null else "align=\"${alignment.htmlName}\""

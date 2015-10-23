@@ -14,7 +14,7 @@
 <td align="center">right-aligned</td>
 <td align="right">$1600</td>
 </tr>
-<tr>
+<tr class="intellij-row-even">
 <td>col 2 is</td>
 <td align="center">centered</td>
 <td align="right">$12</td>
@@ -49,7 +49,7 @@ raw Markdown line up prettily. You can also use inline Markdown.</p>
 <strong>nicely</strong>
 </td>
 </tr>
-<tr>
+<tr class="intellij-row-even">
 <td>1</td>
 <td>2</td>
 <td>3</td>
