@@ -17,7 +17,7 @@ public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     private val contentMarker = productionHolder.mark()
 
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.offsetInCurrentLine == -1
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.nextLineOrEofOffset

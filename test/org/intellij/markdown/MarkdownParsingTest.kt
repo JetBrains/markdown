@@ -8,7 +8,6 @@ import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
-import kotlin.test.assertEquals
 
 public class MarkdownParsingTest : TestCase() {
 
@@ -188,6 +187,10 @@ public class MarkdownParsingTest : TestCase() {
     }
 
     public fun testCheckLists() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    public fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
 

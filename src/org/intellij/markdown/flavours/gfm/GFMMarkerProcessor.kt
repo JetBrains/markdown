@@ -2,15 +2,24 @@ package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.flavours.commonmark.CommonMarkMarkerProcessor
+import org.intellij.markdown.flavours.gfm.table.GitHubTableMarkerProvider
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
+
+    private val markerBlockProviders = super.getMarkerBlockProviders() + listOf(GitHubTableMarkerProvider())
+
+    override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {
+        return markerBlockProviders
+    }
+
     override fun populateConstraintsTokens(pos: LookaheadText.Position,
                                            constraints: MarkdownConstraints,
                                            productionHolder: ProductionHolder) {
