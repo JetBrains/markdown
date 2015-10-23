@@ -10,19 +10,19 @@
 </thead>
 <tbody>
 <tr>
-<tr>col 3 is</tr>
-<tr align="center">right-aligned</tr>
-<tr align="right">$1600</tr>
+<td>col 3 is</td>
+<td align="center">right-aligned</td>
+<td align="right">$1600</td>
 </tr>
 <tr>
-<tr>col 2 is</tr>
-<tr align="center">centered</tr>
-<tr align="right">$12</tr>
+<td>col 2 is</td>
+<td align="center">centered</td>
+<td align="right">$12</td>
 </tr>
 <tr>
-<tr>zebra stripes</tr>
-<tr align="center">are neat</tr>
-<tr align="right">$1</tr>
+<td>zebra stripes</td>
+<td align="center">are neat</td>
+<td align="right">$1</td>
 </tr>
 </tbody>
 </table>
@@ -39,20 +39,20 @@ raw Markdown line up prettily. You can also use inline Markdown.</p>
 </thead>
 <tbody>
 <tr>
-<tr>
+<td>
 <em>Still</em>
-</tr>
-<tr>
+</td>
+<td>
 <code>renders</code>
-</tr>
-<tr>
+</td>
+<td>
 <strong>nicely</strong>
-</tr>
+</td>
 </tr>
 <tr>
-<tr>1</tr>
-<tr>2</tr>
-<tr>3</tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
 </tr>
 </tbody>
 </table>

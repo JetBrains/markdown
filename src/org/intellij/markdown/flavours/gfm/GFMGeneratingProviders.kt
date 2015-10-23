@@ -102,7 +102,7 @@ internal class TablesGeneratingProvider : GeneratingProvider {
                     openedTBody = true
                     visitor.consumeHtml("<tbody>")
                 }
-                populateRow(visitor, child, "tr", alignmentInfo)
+                populateRow(visitor, child, "td", alignmentInfo)
             }
         }
         if (openedTBody) {
