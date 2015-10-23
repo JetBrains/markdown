@@ -96,6 +96,10 @@ public class HtmlGeneratorTest : TestCase() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    public fun testGfmTable() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     public fun testCheckedLists() {
         defaultTest(GFMFlavourDescriptor())
     }

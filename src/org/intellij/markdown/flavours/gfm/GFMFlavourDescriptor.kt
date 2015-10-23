@@ -10,6 +10,7 @@ import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
 import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.SimpleInlineTagProvider
+import org.intellij.markdown.html.TrimmingInlineHolderProvider
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -43,6 +44,10 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")
                     }
                 },
+
+                GFMElementTypes.TABLE to TablesGeneratingProvider(),
+
+                GFMTokenTypes.CELL to TrimmingInlineHolderProvider(),
 
                 GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {

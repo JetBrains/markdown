@@ -2,40 +2,46 @@ Markdown:MARKDOWN_FILE
   Markdown:TABLE
     Markdown:HEADER
       Markdown:CELL
-        WHITE_SPACE('First Header ')
+        Markdown:TEXT('First Header')
+        WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE(' Second Header')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Second Header')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('------------ | -------------')
     Markdown:EOL('\n')
     Markdown:ROW
       Markdown:CELL
-        WHITE_SPACE('Content from cell 1 ')
+        Markdown:TEXT('Content from cell 1')
+        WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE(' Content from cell 2')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Content from cell 2')
     Markdown:EOL('\n')
     Markdown:ROW
       Markdown:CELL
-        WHITE_SPACE('Content in the first column ')
+        Markdown:TEXT('Content in the first column')
+        WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE(' Content in the second column')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Content in the second column')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:TABLE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('|---')
     Markdown:EOL('\n')
     Markdown:ROW
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('bbb')
+        Markdown:TEXT('bbb')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('ccc')
@@ -53,7 +59,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('|---')
   Markdown:EOL('\n')
@@ -61,7 +67,7 @@ Markdown:MARKDOWN_FILE
   Markdown:TABLE
     Markdown:HEADER
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
       Markdown:TABLE_SEPARATOR('|')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('---|')
@@ -84,7 +90,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('|:---')
   Markdown:EOL('\n')
@@ -93,7 +99,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('|:---:')
   Markdown:EOL('\n')
@@ -102,7 +108,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        WHITE_SPACE('aaa')
+        Markdown:TEXT('aaa')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('|---:')
   Markdown:EOL('\n')
@@ -122,3 +128,25 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('|-')
     Markdown::(':')
     Markdown:TEXT('--')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('a')
+        Markdown:EMPH
+          Markdown:EMPH('*')
+          Markdown:TEXT('a')
+          Markdown:EMPH('*')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('|---')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('b')
+        Markdown:EMPH
+          Markdown:EMPH('*')
+          Markdown:TEXT('b')
+          Markdown:EMPH('*')

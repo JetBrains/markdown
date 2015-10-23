@@ -1,0 +1,59 @@
+<body>
+<p>Colons can be used to align columns.</p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th align="center">Are</th>
+<th align="right">Cool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<tr>col 3 is</tr>
+<tr align="center">right-aligned</tr>
+<tr align="right">$1600</tr>
+</tr>
+<tr>
+<tr>col 2 is</tr>
+<tr align="center">centered</tr>
+<tr align="right">$12</tr>
+</tr>
+<tr>
+<tr>zebra stripes</tr>
+<tr align="center">are neat</tr>
+<tr align="right">$1</tr>
+</tr>
+</tbody>
+</table>
+<p>There must be at least 3 dashes separating each header cell.
+The outer pipes (|) are optional, and you don't need to make the
+raw Markdown line up prettily. You can also use inline Markdown.</p>
+<table>
+<thead>
+<tr>
+<th>Markdown</th>
+<th>Less</th>
+<th>Pretty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<tr>
+<em>Still</em>
+</tr>
+<tr>
+<code>renders</code>
+</tr>
+<tr>
+<strong>nicely</strong>
+</tr>
+</tr>
+<tr>
+<tr>1</tr>
+<tr>2</tr>
+<tr>3</tr>
+</tr>
+</tbody>
+</table>
+</body>

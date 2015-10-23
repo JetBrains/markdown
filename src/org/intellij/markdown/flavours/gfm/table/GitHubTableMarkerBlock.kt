@@ -70,7 +70,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         for (i in cells.indices) {
             val cell = cells[i]
             if (!cell.isBlank() || i in 1..cells.lastIndex - 1) {
-                result.add(SequentialParser.Node(offset..offset + cell.length, GFMElementTypes.CELL))
+                result.add(SequentialParser.Node(offset..offset + cell.length, GFMTokenTypes.CELL))
             }
             offset += cell.length
             if (i < cells.lastIndex) {

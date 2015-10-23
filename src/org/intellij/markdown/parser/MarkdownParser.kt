@@ -6,6 +6,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
@@ -64,7 +65,8 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
             return when (type) {
                 MarkdownElementTypes.PARAGRAPH,
                 MarkdownTokenTypes.ATX_CONTENT,
-                MarkdownTokenTypes.SETEXT_CONTENT ->
+                MarkdownTokenTypes.SETEXT_CONTENT,
+                GFMTokenTypes.CELL ->
                     listOf(parseInline(type, text, startOffset, endOffset))
                 else ->
                     super.createLeafNodes(type, startOffset, endOffset)

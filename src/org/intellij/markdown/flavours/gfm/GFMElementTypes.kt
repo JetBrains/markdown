@@ -13,6 +13,7 @@ public object GFMTokenTypes {
 
     public val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true);
 
+    public val CELL: IElementType = MarkdownElementType("CELL", true)
 }
 
 public interface GFMElementTypes {
@@ -24,7 +25,5 @@ public interface GFMElementTypes {
         public val HEADER: IElementType = MarkdownElementType("HEADER")
 
         public val ROW: IElementType = MarkdownElementType("ROW")
-
-        public val CELL: IElementType = MarkdownElementType("CELL")
     }
 }
