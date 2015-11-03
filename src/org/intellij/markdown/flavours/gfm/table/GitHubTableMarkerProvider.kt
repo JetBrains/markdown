@@ -6,7 +6,6 @@ import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
-import kotlin.text.Regex
 
 class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -18,9 +17,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         if (!pos.currentLineFromPosition.contains('|')) {
             return emptyList()
         }
-        if (getNextLineFromConstraints(pos, currentConstraints)?.let {
-            SECOND_LINE_REGEX.find(it)?.value?.length?.let { it > 0 }
-        } == true) {
+        if (getNextLineFromConstraints(pos, currentConstraints)?.let { isGoodSecondLine(it) } == true) {
             return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder))
         } else {
             return emptyList()
@@ -42,9 +39,6 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     }
 
     companion object {
-        val WHSP = "[ \t]*(?:\\:[ \t]*)?"
-        val SECOND_LINE_REGEX = Regex("^(?:$WHSP\\|?$WHSP---+)*$WHSP\\|$WHSP(?:---+$WHSP\\|?$WHSP)*$")
-
         fun CharSequence.contains(char: Char): Boolean {
             for (c in this) {
                 if (c == char) {
@@ -52,6 +46,58 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                 }
             }
             return false
+        }
+
+        fun isGoodSecondLine(line: CharSequence): Boolean {
+            var offset = passWhiteSpaces(line, 0)
+            if (offset < line.length && line[offset] == '|') {
+                offset++
+            }
+
+            while (offset < line.length) {
+                offset = passWhiteSpaces(line, offset)
+                if (offset < line.length && line[offset] == ':') {
+                    offset++
+                }
+                offset = passWhiteSpaces(line, offset)
+
+                var dashes = 0
+                while (offset < line.length && line[offset] == '-') {
+                    offset++
+                    dashes++
+                }
+
+                if (dashes < 3) {
+                    return false
+                }
+
+                offset = passWhiteSpaces(line, offset)
+                if (offset < line.length && line[offset] == ':') {
+                    offset++
+                }
+                offset = passWhiteSpaces(line, offset)
+
+                if (offset < line.length && line[offset] == '|') {
+                    offset++
+                } else {
+                    break
+                }
+            }
+
+            offset = passWhiteSpaces(line, offset)
+
+            return offset == line.length
+        }
+
+        fun passWhiteSpaces(line: CharSequence, offset: Int): Int {
+            var curOffset = offset;
+            while (curOffset < line.length) {
+                if (line[curOffset] != ' ' && line[curOffset] != '\t') {
+                    break
+                }
+                curOffset++
+            }
+            return curOffset
         }
     }
 }
