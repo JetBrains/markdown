@@ -187,7 +187,7 @@ TAG_END = "</" {TAG_NAME} {WHITE_SPACE}* ">"
 SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
-GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}+".")+ [a-zA-Z]{2,6} ("/"[a-zA-Z0-9.,+%_&?#=-]+)* "/"?
+GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}+".")+ [a-zA-Z]{2,6} ("/"[a-zA-Z0-9.,+%_&!?#=-]+)* "/"?
 
 %state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 

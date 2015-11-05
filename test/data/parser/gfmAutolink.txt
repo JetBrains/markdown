@@ -50,3 +50,10 @@ Markdown:MARKDOWN_FILE
         Markdown:[('[')
         Markdown:GFM_AUTOLINK('www.and.this.too')
         Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Google Group')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:GFM_AUTOLINK('https://groups.google.com/forum/#!forum/markdown-here')

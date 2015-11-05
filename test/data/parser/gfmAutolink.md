@@ -13,3 +13,5 @@ www.aa.aa/script.php?a=b&x=%20y#hashtag
 [www.not.rendered.as.autolink.too][]
 
 [www.not.rendered.as.autolink.too][www.and.this.too]
+
+Google Group: https://groups.google.com/forum/#!forum/markdown-here
