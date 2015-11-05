@@ -14,3 +14,15 @@ Markdown | Less | Pretty
 --- | --- | ---
 *Still* | `renders` | **nicely**
 1 | 2 | 3
+
+Here we'll test unexpected numbers of columns in data cells:
+
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+|  Data 1  |
+
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+|  Data 1  | Data 2   | Data 3   | Data 4 |
+
+End.

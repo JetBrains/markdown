@@ -120,12 +120,20 @@ internal class TablesGeneratingProvider : GeneratingProvider {
 
         visitor.consumeTagOpen(node, "tr", parityAttribute)
         for (child in node.children.filter { it.type == GFMTokenTypes.CELL }.withIndex()) {
+            if (child.index >= alignmentInfo.size) {
+                throw IllegalStateException("Too many cells in a row! Should check parser.")
+            }
+
             val alignment = alignmentInfo[child.index]
             val alignmentAttribute = if (alignment.isDefault) null else "align=\"${alignment.htmlName}\""
 
             visitor.consumeTagOpen(child.value, cellName, alignmentAttribute)
             visitor.visitNode(child.value)
             visitor.consumeTagClose(cellName)
+        }
+
+        for (i in node.children.count { it.type == GFMTokenTypes.CELL }..alignmentInfo.size - 1) {
+            visitor.consumeHtml("<td></td>")
         }
         visitor.consumeTagClose("tr")
     }

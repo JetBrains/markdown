@@ -6,6 +6,7 @@ import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
+import kotlin.text.Regex
 
 class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -14,11 +15,18 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return emptyList()
         }
 
-        if (!pos.currentLineFromPosition.contains('|')) {
+        val currentLineFromPosition = pos.currentLineFromPosition
+        if (!currentLineFromPosition.contains('|')) {
             return emptyList()
         }
-        if (getNextLineFromConstraints(pos, currentConstraints)?.let { isGoodSecondLine(it) } == true) {
-            return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder))
+
+        val split = SPLIT_REGEX.split(currentLineFromPosition)
+        val numberOfHeaderCells = split
+                .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
+                .count { it }
+        if (getNextLineFromConstraints(pos, currentConstraints)
+                ?.let { countSecondLineCells(it) == numberOfHeaderCells } == true) {
+            return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
         } else {
             return emptyList()
         }
@@ -39,6 +47,8 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     }
 
     companion object {
+        val SPLIT_REGEX = Regex("\\|")
+
         fun CharSequence.contains(char: Char): Boolean {
             for (c in this) {
                 if (c == char) {
@@ -48,12 +58,16 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return false
         }
 
-        fun isGoodSecondLine(line: CharSequence): Boolean {
+        /**
+         * @return number of cells in the separator line
+         */
+        fun countSecondLineCells(line: CharSequence): Int {
             var offset = passWhiteSpaces(line, 0)
             if (offset < line.length && line[offset] == '|') {
                 offset++
             }
 
+            var result = 0
             while (offset < line.length) {
                 offset = passWhiteSpaces(line, offset)
                 if (offset < line.length && line[offset] == ':') {
@@ -68,8 +82,9 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                 }
 
                 if (dashes < 3) {
-                    return false
+                    return 0
                 }
+                result++
 
                 offset = passWhiteSpaces(line, offset)
                 if (offset < line.length && line[offset] == ':') {
@@ -86,7 +101,11 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
 
             offset = passWhiteSpaces(line, offset)
 
-            return offset == line.length
+            if (offset == line.length) {
+                return result
+            } else {
+                return 0
+            }
         }
 
         fun passWhiteSpaces(line: CharSequence, offset: Int): Int {

@@ -8,6 +8,10 @@ Content in the first column | Content in the second column
 |bbb
 ccc
 
+aaa|
+---|
+bbb|
+
 |aa
 |--
 |bb
@@ -23,6 +27,12 @@ aaa
 
 aaa|
 ---
+
+foo|bar
+
+
+Alignment
+---------
 
 |aaa
 |:---
@@ -42,3 +52,30 @@ aaa|
 |a*a*
 |---
 |b*b*
+
+_The same number of cells should be present in header and separator line_
+
+|foo|bar|baz|
+-------------
+
+|foo|bar|baz|
+|-----------
+
+|foo|bar|baz|
+|---|---|---|---
+
+|foo|bar|baz|
+---|---|---
+
+|||||
+---|---|---|---
+
+_The number of row cells may be different:_
+
+|foo|bar|baz|
+---|---|---
+|foo
+
+|foo|bar|baz|
+---|---|---
+|foo|baz|maaz|quiz

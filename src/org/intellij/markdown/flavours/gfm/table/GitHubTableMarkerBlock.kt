@@ -14,7 +14,8 @@ import kotlin.text.Regex
 
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
-                             private val productionHolder: ProductionHolder)
+                             private val productionHolder: ProductionHolder,
+                             private val tableColumnsNumber: Int)
 : MarkerBlockImpl(constraints, productionHolder.mark()) {
 
     var currentLine = 0
@@ -67,16 +68,25 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         val line = constraints.eatItselfFromString(pos.currentLine)
 
         val cells = SPLIT_REGEX.split(line)
+        var cellNodesAdded = 0
         for (i in cells.indices) {
             val cell = cells[i]
             if (!cell.isBlank() || i in 1..cells.lastIndex - 1) {
                 result.add(SequentialParser.Node(offset..offset + cell.length, GFMTokenTypes.CELL))
+                cellNodesAdded++
             }
             offset += cell.length
             if (i < cells.lastIndex) {
                 result.add(SequentialParser.Node(offset..offset + 1, GFMTokenTypes.TABLE_SEPARATOR))
             }
             offset += 1
+
+            if (cellNodesAdded >= tableColumnsNumber) {
+                if (offset < pos.nextLineOrEofOffset) {
+                    result.add(SequentialParser.Node(offset..pos.nextLineOrEofOffset, GFMTokenTypes.TABLE_SEPARATOR))
+                }
+                break
+            }
         }
         return result
     }

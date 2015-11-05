@@ -1,0 +1,1003 @@
+<body>
+<h1>Knowtify Log Analytics (Client Application &amp; Data Service)</h1>
+<p>
+This is a single .war file deployment of <strong>Knowtify Log Analytics</strong>
+ by <em>Springblox</em>
+</p>
+<h2>Step 1 - Install PostgreSQL</h2>
+<ol>
+<li>
+<p>Install PostgreSQL v9.4 - production systems (see Developer Notes below for additional persistence options)</p>
+<ol>
+<li>
+<p>
+Red Hat 7 family (version 7.x  Red Hat Enterprise Linux, CentOS, Fedora, Scientific Linux, Oracle Linux and others) Commands for the Red Hat 6 family, where different, are noted in square brackets [RH6: ~command~ ] see: <a href="http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,">http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,</a>
+ and http://<a href="www.postgresql.org/download/linux/redhat/">www.postgresql.org/download/linux/redhat/</a>
+</p>
+<ol>
+<li>
+Install PostgreSQL 9.4 repo:<code>yum install http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-redhat94-9.4-1.noarch.rpm</code>
+    [RH6:<code>yum install http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm</code>
+]</li>
+<li>
+Install PostgreSQL: <code>yum install postgresql94-server postgresql94-contrib</code>
+</li>
+<li>
+Initialize the databases: <code>/usr/pgsql-9.4/bin/postgresql94-setup initdb</code>
+ [RH6:<code>service postgresql-9.4 initdb</code>
+]</li>
+<li>
+Install the service: <code>systemctl enable postgresql-9.4</code>
+  [RH6:<code>chkconfig postgresql-9.4 on</code>
+]</li>
+<li>
+Start the service: <code>systemctl start postgresql-9.4</code>
+  [RH6:<code>service postgresql-9.4 start</code>
+]</li>
+<li>The PosgtreSQL config files are located in /var/lib/pgsql/9.4/data/</li>
+</ol>
+</li>
+<li>
+<p>
+Ubuntu see: <a href="https://help.ubuntu.com/community/PostgreSQL">https://help.ubuntu.com/community/PostgreSQL</a>
+</p>
+<ol>
+<li>
+Install PostgreSQL: <code>apt-get install postgresql postgresql-contrib</code>
+</li>
+<li>
+Setup a password for the postgres user: <code>/password postgres</code>
+</li>
+<li>
+Start/Restart the PostgreSQL service: <code>/etc/init.d/postgresql start</code>
+  (or stop, restart...)</li>
+<li>The PosgtreSQL config files are located in /etc/postgresql/9.3/main</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>Configure PostgreSQL for client and remote access</p>
+<ol>
+<li>
+Edit postgresql.conf<ol>
+<li>
+<code>listen_addresses = '*'</code>
+</li>
+</ol>
+</li>
+<li>
+Edit pg_hba.conf - allow local and internal-network connections<ol>
+<li>
+<code>host   all   all   127.0.0.1/32    md5</code>
+</li>
+<li>
+<code>host   all   all   172.16.0.0/12   md5</code>
+</li>
+<li>
+NOTE: Ubuntu running PostgreSQL 9.3 also required this entry be changed<ol>
+<li>
+from: <code>local   all   postgres   peer</code>
+</li>
+<li>
+to: <code>local   all   postgres   md5</code>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+For remote access to the database (Red Hat 7 family)<ol>
+<li>
+open the firewall: <code>firewall-cmd --zone=public --add-port=5432/tcp --permanent</code>
+</li>
+<li>
+reload the firewall config: <code>firewall-cmd --reload</code>
+</li>
+<li>
+add connectivity to your network address, for example if your network address is 192.168.91.1, add <code>host all all 192.168.0.0/12 md5</code>
+ and restart Postgres</li>
+</ol>
+</li>
+<li>
+For remote access to the database (Red Hat 6 family)<ol>
+<li>
+edit iptables: <code>-A INPUT -m state --state NEW -m tcp -p tcp --dport 5432 -j ACCEPT</code>
+</li>
+<li>
+add the following: <code>service iptables restart</code>
+</li>
+<li>
+add connectivity to your network address, for example if your network address is 192.168.91.1, add <code>host all all 192.168.0.0/12 md5</code>
+ and restart Postgres</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>Copy the contents of the /postgreSql directory</p>
+</li>
+<li>
+<p>Update the appropriate installDb script (.sh or .cmd) with your postgres user password and the PostgreSQL installation location (C:\Program Files\PostgreSQL\9.4 is the default location for 64bit PostgreSQL on windows).</p>
+</li>
+<li>
+<p>
+As the postgres user CD to the directory with the scripts and run the script (Linux: <code>sudo -u postgres ./installDb.sh</code>
+).</p>
+</li>
+<li>
+<p>Verify you can connect to the knowtify database:</p>
+<ol>
+<li>Windows: use PgAdminIII, connect to the db, verify you have a knowtify database, with a kla schema containing 3 tables, and data in the SolrSchema table.</li>
+<li>
+Red Hat 6 &amp; 7 family: run pgsql and verify you can connect: <code>/usr/pgsql-9.4/bin/psql -h 127.0.0.1 -U klauser knowtify</code>
+ (password is klapassword)</li>
+<li>
+Ubuntu: run pgsql and verify you can connect: <code>psql -h 127.0.0.1 -d knowtify -U klauser</code>
+  (password is klapassword)</li>
+<li>
+Run a command in psql to list out the Knowtify tables: <code>\dt kla.*</code>
+</li>
+<li>
+Exit pgsql: <code>\q</code>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Step 2 - Install Java</h2>
+<h3>Java - install and configure Java v1.8 (Red Hat 7 family)</h3>
+<ol>
+<li>
+<code>mkdir /opt/java</code>
+</li>
+<li>
+<code>cd /opt/java</code>
+</li>
+<li>
+<code>wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot;  http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz -O jdk-8u60-linux-x64.tar.gz</code>
+</li>
+<li>
+<code>tar xvzf jdk-8u60-linux-x64.tar.gz</code>
+</li>
+<li>
+<code>chown -R root.root jdk1.8.0_60/</code>
+</li>
+<li>
+<code>alternatives --install /usr/bin/java java /opt/java/jdk1.8.0_60/bin/java 2</code>
+</li>
+<li>
+<code>alternatives --config java</code>
+</li>
+<li>
+edit java.sh <code>vi /etc/profile.d/java.sh</code>
+ and add: <code>export JAVA_HOME=/opt/java/jdk1.8.0_60</code>
+</li>
+<li>
+verify you have the right version of java installed and running: <code>java --version</code>
+  should display: java version &quot;1.8.0_60&quot;</li>
+<li>
+delete your gzip file <code>rm *.gz</code>
+</li>
+</ol>
+<h2>Step 3 - Install Tomcat</h2>
+<h3>Tomcat - install and configure Tomcat 7 (Red Hat 7 family)</h3>
+<ol>
+<li>
+<p>
+Install Tomcat 7 (RH7 only: yum option, see: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-centos-7-via-yum">https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-centos-7-via-yum</a>
+)</p>
+<ol>
+<li>
+<code>yum install tomcat</code>
+</li>
+<li>The important Tomcat files are located in /usr/share/tomcat</li>
+<li>The deployment directory (for .war files) is /usr/share/tomcat/webapps</li>
+<li>Tomcat is configured via settings in tomcat.conf  (add the KNOWTIFY_CONFIG and CATALINA_BASE env variables here)</li>
+<li>
+Enable the service for restart: <code>systemctl enable tomcat</code>
+</li>
+<li>
+Start the service: <code>systemctl start tomcat</code>
+</li>
+</ol>
+</li>
+<li>
+<p>Install Tomcat 7 (manual, Red Hat 6 family)</p>
+<ol>
+<li>
+<code>cd /opt</code>
+</li>
+<li>
+<code>wget http://www.us.apache.org/dist/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz</code>
+</li>
+<li>
+<code>tar xvzf apache-tomcat-7.0.64.tar.gz</code>
+</li>
+<li>
+delete your gzip file <code>rm *.gz</code>
+</li>
+<li>
+Remove the tomcat manager apps: <code>cd /opt/apache-tomcat-7.0.64/webapps; rm -r *</code>
+</li>
+<li>Knowtify settings can be added via setenv.sh</li>
+</ol>
+</li>
+</ol>
+<h4>Step 3a Securing Tomcat on Linux (manual installs, Red Hat 6 family)</h4>
+<ol>
+<li>
+Create a tomcat group: <code>/usr/sbin/groupadd tomcat</code>
+</li>
+<li>
+Create a tomcat user: <code>/usr/sbin/useradd -s /sbin/nologin -Md /opt/apache-tomcat-7.0.64 tomcat -g tomcat</code>
+</li>
+<li>
+Set tomcat password: <code>passwd tomcat</code>
+  (I used: QxuEp8 for the password on the DSE box, on Centos, John used Cxr@ff2)</li>
+<li>
+Change ownership of the tomcat install directory: <code>chown -R tomcat.tomcat /opt/apache-tomcat-7.0.64</code>
+</li>
+<li>
+Change permissions of the tomcat install directory: <code>chmod 775 /opt/apache-tomcat-7.0.64</code>
+</li>
+<li>
+Change permissions of the tomcat bin directory: <code>cd /opt/apache-tomcat-7.0.64/bin; chmod 755 *.sh</code>
+</li>
+<li>
+Other Tomcat security related considerations:<ol>
+<li>
+Change the default port of tomcat from 8080 to 80 (so no port number required in URL, see below)<ol>
+<li>Since tomcat is not running as root this requires an iptables or other network change</li>
+<li>The port tomcat runs on is set in CATALINA_HOME/conf/server.xml</li>
+</ol>
+</li>
+<li>Install tomcat to start at boot time  (specifics are Linux version dependant)</li>
+<li>Install SSL for tomcat (also will require iptables/network changes if using standard https port of 443, see below)</li>
+<li>Be sure to update the firewall to close off unneeded ports</li>
+</ol>
+</li>
+</ol>
+<h4>Step 3b (optional) Tomcat: install SSL with a Self-Signed Cert</h4>
+<ol>
+<li>
+<p>Generate a self signed cert:</p>
+<p>
+root@ip-172-31-27-155:/opt/certs#
+    <code>keytool -genkey -alias tomcat -keyalg RSA -keystore /opt/certs/tomcatSSLKeystore</code>
+</p>
+<p>
+Enter keystore password: <strong>changeit</strong>
+</p>
+<p>
+Re-enter new password: <strong>changeit</strong>
+</p>
+<p>
+What is your first and last name?<br />
+
+    [Unknown]: <strong>ISS Inc.</strong>
+</p>
+<p>
+What is the name of your organizational unit?<br />
+
+    [Unknown]:  <strong>SpringBlox</strong>
+</p>
+<p>
+What is the name of your organization?<br />
+
+    [Unknown]:  <strong>PSI</strong>
+</p>
+<p>
+What is the name of your City or Locality?<br />
+
+    [Unknown]:  <strong>Colorado Springs</strong>
+</p>
+<p>
+What is the name of your State or Province?<br />
+
+    [Unknown]:  <strong>CO</strong>
+</p>
+<p>
+What is the two-letter country code for this unit?<br />
+
+    [Unknown]:  <strong>US</strong>
+</p>
+<p>
+Is CN=ISS Inc., OU=SpringBlox, O=PSI, L=&quot;Colorado Springs&quot;, ST=CO, C=US correct?<br />
+
+    [no]: <strong>y</strong>
+</p>
+<p>
+Enter key password for [tomcat]<br />
+
+    (RETURN if same as keystore password): <strong>return</strong>
+</p>
+</li>
+<li>
+<p>Update server.xml uncomment and edit the SSL Connector on 8443:  </p>
+<p>
+<code>&lt;Connector port=&quot;8443&quot; protocol=&quot;org.apache.coyote.http11.Http11Protocol&quot;</code>
+<br />
+
+    <code>maxThreads=&quot;150&quot; SSLEnabled=&quot;true&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</code>
+<br />
+
+    <code>clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</code>
+<br />
+
+    <code>keystoreFile=&quot;/opt/certs/tomcatSSLKeystore&quot;</code>
+
+    <code>keystorePass=&quot;changeit&quot; /&gt;</code>
+</p>
+</li>
+<li>
+<p>Shutdown and restart Tomcat, you should now be able to connect on https://[hostname]:8443</p>
+</li>
+</ol>
+<h4>Step 3c (optional) Tomcat: redirect access to standard ports (Red Hat 6 family)</h4>
+<ol>
+<li>
+<p>
+By default tomcat is running with HTTP on port 8080 and HTTPS on port 8443 and the tomcat
+server is running as the tomcat user (if configured as above).  BUT, the non-root users
+cannot bind to ports less than 1024 so we cannot simply change the <code>&lt;Connector&gt;</code>
+ ports in server.xml.</p>
+</li>
+<li>
+<p>To get around this issue we need to redirect traffic from port 80 to port 8080 (and 443 to 8443 if HTTPS is in use).
+This allows use of standard URL's without port numbers and requires the following iptables commands:</p>
+<ol>
+<li>For HTTP (80):</li>
+</ol>
+<p>
+<code>iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080</code>
+</p>
+<p>
+<code>iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8080</code>
+</p>
+<ol>
+<li>For HTTPS (443):</li>
+</ol>
+<p>
+<code>iptables -t nat -I PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 8443</code>
+</p>
+<p>
+<code>iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443</code>
+</p>
+<ol>
+<li>
+To save the settings so that they persist across reboots: <code>iptables-save &gt; /etc/sysconfig/iptables</code>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Step 4 Configure the KLA Web App</h2>
+<ol>
+<li>As part of installing KLA, you must configure your system via a local overrides file.  This requires editing a file on the local machine and setting an environment variable which points to that file. A sample file is located in the /resources directory (knowtifyConfig.properties)</li>
+<li>
+KLA accesses the local overrides file via the Environment Variable: <strong>KNOWTIFY_CONFIG</strong>
+ (i.e. <code>KNOWTIFY_CONFIG=/opt/knowtifyConfig.properties</code>
+)</li>
+<li>
+The Solr instance type you connect to must be configured via the <strong>solr_provider</strong>
+ and <strong>solr_url</strong>
+ settings:<ol start="3">
+<li>
+For a single instance Solr server the local overrides file should contain:<ol>
+<li>
+<strong>solr_provider=Single</strong>
+.</li>
+<li>
+<strong>solr_url</strong>
+ property should be set to the full http address of Solr (i.e. <code>solr_url=http://172.22.60.178:8983/solr</code>
+).</li>
+</ol>
+</li>
+<li>
+For a cloud instance of Solr the local overrides file should contain:<ol>
+<li>
+<strong>solr_provider=Cloud</strong>
+.</li>
+<li>
+<strong>solr_url</strong>
+ property should be a list of the Zookeeper nodes managing Solr Cloud (zkhosts setting with IP addresses and port: i.e. <code>solr_url=172.29.24.42:2181,172.29.24.46:2181/logstash_chroot</code>
+).</li>
+</ol>
+</li>
+<li>
+For Load Balanced (DataStax) instances of Solr Cloud the local overrides file should contain:<ol>
+<li>
+<strong>solr_provider=Load Balanced</strong>
+.</li>
+<li>
+<strong>solr_url</strong>
+ property should be a list of the Solr hosts (i.e. <code>solr_url=http://52.7.123.220:8983/solr,http://52.5.137.196:8983/solr</code>
+).</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+The <strong>solr_core</strong>
+ property should be set to specify the appropriate Solr Core or Collection name.</li>
+<li>
+OPTIONAL: The client must be able to query for a schema from Solr in order to operate properly.  For Solr instances which do not correctly return results from /schema/fields query (DataStax) a local file copy of the schema can be specified via the <strong>solr_schema_file</strong>
+ parameter (i.e. <code>solr_schema_file=c:/opts/schema.json</code>
+).</li>
+<li>
+OPTIONAL: For Solr instances which require additional query parameters (DataStax), those parameters can be specified in the <strong>solr_query_params</strong>
+ option (i.e. <code>solr_query_params=&amp;df=message_text</code>
+).</li>
+<li>
+Persistence can be implemented via PostgreSql, MySql, or H2 Db.  Persistence allows saving the users dashboard configurations, the data service configuration, and solr schemas.<ol>
+<li>
+<p>
+The <strong>persistence_provider_context</strong>
+ property controls whether to use PostgreSql, MySql, or H2 Db the default option is H2. Use postgresContext.xml for Postgres, mysqlContext.xml for MySql, or h2Context.xml for H2 Db (i.e. <code>persistence_provider_context=postgresContext.xml</code>
+).</p>
+</li>
+<li>
+<p>
+The <strong>persistence_provider_class</strong>
+ property should be set to com.issinc.knowtify.service.persistence.SpringDataService (i.e. <code>persistence_provider_class=com.issinc.knowtify.service.persistence.SpringDataService</code>
+).</p>
+</li>
+<li>
+<p>The PostgreSql database is assumed to be installed on localhost at port 5432.</p>
+</li>
+<li>
+<p>For PostgreSql the InstallDb.cmd file will create the database and all required components for persistence.</p>
+</li>
+<li>
+<p>The MySql database is assumed to be installed on localhost at port 3306.</p>
+</li>
+<li>
+<p>For MySql, you will need to manually create the Db user (klauser/klapassword), database (knowtify), and create the tables using the /mySql/schema/CreateTables.sql file.</p>
+</li>
+<li>
+<p>For H2 Db the database is created and populated on the first run of the application, no installation scripts are required.</p>
+</li>
+<li>
+<p>
+<strong>BETAt</strong>
+ For Apache Jena persistence the <strong>persistence_provider_location</strong>
+ property should be set to an <em>existing</em>
+ location on the local file system that is readable and writable by the tomcat user (i.e. <code>persistence_provider_location=/opt/knowtifyData</code>
+).  <strong>Note:</strong>
+ you <em>must</em>
+ create this directory manually if it doesn't already exist.</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Step 5 Deploy the KLA Web App</h2>
+<ol>
+<li>
+Manual Tomcat installs: copy <em>setenv.sh</em>
+ to /opt/apache-tomcat-7.0.64/bin (verify/edit the path locations )</li>
+<li>
+Yum Tomcat installs: edit <em>tomcat.conf</em>
+ and add <code>export KNOWTIFY_CONFIG=/opt/knowtifyConfig.properties</code>
+</li>
+<li>
+Copy <em>knowtifyConfig.properties</em>
+ to /opt (or to the directory specified in setenv.sh/tomcat.conf).</li>
+<li>
+Edit the Configuration Parameters in <em>knowtifyConfig.properties</em>
+ as needed for your Solr instance and persistence choice.</li>
+<li>Copy knowtify.war to the Tomcat webapps directory</li>
+<li>
+Start the Tomcat server (as tomcat):<ol>
+<li>
+<em>ubuntu</em>
+ <code>su - -s /bin/bash -c /opt/apache-tomcat-7.0.63/bin/startup.sh tomcat</code>
+</li>
+<li>
+<em>RH6 manual</em>
+ <code>sudo -u tomcat /opt/apache-tomcat-7.0.64/bin/startup.sh</code>
+</li>
+<li>
+<em>RH7 yum</em>
+ <code>sudo systemctl start tomcat</code>
+</li>
+</ol>
+</li>
+<li>
+To stop the Tomcat server:<ol>
+<li>
+<em>ubuntu</em>
+ <code>su - -s /bin/bash -c /opt/apache-tomcat-7.0.63/bin/shutdown.sh tomcat</code>
+</li>
+<li>
+<em>RH6 manual</em>
+ <code>sudo -u tomcat /opt/apache-tomcat-7.0.64/bin/shutdown.sh</code>
+</li>
+<li>
+<em>RH7 yum</em>
+ <code>sudo systemctl stop tomcat</code>
+</li>
+</ol>
+</li>
+<li>
+Verify tomcat is running: <code>ps -ef|grep tomcat</code>
+</li>
+</ol>
+<h2>Step 6 Data Ingestion - Logstash</h2>
+<p>Logstash is used to provide log data to Knowtify Log Analytics.  It should be installed and configured on each machine that produces logs for KLA.  Each source log file requires a configuration file.  Multiple configuration files (i.e. multiple logs) may be processed by a single Logstash instance.</p>
+<h3>-Install Logstash (Red Hat 6 &amp; 7 family)</h3>
+<ol>
+<li>Install Java if not already available (Logstash requires Java 1.7 or better: Java 1.8 is strongly recommended.)</li>
+<li>
+Install Logstash 1.5.4<ol>
+<li>
+<code>cd /opt</code>
+</li>
+<li>
+Download TAR.GZ from Elastic: <code>wget https://download.elastic.co/logstash/logstash/logstash-1.5.4.tar.gz</code>
+</li>
+<li>
+<code>tar xvzf logstash-1.5.4.tar.gz</code>
+</li>
+</ol>
+</li>
+<li>
+install the solr_http output plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html">www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html</a>
+):<ol>
+<li>
+<code>cd /opt/logstash-1.5.4</code>
+</li>
+<li>
+Install the plugin: <code>bin/plugin install logstash-output-solr_http</code>
+</li>
+</ol>
+</li>
+<li>
+Create a symlink for logstash <code>ln -s /opt/logstash-1.5.4 /opt/logstash</code>
+</li>
+<li>
+Copy the logstash service script <em>logstash-initscript.sh</em>
+ to <em>/etc/init.d/logstash</em>
+ <code>cp /opt/logstash-1.5.4/logstash-initscript.sh /etc/init.d/logstash</code>
+</li>
+<li>
+Set the service script run levels <code>/sbin/chkconfig --levels 2345 logstash on</code>
+</li>
+<li>
+Set the service script to be executable <code>chmod 755 /etc/init.d/logstash</code>
+</li>
+<li>
+Create a directory for the Logstash config files <code>mkdir /opt/logstash-1.5.4/conf.d</code>
+</li>
+<li>Copy the appropriate Logstash config files for the log types you wish to collect to /opt/logstash-1.5.4/conf.d.</li>
+<li>
+The config files will need to be edited with the location of this system's log files and the Solr Location (edit the <strong>path =&gt;</strong>
+ and <strong>solr_url</strong>
+ values).  For debugging use the <strong>stdout</strong>
+ output line, comment this line out for production use.</li>
+<li>
+To run logstash manually from the command line (for debug purposes): <code>/opt/logstash/bin/logstash agent -f /opt/logstash/conf.d/</code>
+</li>
+<li>
+To start the logstash service: <code>/sbin/service logstash start</code>
+</li>
+<li>The available service command options are: start, stop, status, restart</li>
+<li>The Logstash log file is located in /var/log/logstash.log.</li>
+</ol>
+<h3>-Install Logstash (Ubuntu 14.04)</h3>
+<ol>
+<li>Install Java if not already available (see above)</li>
+<li>
+On Ubuntu 14.04, Logstash will not run due to a known bug (missing file):   <code>/usr/lib/x86_64-linux-gnu/libcrypt.so</code>
+</li>
+<li>
+To fix the problem, run this command: <code>ln -s /lib/x86_64-linux-gnu/libcrypt.so.1 /usr/lib/x86_64-linux-gnu/libcrypt.so</code>
+</li>
+<li>
+The issue is documented in this web exchange:<code>https://github.com/elastic/logstash/issues/3127</code>
+</li>
+</ol>
+<h3>-Install Logstash (Windows)</h3>
+<ol>
+<li>Install Java if not already available</li>
+<li>
+Install Logstash 1.5.4<ol>
+<li>
+Download the Logstash 1.5.4 ZIP file from <code>https://www.elastic.co/downloads/logstash</code>
+</li>
+<li>
+Unzip the ZIP file to a location of your choice.  We'll refer to that location as <em>%LOGSTASH_HOME%</em>
+</li>
+</ol>
+</li>
+<li>
+On a clean Windows environment the JAVA_HOME variable needs to be set.<ol>
+<li>Right click my computer, select Properties</li>
+<li>Click Environment Variables</li>
+<li>Under System variables, click New</li>
+<li>
+Variable name: <code>JAVA_HOME</code>
+</li>
+<li>Variable value: *this will need to point to the system java installation folder. Something like C:\Progra~2\java\jre*</li>
+<li>Click OK to save</li>
+<li>
+Test in a newly opened command prompt with <code>cd %JAVA_HOME%</code>
+  note, if this doesn't work, a restart may be required.</li>
+</ol>
+</li>
+<li>
+Install the Windows Event Log input plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type">www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type</a>
+):<ol>
+<li>
+<code>cd %LOGSTASH_HOME%</code>
+</li>
+<li>
+install the plugin: <code>bin\plugin install logstash-input-eventlog</code>
+</li>
+</ol>
+</li>
+<li>
+Install the solr_http output plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-outputs-solr">www.elastic.co/guide/en/logstash/current/plugins-outputs-solr</a>
+_http.html):<ol>
+<li>
+<code>cd %LOGSTASH_HOME%</code>
+</li>
+<li>
+install the plugin: <code>bin\plugin install logstash-output-solr_http</code>
+</li>
+</ol>
+</li>
+<li>
+Copy the logstash-eventlog.conf to %LOGSTASH_HOME%<ol>
+<li>
+Supported files can be found in: <code>knowtify_kla/src/main/resources/Windows/</code>
+</li>
+</ol>
+</li>
+<li>
+Create a run.bat file in %LOGSTASH_HOME%\bin. It should contain this command <code>logstash.bat agent -f %LOGSTASH_HOME%\logstash-eventlog.conf</code>
+</li>
+<li>
+To install Logstash to run as a Windows Service:<ol>
+<li>Download NSSM from http://nssm.cc/</li>
+<li>Unzip NSSM-??.zip to a temporary directory</li>
+<li>Copy the win32 or win64 version (as appropriate) of nssm.exe to %LOGSTASH_HOME%\bin</li>
+<li>
+Open a command window and go to %LOGSTASH_HOME%\bin.  Run <code>.\nssm install Logstash</code>
+</li>
+<li>
+On the Application Tab, edit the Path: setting to <code>%LOGSTASH_HOME%\bin\run.bat</code>
+</li>
+<li>
+On the Details tab set the Display name: and Service name: to <code>Logstash</code>
+.</li>
+<li>Press Install service.</li>
+<li>You should now be able to start Logstash from the Windows Services console.</li>
+</ol>
+</li>
+</ol>
+<h2>Step 7 Install Zookeeper Instances</h2>
+<p>Zookeeper is required for SolrCloud to maintain and synchronize the Solr server instances in the clustered configuration.  You must install ZooKeeper on an odd number of machines. The number of machines will determine if you install ZooKeeper in standalone mode (for one machine) or in replicated mode (for three or five machines).</p>
+<ol>
+<li>
+Install and Configure Zookeeper, on all Zookeeper nodes (requires Java):<ol>
+<li>
+Open ports 2181 and 2888 - 3888<ol start="2">
+<li>
+Red Hat 6 family<ol start="3">
+<li>
+Open port 2181: <code>iptables -A INPUT -p tcp --dport 2181 -j ACCEPT</code>
+</li>
+<li>
+Open ports 2888-3888: <code>iptables -A INPUT -p tcp --dport 2888:3888 -j ACCEPT</code>
+</li>
+<li>
+Save the iptables changes: <code>iptables-save &gt; /etc/sysconfig/iptables</code>
+</li>
+<li>
+Check firewall status: <code>iptables -L</code>
+</li>
+</ol>
+</li>
+<li>
+Red Hat 7 family<ol start="3">
+<li>
+Open port 2181: <code>firewall-cmd --zone=public --add-port=2181/tcp --permanent</code>
+</li>
+<li>
+Open port 2888-3888: <code>firewall-cmd --zone=public --add-port=2888:3888/tcp --permanent</code>
+</li>
+<li>
+Save the iptables changes: <code>firewall-cmd --reload</code>
+</li>
+<li>
+Check firewall status: <code>sudo iptables -L</code>
+</li>
+</ol>
+</li>
+<li>
+Ubuntu<ol start="3">
+<li>
+Check firewall status: <code>sudo ufw status verbose</code>
+</li>
+<li>
+Open port 2181: <code>sudo ufw allow 2181/tcp</code>
+</li>
+<li>
+Open ports 2888-3888: <code>sudo ufw allow 2888:3888/tcp</code>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+Install Zookeeper<ol>
+<li>
+<code>cd /opt</code>
+</li>
+<li>
+<code>wget http://apache-mirror.rbc.ru/pub/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz</code>
+</li>
+<li>
+<code>gunzip -c *.gz | tar xvf -</code>
+</li>
+</ol>
+</li>
+<li>
+Configure your zookeeper cluster<ol start="2">
+<li>
+<code>cd zookeeper-3.4.6/conf</code>
+</li>
+<li>
+<code>cp zoo_sample.cfg zoo.cfg</code>
+</li>
+<li>
+Edit zoo.cfg:<ol start="3">
+<li>
+change the data dir: <strong>dataDir=/var/zookeeper</strong>
+</li>
+<li>
+add a line for each ZK host in your cluster:<ol start="4">
+<li>
+<strong>server.1=zk1-host:2888:3888</strong>
+</li>
+<li>
+<strong>server.2=zk2-host:2888:3888</strong>
+</li>
+<li>
+<strong>server.3=zk3-host:2888:3888</strong>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+Create a <strong>myid</strong>
+ file in /var/zookeeper, add the server id to the file (i.e. for zoo1-host the file would just contain the character &quot;1&quot;)</li>
+<li>rename zkServer.sh and copy in the version in /resources/CentOS</li>
+<li>
+create a symlink to run ZK as a service: <code>sudo ln -s /opt/zookeeper-3.4.5/bin/zkServer.sh /etc/init.d/zookeeper</code>
+</li>
+<li>
+configure the service to autostart: <code>chkconfig zookeeper on</code>
+</li>
+<li>
+start ZK: <code>sudo /sbin/service zookeeper start</code>
+</li>
+<li>
+verify ZK is running: <code>echo &quot;ruok&quot; | nc localhost 2181  ; echo ''</code>
+  you should receive an response of: imok</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Step 8  Install Solr Cloud Instances</h2>
+<h3>
+-Option 1, Production Script Installation (most Linux flavors, see: <a href="https://cwiki.apache.org/confluence/display/solr/Taking+Solr+to+Production">https://cwiki.apache.org/confluence/display/solr/Taking+Solr+to+Production</a>
+ )</h3>
+<ol>
+<li>
+Install Solr Cloud on Linux (requires Java, Zookeeper)<ol>
+<li>
+<code>cd /opt</code>
+</li>
+<li>
+<code>wget http://apache.mirrors.pair.com/lucene/solr/5.3.1/solr-5.3.1.tgz</code>
+</li>
+<li>
+<code>tar xzf solr-5.0.0.tgz solr-5.0.0/bin/install_solr_service.sh --strip-components=2</code>
+</li>
+<li>
+<code>./install_solr_service.sh solr-5.0.0.tgz</code>
+</li>
+<li>
+By default this script will<ol start="2">
+<li>install solr with a symbolic link in /opt,</li>
+<li>create a solr user,</li>
+<li>create a service to run solr as the solr user on the default port (8983) with autostart,</li>
+<li>set Solr database storage to /var/solr,</li>
+<li>starts solr and displays the running status</li>
+</ol>
+</li>
+<li>
+To Stop/Start/Restart/Status the service: <code>service solr start</code>
+</li>
+<li>The script and .tgz file can now be deleted</li>
+</ol>
+</li>
+<li>
+Configure Solr Cloud Production Installation<ol>
+<li>
+All Solr configuration parameters are contained in /var/solr/solr.in.sh, edit this file and set:<ol>
+<li>SOLR_HOST comment in and set to the machine's host name</li>
+<li>ZK_HOST comment in and set to the zookeeper hosts list with chroot (i.e. zk1-host,zk2-host,zk3-host/kla_collection)</li>
+<li>SOLR_OPTS AutoCommit comment in and set to appropriate an value in milliseconds (recommended: 300000)</li>
+<li>SOLR_OPTS AutoSoftCommit settings comment in and set to an appropriate value in milliseconds (recommended: 10000)</li>
+</ol>
+</li>
+<li>Verify that Zookeeper has been started/is running (see above).</li>
+<li>
+Upload Solr configuration to Zookeeper<ol>
+<li>
+<code>cd /opt/solr-5.3.1/server/scripts/cloud-scripts</code>
+</li>
+<li>
+<code>./zkcli.sh -cmd upconfig -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot -confname kla_config -solrhome /opt/solr-5.3.1/server/solr -confdir /opt/solr-5.3.1/server/solr/configsets/data_driven_schema_configs/conf</code>
+</li>
+</ol>
+</li>
+<li>
+Run following to verfiy config in ZK<ol>
+<li>
+<code>./zkcli.sh -cmd list -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla\_it | more</code>
+</li>
+</ol>
+</li>
+<li>
+Restart Solr: <code>service solr restart</code>
+<ol>
+<li>
+Confirm that Solr started: <code>/opt/solr-5.3.1/bin/solr status</code>
+ or <code>service solr status</code>
+</li>
+<li>
+Solr can be stopped with the command: <code>service solr stop</code>
+</li>
+<li>Verify Solr up by going to the url: http://&lt;solr-host&gt;:8983/solr</li>
+</ol>
+</li>
+<li>
+Create the KAL Collection (OverSharded, Leader/Follower, with replication)<ol>
+<li>
+From a browser submit the following URL: <code>http://&lt;solr-host&gt;:8983/solr/admin/collections?action=CREATE&amp;name=kla_collection&amp;numShards=20&amp;replicationFactor=2&amp;maxShardsPerNode=21&amp;collection.configName=kla_config</code>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>-Option 2, Manual Installation (Linux)</h3>
+<ol>
+<li>
+Install Solr Cloud on Linux (requires Java, Zookeeper)<ol>
+<li>
+<code>cd /opt</code>
+</li>
+<li>
+<code>wget http://apache.mirrors.pair.com/lucene/solr/5.3.1/solr-5.3.1.tgz</code>
+</li>
+<li>
+<code>tar xfz solr-5.3.1.tgz</code>
+</li>
+<li>Open the file /opt/solr-5.3.1/server/solr/configsets/data_driven_schema_configs/conf/solrconfig.xml</li>
+<li>Modify AutoCommit and AutoSoftCommit settings to appropriate value in milliseconds (i.e. 15000) and save the file.</li>
+<li>Verify that Zookeeper has been started/is running (see above).</li>
+</ol>
+</li>
+<li>
+Configure Solr Cloud Production Installation<ol>
+<li>
+Upload Solr configuration to Zookeeper<ol>
+<li>
+<code>cd /opt/solr-5.3.1/server/scripts/cloud-scripts</code>
+</li>
+<li>
+<code>./zkcli.sh -cmd upconfig -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot -confname kla_config -solrhome /opt/solr-5.3.1/server/solr -confdir /opt/solr-5.3.1/server/solr/configsets/data_driven_schema_configs/conf</code>
+</li>
+</ol>
+</li>
+<li>
+Run following to verfiy config in ZK<ol>
+<li>
+<code>./zkcli.sh -cmd list -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot | more</code>
+</li>
+</ol>
+</li>
+<li>
+Start Solr (repeat for all Solr Servers in Solr Cloud)<ol>
+<li>
+<code>cd /opt/solr-5.3.1/</code>
+</li>
+<li>
+<code>bin/solr start -c -p 8983 -m 8G -s server/solr -d server -z [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot</code>
+ note: this command specifies an 8 Gigabyte Java heap size, you may need to adjust the heap size (-m option) to a value appropriate to your hardware configuration.</li>
+<li>
+Confirm that Solr started: <code>bin/solr status</code>
+</li>
+<li>
+Solr can be stopped with the command: <code>bin/solr stop</code>
+</li>
+<li>Verify Solr up by going to the url: http://[ip where solr started]:8983/solr</li>
+</ol>
+</li>
+<li>
+Create the KLA Collection (OverSharded, Leader/Follower, with replication)<ol>
+<li>
+From a browser submit the following URL: <code>http://&lt;solr-host&gt;:8983/solr/admin/collections?action=CREATE&amp;name=kla_collection&amp;numShards=20&amp;replicationFactor=2&amp;maxShardsPerNode=21&amp;collection.configName=kla_config</code>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h1>Developer Notes</h1>
+<h3>Solr shortcuts:</h3>
+<ol>
+<li>
+To remove all data from the solr kla collection: <code>http://localhost:8983/solr/kla_collection/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true</code>
+</li>
+<li>
+To delete the Solr collection in Zookeeper:<ol>
+<li>
+<code>/opt/solr/server/scripts/cloud-scripts/</code>
+</li>
+<li>
+<code>./zkcli.sh -cmd clear -z localhost:2181/kla_chroot /kla_chroot</code>
+</li>
+</ol>
+</li>
+</ol>
+<h4>
+<em>~BETA~</em>
+</h4>
+<h3>Jena/Fuseki Local Persistence</h3>
+<h4>
+<em>~BETA~</em>
+</h4>
+<p>The Knowtify Data Service requires a local data store to be configured so that local data can be stored, managed, and served up to clients. There are 2 possible configurations of the lcoal data store, both of which involve the jena TDB database.</p>
+<ol>
+<li>
+Embedded (the database runs in-process to the Data Service). Use this in environments where you are certain there will only ever be a single instance of the Knowtify Data Service to server all of the users.<ol>
+<li>The libraries are already included in the WAR. </li>
+</ol>
+</li>
+<li>
+Shared (the database is managed as an external service under Fuseki, which is a RESTful API service that sits on top of Jena). Use this in environments where there is a chance that there could be more than one Knowtify Data Service running such that all KDS instances need to share a common set of Properties/Preferences. This should be the default case.<ol>
+<li>
+Install Fuseki 2.3.0 (or latest, as soon as it is out)<ol>
+<li>
+For Linux: <code>http://psg.mtu.edu/pub/apache/jena/binaries/apache-jena-fuseki-2.3.0.tar.gz</code>
+</li>
+<li>
+For Windows: <code>http://psg.mtu.edu/pub/apache/jena/binaries/apache-jena-fuseki-2.3.0.zip</code>
+</li>
+</ol>
+</li>
+<li>Unpack the archive into an appropriate directory.</li>
+<li>Copy the config files (kla.ttl and shiro.ini) into the root of the where Fuseki was unpacked.</li>
+<li>Open kla.ttl and make sure that the directory specified for the location of the TDB database exists.</li>
+<li>
+Start the Fuseki server
+        Linux: <code>./fuseki-server --loc=/temp/KnowtifyData/knowtify --port 3030 -v /kla</code>
+
+        Windows: <code>fuseki-server.bat --loc=/temp/KnowtifyData/knowtify --port 3030 -v /kla</code>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Maven Deployment to Tomcat:</h3>
+<p>Be sure to setup your local Tomcat correctly, you need to update</p>
+<pre><code>1. TOMCAT-HOME/conf/tomcat-users.xml
+1. .m2/settings.xml
+1. for setup information see http://www.journaldev.com/4738/how-to-deploy-maven-war-project-in-tomcat-automatically
+</code></pre>
+</body>

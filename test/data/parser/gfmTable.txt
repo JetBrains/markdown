@@ -47,6 +47,20 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('ccc')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:CELL
+        Markdown:TEXT('aaa')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('---|')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:CELL
+        Markdown:TEXT('bbb')
+      Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('|aa')
     Markdown:EOL('\n')
@@ -84,6 +98,18 @@ Markdown:MARKDOWN_FILE
       Markdown:TEXT('aaa|')
     Markdown:EOL('\n')
     Markdown:SETEXT_2('---')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo|bar')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SETEXT_2
+    Markdown:SETEXT_CONTENT
+      Markdown:TEXT('Alignment')
+    Markdown:EOL('\n')
+    Markdown:SETEXT_2('---------')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:TABLE
@@ -150,3 +176,115 @@ Markdown:MARKDOWN_FILE
           Markdown:EMPH('*')
           Markdown:TEXT('b')
           Markdown:EMPH('*')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:EMPH
+      Markdown:EMPH('_')
+      Markdown:TEXT('The same number of cells should be present in header and separator line')
+      Markdown:EMPH('_')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:SETEXT_2
+    Markdown:SETEXT_CONTENT
+      Markdown:TEXT('|foo|bar|baz|')
+    Markdown:EOL('\n')
+    Markdown:SETEXT_2('-------------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('|foo|bar|baz|')
+    Markdown:EOL('\n')
+    Markdown:TEXT('|-----------')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('|foo|bar|baz|')
+    Markdown:EOL('\n')
+    Markdown:TEXT('|---|---|---|---')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('foo')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('bar')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('baz')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('---|---|---')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('---|---|---|---')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:EMPH
+      Markdown:EMPH('_')
+      Markdown:TEXT('The number of row cells may be different')
+      Markdown::(':')
+      Markdown:EMPH('_')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('foo')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('bar')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('baz')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('---|---|---')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('foo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('foo')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('bar')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('baz')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('---|---|---')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('foo')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('baz')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('maaz')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('quiz')
+  Markdown:EOL('\n')
