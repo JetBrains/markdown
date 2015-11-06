@@ -7,8 +7,6 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.HorizontalRuleMarkerBlock
-import java.util.ArrayList
-import kotlin.text.Regex
 
 public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
@@ -33,16 +31,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     }
 
     companion object {
-        public val REGEX: Regex = run {
-            var variants = ArrayList<String>()
-            for (c in arrayOf("-", "_", "\\*")) {
-                variants.add("(${c} *){3,}")
-            }
-            Regex("^ {0,3}(" + variants.joinToString("|") + ")$")
-        }
-
         public fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
-//                        return HorizontalRuleProvider.REGEX.matches(line.subSequence(offset, line.length()))
             var hrChar: Char? = null
             var startSpace = 0
             var charCount = 1
