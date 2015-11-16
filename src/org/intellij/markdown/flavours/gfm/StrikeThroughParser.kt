@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
 public class StrikeThroughParser : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResult()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

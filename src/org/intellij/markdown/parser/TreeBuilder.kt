@@ -3,9 +3,7 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Stack
+import java.util.*
 
 public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
 
@@ -58,7 +56,7 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         for (index in production.indices) {
             val result = production.get(index)
             val startTokenId = result.range.start
-            val endTokenId = result.range.end
+            val endTokenId = result.range.endInclusive
 
             events.add(MyEvent(startTokenId, index, result))
             if (endTokenId != startTokenId) {
@@ -75,11 +73,11 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                           val info: SequentialParser.Node) : Comparable<MyEvent> {
 
         public fun isStart(): Boolean {
-            return info.range.end != position
+            return info.range.endInclusive != position
         }
 
         public fun isEmpty(): Boolean {
-            return info.range.start == info.range.end
+            return info.range.start == info.range.endInclusive
         }
 
         override fun compareTo(other: MyEvent): Int {
@@ -87,7 +85,7 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 return position - other.position
             }
             if (isStart() == other.isStart()) {
-                val positionDiff = info.range.start + info.range.end - (other.info.range.start + other.info.range.end)
+                val positionDiff = info.range.start + info.range.endInclusive - (other.info.range.start + other.info.range.endInclusive)
                 if (positionDiff != 0) {
                     return -positionDiff
                 }

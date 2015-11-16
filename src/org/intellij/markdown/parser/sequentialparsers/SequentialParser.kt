@@ -1,35 +1,35 @@
 package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
-import java.util.ArrayList
+import java.util.*
 
-public interface SequentialParser {
+interface SequentialParser {
 
-    public fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): ParsingResult
+    fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): ParsingResult
 
-    public data class Node(public val range: Range<Int>, public val type: IElementType)
+    data class Node(val range: IntRange, val type: IElementType)
 
-    public class ParsingResult {
+    class ParsingResult {
 
         private val _parsedNodes : MutableCollection<Node> = ArrayList()
-        public val parsedNodes : Collection<Node>
+        val parsedNodes : Collection<Node>
             get() = _parsedNodes
 
-        private val _rangesToProcessFurther : MutableCollection<Collection<Range<Int>>> = ArrayList()
-        public val rangesToProcessFurther : Collection<Collection<Range<Int>>>
+        private val _rangesToProcessFurther : MutableCollection<Collection<IntRange>> = ArrayList()
+        val rangesToProcessFurther : Collection<Collection<IntRange>>
             get() = _rangesToProcessFurther
 
-        public fun withNode(result: Node): ParsingResult {
+        fun withNode(result: Node): ParsingResult {
             _parsedNodes.add(result)
             return this
         }
 
-        public fun withNodes(parsedNodes: Collection<Node>): ParsingResult {
+        fun withNodes(parsedNodes: Collection<Node>): ParsingResult {
             _parsedNodes.addAll(parsedNodes)
             return this
         }
 
-        public fun withFurtherProcessing(ranges: Collection<Range<Int>>): ParsingResult {
+        fun withFurtherProcessing(ranges: Collection<IntRange>): ParsingResult {
             _rangesToProcessFurther.add(ranges)
             return this
         }

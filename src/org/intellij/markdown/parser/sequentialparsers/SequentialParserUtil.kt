@@ -13,23 +13,23 @@ public class SequentialParserUtil {
                 (1 shl Character.INITIAL_QUOTE_PUNCTUATION.toInt()) or
                 (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt())
 
-        public fun textRangesToIndices(ranges: Collection<Range<Int>>): List<Int> {
+        public fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
             val result = ArrayList<Int>()
             for (range in ranges) {
-                for (i in range.start..range.end - 1) {
+                for (i in range.start..range.endInclusive - 1) {
                     result.add(i)
                 }
             }
             return result.sorted()
         }
 
-        public fun indicesToTextRanges(indices: List<Int>): Collection<Range<Int>> {
-            val result = ArrayList<Range<Int>>()
+        public fun indicesToTextRanges(indices: List<Int>): Collection<IntRange> {
+            val result = ArrayList<IntRange>()
 
             var starting = 0
             for (i in indices.indices) {
-                if (i + 1 == indices.size || indices.get(i) + 1 != indices.get(i + 1)) {
-                    result.add(indices.get(starting)..indices.get(i) + 1)
+                if (i + 1 == indices.size || indices[i] + 1 != indices[i + 1]) {
+                    result.add(indices[starting]..indices[i] + 1)
                     starting = i + 1
                 }
             }
@@ -47,11 +47,11 @@ public class SequentialParserUtil {
             return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0;
         }
 
-       public fun filterBlockquotes(tokensCache: TokensCache, textRange: Range<Int>): Collection<Range<Int>> {
-            val result = ArrayList<Range<Int>>()
+       public fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): Collection<IntRange> {
+            val result = ArrayList<IntRange>()
             var lastStart = textRange.start
 
-            val R = textRange.end
+            val R = textRange.endInclusive
             for (i in lastStart..R - 1) {
                 if (tokensCache.Iterator(i).type == MarkdownTokenTypes.BLOCK_QUOTE) {
                     if (lastStart < i) {

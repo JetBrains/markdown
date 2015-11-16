@@ -31,7 +31,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
                     3 -> MarkdownElementTypes.LINK_TITLE
                     else -> throw AssertionError("There are no more than three groups in this regex")
                 })))
-                furthestOffset = group.range.end
+                furthestOffset = group.range.endInclusive
             }
         }
 
@@ -75,7 +75,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
         )
 
         fun addToRangeAndWiden(range: IntRange, t: Int): IntRange {
-            return IntRange(range.start + t, range.end + t + 1)
+            return IntRange(range.start + t, range.endInclusive + t + 1)
         }
 
         fun isEndOfLine(pos: LookaheadText.Position): Boolean {

@@ -7,9 +7,9 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
-public class EmphStrongParser : SequentialParser {
+class EmphStrongParser : SequentialParser {
 
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResult()
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

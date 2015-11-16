@@ -3,7 +3,7 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.ArrayList
+import java.util.*
 
 public class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
 
@@ -34,7 +34,7 @@ public class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tok
 
         val type = event.info.`type`
         val startTokenId = event.info.range.start
-        val endTokenId = event.info.range.end
+        val endTokenId = event.info.range.endInclusive
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 

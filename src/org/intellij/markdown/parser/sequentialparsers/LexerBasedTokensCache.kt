@@ -3,13 +3,13 @@ package org.intellij.markdown.parser.sequentialparsers
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.lexer.MarkdownLexer
-import java.util.ArrayList
+import java.util.*
 
-public class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
+class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
     override val cachedTokens: List<TokensCache.TokenInfo>
     override val filteredTokens: List<TokensCache.TokenInfo>
     override val originalText: CharSequence
-    override val originalTextRange: Range<Int>
+    override val originalTextRange: IntRange
 
     init {
         val (_cachedTokens, _filteredTokens) = cacheTokens(lexer)

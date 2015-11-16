@@ -4,7 +4,7 @@ import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
-import java.util.ArrayList
+import java.util.*
 
 public class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
 
@@ -16,7 +16,7 @@ public class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder
 
         val type = event.info.`type`
         val startOffset = event.info.range.start
-        val endOffset = event.info.range.end
+        val endOffset = event.info.range.endInclusive
 
         if (type is MarkdownElementType && type.isToken) {
             val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)

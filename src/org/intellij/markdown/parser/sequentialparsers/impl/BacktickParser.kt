@@ -5,10 +5,10 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.ArrayList
+import java.util.*
 
-public class BacktickParser : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
+class BacktickParser : SequentialParser {
+    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResult()
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
@@ -22,12 +22,12 @@ public class BacktickParser : SequentialParser {
                 val j = findOfSize(tokens, indices, i + 1, getLength(iterator, true))
 
                 if (j != -1) {
-                    result.withNode(SequentialParser.Node(indices.get(i)..indices.get(j) + 1, MarkdownElementTypes.CODE_SPAN))
+                    result.withNode(SequentialParser.Node(indices[i]..indices[j] + 1, MarkdownElementTypes.CODE_SPAN))
                     i = j + 1
                     continue
                 }
             }
-            delegateIndices.add(indices.get(i))
+            delegateIndices.add(indices[i])
             ++i
         }
 

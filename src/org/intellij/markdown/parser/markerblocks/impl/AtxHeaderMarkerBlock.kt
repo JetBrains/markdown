@@ -10,20 +10,20 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
-                                  productionHolder: ProductionHolder,
-                                  headerRange: Range<Int>,
-                                  tailStartPos: Int,
-                                  endOfLinePos: Int)
+class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
+                           productionHolder: ProductionHolder,
+                           headerRange: IntRange,
+                           tailStartPos: Int,
+                           endOfLinePos: Int)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false
 
     init {
         val curPos = productionHolder.currentPosition
         productionHolder.addProduction(listOf(SequentialParser.Node(
-                curPos + headerRange.start..curPos + headerRange.end + 1, MarkdownTokenTypes.ATX_HEADER
+                curPos + headerRange.start..curPos + headerRange.endInclusive + 1, MarkdownTokenTypes.ATX_HEADER
         ), SequentialParser.Node(
-                curPos + headerRange.end + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
+                curPos + headerRange.endInclusive + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
         ), SequentialParser.Node(
                 tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
         )))
@@ -31,7 +31,7 @@ public class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
-    private val nodeType = calcNodeType(headerRange.end - headerRange.start + 1)
+    private val nodeType = calcNodeType(headerRange.endInclusive - headerRange.start + 1)
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {

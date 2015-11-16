@@ -18,7 +18,7 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
             return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints,
                     productionHolder,
                     headerRange,
-                    calcTailStartPos(pos, headerRange.end),
+                    calcTailStartPos(pos, headerRange.endInclusive),
                     pos.nextLineOrEofOffset))
         } else {
             return emptyList()
@@ -46,7 +46,7 @@ public class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         return matches(pos) != null
     }
 
-    private fun matches(pos: LookaheadText.Position): Range<Int>? {
+    private fun matches(pos: LookaheadText.Position): IntRange? {
         if (pos.offsetInCurrentLine != -1) {
             val matchResult = REGEX.find(pos.currentLineFromPosition)
             if (matchResult != null) {

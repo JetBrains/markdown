@@ -6,10 +6,10 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.ArrayList
+import java.util.*
 
-public class AutolinkParser(private val typesAfterLT: List<IElementType>) : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<Range<Int>>): SequentialParser.ParsingResult {
+class AutolinkParser(private val typesAfterLT: List<IElementType>) : SequentialParser {
+    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResult()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

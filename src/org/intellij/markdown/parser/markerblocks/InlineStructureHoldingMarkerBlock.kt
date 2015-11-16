@@ -4,10 +4,10 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import java.util.Collections
+import java.util.*
 
 
-public abstract class InlineStructureHoldingMarkerBlock(
+abstract class InlineStructureHoldingMarkerBlock(
         constraints: MarkdownConstraints,
         protected val productionHolder: ProductionHolder)
 : MarkerBlockImpl(constraints, productionHolder.mark()) {
@@ -27,5 +27,5 @@ public abstract class InlineStructureHoldingMarkerBlock(
         return super.acceptAction(action)
     }
 
-    public abstract fun getRangesContainingInlineStructure(): Collection<Range<Int>>
+    abstract fun getRangesContainingInlineStructure(): Collection<IntRange>
 }

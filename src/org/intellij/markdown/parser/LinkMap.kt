@@ -2,12 +2,12 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.accept
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.html.entities.EntityConverter
 import java.net.URLEncoder
-import java.util.HashMap
-import java.util.Locale
+import java.util.*
 import kotlin.text.Regex
 
 public data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
