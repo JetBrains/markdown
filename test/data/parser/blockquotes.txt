@@ -128,7 +128,8 @@ Markdown:MARKDOWN_FILE
     WHITE_SPACE('>')
     Markdown:EOL('\n')
     WHITE_SPACE('> ')
-    Markdown:CODE_BLOCK('    return shell_exec("echo $input | $markdown_script");')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    return shell_exec("echo $input | $markdown_script");')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
@@ -165,7 +166,12 @@ Markdown:MARKDOWN_FILE
       Markdown:TEXT('baz')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    > # Foo\n    > bar\n    > baz')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    > # Foo')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    > bar')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    > baz')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
@@ -178,9 +184,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
     Markdown:BLOCK_QUOTE('> ')
-    Markdown:CODE_BLOCK('    foo')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    foo')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    bar')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    bar')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -207,7 +215,8 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE
     Markdown:BLOCK_QUOTE('> ')
-    Markdown:CODE_BLOCK('    code')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    code')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:BLOCK_QUOTE

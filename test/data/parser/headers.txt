@@ -177,7 +177,8 @@ Markdown:MARKDOWN_FILE
       Markdown:TEXT('b')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    ## And this is not a header; it's a CODE')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    ## And this is not a header; it's a CODE')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:SETEXT_2

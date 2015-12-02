@@ -2,14 +2,25 @@ package org.intellij.markdown.parser.markerblocks.impl
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
+                                  private val productionHolder: ProductionHolder, 
+                                  startPosition: LookaheadText.Position) 
+: MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+    
+    init {
+        productionHolder.addProduction(listOf(SequentialParser.Node(
+                startPosition.offset..startPosition.nextLineOrEofOffset, MarkdownTokenTypes.CODE_LINE)))
+    }
+    
     override fun allowsSubBlocks(): Boolean = false
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
@@ -47,7 +58,15 @@ public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints, marker: Pr
         if (!MarkdownParserUtil.hasCodeBlockIndent(nonWhitespace, nextConstraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
-            realInterestingOffset = nonemptyPos.offset
+            // We'll add the current line anyway
+            val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+            val nodeRange = pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset
+            if (nodeRange.endInclusive - nodeRange.start > 0) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        nodeRange, MarkdownTokenTypes.CODE_LINE)))
+            }
+            
+            realInterestingOffset = pos.nextLineOrEofOffset
             return MarkerBlock.ProcessingResult.CANCEL
         }
     }

@@ -59,7 +59,8 @@ Markdown:MARKDOWN_FILE
           Markdown:EOL('\n')
           Markdown:EOL('\n')
           WHITE_SPACE('      ')
-          Markdown:CODE_BLOCK('      And this *code* has the indent of 12 to be code')
+          Markdown:CODE_BLOCK
+            Markdown:CODE_LINE('      And this *code* has the indent of 12 to be code')
           Markdown:EOL('\n')
           Markdown:EOL('\n')
           WHITE_SPACE('      ')
@@ -88,7 +89,8 @@ Markdown:MARKDOWN_FILE
       Markdown:EOL('\n')
       Markdown:EOL('\n')
       WHITE_SPACE('   ')
-      Markdown:CODE_BLOCK('     So the indent of 8 is enough now to be the +code+')
+      Markdown:CODE_BLOCK
+        Markdown:CODE_LINE('     So the indent of 8 is enough now to be the +code+')
     Markdown:EOL('\n')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
@@ -100,7 +102,8 @@ Markdown:MARKDOWN_FILE
       Markdown:EOL('\n')
       Markdown:EOL('\n')
       WHITE_SPACE('   ')
-      Markdown:CODE_BLOCK('     And it contains some code, indented at 8')
+      Markdown:CODE_BLOCK
+        Markdown:CODE_LINE('     And it contains some code, indented at 8')
       Markdown:EOL('\n')
       Markdown:EOL('\n')
       WHITE_SPACE('   ')

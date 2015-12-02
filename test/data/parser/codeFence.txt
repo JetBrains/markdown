@@ -51,7 +51,12 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE_END('   ```')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    ```\n    aaa\n    ```')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    ```')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    aaa')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    ```')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH

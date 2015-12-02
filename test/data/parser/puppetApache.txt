@@ -11391,7 +11391,16 @@ Markdown:MARKDOWN_FILE
     Markdown::(':')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    gem install bundler\n    bundle install\n    bundle exec rake spec\n    bundle exec rspec spec/acceptance\n    RS_DEBUG=yes bundle exec rspec spec/acceptance')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    gem install bundler')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    bundle install')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    bundle exec rake spec')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    bundle exec rspec spec/acceptance')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    RS_DEBUG=yes bundle exec rspec spec/acceptance')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:ATX_1

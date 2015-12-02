@@ -31,8 +31,8 @@
     One may note that this is not a code anymore,</p>
 <pre><code>  But this is still verbatim because of the indent of 8
 
-    And after this EOL it is still a `code`
-    &lt;code&gt; in code should be escaped as well
+  And after this EOL it is still a `code`
+  &lt;code&gt; in code should be escaped as well
 </code></pre>
 <p>But this is not, I suppose.</p>
 </li>

@@ -104,7 +104,8 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('ok')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    [foo]: /url "title"')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    [foo]: /url "title"')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -218,6 +219,7 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('le')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('            le'')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('            le'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

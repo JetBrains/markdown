@@ -3,7 +3,13 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('This will be an indented code block')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    <a/>\n    *hi*\n\n    - one')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    <a/>')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    *hi*')
+    Markdown:EOL('\n')
+    Markdown:EOL('\n')
+    Markdown:CODE_LINE('    - one')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -17,10 +23,43 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('so..')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    foo')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    foo')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('bar')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    This is the code')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:CODE_LINE('    inside of a blockquote')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    This is the code')
+      Markdown:EOL('\n')
+      WHITE_SPACE('>')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:CODE_LINE('    With empty line')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:CODE_BLOCK
+      Markdown:CODE_LINE('    This is the code')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:CODE_LINE('      ')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:CODE_LINE('    With some rendered whitespace in the middle line')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:ATX_1
@@ -29,7 +68,8 @@ Markdown:MARKDOWN_FILE
       WHITE_SPACE(' ')
       Markdown:TEXT('Header')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    foo')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    foo')
   Markdown:EOL('\n')
   Markdown:SETEXT_2
     Markdown:SETEXT_CONTENT
@@ -37,6 +77,7 @@ Markdown:MARKDOWN_FILE
     Markdown:EOL('\n')
     Markdown:SETEXT_2('------')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    foo')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    foo')
   Markdown:EOL('\n')
   Markdown:HORIZONTAL_RULE('----')

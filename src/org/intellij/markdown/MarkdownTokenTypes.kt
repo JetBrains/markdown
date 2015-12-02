@@ -5,7 +5,7 @@ public open class MarkdownTokenTypes {
 
         public val TEXT: IElementType = MarkdownElementType("TEXT", true)
 
-        public val CODE: IElementType = MarkdownElementType("CODE", true)
+        public val CODE_LINE: IElementType = MarkdownElementType("CODE_LINE", true)
 
         public val BLOCK_QUOTE: IElementType = MarkdownElementType("BLOCK_QUOTE", true)
 

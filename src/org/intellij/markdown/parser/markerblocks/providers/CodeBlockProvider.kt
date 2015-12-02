@@ -23,7 +23,7 @@ public class CodeBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
                 ?: return emptyList()
 
         if (MarkdownParserUtil.hasCodeBlockIndent(blockStart, stateInfo.currentConstraints)) {
-            return listOf(CodeBlockMarkerBlock(stateInfo.currentConstraints, productionHolder.mark()))
+            return listOf(CodeBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, pos))
         } else {
             return emptyList()
         }

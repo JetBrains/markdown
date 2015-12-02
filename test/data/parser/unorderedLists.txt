@@ -79,7 +79,12 @@ Markdown:MARKDOWN_FILE
       Markdown:EOL('\n')
       Markdown:EOL('\n')
       WHITE_SPACE('  ')
-      Markdown:CODE_BLOCK('      But this is still verbatim because of the indent of 8\n\n        And after this EOL it is still a `code`')
+      Markdown:CODE_BLOCK
+        Markdown:CODE_LINE('      But this is still verbatim because of the indent of 8')
+        Markdown:EOL('\n')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:CODE_LINE('      And after this EOL it is still a `code`')
       Markdown:EOL('\n')
       Markdown:EOL('\n')
       WHITE_SPACE('  ')

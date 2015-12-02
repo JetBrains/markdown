@@ -111,7 +111,15 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     visitor.consumeHtml("<pre>")
                     visitor.consumeTagOpen(node, "code")
-                    visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, node, false), 4))
+                    
+                    for (child in node.children) {
+                        if (child.type == MarkdownTokenTypes.CODE_LINE) {
+                            visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), 4))
+                        } else if (child.type == MarkdownTokenTypes.EOL) {
+                            visitor.consumeHtml("\n");
+                        }
+                    }
+                    
                     visitor.consumeHtml("\n")
                     visitor.consumeTagClose("code")
                     visitor.consumeHtml("</pre>")

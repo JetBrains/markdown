@@ -14,7 +14,7 @@ public interface MarkdownElementTypes {
 
         public val CODE_FENCE: IElementType = MarkdownElementType("CODE_FENCE")
 
-        public val CODE_BLOCK: IElementType = MarkdownElementType("CODE_BLOCK", true)
+        public val CODE_BLOCK: IElementType = MarkdownElementType("CODE_BLOCK")
 
         public val CODE_SPAN: IElementType = MarkdownElementType("CODE_SPAN")
 

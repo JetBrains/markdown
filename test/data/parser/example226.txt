@@ -23,6 +23,7 @@ Markdown:MARKDOWN_FILE
       Markdown:LIST_BULLET('-')
       Markdown:EOL('\n')
       WHITE_SPACE('  ')
-      Markdown:CODE_BLOCK('    baz')
+      Markdown:CODE_BLOCK
+        Markdown:CODE_LINE('    baz')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

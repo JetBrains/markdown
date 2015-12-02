@@ -23,7 +23,8 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('Some text')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    Some text')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    Some text')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH

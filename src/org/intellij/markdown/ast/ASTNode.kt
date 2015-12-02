@@ -18,4 +18,4 @@ fun ASTNode.acceptChildren(visitor: Visitor) {
     for (child in children) {
         child.accept(visitor)
     }
-}
+}   

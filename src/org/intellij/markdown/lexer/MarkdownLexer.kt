@@ -72,7 +72,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
         private val TOKENS_TO_MERGE = setOf(
                 MarkdownTokenTypes.TEXT,
                 MarkdownTokenTypes.WHITE_SPACE,
-                MarkdownTokenTypes.CODE,
+                MarkdownTokenTypes.CODE_LINE,
                 MarkdownTokenTypes.LINK_ID,
                 MarkdownTokenTypes.LINK_TITLE,
                 MarkdownTokenTypes.URL,

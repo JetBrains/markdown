@@ -100,7 +100,8 @@ Markdown:MARKDOWN_FILE
     Markdown:HTML_BLOCK_CONTENT('  <!-- foo -->')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:CODE_BLOCK('    <!-- foo -->')
+  Markdown:CODE_BLOCK
+    Markdown:CODE_LINE('    <!-- foo -->')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
