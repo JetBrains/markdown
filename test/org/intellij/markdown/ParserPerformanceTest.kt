@@ -50,6 +50,10 @@ public class ParserPerformanceTest : TestCase() {
     public fun testCommonMarkSpecFull() {
         defaultTest(true)
     }
+    
+    public fun testFogChangelog() {
+        defaultTest(false)
+    }
 
     companion object {
         val WARM_UP_NUM = 10
