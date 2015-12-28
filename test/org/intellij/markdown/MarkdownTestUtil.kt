@@ -1,8 +1,8 @@
 package org.intellij.markdown
 
 import java.io.File
-import kotlin.test.fail
 import com.intellij.rt.execution.junit.FileComparisonFailure
+import junit.framework.AssertionFailedError
 import junit.framework.TestCase
 
 val INTELLIJ_MARKDOWN_TEST_KEY = "Intellij.markdown.home"
@@ -12,7 +12,7 @@ public fun TestCase.assertSameLinesWithFile(filePath: String, text: String) {
 
     if (!file.exists()) {
         file.writeText(text)
-        fail("File not found. Created $filePath.")
+        throw AssertionFailedError("File not found. Created $filePath.")
     }
 
     val fileText = file.readText()
