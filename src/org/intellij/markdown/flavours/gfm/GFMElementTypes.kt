@@ -21,14 +21,16 @@ public object GFMTokenTypes {
     public val CELL: IElementType = MarkdownElementType("CELL", true)
 }
 
-public interface GFMElementTypes {
-    companion object {
-        public val STRIKETHROUGH: IElementType = MarkdownElementType("STRIKETHROUGH");
+public object  GFMElementTypes {
+    @JvmField
+    public val STRIKETHROUGH: IElementType = MarkdownElementType("STRIKETHROUGH");
 
-        public val TABLE: IElementType = MarkdownElementType("TABLE")
+    @JvmField
+    public val TABLE: IElementType = MarkdownElementType("TABLE")
 
-        public val HEADER: IElementType = MarkdownElementType("HEADER")
+    @JvmField
+    public val HEADER: IElementType = MarkdownElementType("HEADER")
 
-        public val ROW: IElementType = MarkdownElementType("ROW")
-    }
+    @JvmField
+    public val ROW: IElementType = MarkdownElementType("ROW")
 }
