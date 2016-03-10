@@ -9,7 +9,7 @@ import java.util.*
 
 class BacktickParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        val result = SequentialParser.ParsingResult()
+        val result = SequentialParser.ParsingResultBuilder()
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
         val delegateIndices = ArrayList<Int>()

@@ -9,7 +9,7 @@ import java.util.*
 
 public class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        val result = SequentialParser.ParsingResult()
+        val result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
         var lastOpenedPos: Int? = null

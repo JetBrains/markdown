@@ -2,7 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.sequentialparsers.LocalParseResult
+import org.intellij.markdown.parser.sequentialparsers.LocalParsingResult
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -10,7 +10,7 @@ import java.util.*
 
 class ReferenceLinkParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        var result = SequentialParser.ParsingResult()
+        var result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 
@@ -21,7 +21,7 @@ class ReferenceLinkParser : SequentialParser {
                 val referenceLink = parseReferenceLink(iterator)
                 if (referenceLink != null) {
                     iterator = referenceLink.iteratorPosition.advance()
-                    result = result.withNodes(referenceLink.resultNodes)
+                    result = result.withNodes(referenceLink.parsedNodes)
                             .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(referenceLink.delegateIndices))
                     continue
                 }
@@ -35,11 +35,11 @@ class ReferenceLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseReferenceLink(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseReferenceLink(iterator: TokensCache.Iterator): LocalParsingResult? {
             return parseFullReferenceLink(iterator) ?: parseShortReferenceLink(iterator)
         }
 
-        private fun parseFullReferenceLink(iterator: TokensCache.Iterator): LocalParseResult? {
+        private fun parseFullReferenceLink(iterator: TokensCache.Iterator): LocalParsingResult? {
             val startIndex = iterator.index
 
             val linkText = LinkParserUtil.parseLinkText(iterator)
@@ -54,14 +54,14 @@ class ReferenceLinkParser : SequentialParser {
                     ?: return null
 
             it = linkLabel.iteratorPosition
-            return LocalParseResult(it,
-                    linkText.resultNodes
-                            + linkLabel.resultNodes
+            return LocalParsingResult(it,
+                    linkText.parsedNodes
+                            + linkLabel.parsedNodes
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.FULL_REFERENCE_LINK),
                     linkText.delegateIndices + linkLabel.delegateIndices)
         }
 
-        private fun parseShortReferenceLink(iterator: TokensCache.Iterator): LocalParseResult? {
+        private fun parseShortReferenceLink(iterator: TokensCache.Iterator): LocalParsingResult? {
             val startIndex = iterator.index
 
             val linkLabel = LinkParserUtil.parseLinkLabel(iterator)
@@ -81,8 +81,8 @@ class ReferenceLinkParser : SequentialParser {
                 it = shortcutLinkEnd
             }
 
-            return LocalParseResult(it,
-                    linkLabel.resultNodes 
+            return LocalParsingResult(it,
+                    linkLabel.parsedNodes 
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK),
                     linkLabel.delegateIndices)
         }

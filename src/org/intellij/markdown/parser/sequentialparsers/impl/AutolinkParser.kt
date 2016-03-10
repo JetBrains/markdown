@@ -10,7 +10,7 @@ import java.util.*
 
 class AutolinkParser(private val typesAfterLT: List<IElementType>) : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        val result = SequentialParser.ParsingResult()
+        val result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 

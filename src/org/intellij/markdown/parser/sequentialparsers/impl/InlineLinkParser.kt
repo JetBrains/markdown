@@ -2,7 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.sequentialparsers.LocalParseResult
+import org.intellij.markdown.parser.sequentialparsers.LocalParsingResult
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -10,7 +10,7 @@ import java.util.*
 
 class InlineLinkParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        var result = SequentialParser.ParsingResult()
+        var result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 
@@ -21,7 +21,7 @@ class InlineLinkParser : SequentialParser {
                 val inlineLink = parseInlineLink(iterator)
                 if (inlineLink != null) {
                     iterator = inlineLink.iteratorPosition.advance()
-                    result = result.withNodes(inlineLink.resultNodes)
+                    result = result.withNodes(inlineLink.parsedNodes)
                             .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(inlineLink.delegateIndices))
                     continue
                 }
@@ -35,7 +35,7 @@ class InlineLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseInlineLink(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseInlineLink(iterator: TokensCache.Iterator): LocalParsingResult? {
             val startIndex = iterator.index
             var it = iterator
 
@@ -68,10 +68,10 @@ class InlineLinkParser : SequentialParser {
                 return null
             }
 
-            return LocalParseResult(it,
-                    linkText.resultNodes
-                            + (linkDestination?.resultNodes ?: emptyList())
-                            + (linkTitle?.resultNodes ?: emptyList())
+            return LocalParsingResult(it,
+                    linkText.parsedNodes
+                            + (linkDestination?.parsedNodes ?: emptyList())
+                            + (linkTitle?.parsedNodes ?: emptyList())
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK),
                     linkText.delegateIndices)
         }

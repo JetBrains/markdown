@@ -9,7 +9,7 @@ import java.util.*
 
 class ImageParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
-        var result = SequentialParser.ParsingResult()
+        var result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
 
@@ -23,8 +23,8 @@ class ImageParser : SequentialParser {
 
                 if (link != null) {
                     result = result
-                            .withNodes(link.resultNodes
-                                    + SequentialParser.Node(iterator.index..link.iteratorPosition.index + 1, MarkdownElementTypes.IMAGE))
+                            .withNodes(link.parsedNodes)
+                            .withNode(SequentialParser.Node(iterator.index..link.iteratorPosition.index + 1, MarkdownElementTypes.IMAGE))
                             .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(link.delegateIndices))
                     iterator = link.iteratorPosition.advance()
                     continue

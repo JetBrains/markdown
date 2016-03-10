@@ -9,27 +9,32 @@ interface SequentialParser {
 
     data class Node(val range: IntRange, val type: IElementType)
 
-    class ParsingResult {
+    interface ParsingResult {
+        val parsedNodes: Collection<Node>
+        val rangesToProcessFurther: Collection<Collection<IntRange>>
+    }
+    
+    class ParsingResultBuilder : ParsingResult {
 
         private val _parsedNodes : MutableCollection<Node> = ArrayList()
-        val parsedNodes : Collection<Node>
+        override val parsedNodes : Collection<Node>
             get() = _parsedNodes
 
         private val _rangesToProcessFurther : MutableCollection<Collection<IntRange>> = ArrayList()
-        val rangesToProcessFurther : Collection<Collection<IntRange>>
+        override val rangesToProcessFurther : Collection<Collection<IntRange>>
             get() = _rangesToProcessFurther
 
-        fun withNode(result: Node): ParsingResult {
+        fun withNode(result: Node): ParsingResultBuilder {
             _parsedNodes.add(result)
             return this
         }
 
-        fun withNodes(parsedNodes: Collection<Node>): ParsingResult {
+        fun withNodes(parsedNodes: Collection<Node>): ParsingResultBuilder {
             _parsedNodes.addAll(parsedNodes)
             return this
         }
 
-        fun withFurtherProcessing(ranges: Collection<IntRange>): ParsingResult {
+        fun withFurtherProcessing(ranges: Collection<IntRange>): ParsingResultBuilder {
             _rangesToProcessFurther.add(ranges)
             return this
         }
@@ -37,6 +42,9 @@ interface SequentialParser {
     }
 }
 
-data class LocalParseResult(val iteratorPosition: TokensCache.Iterator,
-                            val resultNodes: Collection<SequentialParser.Node>,
-                            val delegateIndices: List<Int>)
+data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
+                              override val parsedNodes: Collection<SequentialParser.Node>,
+                              val delegateIndices: List<Int>) : SequentialParser.ParsingResult {
+    override val rangesToProcessFurther: Collection<Collection<IntRange>>
+        get() = listOf(SequentialParserUtil.indicesToTextRanges(delegateIndices))
+}

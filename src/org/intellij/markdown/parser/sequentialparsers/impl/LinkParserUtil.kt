@@ -3,7 +3,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.sequentialparsers.LocalParseResult
+import org.intellij.markdown.parser.sequentialparsers.LocalParsingResult
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -11,7 +11,7 @@ import java.util.*
 
 public class LinkParserUtil {
     companion object {
-        fun parseLinkDestination(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseLinkDestination(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL || it.type == MarkdownTokenTypes.RPAREN) {
                 return null
@@ -50,14 +50,14 @@ public class LinkParserUtil {
             }
 
             if (it.type != null && !hasOpenedParentheses) {
-                return LocalParseResult(it, 
+                return LocalParsingResult(it, 
                         listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION)),
                         emptyList())
             }
             return null
         }
 
-        fun parseLinkLabel(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseLinkLabel(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator
 
             if (it.type != MarkdownTokenTypes.LBRACKET) {
@@ -83,14 +83,14 @@ public class LinkParserUtil {
                     return null
                 }
 
-                return LocalParseResult(it,
+                return LocalParsingResult(it,
                         listOf(SequentialParser.Node(startIndex..endIndex + 1, MarkdownElementTypes.LINK_LABEL)),
                         indicesToDelegate)
             }
             return null
         }
 
-        fun parseLinkText(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseLinkText(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator
 
             if (it.type != MarkdownTokenTypes.LBRACKET) {
@@ -118,14 +118,14 @@ public class LinkParserUtil {
             }
 
             if (it.type == MarkdownTokenTypes.RBRACKET) {
-                return LocalParseResult(it,
+                return LocalParsingResult(it,
                         listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TEXT)),
                         indicesToDelegate)
             }
             return null
         }
 
-        fun parseLinkTitle(iterator: TokensCache.Iterator): LocalParseResult? {
+        fun parseLinkTitle(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL) {
                 return null
@@ -148,7 +148,7 @@ public class LinkParserUtil {
             }
 
             if (it.type != null) {
-                return LocalParseResult(it, 
+                return LocalParsingResult(it, 
                         listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TITLE)),
                         emptyList())
             }
