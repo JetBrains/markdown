@@ -11,7 +11,8 @@ public class SequentialParserUtil {
                 (1 shl Character.CONNECTOR_PUNCTUATION.toInt()) or
                 (1 shl Character.OTHER_PUNCTUATION.toInt())     or
                 (1 shl Character.INITIAL_QUOTE_PUNCTUATION.toInt()) or
-                (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt())
+                (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt()) or
+                (1 shl Character.MATH_SYMBOL.toInt())
 
         public fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
             val result = ArrayList<Int>()

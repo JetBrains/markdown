@@ -267,3 +267,27 @@ Markdown:MARKDOWN_FILE
         Markdown:EMPH('_')
       Markdown:EMPH('*')
   Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('-f')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:TEXT('|')
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('--filter')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:[('[')
+    Markdown:TEXT('=')
+    Markdown:EMPH
+      Markdown:EMPH('*')
+      Markdown:[('[')
+      Markdown:](']')
+      Markdown:EMPH('*')
+    Markdown:](']')
+  Markdown:EOL('\n')
