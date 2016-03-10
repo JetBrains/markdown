@@ -2,6 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.sequentialparsers.LocalParseResult
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -17,12 +18,11 @@ class InlineLinkParser : SequentialParser {
 
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.LBRACKET) {
-                val localDelegates = ArrayList<Int>()
-                val resultNodes = ArrayList<SequentialParser.Node>()
-                val afterLink = parseInlineLink(resultNodes, localDelegates, iterator)
-                if (afterLink != null) {
-                    iterator = afterLink.advance()
-                    result = result.withNodes(resultNodes).withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(localDelegates))
+                val inlineLink = parseInlineLink(iterator)
+                if (inlineLink != null) {
+                    iterator = inlineLink.iteratorPosition.advance()
+                    result = result.withNodes(inlineLink.resultNodes)
+                            .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(inlineLink.delegateIndices))
                     continue
                 }
             }
@@ -35,13 +35,13 @@ class InlineLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseInlineLink(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+        fun parseInlineLink(iterator: TokensCache.Iterator): LocalParseResult? {
             val startIndex = iterator.index
             var it = iterator
 
-            val afterText = LinkParserUtil.parseLinkText(result, delegateIndices, it)
+            val linkText = LinkParserUtil.parseLinkText(it)
                     ?: return null
-            it = afterText
+            it = linkText.iteratorPosition
             if (it.rawLookup(1) != MarkdownTokenTypes.LPAREN) {
                 return null
             }
@@ -50,16 +50,16 @@ class InlineLinkParser : SequentialParser {
             if (it.type == MarkdownTokenTypes.EOL) {
                 it = it.advance()
             }
-            val afterDestination = LinkParserUtil.parseLinkDestination(result, it)
-            if (afterDestination != null) {
-                it = afterDestination.advance()
+            val linkDestination = LinkParserUtil.parseLinkDestination(it)
+            if (linkDestination != null) {
+                it = linkDestination.iteratorPosition.advance()
                 if (it.type == MarkdownTokenTypes.EOL) {
                     it = it.advance()
                 }
             }
-            val afterTitle = LinkParserUtil.parseLinkTitle(result, it)
-            if (afterTitle != null) {
-                it = afterTitle.advance()
+            val linkTitle = LinkParserUtil.parseLinkTitle(it)
+            if (linkTitle != null) {
+                it = linkTitle.iteratorPosition.advance()
                 if (it.type == MarkdownTokenTypes.EOL) {
                     it = it.advance()
                 }
@@ -68,8 +68,12 @@ class InlineLinkParser : SequentialParser {
                 return null
             }
 
-            result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK))
-            return it
+            return LocalParseResult(it,
+                    linkText.resultNodes
+                            + (linkDestination?.resultNodes ?: emptyList())
+                            + (linkTitle?.resultNodes ?: emptyList())
+                            + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK),
+                    linkText.delegateIndices)
         }
     }
 }

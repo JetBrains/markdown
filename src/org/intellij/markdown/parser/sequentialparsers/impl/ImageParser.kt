@@ -18,18 +18,15 @@ class ImageParser : SequentialParser {
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.EXCLAMATION_MARK
                     && iterator.rawLookup(1) == MarkdownTokenTypes.LBRACKET) {
-                val localDelegates = ArrayList<Int>()
-                val resultNodes = ArrayList<SequentialParser.Node>()
-                val afterLink = InlineLinkParser.parseInlineLink(resultNodes, localDelegates, iterator.advance())
-                        ?: run {
-                    resultNodes.clear()
-                    localDelegates.clear()
-                    ReferenceLinkParser.parseReferenceLink(resultNodes, localDelegates, iterator.advance())
-                }
-                if (afterLink != null) {
-                    resultNodes.add(SequentialParser.Node(iterator.index..afterLink.index + 1, MarkdownElementTypes.IMAGE))
-                    iterator = afterLink.advance()
-                    result = result.withNodes(resultNodes).withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(localDelegates))
+                val link = InlineLinkParser.parseInlineLink(iterator.advance())
+                        ?: ReferenceLinkParser.parseReferenceLink(iterator.advance())
+
+                if (link != null) {
+                    result = result
+                            .withNodes(link.resultNodes
+                                    + SequentialParser.Node(iterator.index..link.iteratorPosition.index + 1, MarkdownElementTypes.IMAGE))
+                            .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(link.delegateIndices))
+                    iterator = link.iteratorPosition.advance()
                     continue
                 }
             }

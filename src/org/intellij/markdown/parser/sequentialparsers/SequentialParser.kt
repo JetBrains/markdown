@@ -36,3 +36,7 @@ interface SequentialParser {
 
     }
 }
+
+data class LocalParseResult(val iteratorPosition: TokensCache.Iterator,
+                            val resultNodes: Collection<SequentialParser.Node>,
+                            val delegateIndices: List<Int>)

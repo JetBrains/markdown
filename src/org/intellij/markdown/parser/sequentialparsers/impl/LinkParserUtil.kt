@@ -3,14 +3,15 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.sequentialparsers.LocalParseResult
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.ArrayList
+import java.util.*
 
 public class LinkParserUtil {
     companion object {
-        fun parseLinkDestination(result: MutableCollection<SequentialParser.Node>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+        fun parseLinkDestination(iterator: TokensCache.Iterator): LocalParseResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL || it.type == MarkdownTokenTypes.RPAREN) {
                 return null
@@ -49,13 +50,14 @@ public class LinkParserUtil {
             }
 
             if (it.type != null && !hasOpenedParentheses) {
-                result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION))
-                return it
+                return LocalParseResult(it, 
+                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION)),
+                        emptyList())
             }
             return null
         }
 
-        fun parseLinkLabel(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+        fun parseLinkLabel(iterator: TokensCache.Iterator): LocalParseResult? {
             var it = iterator
 
             if (it.type != MarkdownTokenTypes.LBRACKET) {
@@ -81,14 +83,14 @@ public class LinkParserUtil {
                     return null
                 }
 
-                result.add(SequentialParser.Node(startIndex..endIndex + 1, MarkdownElementTypes.LINK_LABEL))
-                delegateIndices.addAll(indicesToDelegate)
-                return it
+                return LocalParseResult(it,
+                        listOf(SequentialParser.Node(startIndex..endIndex + 1, MarkdownElementTypes.LINK_LABEL)),
+                        indicesToDelegate)
             }
             return null
         }
 
-        fun parseLinkText(result: MutableCollection<SequentialParser.Node>, delegateIndices: MutableList<Int>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+        fun parseLinkText(iterator: TokensCache.Iterator): LocalParseResult? {
             var it = iterator
 
             if (it.type != MarkdownTokenTypes.LBRACKET) {
@@ -116,14 +118,14 @@ public class LinkParserUtil {
             }
 
             if (it.type == MarkdownTokenTypes.RBRACKET) {
-                result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TEXT))
-                delegateIndices.addAll(indicesToDelegate)
-                return it
+                return LocalParseResult(it,
+                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TEXT)),
+                        indicesToDelegate)
             }
             return null
         }
 
-        fun parseLinkTitle(result: MutableCollection<SequentialParser.Node>, iterator: TokensCache.Iterator): TokensCache.Iterator? {
+        fun parseLinkTitle(iterator: TokensCache.Iterator): LocalParseResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL) {
                 return null
@@ -146,8 +148,9 @@ public class LinkParserUtil {
             }
 
             if (it.type != null) {
-                result.add(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TITLE))
-                return it
+                return LocalParseResult(it, 
+                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TITLE)),
+                        emptyList())
             }
             return null
         }
