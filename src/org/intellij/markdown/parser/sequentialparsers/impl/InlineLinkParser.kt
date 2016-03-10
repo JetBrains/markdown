@@ -21,8 +21,7 @@ class InlineLinkParser : SequentialParser {
                 val inlineLink = parseInlineLink(iterator)
                 if (inlineLink != null) {
                     iterator = inlineLink.iteratorPosition.advance()
-                    result = result.withNodes(inlineLink.parsedNodes)
-                            .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(inlineLink.delegateIndices))
+                    result = result.withOtherParsingResult(inlineLink)
                     continue
                 }
             }
@@ -73,7 +72,7 @@ class InlineLinkParser : SequentialParser {
                             + (linkDestination?.parsedNodes ?: emptyList())
                             + (linkTitle?.parsedNodes ?: emptyList())
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK),
-                    linkText.delegateIndices)
+                    linkText.rangesToProcessFurther)
         }
     }
 }

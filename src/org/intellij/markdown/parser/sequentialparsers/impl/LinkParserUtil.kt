@@ -51,8 +51,7 @@ public class LinkParserUtil {
 
             if (it.type != null && !hasOpenedParentheses) {
                 return LocalParsingResult(it, 
-                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION)),
-                        emptyList())
+                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION)))
             }
             return null
         }
@@ -149,8 +148,7 @@ public class LinkParserUtil {
 
             if (it.type != null) {
                 return LocalParsingResult(it, 
-                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TITLE)),
-                        emptyList())
+                        listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TITLE)))
             }
             return null
         }

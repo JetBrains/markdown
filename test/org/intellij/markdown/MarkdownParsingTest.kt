@@ -197,6 +197,10 @@ public class MarkdownParsingTest : TestCase() {
     public fun testRuby17337() {
         defaultTest(GFMFlavourDescriptor());
     }
+    
+    public fun testEa79689() {
+        defaultTest(CommonMarkFlavourDescriptor());
+    }
 
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/test/data/parser").absolutePath;

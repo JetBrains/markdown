@@ -38,13 +38,25 @@ interface SequentialParser {
             _rangesToProcessFurther.add(ranges)
             return this
         }
+        
+        fun withOtherParsingResult(parsingResult: ParsingResult): ParsingResultBuilder {
+            _parsedNodes.addAll(parsingResult.parsedNodes)
+            _rangesToProcessFurther.addAll(parsingResult.rangesToProcessFurther)
+            return this
+        }
 
     }
 }
 
 data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
                               override val parsedNodes: Collection<SequentialParser.Node>,
-                              val delegateIndices: List<Int>) : SequentialParser.ParsingResult {
-    override val rangesToProcessFurther: Collection<Collection<IntRange>>
-        get() = listOf(SequentialParserUtil.indicesToTextRanges(delegateIndices))
+                              override val rangesToProcessFurther: Collection<Collection<IntRange>>) : SequentialParser.ParsingResult {
+    constructor(iteratorPosition: TokensCache.Iterator,
+                parsedNodes: Collection<SequentialParser.Node>,
+                delegateIndices: List<Int>)
+    : this(iteratorPosition, parsedNodes, listOf(SequentialParserUtil.indicesToTextRanges(delegateIndices)))
+    
+    constructor(iteratorPosition: TokensCache.Iterator,
+                parsedNodes: Collection<SequentialParser.Node>) 
+    : this(iteratorPosition, parsedNodes, emptyList<Collection<IntRange>>())
 }

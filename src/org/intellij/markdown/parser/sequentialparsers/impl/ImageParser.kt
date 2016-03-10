@@ -23,9 +23,8 @@ class ImageParser : SequentialParser {
 
                 if (link != null) {
                     result = result
-                            .withNodes(link.parsedNodes)
                             .withNode(SequentialParser.Node(iterator.index..link.iteratorPosition.index + 1, MarkdownElementTypes.IMAGE))
-                            .withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(link.delegateIndices))
+                            .withOtherParsingResult(link)
                     iterator = link.iteratorPosition.advance()
                     continue
                 }
