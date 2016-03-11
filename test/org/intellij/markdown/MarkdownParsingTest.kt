@@ -193,6 +193,10 @@ public class MarkdownParsingTest : TestCase() {
     public fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
+    
+    public fun testGfmAtxWithoutSpace() {
+        defaultTest(GFMFlavourDescriptor())
+    }
 
     public fun testRuby17337() {
         defaultTest(GFMFlavourDescriptor());

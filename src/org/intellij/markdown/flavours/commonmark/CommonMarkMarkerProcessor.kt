@@ -23,7 +23,7 @@ public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, 
             SetextHeaderProvider(),
             BlockQuoteProvider(),
             ListMarkerProvider(),
-            AtxHeaderProvider(),
+            AtxHeaderProvider(true),
             CodeFenceProvider(),
             HtmlBlockProvider(),
             LinkReferenceDefinitionProvider()

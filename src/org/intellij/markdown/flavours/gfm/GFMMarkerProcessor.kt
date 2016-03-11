@@ -9,12 +9,17 @@ import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
+import org.intellij.markdown.parser.markerblocks.providers.AtxHeaderProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 public class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
-    private val markerBlockProviders = super.getMarkerBlockProviders() + listOf(GitHubTableMarkerProvider())
+    private val markerBlockProviders = super.getMarkerBlockProviders()
+            .filterNot { it is AtxHeaderProvider }
+            .plus(listOf(
+                    GitHubTableMarkerProvider(),
+                    AtxHeaderProvider(false)))
 
     override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {
         return markerBlockProviders
