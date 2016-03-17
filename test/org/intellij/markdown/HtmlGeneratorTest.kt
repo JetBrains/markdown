@@ -7,13 +7,14 @@ import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
+import java.net.URI
 import kotlin.text.Regex
 
 public class HtmlGeneratorTest : TestCase() {
-    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
+    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(), baseURI: URI? = null) {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src);
-        val html = HtmlGenerator(src, tree, flavour).generateHtml()
+        val html = HtmlGenerator(src, tree, flavour, includeSrcPositions = false, baseURI = baseURI).generateHtml()
 
         val result = formatHtmlForTests(html)
 
@@ -110,6 +111,14 @@ public class HtmlGeneratorTest : TestCase() {
 
     public fun testGitBook() {
         defaultTest()
+    }
+
+    public fun testBaseUriHttp() {
+        defaultTest(baseURI = URI("http://example.com/foo/bar.html"))
+    }
+
+    public fun testBaseUriFile() {
+        defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
     }
 
     companion object {

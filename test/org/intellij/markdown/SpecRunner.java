@@ -17,7 +17,7 @@ public class SpecRunner {
         final MarkdownFlavourDescriptor flavour = new CommonMarkFlavourDescriptor();
         final ASTNode tree = new MarkdownParser(flavour)
                 .buildMarkdownTreeFromString(content);
-        final String html = new HtmlGenerator(content, tree, flavour, LinkMap.Builder.buildLinkMap(tree, content), false)
+        final String html = new HtmlGenerator(content, tree, flavour, LinkMap.Builder.buildLinkMap(tree, content), false, null)
                 .generateHtml();
         final String htmlWithoutBody = html.substring("<body>".length(), html.length() - "</body>".length());
 
