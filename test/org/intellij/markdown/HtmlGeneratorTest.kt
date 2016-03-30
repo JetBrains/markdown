@@ -8,7 +8,6 @@ import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
 import java.net.URI
-import kotlin.text.Regex
 
 public class HtmlGeneratorTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(), baseURI: URI? = null) {
@@ -119,6 +118,14 @@ public class HtmlGeneratorTest : TestCase() {
 
     public fun testBaseUriFile() {
         defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
+    }
+
+    public fun testBaseUriRelativeRoot() {
+        defaultTest(baseURI = URI("/user/repo-name/blob/master"))
+    }
+
+    public fun testBaseUriRelativeNoRoot() {
+        defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
 
     companion object {
