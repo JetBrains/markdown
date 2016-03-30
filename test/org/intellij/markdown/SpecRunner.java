@@ -4,7 +4,6 @@ import org.intellij.markdown.ast.ASTNode;
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor;
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor;
 import org.intellij.markdown.html.HtmlGenerator;
-import org.intellij.markdown.parser.LinkMap;
 import org.intellij.markdown.parser.MarkdownParser;
 
 import java.io.PrintWriter;
@@ -17,7 +16,7 @@ public class SpecRunner {
         final MarkdownFlavourDescriptor flavour = new CommonMarkFlavourDescriptor();
         final ASTNode tree = new MarkdownParser(flavour)
                 .buildMarkdownTreeFromString(content);
-        final String html = new HtmlGenerator(content, tree, flavour, LinkMap.Builder.buildLinkMap(tree, content), false, null)
+        final String html = new HtmlGenerator(content, tree, flavour, false)
                 .generateHtml();
         final String htmlWithoutBody = html.substring("<body>".length(), html.length() - "</body>".length());
 

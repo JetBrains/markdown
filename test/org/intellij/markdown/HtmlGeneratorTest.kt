@@ -5,6 +5,7 @@ import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
 import java.net.URI
@@ -13,7 +14,8 @@ public class HtmlGeneratorTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(), baseURI: URI? = null) {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src);
-        val html = HtmlGenerator(src, tree, flavour, includeSrcPositions = false, baseURI = baseURI).generateHtml()
+        val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
+        val html = HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml()
 
         val result = formatHtmlForTests(html)
 
