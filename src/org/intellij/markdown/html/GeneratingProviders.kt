@@ -6,6 +6,7 @@ import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import java.io.File
 import java.util.*
 import kotlin.text.Regex
 
@@ -179,7 +180,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     }
 }
 
-internal abstract class LinkGeneratingProvider : GeneratingProvider {
+internal abstract class LinkGeneratingProvider(val documentBase: File?=null) : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
@@ -203,19 +204,30 @@ internal abstract class LinkGeneratingProvider : GeneratingProvider {
     }
 }
 
-internal class InlineLinkGeneratingProvider : LinkGeneratingProvider() {
+internal class InlineLinkGeneratingProvider(documentBase: File?=null) : LinkGeneratingProvider(documentBase) {
     override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
-        val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
-                ?: return null
-        return LinkGeneratingProvider.RenderInfo(
-                label,
-                node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(text)?.let {
-                    LinkMap.normalizeDestination(it)
-                } ?: "",
-                node.findChildOfType(MarkdownElementTypes.LINK_TITLE)?.getTextInNode(text)?.let {
-                    LinkMap.normalizeTitle(it)
-                }
-        )
+        val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT) ?: return null
+
+        val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(text)?.let {
+            val normLinkDest = LinkMap.normalizeDestination(it)
+
+            // normalize relative image links to become absolute file URLs
+            if (File(normLinkDest.toString()).isAbsolute || normLinkDest.startsWith("http")) {
+                normLinkDest
+            } else {
+                val relativePath = File(normLinkDest.toString()).toPath()
+                if(documentBase!=null)
+                    documentBase.toPath().resolve(relativePath).toUri().toURL().toString()
+                else
+                    normLinkDest
+            }
+        } ?: ""
+
+        val title = node.findChildOfType(MarkdownElementTypes.LINK_TITLE)?.getTextInNode(text)?.let {
+            LinkMap.normalizeTitle(it)
+        }
+
+        return LinkGeneratingProvider.RenderInfo(label, destination, title)
     }
 }
 
@@ -236,9 +248,9 @@ internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
     }
 }
 
-internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvider() {
+internal class ImageGeneratingProvider(linkMap: LinkMap, documentBase: File?) : LinkGeneratingProvider(documentBase) {
     val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap)
-    val inlineLinkProvider = InlineLinkGeneratingProvider()
+    val inlineLinkProvider = InlineLinkGeneratingProvider(documentBase)
 
     override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
         node.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.let { linkNode ->
