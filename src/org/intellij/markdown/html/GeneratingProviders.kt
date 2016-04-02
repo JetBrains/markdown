@@ -187,9 +187,17 @@ internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : Ge
         renderLink(visitor, text, node, info)
     }
 
+    protected fun makeAbsoluteUrl(destination : CharSequence) : CharSequence {
+        try {
+            return baseURI?.resolve(destination.toString())?.toString() ?: destination
+        }
+        catch (e : IllegalArgumentException) {
+            return destination
+        }
+    }
+
     open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: RenderInfo) {
-        val target : CharSequence = baseURI?.resolve(info.destination.toString())?.toString() ?: info.destination
-        visitor.consumeTagOpen(node, "a", "href=\"${target}\"", info.title?.let { "title=\"$it\"" })
+        visitor.consumeTagOpen(node, "a", "href=\"${makeAbsoluteUrl(info.destination)}\"", info.title?.let { "title=\"$it\"" })
         labelProvider.processNode(visitor, text, info.label)
         visitor.consumeTagClose("a")
     }
@@ -255,9 +263,8 @@ internal class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGe
     }
 
     override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: LinkGeneratingProvider.RenderInfo) {
-        val target : CharSequence = baseURI?.resolve(info.destination.toString())?.toString() ?: info.destination
         visitor.consumeTagOpen(node, "img",
-                "src=\"${target}\"",
+                "src=\"${makeAbsoluteUrl(info.destination)}\"",
                 "alt=\"${getPlainTextFrom(info.label, text)}\"",
                 info.title?.let { "title=\"$it\"" },
                 autoClose = true)
