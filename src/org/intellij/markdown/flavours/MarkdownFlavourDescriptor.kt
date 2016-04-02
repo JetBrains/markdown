@@ -6,6 +6,7 @@ import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
+import java.io.File
 
 public interface MarkdownFlavourDescriptor {
     val markerProcessorFactory: MarkerProcessorFactory
@@ -14,5 +15,5 @@ public interface MarkdownFlavourDescriptor {
 
     fun createInlinesLexer(): MarkdownLexer
 
-    fun createHtmlGeneratingProviders(linkMap: LinkMap): Map<IElementType, GeneratingProvider>
+    fun createHtmlGeneratingProviders(linkMap: LinkMap, documentBase: File?): Map<IElementType, GeneratingProvider>
 }

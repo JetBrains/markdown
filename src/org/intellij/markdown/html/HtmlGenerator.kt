@@ -9,14 +9,16 @@ import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import java.io.File
 
 
 public class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
                            flavour: MarkdownFlavourDescriptor,
                            linkMap: LinkMap = LinkMap.buildLinkMap(root, markdownText),
-                           private val includeSrcPositions: Boolean = false) {
-    private val providers: Map<IElementType, GeneratingProvider> = flavour.createHtmlGeneratingProviders(linkMap)
+                           private val includeSrcPositions: Boolean = false,
+                           private val documentBase: File? = null) {
+    private val providers: Map<IElementType, GeneratingProvider> = flavour.createHtmlGeneratingProviders(linkMap, documentBase)
     private val htmlString: StringBuilder = StringBuilder()
 
     public fun generateHtml(): String {

@@ -16,6 +16,7 @@ import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
+import java.io.File
 import java.io.Reader
 
 public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
@@ -36,7 +37,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap): Map<IElementType, GeneratingProvider> = hashMapOf(
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap, documentBase: File?): Map<IElementType, GeneratingProvider> = hashMapOf(
 
             MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
             MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
@@ -98,7 +99,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
             MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
 
-            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap),
+            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap, documentBase),
 
             MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
