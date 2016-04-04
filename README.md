@@ -1,4 +1,4 @@
-intellij-markdown
+intellij-markdown [![Build Status](https://teamcity.jetbrains.com/app/rest/builds/buildType:(id:IntelliJMarkdownParser_BuildForIdeaPlugin)/statusIcon.svg?guest=1)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=IntelliJMarkdownParser_BuildForIdeaPlugin&guest=1)
 =================
 
 **Markdown parser written in kotlin**
