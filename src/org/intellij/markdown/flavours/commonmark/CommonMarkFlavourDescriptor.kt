@@ -17,6 +17,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.io.Reader
+import java.net.URI
 
 public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory
@@ -36,7 +37,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap): Map<IElementType, GeneratingProvider> = hashMapOf(
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?): Map<IElementType, GeneratingProvider> = hashMapOf(
 
             MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
             MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
@@ -93,12 +94,12 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
             MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
 
-            MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(),
+            MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(baseURI),
 
-            MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
-            MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap),
+            MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap, baseURI),
+            MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap, baseURI),
 
-            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap),
+            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap, baseURI),
 
             MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {

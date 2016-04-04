@@ -17,6 +17,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.io.Reader
+import java.net.URI
 
 public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
     override val markerProcessorFactory = GFMMarkerProcessor.Factory
@@ -37,8 +38,8 @@ public class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap): Map<IElementType, GeneratingProvider> {
-        return super.createHtmlGeneratingProviders(linkMap) + hashMapOf(
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?): Map<IElementType, GeneratingProvider> {
+        return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
                 GFMElementTypes.STRIKETHROUGH to object: SimpleInlineTagProvider("span", 2, -2) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")

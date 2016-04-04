@@ -5,15 +5,17 @@ import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
-import kotlin.text.Regex
+import java.net.URI
 
 public class HtmlGeneratorTest : TestCase() {
-    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
+    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(), baseURI: URI? = null) {
         val src = File(getTestDataPath() + "/" + testName + ".md").readText();
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src);
-        val html = HtmlGenerator(src, tree, flavour).generateHtml()
+        val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
+        val html = HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml()
 
         val result = formatHtmlForTests(html)
 
@@ -110,6 +112,26 @@ public class HtmlGeneratorTest : TestCase() {
 
     public fun testGitBook() {
         defaultTest()
+    }
+
+    public fun testBaseUriHttp() {
+        defaultTest(baseURI = URI("http://example.com/foo/bar.html"))
+    }
+
+    public fun testBaseUriFile() {
+        defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
+    }
+
+    public fun testBaseUriRelativeRoot() {
+        defaultTest(baseURI = URI("/user/repo-name/blob/master"))
+    }
+
+    public fun testBaseUriRelativeNoRoot() {
+        defaultTest(baseURI = URI("user/repo-name/blob/master"))
+    }
+    
+    public fun testBaseUriWithBadRelativeUrl() {
+        defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
 
     companion object {

@@ -13,10 +13,18 @@ import org.intellij.markdown.parser.LinkMap
 
 public class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
-                           flavour: MarkdownFlavourDescriptor,
-                           linkMap: LinkMap = LinkMap.buildLinkMap(root, markdownText),
+                           private val providers: Map<IElementType, GeneratingProvider>,
                            private val includeSrcPositions: Boolean = false) {
-    private val providers: Map<IElementType, GeneratingProvider> = flavour.createHtmlGeneratingProviders(linkMap)
+
+    constructor(markdownText: String,
+                root: ASTNode,
+                flavour: MarkdownFlavourDescriptor,
+                includeSrcPositions: Boolean = false)
+    : this(markdownText,
+            root,
+            flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(root, markdownText), null),
+            includeSrcPositions)  
+    
     private val htmlString: StringBuilder = StringBuilder()
 
     public fun generateHtml(): String {

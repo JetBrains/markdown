@@ -1,0 +1,6 @@
+<body>
+<p>
+<a href=";&amp;[/?:@[;&amp;[/?:@[;&amp;[/?:@[">Bad link which may lead to crash</a>
+
+<img src=";&amp;[/?:@[;&amp;[/?:@[;&amp;[/?:@[" alt="Bad image which may lead to crash" /></p>
+</body>

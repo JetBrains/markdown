@@ -6,6 +6,7 @@ import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import java.net.URI
 import java.util.*
 import kotlin.text.Regex
 
@@ -179,15 +180,24 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     }
 }
 
-internal abstract class LinkGeneratingProvider : GeneratingProvider {
+internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
         renderLink(visitor, text, node, info)
     }
 
+    protected fun makeAbsoluteUrl(destination : CharSequence) : CharSequence {
+        try {
+            return baseURI?.resolve(destination.toString())?.toString() ?: destination
+        }
+        catch (e : IllegalArgumentException) {
+            return destination
+        }
+    }
+
     open fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: RenderInfo) {
-        visitor.consumeTagOpen(node, "a", "href=\"${info.destination}\"", info.title?.let { "title=\"$it\"" })
+        visitor.consumeTagOpen(node, "a", "href=\"${makeAbsoluteUrl(info.destination)}\"", info.title?.let { "title=\"$it\"" })
         labelProvider.processNode(visitor, text, info.label)
         visitor.consumeTagClose("a")
     }
@@ -203,7 +213,7 @@ internal abstract class LinkGeneratingProvider : GeneratingProvider {
     }
 }
 
-internal class InlineLinkGeneratingProvider : LinkGeneratingProvider() {
+internal class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
         val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
                 ?: return null
@@ -219,8 +229,8 @@ internal class InlineLinkGeneratingProvider : LinkGeneratingProvider() {
     }
 }
 
-internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
-: LinkGeneratingProvider() {
+internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
+: LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
         val label = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_LABEL })
                 ?: return null
@@ -236,9 +246,9 @@ internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap)
     }
 }
 
-internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvider() {
-    val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap)
-    val inlineLinkProvider = InlineLinkGeneratingProvider()
+internal class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGeneratingProvider(baseURI) {
+    val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap, baseURI)
+    val inlineLinkProvider = InlineLinkGeneratingProvider(baseURI)
 
     override fun getRenderInfo(text: String, node: ASTNode): LinkGeneratingProvider.RenderInfo? {
         node.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.let { linkNode ->
@@ -254,7 +264,7 @@ internal class ImageGeneratingProvider(linkMap: LinkMap) : LinkGeneratingProvide
 
     override fun renderLink(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode, info: LinkGeneratingProvider.RenderInfo) {
         visitor.consumeTagOpen(node, "img",
-                "src=\"${info.destination}\"",
+                "src=\"${makeAbsoluteUrl(info.destination)}\"",
                 "alt=\"${getPlainTextFrom(info.label, text)}\"",
                 info.title?.let { "title=\"$it\"" },
                 autoClose = true)
