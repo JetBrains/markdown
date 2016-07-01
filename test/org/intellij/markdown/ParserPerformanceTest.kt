@@ -3,8 +3,10 @@ package org.intellij.markdown
 import junit.framework.TestCase
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
+import org.junit.experimental.categories.Category
 import java.io.File
 
+@Category(ParserPerformanceTest::class)
 public class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/test/data/performance").absolutePath;
