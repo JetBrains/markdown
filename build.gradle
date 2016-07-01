@@ -27,10 +27,10 @@ dependencies {
 }
 
 sourceSets {
+    main.java.srcDirs = ['src']
     main.kotlin.srcDirs = ['src']
     test.kotlin.srcDirs = ['test']
 
-    main.java.srcDirs = ['src/org/intellij/markdown/lexer', 'src/org/intellij/markdown/flavours/gfm/lexer']
     main.resources.srcDirs = []
 }
 
