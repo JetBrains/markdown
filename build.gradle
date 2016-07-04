@@ -52,3 +52,7 @@ task performanceTest(type: Test, group: 'verification', dependsOn: [classes, tes
         exceptionFormat = 'full'
     }
 }
+
+jar {
+    archiveName 'markdown.jar'
+}
