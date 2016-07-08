@@ -507,8 +507,10 @@ Define additional <a href="https://httpd.apache.org/docs/current/mod/mod_log_con
 <h5 md-src-pos="17266..17285">
 <code md-src-pos="17271..17285">logroot_mode</code>
 </h5>
-<p md-src-pos="17287..17568">Overrides the mode the default logroot directory is set to ($::apache::logroot). Defaults to undef. Do NOT give people write access to the directory the logs are stored
-in without being aware of the consequences; see http://httpd.apache.org/docs/2.4/logs.html#security for details.</p>
+<p md-src-pos="17287..17568">
+Overrides the mode the default logroot directory is set to ($::apache::logroot). Defaults to undef. Do NOT give people write access to the directory the logs are stored
+in without being aware of the consequences; see <a href="http://httpd.apache.org/docs/2.4/logs.html#security" md-src-pos="17504..17555">http://httpd.apache.org/docs/2.4/logs.html#security</a>
+ for details.</p>
 <h5 md-src-pos="17570..17589">
 <code md-src-pos="17575..17589">manage_group</code>
 </h5>
@@ -1681,8 +1683,10 @@ Specifies the location of the virtual host's logfiles. Defaults to '/var/log/<ap
 <h5 md-src-pos="49400..49419">
 <code md-src-pos="49405..49419">logroot_mode</code>
 </h5>
-<p md-src-pos="49421..49673">Overrides the mode the logroot directory is set to. Defaults to undef. Do NOT give people write access to the directory the logs are stored
-in without being aware of the consequences; see http://httpd.apache.org/docs/2.4/logs.html#security for details.</p>
+<p md-src-pos="49421..49673">
+Overrides the mode the logroot directory is set to. Defaults to undef. Do NOT give people write access to the directory the logs are stored
+in without being aware of the consequences; see <a href="http://httpd.apache.org/docs/2.4/logs.html#security" md-src-pos="49609..49660">http://httpd.apache.org/docs/2.4/logs.html#security</a>
+ for details.</p>
 <h5 md-src-pos="49675..49691">
 <code md-src-pos="49680..49691">log_level</code>
 </h5>

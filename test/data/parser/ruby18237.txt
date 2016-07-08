@@ -1,0 +1,25 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('http://www.cookbook-r.com')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('http://www.cookbookr.com')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('http://www.foor.bar')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('which works like charm')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('vs')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('hello')
+    WHITE_SPACE(' ')
+    Markdown:GFM_AUTOLINK('http://www.foor.bar')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('which does not work correctly because the http is not part of the URL')

@@ -12,7 +12,7 @@ This is a single .war file deployment of <strong>Knowtify Log Analytics</strong>
 <li>
 <p>
 Red Hat 7 family (version 7.x  Red Hat Enterprise Linux, CentOS, Fedora, Scientific Linux, Oracle Linux and others) Commands for the Red Hat 6 family, where different, are noted in square brackets [RH6: ~command~ ] see: <a href="http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,">http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,</a>
- and http://<a href="www.postgresql.org/download/linux/redhat/">www.postgresql.org/download/linux/redhat/</a>
+ and <a href="http://www.postgresql.org/download/linux/redhat/">http://www.postgresql.org/download/linux/redhat/</a>
 </p>
 <ol>
 <li>
