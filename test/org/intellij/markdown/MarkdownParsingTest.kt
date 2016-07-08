@@ -1,4 +1,4 @@
-package org.intellij.markdown;
+package org.intellij.markdown
 
 import junit.framework.TestCase
 import org.intellij.markdown.ast.ASTNode
@@ -9,61 +9,61 @@ import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
 
-public class MarkdownParsingTest : TestCase() {
+class MarkdownParsingTest : TestCase() {
 
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText();
-        val result = getParsedTreeText(src, flavour);
+        val src = File(getTestDataPath() + "/" + testName + ".md").readText()
+        val result = getParsedTreeText(src, flavour)
 
-        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
+        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
     }
 
     private fun getParsedTreeText(inputText: String,
                                   flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()): String {
-        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(inputText);
-        return treeToStr(inputText, tree);
+        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(inputText)
+        return treeToStr(inputText, tree)
     }
 
     private fun treeToStr(src: String, tree: ASTNode): String {
-        return treeToStr(src, tree, StringBuilder(), 0).toString();
+        return treeToStr(src, tree, StringBuilder(), 0).toString()
     }
 
     private fun treeToStr(src: String, tree: ASTNode, sb: StringBuilder, depth: Int): StringBuilder {
         if (sb.length > 0) {
-            sb.append('\n');
+            sb.append('\n')
         }
         repeat(depth * 2) { sb.append(' '); }
 
-        sb.append(tree.type.toString());
+        sb.append(tree.type.toString())
         if (tree is LeafASTNode) {
-            val str = src.substring(tree.startOffset, tree.endOffset);
-            sb.append("('").append(str.replace("\\n".toRegex(), "\\\\n")).append("')");
+            val str = src.substring(tree.startOffset, tree.endOffset)
+            sb.append("('").append(str.replace("\\n".toRegex(), "\\\\n")).append("')")
         }
         for (child in tree.children) {
-            treeToStr(src, child, sb, depth + 1);
+            treeToStr(src, child, sb, depth + 1)
         }
 
-        return sb;
+        return sb
     }
 
-    public fun testEmpty() {
-        assertEquals("Markdown:MARKDOWN_FILE", getParsedTreeText(""));
+    fun testEmpty() {
+        assertEquals("Markdown:MARKDOWN_FILE", getParsedTreeText(""))
     }
 
-    public fun testSmall1() {
+    fun testSmall1() {
         assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:EOL('\\n')",
-                getParsedTreeText("\n"));
+                getParsedTreeText("\n"))
     }
 
-    public fun testSmall2() {
+    fun testSmall2() {
         assertEquals(
                 "Markdown:MARKDOWN_FILE\n" +
                 "  Markdown:PARAGRAPH\n" +
                 "    Markdown:TEXT('test')",
-                getParsedTreeText("test"));
+                getParsedTreeText("test"))
     }
 
-    public fun testSmall3() {
+    fun testSmall3() {
         assertEquals(
                 "Markdown:MARKDOWN_FILE\n" +
                 "  Markdown:PARAGRAPH\n" +
@@ -71,142 +71,142 @@ public class MarkdownParsingTest : TestCase() {
                 "      Markdown:EMPH('*')\n" +
                 "      Markdown:TEXT('test')\n" +
                 "      Markdown:EMPH('*')",
-                getParsedTreeText("*test*"));
+                getParsedTreeText("*test*"))
     }
 
-    public fun testOneSpace() {
+    fun testOneSpace() {
         assertEquals("Markdown:MARKDOWN_FILE\n" +
                 "  WHITE_SPACE(' ')",
-                getParsedTreeText(" "));
+                getParsedTreeText(" "))
     }
 
-    public fun testLeadingSpace() {
+    fun testLeadingSpace() {
         assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    WHITE_SPACE(' ')\n    Markdown:TEXT('Test')",
-                getParsedTreeText(" Test"));
+                getParsedTreeText(" Test"))
     }
 
-    public fun testTrailingSpace() {
+    fun testTrailingSpace() {
         assertEquals("Markdown:MARKDOWN_FILE\n  Markdown:PARAGRAPH\n    Markdown:TEXT('Test')\n    WHITE_SPACE(' ')",
-                getParsedTreeText("Test "));
+                getParsedTreeText("Test "))
     }
 
-    public fun testLeadingAndTrailingWhitespaces() {
+    fun testLeadingAndTrailingWhitespaces() {
         defaultTest()
     }
 
-    public fun testSimple() {
-        defaultTest();
-    }
-
-    public fun testCodeBlocks() {
-        defaultTest();
-    }
-
-    public fun testUnorderedLists() {
-        defaultTest();
-    }
-
-    public fun testOrderedLists() {
-        defaultTest();
-    }
-
-    public fun testBlockquotes() {
-        defaultTest();
-    }
-
-    public fun testHeaders() {
-        defaultTest();
-    }
-
-    public fun testHtmlBlocks() {
-        defaultTest();
-    }
-
-    public fun testEmphStrong() {
-        defaultTest();
-    }
-
-    public fun testCodeFence() {
-        defaultTest();
-    }
-
-    public fun testCodeSpan() {
-        defaultTest();
-    }
-
-    public fun testLinkDefinitions() {
-        defaultTest();
-    }
-
-    public fun testInlineLinks() {
-        defaultTest();
-    }
-
-    public fun testReferenceLinks() {
-        defaultTest();
-    }
-
-    public fun testTightLooseLists() {
+    fun testSimple() {
         defaultTest()
     }
 
-    public fun testHruleAndSetext() {
+    fun testCodeBlocks() {
         defaultTest()
     }
 
-    public fun testPuppetApache() {
+    fun testUnorderedLists() {
         defaultTest()
     }
 
-    public fun testRuby16750() {
+    fun testOrderedLists() {
         defaultTest()
     }
 
-    public fun testExample208() {
+    fun testBlockquotes() {
         defaultTest()
     }
 
-    public fun testExample221() {
+    fun testHeaders() {
         defaultTest()
     }
 
-    public fun testExample226() {
+    fun testHtmlBlocks() {
         defaultTest()
     }
 
-    public fun testImages() {
+    fun testEmphStrong() {
         defaultTest()
     }
 
-    public fun testStrikethrough() {
+    fun testCodeFence() {
+        defaultTest()
+    }
+
+    fun testCodeSpan() {
+        defaultTest()
+    }
+
+    fun testLinkDefinitions() {
+        defaultTest()
+    }
+
+    fun testInlineLinks() {
+        defaultTest()
+    }
+
+    fun testReferenceLinks() {
+        defaultTest()
+    }
+
+    fun testTightLooseLists() {
+        defaultTest()
+    }
+
+    fun testHruleAndSetext() {
+        defaultTest()
+    }
+
+    fun testPuppetApache() {
+        defaultTest()
+    }
+
+    fun testRuby16750() {
+        defaultTest()
+    }
+
+    fun testExample208() {
+        defaultTest()
+    }
+
+    fun testExample221() {
+        defaultTest()
+    }
+
+    fun testExample226() {
+        defaultTest()
+    }
+
+    fun testImages() {
+        defaultTest()
+    }
+
+    fun testStrikethrough() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testGfmAutolink() {
+    fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testCheckLists() {
+    fun testCheckLists() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testGfmTable() {
+    fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
     
-    public fun testGfmAtxWithoutSpace() {
+    fun testGfmAtxWithoutSpace() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testRuby17337() {
-        defaultTest(GFMFlavourDescriptor());
+    fun testRuby17337() {
+        defaultTest(GFMFlavourDescriptor())
     }
     
-    public fun testEa79689() {
-        defaultTest(CommonMarkFlavourDescriptor());
+    fun testEa79689() {
+        defaultTest(CommonMarkFlavourDescriptor())
     }
 
-    protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/parser").absolutePath;
+    private fun getTestDataPath(): String {
+        return File(getIntellijMarkdownHome() + "/test/data/parser").absolutePath
     }
 }
