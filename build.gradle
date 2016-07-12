@@ -2,17 +2,16 @@ buildscript {
     ext.kotlin_version = '1.0.3'
 
     repositories {
+        jcenter()
         mavenCentral()
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7"
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.7"
-}
 
 repositories {
     flatDir {
@@ -23,6 +22,7 @@ repositories {
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -62,4 +62,6 @@ jar {
     archiveName 'markdown.jar'
 }
 
-apply from: "deploy.gradle"
+if (hasProperty("bintrayUser")) {
+    apply from: "deploy.gradle"
+}
