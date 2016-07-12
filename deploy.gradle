@@ -1,0 +1,30 @@
+if (hasProperty("bintrayUser")) {
+    publishing {
+        publications {
+            MyPublication(MavenPublication) {
+                from components.java
+                groupId 'org.jetbrains'
+                artifactId 'markdown'
+                version "0.1.$buildNumber"
+            }
+        }
+    }
+    
+    bintray {
+        publish = false
+        
+        user = bintrayUser
+        key = bintrayKey
+        publications = ['MyPublication']
+        pkg {
+            userOrg = 'jetbrains'
+            repo = "markdown"
+            name = "markdown"
+            version {
+                name = "0.1.$buildNumber"
+                released = new Date()
+            }
+        }
+    }
+}
+
