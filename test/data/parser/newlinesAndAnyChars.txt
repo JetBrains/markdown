@@ -1,0 +1,13 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:TEXT('.')
+    Markdown:EOL(' ')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('XSS')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')

@@ -161,7 +161,8 @@ import java.util.Stack;
 DIGIT = [0-9]
 ALPHANUM = [a-zA-Z0-9]
 WHITE_SPACE = [ \t\f]
-EOL = "\n"|"\r"|"\r\n"
+EOL = \R
+ANY_CHAR = [^]
 
 DOUBLE_QUOTED_TEXT = \" (\\\" | [^\n\"])* \"
 SINGLE_QUOTED_TEXT = "'" (\\"'" | [^\n'])* "'"
@@ -202,7 +203,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
     return Token.BLOCK_QUOTE;
   }
 
-  . {
+  {ANY_CHAR} {
     resetState();
   }
 
@@ -291,14 +292,14 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
     return Token.TEXT;
   }
 
-  . { return Token.TEXT; }
+  {ANY_CHAR} { return Token.TEXT; }
 
 }
 
 <PARSE_DELIMITED> {
   {EOL} { resetState(); }
 
-  {EOL} | . {
+  {EOL} | {ANY_CHAR} {
     if (yycharat(0) == parseDelimited.exitChar) {
       yybegin(stateStack.pop());
       return getDelimiterTokenType(yycharat(0));
@@ -308,4 +309,4 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
 
 }
 
-. { return Token.TEXT; }
+{ANY_CHAR} { return Token.TEXT; }

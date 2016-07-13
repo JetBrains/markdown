@@ -160,7 +160,8 @@ import java.util.Stack;
 DIGIT = [0-9]
 ALPHANUM = [a-zA-Z0-9]
 WHITE_SPACE = [ \t\f]
-EOL = "\n"|"\r"|"\r\n"
+EOL = \R
+ANY_CHAR = [^]
 
 DOUBLE_QUOTED_TEXT = \" (\\\" | [^\n\"])* \"
 SINGLE_QUOTED_TEXT = "'" (\\"'" | [^\n'])* "'"
@@ -200,7 +201,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
     return Token.BLOCK_QUOTE;
   }
 
-  . {
+  {ANY_CHAR} {
     resetState();
   }
 
@@ -279,7 +280,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
     return Token.TEXT;
   }
 
-  . { return Token.TEXT; }
+  {ANY_CHAR} { return Token.TEXT; }
 
 }
 
@@ -296,4 +297,4 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 
 }
 
-. { return Token.TEXT; }
+{ANY_CHAR} { return Token.TEXT; }
