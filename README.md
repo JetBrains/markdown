@@ -1,4 +1,4 @@
-intellij-markdown [![Build Status](https://teamcity.jetbrains.com/app/rest/builds/buildType:(id:IntelliJMarkdownParser_BuildForIdeaPlugin)/statusIcon.svg?guest=1)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=IntelliJMarkdownParser_BuildForIdeaPlugin&guest=1)
+intellij-markdown [![Build Status](https://teamcity.jetbrains.com/app/rest/builds/buildType:(id:IntelliJMarkdownParser_BuildForIdeaPlugin)/statusIcon.svg?guest=1)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=IntelliJMarkdownParser_BuildForIdeaPlugin&guest=1) [![Download](https://api.bintray.com/packages/jetbrains/markdown/markdown/images/download.svg) ](https://bintray.com/jetbrains/markdown/markdown/_latestVersion)
 =================
 
 **Markdown parser written in kotlin**
