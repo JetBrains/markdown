@@ -85,15 +85,15 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
             
             offset = passOneNewline(text, offset)
 
-            val destination = Regex("^$LINK_DESTINATION").find(text.subSequence(offset, text.length)) 
+            val destination = Regex("\\A$LINK_DESTINATION").find(text.subSequence(offset, text.length))
                     ?: return null
             val destinationRange = IntRange(destination.range.start + offset, destination.range.endInclusive + offset)
             
             offset += destination.range.endInclusive - destination.range.start + 1
             offset = passOneNewline(text, offset)
-            
-            val title = Regex("^$LINK_TITLE").find(text.subSequence(offset, text.length))
-            
+
+            val title = Regex("\\A$LINK_TITLE").find(text.subSequence(offset, text.length))
+
             val result = ArrayList<IntRange>()
             result.add(linkLabel)
             result.add(destinationRange)
