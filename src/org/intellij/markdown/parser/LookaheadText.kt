@@ -1,6 +1,6 @@
 package org.intellij.markdown.parser
 
-public class LookaheadText(public val text: String) {
+public class LookaheadText(private val text: CharSequence) {
     private val lines: List<String> = text.split('\n')
 
     public val startPosition: Position? = if (text.isNotEmpty())

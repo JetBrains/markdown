@@ -17,12 +17,13 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
     }
 
-    public fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+    public fun parse(root: IElementType, textString: String, parseInlines: Boolean = true): ASTNode {
         val productionHolder = ProductionHolder()
         val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
 
         val rootMarker = productionHolder.mark()
 
+        val text = CharArrayCharSequence(textString.toCharArray())
         val textHolder = LookaheadText(text)
         var pos: LookaheadText.Position? = textHolder.startPosition
         while (pos != null) {
