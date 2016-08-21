@@ -58,7 +58,7 @@ public class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockP
     private fun getRegex() = if (requireSpace) REGEX_WITH_SPACE else REGEX_NO_SPACE;
 
     companion object {
-        val REGEX_WITH_SPACE: Regex = Regex("^ {0,3}(#{1,6})( |$)")
-        val REGEX_NO_SPACE: Regex = Regex("^ {0,3}(#{1,6})")
+        val REGEX_WITH_SPACE: Regex = Regex("\\A {0,3}(#{1,6})( |$)")
+        val REGEX_NO_SPACE: Regex = Regex("\\A {0,3}(#{1,6})")
     }
 }
