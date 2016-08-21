@@ -16,5 +16,15 @@ public interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
         public fun isStartOfLineWithConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
             return pos.offsetInCurrentLine == constraints.getCharsEaten(pos.currentLine)
         }
+        
+        fun passSmallIndent(text: CharSequence): Int {
+            var offset = 0
+            repeat(3) {
+                if (offset < text.length && text[offset] == ' ') {
+                    offset++
+                }
+            }
+            return offset
+        }
     }
 }

@@ -71,12 +71,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
         }
         
         fun matchLinkDefinition(text: CharSequence): List<IntRange>? {
-            var offset = 0
-            repeat(3) {
-                if (offset < text.length && text[offset] == ' ') {
-                    offset++
-                }
-            }
+            var offset = MarkerBlockProvider.passSmallIndent(text)
             val linkLabel = matchLinkLabel(text, offset) ?: return null
             offset = linkLabel.endInclusive + 1
             if (offset >= text.length || text[offset] != ':') 

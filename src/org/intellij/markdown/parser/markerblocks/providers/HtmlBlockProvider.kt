@@ -26,12 +26,18 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         if (!MarkerBlockProvider.isStartOfLineWithConstraints(pos, constraints)) {
             return -1
         }
-        val matchResult = FIND_START_REGEX.find(pos.currentLineFromPosition)
+        val text = pos.currentLineFromPosition
+        val offset = MarkerBlockProvider.passSmallIndent(text)
+        if (offset >= text.length || text[offset] != '<') {
+            return -1
+        }
+        
+        val matchResult = FIND_START_REGEX.find(text.subSequence(offset, text.length))
                 ?: return -1
-        assert(matchResult.groups.size == OPEN_CLOSE_REGEXES.size + 1) { "There are some excess capturing groups probably!" }
-        for (i in 1..OPEN_CLOSE_REGEXES.size) {
-            if (matchResult.groups[i] != null) {
-                return i - 1
+        assert(matchResult.groups.size == OPEN_CLOSE_REGEXES.size + 2) { "There are some excess capturing groups probably!" }
+        for (i in 0..OPEN_CLOSE_REGEXES.size - 1) {
+            if (matchResult.groups[i + 2] != null) {
+                return i
             }
         }
         assert(false) { "Match found but all groups are empty!" }
@@ -76,7 +82,7 @@ public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> 
         )
 
         val FIND_START_REGEX = Regex(
-                OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "^ {0,3}(${it.first.pattern})" })
+                "\\A(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
         )
 
     }
