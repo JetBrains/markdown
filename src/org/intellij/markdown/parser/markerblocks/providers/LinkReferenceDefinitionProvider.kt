@@ -57,7 +57,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
 
         val NONCONTROL = "(?:\\\\[\\(\\)]|[^ \\n\\t\\(\\)])"
 
-        val LINK_DESTINATION = Regex("(?:<(?:\\\\[<>]|[^<>\\n])*>|${NONCONTROL}*\\(${NONCONTROL}*\\)${NONCONTROL}*|${NONCONTROL}+)")
+        val LINK_DESTINATION = "(?:<(?:\\\\[<>]|[^<>\\n])*>|${NONCONTROL}*\\(${NONCONTROL}*\\)${NONCONTROL}*|${NONCONTROL}+)"
 
         val LINK_TITLE = "(?:\"${NOT_CHARS("\"")}\"|'${NOT_CHARS("'")}'|\\(${NOT_CHARS("\\)")}\\))"
 
