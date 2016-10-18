@@ -72,8 +72,8 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                 offset = passWhiteSpaces(line, offset)
                 if (offset < line.length && line[offset] == ':') {
                     offset++
+                    offset = passWhiteSpaces(line, offset)
                 }
-                offset = passWhiteSpaces(line, offset)
 
                 var dashes = 0
                 while (offset < line.length && line[offset] == '-') {
@@ -89,17 +89,16 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                 offset = passWhiteSpaces(line, offset)
                 if (offset < line.length && line[offset] == ':') {
                     offset++
+                    offset = passWhiteSpaces(line, offset)
                 }
-                offset = passWhiteSpaces(line, offset)
 
                 if (offset < line.length && line[offset] == '|') {
                     offset++
+                    offset = passWhiteSpaces(line, offset)
                 } else {
                     break
                 }
             }
-
-            offset = passWhiteSpaces(line, offset)
 
             if (offset == line.length) {
                 return result
@@ -109,7 +108,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         }
 
         fun passWhiteSpaces(line: CharSequence, offset: Int): Int {
-            var curOffset = offset;
+            var curOffset = offset
             while (curOffset < line.length) {
                 if (line[curOffset] != ' ' && line[curOffset] != '\t') {
                     break

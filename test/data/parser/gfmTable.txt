@@ -288,3 +288,45 @@ Markdown:MARKDOWN_FILE
       Markdown:TABLE_SEPARATOR('|')
       Markdown:TABLE_SEPARATOR('quiz')
   Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:CELL
+        Markdown:(('(')
+        Markdown:TEXT('RUBY-18313')
+        Markdown:)(')')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Table')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('With trailing spaces')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('  ')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('-------------------|-------------|-----------------------|  ')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:CELL
+        Markdown:TEXT('In the second')
+        WHITE_SPACE('      ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('line')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:(('(')
+        Markdown:TEXT('with dashes')
+        Markdown:)(')')
+        WHITE_SPACE('    ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:TABLE_SEPARATOR('  ')
+  Markdown:EOL('\n')

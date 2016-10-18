@@ -79,3 +79,7 @@ _The number of row cells may be different:_
 |foo|bar|baz|
 ---|---|---
 |foo|baz|maaz|quiz
+
+(RUBY-18313) | Table | With trailing spaces |  
+-------------------|-------------|-----------------------|  
+In the second      | line | (with dashes)    |  
