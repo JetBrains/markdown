@@ -59,6 +59,6 @@ foo <a href="/uri">bar</a>
 <p>with blank line'</p>
 <p>[fooe]</p>
 <p>
-<a href="https://vk.com" title="first alt">Link nOrmalization</a>
+<a href="https://vk.com" title="first alt">Link nOrmalization and order</a>
 </p>
 </body>
