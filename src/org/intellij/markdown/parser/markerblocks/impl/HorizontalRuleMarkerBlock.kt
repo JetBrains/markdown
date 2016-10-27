@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker)
+class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker)
 : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = false
 

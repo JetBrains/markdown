@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
+class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder, 
                                   startPosition: LookaheadText.Position) 
 : MarkerBlockImpl(myConstraints, productionHolder.mark()) {

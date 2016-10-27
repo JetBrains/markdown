@@ -3,7 +3,7 @@ package org.intellij.markdown.parser.sequentialparsers
 import java.util.*
 
 abstract class SequentialParserManager {
-    abstract fun getParserSequence(): List<SequentialParser>;
+    abstract fun getParserSequence(): List<SequentialParser>
 
     fun runParsingSequence(tokensCache: TokensCache, rangesToParse: Collection<IntRange>): Collection<SequentialParser.Node> {
         val result = ArrayList<SequentialParser.Node>()

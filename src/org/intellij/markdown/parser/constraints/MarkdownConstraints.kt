@@ -3,7 +3,7 @@ package org.intellij.markdown.parser.constraints
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
 
-public open class MarkdownConstraints protected constructor(private val indents: IntArray,
+open class MarkdownConstraints protected constructor(private val indents: IntArray,
                                                             private val types: CharArray,
                                                             private val isExplicit: BooleanArray,
                                                             private val charsEaten: Int) {
@@ -11,14 +11,14 @@ public open class MarkdownConstraints protected constructor(private val indents:
     open val base: MarkdownConstraints
         get() = BASE
 
-    public open fun createNewConstraints(indents: IntArray,
+    open fun createNewConstraints(indents: IntArray,
                                          types: CharArray,
                                          isExplicit: BooleanArray,
                                          charsEaten: Int): MarkdownConstraints {
         return MarkdownConstraints(indents, types, isExplicit, charsEaten)
     }
 
-    public fun eatItselfFromString(s: CharSequence): CharSequence {
+    fun eatItselfFromString(s: CharSequence): CharSequence {
         if (s.length < charsEaten) {
             return ""
         } else {
@@ -26,7 +26,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
         }
     }
 
-    public fun getIndent(): Int {
+    fun getIndent(): Int {
         if (indents.size == 0) {
             return 0
         }
@@ -34,27 +34,27 @@ public open class MarkdownConstraints protected constructor(private val indents:
         return indents.last()
     }
 
-    public fun getCharsEaten(s: CharSequence): Int {
+    fun getCharsEaten(s: CharSequence): Int {
         return Math.min(charsEaten, s.length)
     }
 
-    public open fun getLastType(): Char? {
+    open fun getLastType(): Char? {
         return types.lastOrNull()
     }
 
-    public fun getLastExplicit(): Boolean? {
+    fun getLastExplicit(): Boolean? {
         return isExplicit.lastOrNull()
     }
 
-    public fun upstreamWith(other: MarkdownConstraints): Boolean {
+    fun upstreamWith(other: MarkdownConstraints): Boolean {
         return other.startsWith(this) && !containsListMarkers()
     }
 
-    public fun extendsPrev(other: MarkdownConstraints): Boolean {
+    fun extendsPrev(other: MarkdownConstraints): Boolean {
         return startsWith(other) && !containsListMarkers(other.types.size)
     }
 
-    public fun extendsList(other: MarkdownConstraints): Boolean {
+    fun extendsList(other: MarkdownConstraints): Boolean {
         if (other.types.size == 0) {
             throw IllegalArgumentException("List constraints should contain at least one item")
         }
@@ -89,7 +89,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
         return false
     }
 
-    public fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
+    fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
         if (pos == null || pos.char == '\n')
             return null
         if (HorizontalRuleProvider.isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
@@ -200,9 +200,9 @@ public open class MarkdownConstraints protected constructor(private val indents:
     }
 
     companion object {
-        public val BASE: MarkdownConstraints = MarkdownConstraints(IntArray(0), CharArray(0), BooleanArray(0), 0)
+        val BASE: MarkdownConstraints = MarkdownConstraints(IntArray(0), CharArray(0), BooleanArray(0), 0)
 
-        public val BQ_CHAR: Char = '>'
+        val BQ_CHAR: Char = '>'
 
         private fun MarkdownConstraints(parent: MarkdownConstraints,
                                         newIndentDelta: Int,
@@ -223,7 +223,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
             return parent.createNewConstraints(_indents, _types, _isExplicit, newOffset)
         }
 
-        public fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
+        fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
             assert(pos.char == '\n')
 
             val line = pos.currentLine
@@ -238,7 +238,7 @@ public open class MarkdownConstraints protected constructor(private val indents:
             return result
         }
 
-        public fun fillFromPrevious(line: String,
+        fun fillFromPrevious(line: String,
                                     startOffset: Int,
                                     prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
             val prevN = prevLineConstraints.indents.size

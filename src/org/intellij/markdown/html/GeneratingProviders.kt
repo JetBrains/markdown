@@ -10,9 +10,9 @@ import java.net.URI
 import java.util.*
 import kotlin.text.Regex
 
-public abstract class OpenCloseGeneratingProvider : GeneratingProvider {
-    abstract fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode);
-    abstract fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode);
+abstract class OpenCloseGeneratingProvider : GeneratingProvider {
+    abstract fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode)
+    abstract fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode)
 
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         openTag(visitor, text, node)
@@ -21,7 +21,7 @@ public abstract class OpenCloseGeneratingProvider : GeneratingProvider {
     }
 }
 
-public abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvider() {
+abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvider() {
     open fun childrenToRender(node: ASTNode): List<ASTNode> {
         return node.children
     }
@@ -41,7 +41,7 @@ public abstract class InlineHolderGeneratingProvider : OpenCloseGeneratingProvid
     }
 }
 
-public open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
+open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider() {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         visitor.consumeTagOpen(node, tagName)
     }
@@ -52,7 +52,7 @@ public open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingPr
 
 }
 
-public open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0, val renderTo: Int = 0)
+open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0, val renderTo: Int = 0)
 : InlineHolderGeneratingProvider() {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         visitor.consumeTagOpen(node, tagName)
@@ -69,7 +69,7 @@ public open class SimpleInlineTagProvider(val tagName: String, val renderFrom: I
 
 }
 
-public open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo: Int = 0)
+open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo: Int = 0)
 : SimpleInlineTagProvider("", renderFrom, renderTo) {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
@@ -78,7 +78,7 @@ public open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo:
     }
 }
 
-public open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvider() {
+open class TrimmingInlineHolderProvider() : InlineHolderGeneratingProvider() {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
     }
 
@@ -151,7 +151,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
             childrenToConsider = childrenToConsider.subList(0, childrenToConsider.size - 1)
         }
 
-        var lastChildWasContent = false;
+        var lastChildWasContent = false
 
         val attributes = ArrayList<String>()
         for (child in childrenToConsider) {
@@ -163,7 +163,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
             if (state == 0 && child.type == MarkdownTokenTypes.FENCE_LANG) {
                 attributes.add("class=\"language-${
                 HtmlGenerator.leafText(text, child).toString().trim().split(' ')[0]
-                }\"");
+                }\"")
             }
             if (state == 0 && child.type == MarkdownTokenTypes.EOL) {
                 visitor.consumeTagOpen(node, "code", *attributes.toTypedArray())

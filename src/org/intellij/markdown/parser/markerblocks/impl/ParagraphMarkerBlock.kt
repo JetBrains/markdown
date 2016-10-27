@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
+class ParagraphMarkerBlock(constraints: MarkdownConstraints,
                                   marker: ProductionHolder.Marker,
                                   val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean)
         : MarkerBlockImpl(constraints, marker) {
@@ -29,7 +29,7 @@ public class ParagraphMarkerBlock(constraints: MarkdownConstraints,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
 
         if (pos.offsetInCurrentLine != -1) {
-            return MarkerBlock.ProcessingResult.CANCEL;
+            return MarkerBlock.ProcessingResult.CANCEL
         }
 
         assert(pos.char == '\n')

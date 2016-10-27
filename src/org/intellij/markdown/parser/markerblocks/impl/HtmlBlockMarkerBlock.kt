@@ -12,7 +12,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.text.Regex
 
-public class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
+class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder,
                                   private val endCheckingRegex: Regex?,
                                   startPosition: LookaheadText.Position)

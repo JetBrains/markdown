@@ -3,7 +3,7 @@ package org.intellij.markdown.flavours.gfm
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
-public class GFMConstraints(indents: IntArray,
+class GFMConstraints(indents: IntArray,
                             types: CharArray,
                             isExplicit: BooleanArray,
                             charsEaten: Int,
@@ -18,7 +18,7 @@ public class GFMConstraints(indents: IntArray,
         return GFMConstraints(indents, types, isExplicit, charsEaten, initialType != originalType)
     }
 
-    public fun hasCheckbox(): Boolean {
+    fun hasCheckbox(): Boolean {
         return isCheckbox
     }
 
@@ -46,7 +46,7 @@ public class GFMConstraints(indents: IntArray,
     }
 
     companion object {
-        public val BASE: GFMConstraints = GFMConstraints(IntArray(0), CharArray(0), BooleanArray(0), 0, false)
+        val BASE: GFMConstraints = GFMConstraints(IntArray(0), CharArray(0), BooleanArray(0), 0, false)
 
         private fun toCheckboxType(originalType: Char): Char {
             return (originalType.toInt() + 100).toChar()

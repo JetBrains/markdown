@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.text.Regex
 
-public class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
+class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val productionHolder: ProductionHolder,
                                   private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false

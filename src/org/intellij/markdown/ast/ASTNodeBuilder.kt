@@ -7,8 +7,8 @@ import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import java.util.ArrayList
 
-public open class ASTNodeBuilder(protected val text: CharSequence) {
-    public open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
+open class ASTNodeBuilder(protected val text: CharSequence) {
+    open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
         if (type == MarkdownTokenTypes.WHITE_SPACE) {
             val result = ArrayList<ASTNode>()
             var lastEol = startOffset
@@ -33,7 +33,7 @@ public open class ASTNodeBuilder(protected val text: CharSequence) {
         return listOf(LeafASTNode(type, startOffset, endOffset))
     }
 
-    public open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
+    open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
         when (type) {
             MarkdownElementTypes.UNORDERED_LIST,
             MarkdownElementTypes.ORDERED_LIST -> {

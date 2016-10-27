@@ -7,7 +7,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 import kotlin.properties.Delegates
 
-public class ListCompositeNode(type: IElementType, children: List<ASTNode>) : CompositeASTNode(type, children) {
+class ListCompositeNode(type: IElementType, children: List<ASTNode>) : CompositeASTNode(type, children) {
     init {
         for (child in children) {
             if (child is ListItemCompositeNode) {
@@ -16,7 +16,7 @@ public class ListCompositeNode(type: IElementType, children: List<ASTNode>) : Co
         }
     }
 
-    public val loose: Boolean by lazy(LazyThreadSafetyMode.NONE) { isLoose() }
+    val loose: Boolean by lazy(LazyThreadSafetyMode.NONE) { isLoose() }
 
     private fun isLoose(): Boolean {
         if (hasLooseContent(this)) {

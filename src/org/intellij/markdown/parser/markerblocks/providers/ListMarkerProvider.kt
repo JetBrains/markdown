@@ -10,7 +10,7 @@ import org.intellij.markdown.parser.markerblocks.impl.ListItemMarkerBlock
 import org.intellij.markdown.parser.markerblocks.impl.ListMarkerBlock
 import java.util.ArrayList
 
-public class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {

@@ -5,9 +5,9 @@ import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.*
 
-public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
+abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
 
-    public fun buildTree(production: List<SequentialParser.Node>): ASTNode {
+    fun buildTree(production: List<SequentialParser.Node>): ASTNode {
         val events = constructEvents(production)
         val markersStack = Stack<Pair<MyEvent, MutableList<MyASTNodeWrapper>>>()
 
@@ -18,7 +18,7 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         for (i in events.indices) {
             val event = events.get(i)
 
-            flushEverythingBeforeEvent(event, if (markersStack.isEmpty()) null else markersStack.peek().second);
+            flushEverythingBeforeEvent(event, if (markersStack.isEmpty()) null else markersStack.peek().second)
 
 
             if (event.isStart()) {
@@ -72,11 +72,11 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                           val timeClosed: Int,
                           val info: SequentialParser.Node) : Comparable<MyEvent> {
 
-        public fun isStart(): Boolean {
+        fun isStart(): Boolean {
             return info.range.endInclusive != position
         }
 
-        public fun isEmpty(): Boolean {
+        fun isEmpty(): Boolean {
             return info.range.start == info.range.endInclusive
         }
 
@@ -105,6 +105,6 @@ public abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         }
     }
 
-    protected class MyASTNodeWrapper(public val astNode: ASTNode, public val startTokenIndex: Int, public val endTokenIndex: Int)
+    protected class MyASTNodeWrapper(val astNode: ASTNode, val startTokenIndex: Int, val endTokenIndex: Int)
 
 }

@@ -12,7 +12,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.*
 import kotlin.text.Regex
 
-public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                     productionHolder: ProductionHolder,
                                     stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -137,7 +137,7 @@ public class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcess
                 offset++
             }
             if (!seenNonWhitespace || offset >= text.length || text[offset] != ']') {
-                return null;
+                return null
             }
             return start..offset
         }

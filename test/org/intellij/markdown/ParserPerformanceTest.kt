@@ -6,10 +6,9 @@ import org.intellij.markdown.parser.MarkdownParser
 import org.junit.experimental.categories.Category
 import java.io.File
 
-@Category(ParserPerformanceTest::class)
-public class ParserPerformanceTest : TestCase() {
+@Category(ParserPerformanceTest::class) class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/performance").absolutePath;
+        return File(getIntellijMarkdownHome() + "/test/data/performance").absolutePath
     }
 
     private fun defaultTest(fullParse: Boolean) {
@@ -20,7 +19,7 @@ public class ParserPerformanceTest : TestCase() {
                 it
             }
         }
-        val src = File(getTestDataPath() + "/" + fileName + ".md").readText();
+        val src = File(getTestDataPath() + "/" + fileName + ".md").readText()
 
         val runnable = { i: Int ->
             val root = MarkdownParser(CommonMarkFlavourDescriptor()).
@@ -37,23 +36,23 @@ public class ParserPerformanceTest : TestCase() {
         println("$fileName: ${(testTime / TEST_NUM / 1e6)}ms")
     }
 
-    public fun testGitBook() {
+    fun testGitBook() {
         defaultTest(false)
     }
 
-    public fun testGitBookFull() {
+    fun testGitBookFull() {
         defaultTest(true)
     }
 
-    public fun testCommonMarkSpec() {
+    fun testCommonMarkSpec() {
         defaultTest(false)
     }
 
-    public fun testCommonMarkSpecFull() {
+    fun testCommonMarkSpecFull() {
         defaultTest(true)
     }
     
-    public fun testFogChangelog() {
+    fun testFogChangelog() {
         defaultTest(false)
     }
 

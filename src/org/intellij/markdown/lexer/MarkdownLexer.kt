@@ -4,25 +4,25 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import java.io.IOException
 
-public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
+open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
-    public var type: IElementType? = null
+    var type: IElementType? = null
         private set
     private var nextType: IElementType? = null
 
-    public var originalText: CharSequence = ""
+    var originalText: CharSequence = ""
         private set
-    public var bufferStart: Int = 0
+    var bufferStart: Int = 0
         private set
-    public var bufferEnd: Int = 0
-        private set
-
-    public var tokenStart: Int = 0
-        private set
-    public var tokenEnd: Int = 0
+    var bufferEnd: Int = 0
         private set
 
-    public fun start(originalText: CharSequence,
+    var tokenStart: Int = 0
+        private set
+    var tokenEnd: Int = 0
+        private set
+
+    fun start(originalText: CharSequence,
                      bufferStart: Int = 0,
                      bufferEnd: Int = originalText.length) {
         this.originalText = originalText
@@ -31,12 +31,12 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
         baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
         type = advanceBase()
-        tokenStart = baseLexer.getTokenStart()
+        tokenStart = baseLexer.tokenStart
 
         calcNextType()
     }
 
-    public fun advance(): Boolean {
+    fun advance(): Boolean {
         return locateToken()
     }
 
@@ -53,7 +53,7 @@ public open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
     private fun calcNextType() {
         do {
-            tokenEnd = baseLexer.getTokenEnd()
+            tokenEnd = baseLexer.tokenEnd
             nextType = advanceBase()
         } while (type.let { nextType == it && it != null && it in TOKENS_TO_MERGE })
     }

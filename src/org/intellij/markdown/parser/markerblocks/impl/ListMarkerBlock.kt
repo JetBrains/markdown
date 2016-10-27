@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class ListMarkerBlock(myConstraints: MarkdownConstraints,
+class ListMarkerBlock(myConstraints: MarkdownConstraints,
                              marker: ProductionHolder.Marker,
                              private val listType: Char)
     : MarkerBlockImpl(myConstraints, marker) {

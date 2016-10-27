@@ -11,7 +11,7 @@ import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
 
-public class HtmlGenerator(private val markdownText: String,
+class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
                            private val providers: Map<IElementType, GeneratingProvider>,
                            private val includeSrcPositions: Boolean = false) {
@@ -27,7 +27,7 @@ public class HtmlGenerator(private val markdownText: String,
     
     private val htmlString: StringBuilder = StringBuilder()
 
-    public fun generateHtml(): String {
+    fun generateHtml(): String {
         HtmlGeneratingVisitor().visitNode(root)
         return htmlString.toString()
     }
@@ -38,15 +38,15 @@ public class HtmlGenerator(private val markdownText: String,
                     ?: node.acceptChildren(this)
         }
 
-        public fun visitLeaf(node: ASTNode) {
+        fun visitLeaf(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: consumeHtml(leafText(markdownText, node))
         }
 
-        public final fun consumeTagOpen(node: ASTNode,
-                                        tagName: CharSequence,
-                                        vararg attributes: CharSequence?,
-                                        autoClose: Boolean = false) {
+        fun consumeTagOpen(node: ASTNode,
+                                  tagName: CharSequence,
+                                  vararg attributes: CharSequence?,
+                                  autoClose: Boolean = false) {
             htmlString.append("<$tagName")
             for (attribute in attributes) {
                 if (attribute != null) {
@@ -64,30 +64,30 @@ public class HtmlGenerator(private val markdownText: String,
             }
         }
 
-        public final fun consumeTagClose(tagName: CharSequence) {
+        fun consumeTagClose(tagName: CharSequence) {
             htmlString.append("</$tagName>")
         }
 
-        public final fun consumeHtml(html: CharSequence) {
+        fun consumeHtml(html: CharSequence) {
             htmlString.append(html)
         }
     }
 
     companion object {
-        public val SRC_ATTRIBUTE_NAME = "md-src-pos"
+        val SRC_ATTRIBUTE_NAME = "md-src-pos"
 
-        public fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
+        fun leafText(text: String, node: ASTNode, replaceEscapesAndEntities: Boolean = true): CharSequence {
             if (node.type == MarkdownTokenTypes.BLOCK_QUOTE) {
                 return ""
             }
             return EntityConverter.replaceEntities(node.getTextInNode(text), replaceEscapesAndEntities, replaceEscapesAndEntities)
         }
 
-        public fun getSrcPosAttribute(node: ASTNode): CharSequence {
+        fun getSrcPosAttribute(node: ASTNode): CharSequence {
             return "$SRC_ATTRIBUTE_NAME=\"${node.startOffset}..${node.endOffset}\""
         }
 
-        public fun trimIndents(text: CharSequence, indent: Int): CharSequence {
+        fun trimIndents(text: CharSequence, indent: Int): CharSequence {
             if (indent == 0) {
                 return text
             }

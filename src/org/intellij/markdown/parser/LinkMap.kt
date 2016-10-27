@@ -10,13 +10,13 @@ import java.net.URLEncoder
 import java.util.*
 import kotlin.text.Regex
 
-public data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
-    public fun getLinkInfo(label: CharSequence): LinkInfo? {
+data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
+    fun getLinkInfo(label: CharSequence): LinkInfo? {
         return map.get(normalizeLabel(label))
     }
 
     companion object Builder {
-        public fun buildLinkMap(root: ASTNode, text: CharSequence): LinkMap {
+        fun buildLinkMap(root: ASTNode, text: CharSequence): LinkMap {
             val map = HashMap<CharSequence, LinkInfo>()
 
             root.accept(object : RecursiveVisitor() {
@@ -42,7 +42,7 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
             return SPACES_REGEX.replace(label, " ").toLowerCase(Locale.US)
         }
 
-        public fun normalizeDestination(s: CharSequence): CharSequence {
+        fun normalizeDestination(s: CharSequence): CharSequence {
             val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, true)
             val sb = StringBuilder()
             for (c in dest) {
@@ -58,7 +58,7 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
             return sb.toString()
         }
 
-        public fun normalizeTitle(s: CharSequence): CharSequence = EntityConverter.replaceEntities(clearBounding(s, "\"\"", "''", "()"), true, true)
+        fun normalizeTitle(s: CharSequence): CharSequence = EntityConverter.replaceEntities(clearBounding(s, "\"\"", "''", "()"), true, true)
 
         private fun clearBounding(s: CharSequence, vararg boundQuotes: String): CharSequence {
             if (s.length == 0) {
@@ -76,7 +76,7 @@ public data class LinkMap private constructor(private val map: Map<CharSequence,
 
     }
 
-    public data class LinkInfo private constructor(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
+    data class LinkInfo private constructor(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
         companion object {
             internal fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
                 val destination: CharSequence = normalizeDestination(

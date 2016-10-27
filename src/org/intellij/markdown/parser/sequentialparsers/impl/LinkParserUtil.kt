@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
-public class LinkParserUtil {
+class LinkParserUtil {
     companion object {
         fun parseLinkDestination(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator

@@ -5,32 +5,32 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 import java.util.ArrayList
 
-public class ProductionHolder {
-    public var currentPosition: Int = 0
+class ProductionHolder {
+    var currentPosition: Int = 0
         private set
 
     private val _production : MutableList<SequentialParser.Node> = ArrayList()
-    public val production: List<SequentialParser.Node>
+    val production: List<SequentialParser.Node>
         get() {
             return _production
         }
 
-    public fun updatePosition(position: Int) {
+    fun updatePosition(position: Int) {
         currentPosition = position
     }
 
-    public fun addProduction(nodes: Collection<SequentialParser.Node>) {
+    fun addProduction(nodes: Collection<SequentialParser.Node>) {
         _production.addAll(nodes)
     }
 
-    public fun mark(): Marker {
+    fun mark(): Marker {
         return Marker()
     }
 
-    public inner class Marker {
+    inner class Marker {
         private val startPos: Int = currentPosition
 
-        public fun done(type: IElementType) {
+        fun done(type: IElementType) {
             _production.add(SequentialParser.Node(startPos..currentPosition, type))
         }
     }

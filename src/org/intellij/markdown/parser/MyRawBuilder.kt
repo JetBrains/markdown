@@ -6,7 +6,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import java.util.*
 
-public class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
+class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
 
     override fun flushEverythingBeforeEvent(event: TreeBuilder.MyEvent, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?) {
     }

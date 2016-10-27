@@ -3,7 +3,7 @@ package org.intellij.markdown.parser.sequentialparsers
 import org.intellij.markdown.MarkdownTokenTypes
 import java.util.*
 
-public class SequentialParserUtil {
+class SequentialParserUtil {
     companion object {
         private val PUNCTUATION_MASK: Int = (1 shl Character.DASH_PUNCTUATION.toInt()) or
                 (1 shl Character.START_PUNCTUATION.toInt())     or
@@ -14,7 +14,7 @@ public class SequentialParserUtil {
                 (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt()) or
                 (1 shl Character.MATH_SYMBOL.toInt())
 
-        public fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
+        fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
             val result = ArrayList<Int>()
             for (range in ranges) {
                 for (i in range.start..range.endInclusive - 1) {
@@ -24,7 +24,7 @@ public class SequentialParserUtil {
             return result.sorted()
         }
 
-        public fun indicesToTextRanges(indices: List<Int>): Collection<IntRange> {
+        fun indicesToTextRanges(indices: List<Int>): Collection<IntRange> {
             val result = ArrayList<IntRange>()
 
             var starting = 0
@@ -38,17 +38,17 @@ public class SequentialParserUtil {
             return result
         }
 
-        public fun isWhitespace(info: TokensCache.Iterator, lookup: Int): Boolean {
+        fun isWhitespace(info: TokensCache.Iterator, lookup: Int): Boolean {
             val char = info.charLookup(lookup)
-            return char == 0.toChar() || Character.isSpaceChar(char) || Character.isWhitespace(char);
+            return char == 0.toChar() || Character.isSpaceChar(char) || Character.isWhitespace(char)
         }
 
-        public fun isPunctuation(info: TokensCache.Iterator, lookup: Int): Boolean {
+        fun isPunctuation(info: TokensCache.Iterator, lookup: Int): Boolean {
             val char = info.charLookup(lookup)
-            return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0;
+            return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0
         }
 
-       public fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): Collection<IntRange> {
+       fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): Collection<IntRange> {
             val result = ArrayList<IntRange>()
             var lastStart = textRange.start
 

@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import java.net.URI
 
-public interface MarkdownFlavourDescriptor {
+interface MarkdownFlavourDescriptor {
     val markerProcessorFactory: MarkerProcessorFactory
 
     val sequentialParserManager: SequentialParserManager

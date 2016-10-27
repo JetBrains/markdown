@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.HtmlBlockMarkerBlock
 import kotlin.text.Regex
 
-public class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val matchingGroup = matches(pos, stateInfo.currentConstraints)
         if (matchingGroup != -1) {

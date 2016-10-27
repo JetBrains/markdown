@@ -11,13 +11,13 @@ import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
-public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
+class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
 
-    public fun buildMarkdownTreeFromString(text: String): ASTNode {
+    fun buildMarkdownTreeFromString(text: String): ASTNode {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
     }
 
-    public fun parse(root: IElementType, textString: String, parseInlines: Boolean = true): ASTNode {
+    fun parse(root: IElementType, textString: String, parseInlines: Boolean = true): ASTNode {
         val productionHolder = ProductionHolder()
         val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
 
@@ -48,7 +48,7 @@ public class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
         return builder.buildTree(productionHolder.production)
     }
 
-    public fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
         val lexer = flavour.createInlinesLexer()
         lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)

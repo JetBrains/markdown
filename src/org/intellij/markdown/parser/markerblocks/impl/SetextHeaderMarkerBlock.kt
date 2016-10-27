@@ -10,7 +10,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
+class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
                                      private val productionHolder: ProductionHolder)
         : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false

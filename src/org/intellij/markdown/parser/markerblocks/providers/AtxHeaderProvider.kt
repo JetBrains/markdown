@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.AtxHeaderMarkerBlock
 
-public class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -55,7 +55,7 @@ public class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockP
         return null
     }
     
-    private fun getRegex() = if (requireSpace) REGEX_WITH_SPACE else REGEX_NO_SPACE;
+    private fun getRegex() = if (requireSpace) REGEX_WITH_SPACE else REGEX_NO_SPACE
 
     companion object {
         val REGEX_WITH_SPACE: Regex = Regex("\\A {0,3}(#{1,6})( |$)")

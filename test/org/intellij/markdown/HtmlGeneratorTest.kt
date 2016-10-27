@@ -1,4 +1,4 @@
-package org.intellij.markdown;
+package org.intellij.markdown
 
 import junit.framework.TestCase
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -10,132 +10,132 @@ import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
 import java.net.URI
 
-public class HtmlGeneratorTest : TestCase() {
+class HtmlGeneratorTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(), baseURI: URI? = null) {
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText();
-        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src);
+        val src = File(getTestDataPath() + "/" + testName + ".md").readText()
+        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
         val html = HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml()
 
         val result = formatHtmlForTests(html)
 
-        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result);
+        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
     }
 
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/html").absolutePath;
+        return File(getIntellijMarkdownHome() + "/test/data/html").absolutePath
     }
 
-    public fun testSimple() {
+    fun testSimple() {
         defaultTest()
     }
 
-    public fun testMarkers() {
+    fun testMarkers() {
         defaultTest()
     }
 
-    public fun testTightLooseLists() {
+    fun testTightLooseLists() {
         defaultTest()
     }
 
-    public fun testPuppetApache() {
+    fun testPuppetApache() {
         defaultTest()
     }
 
-    public fun testGoPlugin() {
+    fun testGoPlugin() {
         defaultTest()
     }
 
-    public fun testHeaders() {
+    fun testHeaders() {
         defaultTest()
     }
 
-    public fun testCodeFence() {
+    fun testCodeFence() {
         defaultTest()
     }
 
-    public fun testEscaping() {
+    fun testEscaping() {
         defaultTest()
     }
 
-    public fun testHtmlBlocks() {
+    fun testHtmlBlocks() {
         defaultTest()
     }
 
-    public fun testLinks() {
+    fun testLinks() {
         defaultTest()
     }
 
-    public fun testBlockquotes() {
+    fun testBlockquotes() {
         defaultTest()
     }
 
-    public fun testExample226() {
+    fun testExample226() {
         defaultTest()
     }
 
-    public fun testExample2() {
+    fun testExample2() {
         defaultTest()
     }
 
-    public fun testEntities() {
+    fun testEntities() {
         defaultTest()
     }
 
-    public fun testImages() {
+    fun testImages() {
         defaultTest()
     }
 
-    public fun testRuby17052() {
+    fun testRuby17052() {
         defaultTest()
     }
 
-    public fun testRuby17351() {
+    fun testRuby17351() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testStrikethrough() {
+    fun testStrikethrough() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testGfmAutolink() {
+    fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testGfmTable() {
+    fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testCheckedLists() {
+    fun testCheckedLists() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    public fun testGitBook() {
+    fun testGitBook() {
         defaultTest()
     }
 
-    public fun testBaseUriHttp() {
+    fun testBaseUriHttp() {
         defaultTest(baseURI = URI("http://example.com/foo/bar.html"))
     }
 
-    public fun testBaseUriFile() {
+    fun testBaseUriFile() {
         defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
     }
 
-    public fun testBaseUriRelativeRoot() {
+    fun testBaseUriRelativeRoot() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
 
-    public fun testBaseUriRelativeNoRoot() {
+    fun testBaseUriRelativeNoRoot() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
     
-    public fun testBaseUriWithBadRelativeUrl() {
+    fun testBaseUriWithBadRelativeUrl() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
 
     companion object {
-        public fun formatHtmlForTests(html: String): String {
+        fun formatHtmlForTests(html: String): String {
             val tags = Regex("</?[^>]+>")
 
             val split = tags.replace(html as CharSequence, { matchResult ->

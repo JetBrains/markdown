@@ -7,7 +7,7 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
-public class StrikeThroughParser : SequentialParser {
+class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
@@ -27,7 +27,7 @@ public class StrikeThroughParser : SequentialParser {
                     && isGoodType(iterator.rawLookup(-1))
                     && iterator.rawLookup(1) == GFMTokenTypes.TILDE) {
                 result.withNode(SequentialParser.Node(indices.get(lastOpenedPos)..indices.get(i + 1) + 1,
-                        GFMElementTypes.STRIKETHROUGH));
+                        GFMElementTypes.STRIKETHROUGH))
                 i += 2
                 lastOpenedPos = null
                 continue
@@ -61,6 +61,6 @@ public class StrikeThroughParser : SequentialParser {
                 && type != MarkdownTokenTypes.EOL
                 && type != GFMTokenTypes.TILDE
                 && type != MarkdownTokenTypes.HTML_TAG
-                && type != MarkdownTokenTypes.HTML_BLOCK_CONTENT;
+                && type != MarkdownTokenTypes.HTML_BLOCK_CONTENT
     }
 }

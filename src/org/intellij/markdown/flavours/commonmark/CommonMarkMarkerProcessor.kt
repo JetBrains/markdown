@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
+open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : MarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, constraintsBase) {
     override var stateInfo: MarkerProcessor.StateInfo = MarkerProcessor.StateInfo(startConstraints,
             startConstraints,
@@ -76,7 +76,7 @@ public open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, 
         return super.createNewMarkerBlocks(pos, productionHolder)
     }
 
-    public object Factory : MarkerProcessorFactory {
+    object Factory : MarkerProcessorFactory {
         override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
             return CommonMarkMarkerProcessor(productionHolder, MarkdownConstraints.BASE)
         }

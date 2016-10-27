@@ -7,7 +7,7 @@ import junit.framework.TestCase
 
 val INTELLIJ_MARKDOWN_TEST_KEY = "Intellij.markdown.home"
 
-public fun TestCase.assertSameLinesWithFile(filePath: String, text: String) {
+fun TestCase.assertSameLinesWithFile(filePath: String, text: String) {
     val file = File(filePath)
 
     if (!file.exists()) {
@@ -21,8 +21,8 @@ public fun TestCase.assertSameLinesWithFile(filePath: String, text: String) {
     }
 }
 
-public fun TestCase.getIntellijMarkdownHome(): String {
-    return System.getProperty(INTELLIJ_MARKDOWN_TEST_KEY) ?: ".";
+fun TestCase.getIntellijMarkdownHome(): String {
+    return System.getProperty(INTELLIJ_MARKDOWN_TEST_KEY) ?: "."
 }
 
 val TestCase.testName : String

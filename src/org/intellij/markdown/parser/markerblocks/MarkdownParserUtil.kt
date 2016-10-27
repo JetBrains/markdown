@@ -3,12 +3,12 @@ package org.intellij.markdown.parser.markerblocks
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
-public object MarkdownParserUtil {
+object MarkdownParserUtil {
 
-    public fun calcNumberOfConsequentEols(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int {
+    fun calcNumberOfConsequentEols(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int {
         assert(pos.char == '\n')
 
-        var currentPos = pos;
+        var currentPos = pos
         var result = 1
 
         val isClearLine: (LookaheadText.Position) -> Boolean = { pos ->
@@ -32,8 +32,8 @@ public object MarkdownParserUtil {
         return result
     }
 
-    public fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position, eolsToSkip: Int): LookaheadText.Position? {
-        var currentPos = pos;
+    fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position, eolsToSkip: Int): LookaheadText.Position? {
+        var currentPos = pos
         repeat(eolsToSkip - 1) {
             currentPos = pos.nextLinePosition() ?: return null
         }
@@ -44,7 +44,7 @@ public object MarkdownParserUtil {
         return currentPos
     }
 
-    public fun hasCodeBlockIndent(pos: LookaheadText.Position,
+    fun hasCodeBlockIndent(pos: LookaheadText.Position,
                                   constraints: MarkdownConstraints): Boolean {
         val constraintsLength = constraints.getCharsEaten(pos.currentLine)
 
@@ -59,7 +59,7 @@ public object MarkdownParserUtil {
         return false
     }
 
-    public fun isEmptyOrSpaces(s: CharSequence): Boolean {
+    fun isEmptyOrSpaces(s: CharSequence): Boolean {
         for (c in s) {
             if (c != ' ' && c != '\t') {
                 return false
@@ -68,9 +68,9 @@ public object MarkdownParserUtil {
         return true
     }
 
-    public fun findNonEmptyLineWithSameConstraints(constraints: MarkdownConstraints,
+    fun findNonEmptyLineWithSameConstraints(constraints: MarkdownConstraints,
                                                    pos: LookaheadText.Position): LookaheadText.Position? {
-        var currentPos = pos;
+        var currentPos = pos
 
         while (true) {
 //            currentPos = currentPos.nextLinePosition() ?: return null

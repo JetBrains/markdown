@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.impl.CodeFenceMarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.text.Regex
 
-public class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {

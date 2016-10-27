@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class LinkReferenceDefinitionMarkerBlock(myConstraints: MarkdownConstraints,
+class LinkReferenceDefinitionMarkerBlock(myConstraints: MarkdownConstraints,
                                                 marker: ProductionHolder.Marker,
                                                 private val endPosition: Int)
 : MarkerBlockImpl(myConstraints, marker) {

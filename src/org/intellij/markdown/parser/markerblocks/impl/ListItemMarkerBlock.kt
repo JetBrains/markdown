@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
-public class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
+class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
                                  marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = true
 

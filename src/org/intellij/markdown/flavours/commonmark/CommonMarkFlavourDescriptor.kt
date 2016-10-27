@@ -19,7 +19,7 @@ import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.io.Reader
 import java.net.URI
 
-public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
+open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -43,7 +43,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
             MarkdownTokenTypes.HTML_TAG to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    visitor.consumeHtml(node.getTextInNode(text));
+                    visitor.consumeHtml(node.getTextInNode(text))
                 }
             },
 
@@ -83,7 +83,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                     val linkText = node.getTextInNode(text)
                     val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length - 1), true, false)
                     visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText)}\"")
-                    visitor.consumeHtml(link);
+                    visitor.consumeHtml(link)
                     visitor.consumeTagClose("a")
                 }
 
@@ -117,7 +117,7 @@ public open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                         if (child.type == MarkdownTokenTypes.CODE_LINE) {
                             visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), 4))
                         } else if (child.type == MarkdownTokenTypes.EOL) {
-                            visitor.consumeHtml("\n");
+                            visitor.consumeHtml("\n")
                         }
                     }
                     

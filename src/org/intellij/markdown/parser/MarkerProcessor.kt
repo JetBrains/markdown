@@ -6,7 +6,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
 import java.util.*
 
-public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
+abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
                                                                      protected val startConstraints: MarkdownConstraints) {
 
     protected val NO_BLOCKS: List<MarkerBlock> = emptyList()
@@ -38,7 +38,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         result
     }
 
-    public open fun createNewMarkerBlocks(pos: LookaheadText.Position,
+    open fun createNewMarkerBlocks(pos: LookaheadText.Position,
                                           productionHolder: ProductionHolder): List<MarkerBlock> {
         assert(MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.currentConstraints))
 
@@ -59,7 +59,7 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
         return emptyList()
     }
 
-    public fun processPosition(pos: LookaheadText.Position): LookaheadText.Position? {
+    fun processPosition(pos: LookaheadText.Position): LookaheadText.Position? {
         updateStateInfo(pos)
 
         var shouldRecalcNextPos = false
@@ -104,12 +104,12 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             result
     }
 
-    public fun addNewMarkerBlock(newMarkerBlock: MarkerBlock) {
+    fun addNewMarkerBlock(newMarkerBlock: MarkerBlock) {
         markersStack.add(newMarkerBlock)
         relaxTopConstraints()
     }
 
-    public fun flushMarkers() {
+    fun flushMarkers() {
         closeChildren(-1, MarkerBlock.ClosingAction.DEFAULT)
     }
 
@@ -171,14 +171,14 @@ public abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val
             markersStack.last().getBlockConstraints()
     }
 
-    public open class StateInfo(public val currentConstraints: MarkdownConstraints,
-                                public val nextConstraints: MarkdownConstraints,
+    open class StateInfo(val currentConstraints: MarkdownConstraints,
+                                val nextConstraints: MarkdownConstraints,
                                 private val markersStack: List<MarkerBlock>) {
 
-        public val paragraphBlock: ParagraphMarkerBlock?
+        val paragraphBlock: ParagraphMarkerBlock?
             get() = markersStack.firstOrNull { block -> block is ParagraphMarkerBlock } as ParagraphMarkerBlock?
 
-        public val lastBlock: MarkerBlock?
+        val lastBlock: MarkerBlock?
             get() = markersStack.lastOrNull()
 
         override fun equals(other: Any?): Boolean {

@@ -2,13 +2,13 @@ package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
 
-public abstract class TokensCache {
+abstract class TokensCache {
     abstract val cachedTokens: List<TokenInfo>
     abstract val filteredTokens: List<TokenInfo>
     abstract val originalText: CharSequence
     abstract val originalTextRange: IntRange
 
-    public fun getRawCharAt(index: Int): Char {
+    fun getRawCharAt(index: Int): Char {
         if (index < originalTextRange.start) return 0.toChar()
         if (index > originalTextRange.endInclusive) return 0.toChar()
         return originalText[index]
@@ -34,7 +34,7 @@ public abstract class TokensCache {
     }
 
 
-    public inner class ListIterator(private val indices: List<Int>, private val listIndex: Int) : Iterator(getIndexForIterator(indices, listIndex)) {
+    inner class ListIterator(private val indices: List<Int>, private val listIndex: Int) : Iterator(getIndexForIterator(indices, listIndex)) {
 
         override fun advance(): Iterator {
             return ListIterator(indices, listIndex + 1)
@@ -54,33 +54,33 @@ public abstract class TokensCache {
         }
     }
 
-    public inner open class Iterator(public val index: Int) {
+    inner open class Iterator(val index: Int) {
 
-        public val type : IElementType?
+        val type : IElementType?
             get() {
                 return info(0).type
             }
 
-        public val text: String
+        val text: String
             get() {
                 return originalText.subSequence(info(0).tokenStart, info(0).tokenEnd).toString()
             }
 
-        public val start: Int
+        val start: Int
             get() {
                 return info(0).tokenStart
             }
 
-        public val end: Int
+        val end: Int
             get() {
                 return info(0).tokenEnd
             }
 
-        public open fun advance(): Iterator {
+        open fun advance(): Iterator {
             return Iterator(index + 1)
         }
 
-        public open fun rollback(): Iterator {
+        open fun rollback(): Iterator {
             return Iterator(index - 1)
         }
 
@@ -106,22 +106,22 @@ public abstract class TokensCache {
         }
 
 
-        public open fun rawLookup(steps: Int): IElementType? {
+        open fun rawLookup(steps: Int): IElementType? {
             return info(steps).`type`
         }
 
-        public fun rawStart(steps: Int): Int {
+        fun rawStart(steps: Int): Int {
             return info(steps).tokenStart
         }
 
-        public open fun charLookup(steps: Int): Char {
+        open fun charLookup(steps: Int): Char {
             if (steps == 1) {
                 return getRawCharAt(end)
             } else if (steps == -1) {
                 return getRawCharAt(start - 1)
             } else {
                 val pos = if (steps > 0) rawStart(steps) else rawStart(steps + 1) - 1
-                return getRawCharAt(pos);
+                return getRawCharAt(pos)
             }
         }
 
@@ -130,7 +130,7 @@ public abstract class TokensCache {
         }
     }
 
-    public class TokenInfo(val `type`: IElementType?,
+    class TokenInfo(val `type`: IElementType?,
                            val tokenStart: Int,
                            val tokenEnd: Int,
                            val rawIndex: Int,

@@ -62,7 +62,7 @@ class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
         if (pos.offsetInCurrentLine == -1) {
             return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DONE, MarkerBlock.EventAction.PROPAGATE)
         }
-        return MarkerBlock.ProcessingResult.CANCEL;
+        return MarkerBlock.ProcessingResult.CANCEL
     }
 
 }

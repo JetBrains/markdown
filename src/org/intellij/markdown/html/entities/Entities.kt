@@ -5,8 +5,8 @@ package org.intellij.markdown.html.entities
   * Generated with gen_entities.rb
    */
 
-public object Entities {
-    public val map: Map<String, Int> = hashMapOf(
+object Entities {
+    val map: Map<String, Int> = hashMapOf(
                 
 "&Aacute;" to 193,
 "&Aacute" to 193,

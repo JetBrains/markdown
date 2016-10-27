@@ -5,7 +5,7 @@ import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
-public class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
+class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
 
     private var currentTokenPosition = -1
 

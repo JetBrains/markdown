@@ -12,7 +12,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.AtxHeaderProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-public class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
+class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
     private val markerBlockProviders = super.getMarkerBlockProviders()
@@ -61,7 +61,7 @@ public class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsB
         ))
     }
 
-    public object Factory : MarkerProcessorFactory {
+    object Factory : MarkerProcessorFactory {
         override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
             return GFMMarkerProcessor(productionHolder, GFMConstraints.BASE)
         }

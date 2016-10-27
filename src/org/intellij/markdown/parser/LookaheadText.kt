@@ -1,15 +1,15 @@
 package org.intellij.markdown.parser
 
-public class LookaheadText(private val text: CharSequence) {
+class LookaheadText(private val text: CharSequence) {
     private val lines: List<String> = text.split('\n')
 
-    public val startPosition: Position? = if (text.isNotEmpty())
+    val startPosition: Position? = if (text.isNotEmpty())
         Position(0, -1, -1).nextPosition()
     else
         null
 
 
-    public inner class Position internal constructor(private val lineN: Int,
+    inner class Position internal constructor(private val lineN: Int,
                                                      private val localPos: Int, // -1 if on newline before
                                                      private val globalPos: Int) {
         init {
@@ -27,49 +27,49 @@ public class LookaheadText(private val text: CharSequence) {
             }'"
         }
 
-        public val offset: Int
+        val offset: Int
             get() = globalPos
 
-        public val offsetInCurrentLine: Int
+        val offsetInCurrentLine: Int
             get() = localPos
 
-        public val nextLineOffset: Int?
+        val nextLineOffset: Int?
             get() = if (lineN + 1 < lines.size) {
                 globalPos + (currentLine.length - localPos)
             } else {
                 null
             }
 
-        public val nextLineOrEofOffset: Int
+        val nextLineOrEofOffset: Int
             get() = globalPos + (currentLine.length - localPos)
 
-        public val textFromPosition: CharSequence
+        val textFromPosition: CharSequence
             get() = text.subSequence(globalPos, text.length)
 
-        public val currentLine: String
+        val currentLine: String
             get() = lines.get(lineN)
 
-        public val currentLineFromPosition: CharSequence
+        val currentLineFromPosition: CharSequence
             get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
 
-        public val nextLine: String?
+        val nextLine: String?
             get() = if (lineN + 1 < lines.size) {
                 lines.get(lineN + 1)
             } else {
                 null
             }
 
-        public val prevLine: String?
+        val prevLine: String?
             get() = if (lineN > 0) {
                 lines.get(lineN - 1)
             } else {
                 null
             }
 
-        public val char: Char
+        val char: Char
             get() = text[globalPos]
 
-        public fun nextPosition(delta: Int = 1): Position? {
+        fun nextPosition(delta: Int = 1): Position? {
             var remaining = delta
             var currentPosition = this
 
@@ -92,13 +92,13 @@ public class LookaheadText(private val text: CharSequence) {
             }
         }
 
-        public fun nextLinePosition(): Position? {
+        fun nextLinePosition(): Position? {
             val nextLine = nextLineOffset
                     ?: return null
             return nextPosition(nextLine - offset)
         }
 
-        public fun charsToNonWhitespace(): Int? {
+        fun charsToNonWhitespace(): Int? {
             val line = currentLine
             var offset = localPos
             while (offset < line.length) {

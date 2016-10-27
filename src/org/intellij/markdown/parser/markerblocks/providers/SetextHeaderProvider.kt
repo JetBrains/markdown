@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.SetextHeaderMarkerBlock
 import kotlin.text.Regex
 
-public class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {

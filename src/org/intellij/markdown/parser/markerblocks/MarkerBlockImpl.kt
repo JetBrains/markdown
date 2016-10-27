@@ -6,7 +6,7 @@ import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 
-public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
+abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
                                       protected val marker: ProductionHolder.Marker) : MarkerBlock {
 
     private var lastInterestingOffset: Int = -2
@@ -58,7 +58,7 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
     }
 
-    protected final fun scheduleProcessingResult(offset: Int, result: MarkerBlock.ProcessingResult) {
+    protected fun scheduleProcessingResult(offset: Int, result: MarkerBlock.ProcessingResult) {
         lastInterestingOffset = offset
         scheduledResult = result
     }
@@ -70,5 +70,5 @@ public abstract class MarkerBlockImpl(protected val constraints: MarkdownConstra
 
     protected abstract fun calcNextInterestingOffset(pos: LookaheadText.Position): Int
 
-    public abstract fun getDefaultNodeType(): IElementType
+    abstract fun getDefaultNodeType(): IElementType
 }

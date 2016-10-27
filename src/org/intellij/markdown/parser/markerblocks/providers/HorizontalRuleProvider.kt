@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.HorizontalRuleMarkerBlock
 
-public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -31,7 +31,7 @@ public class HorizontalRuleProvider : MarkerBlockProvider<MarkerProcessor.StateI
     }
 
     companion object {
-        public fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
+        fun isHorizontalRule(line: CharSequence, offset: Int): Boolean {
             var hrChar: Char? = null
             var startSpace = 0
             var charCount = 1

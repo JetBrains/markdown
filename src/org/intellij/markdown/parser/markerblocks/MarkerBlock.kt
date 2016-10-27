@@ -5,26 +5,26 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
-public interface MarkerBlock {
+interface MarkerBlock {
 
-    public fun getNextInterestingOffset(pos: LookaheadText.Position): Int
+    fun getNextInterestingOffset(pos: LookaheadText.Position): Int
 
-    public fun isInterestingOffset(pos: LookaheadText.Position): Boolean
+    fun isInterestingOffset(pos: LookaheadText.Position): Boolean
 
-    public fun allowsSubBlocks(): Boolean
+    fun allowsSubBlocks(): Boolean
 
-    public fun processToken(pos: LookaheadText.Position,
+    fun processToken(pos: LookaheadText.Position,
                             currentConstraints: MarkdownConstraints): ProcessingResult
 
-    public fun getBlockConstraints(): MarkdownConstraints
+    fun getBlockConstraints(): MarkdownConstraints
 
     /**
      * @param action to accept
      * @return true if this block is to be deleted after this action, false otherwise
      */
-    public fun acceptAction(action: ClosingAction): Boolean
+    fun acceptAction(action: ClosingAction): Boolean
 
-    public enum class ClosingAction {
+    enum class ClosingAction {
         DONE {
             override fun doAction(marker: ProductionHolder.Marker, type: IElementType) {
                 marker.done(type)
@@ -44,22 +44,22 @@ public interface MarkerBlock {
             }
         };
 
-        public abstract fun doAction(marker: ProductionHolder.Marker, `type`: IElementType)
+        abstract fun doAction(marker: ProductionHolder.Marker, `type`: IElementType)
     }
 
-    public enum class EventAction {
+    enum class EventAction {
         PROPAGATE,
         CANCEL
     }
 
-    public class ProcessingResult internal constructor(public val childrenAction: ClosingAction,
-                                                       public val selfAction: ClosingAction,
-                                                       public val eventAction: EventAction) {
+    class ProcessingResult internal constructor(val childrenAction: ClosingAction,
+                                                       val selfAction: ClosingAction,
+                                                       val eventAction: EventAction) {
 
         companion object {
-            public val PASS: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.PROPAGATE)
-            public val CANCEL: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.CANCEL)
-            public val DEFAULT: ProcessingResult = ProcessingResult(ClosingAction.DEFAULT, ClosingAction.DONE, EventAction.PROPAGATE)
+            val PASS: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.PROPAGATE)
+            val CANCEL: ProcessingResult = ProcessingResult(ClosingAction.NOTHING, ClosingAction.NOTHING, EventAction.CANCEL)
+            val DEFAULT: ProcessingResult = ProcessingResult(ClosingAction.DEFAULT, ClosingAction.DONE, EventAction.PROPAGATE)
         }
 
     }
