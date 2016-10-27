@@ -44,3 +44,8 @@
 with blank line'
 
 [fooe]
+
+[Link nOrmalization and order][]
+
+[Link Normalization AND order]: https://vk.com "first alt"
+[link normalization and order]: http://google.com "second alt"

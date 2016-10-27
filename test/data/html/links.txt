@@ -58,4 +58,7 @@ foo <a href="/uri">bar</a>
 <p>[fooe]: /url 'title</p>
 <p>with blank line'</p>
 <p>[fooe]</p>
+<p>
+<a href="https://vk.com" title="first alt">Link nOrmalization</a>
+</p>
 </body>
