@@ -127,7 +127,10 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         val line = pos.currentLine
 
         var offset = pos.offsetInCurrentLine
-        var spacesBefore = 0
+        var spacesBefore = if (offset > 0 && line[offset - 1] == '\t')
+            (4 - getIndent() % 4) % 4
+        else
+            0
         // '\t' can be omitted here since it'll add at least 4 indent
         while (offset < line.length && line[offset] == ' ' && spacesBefore < 3) {
             spacesBefore++
@@ -136,7 +139,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         if (offset == line.length)
             return null
 
-        val markerInfo = fetchListMarker(pos.nextPosition(spacesBefore)!!)
+        val markerInfo = fetchListMarker(pos.nextPosition(offset - pos.offsetInCurrentLine)!!)
                 ?: return null
 
         offset += markerInfo.markerText.length
@@ -275,7 +278,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                     while (spacesSeen < k && offset < line.length) {
                         when (line[offset]) {
                             ' ' -> spacesSeen++
-                            '\t' -> spacesSeen += 4 - spacesSeen % 4
+                            '\t' -> spacesSeen += 4
                             else -> break@afterSpaces
                         }
                         offset++
