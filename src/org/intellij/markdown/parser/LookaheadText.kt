@@ -100,13 +100,11 @@ class LookaheadText(private val text: CharSequence) {
 
         fun charsToNonWhitespace(): Int? {
             val line = currentLine
-            var offset = localPos
+            var offset = Math.max(localPos, 0)
             while (offset < line.length) {
-                if (offset >= 0) {
-                    val c = line[offset]
-                    if (c != ' ' && c != '\t') {
-                        return offset - localPos
-                    }
+                val c = line[offset]
+                if (c != ' ' && c != '\t') {
+                    return offset - localPos
                 }
                 offset++
             }
