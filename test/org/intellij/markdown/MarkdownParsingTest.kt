@@ -154,6 +154,10 @@ class MarkdownParsingTest : TestCase() {
         defaultTest()
     }
 
+    fun testTabStops() {
+        defaultTest()
+    }
+
     fun testPuppetApache() {
         defaultTest()
     }
@@ -203,7 +207,7 @@ class MarkdownParsingTest : TestCase() {
     }
     
     fun testEa79689() {
-        defaultTest(CommonMarkFlavourDescriptor())
+        defaultTest()
     }
     
     fun testRuby18237() {

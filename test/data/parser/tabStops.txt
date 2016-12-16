@@ -1,0 +1,58 @@
+Markdown:MARKDOWN_FILE
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Foo')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:UNORDERED_LIST
+        Markdown:LIST_ITEM
+          Markdown:LIST_BULLET('* ')
+          Markdown:PARAGRAPH
+            Markdown:TEXT('bar')
+          Markdown:EOL('\n')
+          WHITE_SPACE('    ')
+          Markdown:UNORDERED_LIST
+            Markdown:LIST_ITEM
+              Markdown:LIST_BULLET('* ')
+              Markdown:PARAGRAPH
+                Markdown:TEXT('baz')
+              Markdown:EOL('\n')
+              WHITE_SPACE('      ')
+              Markdown:UNORDERED_LIST
+                Markdown:LIST_ITEM
+                  Markdown:LIST_BULLET('* ')
+                  Markdown:PARAGRAPH
+                    Markdown:TEXT('taz')
+                  Markdown:EOL('\n')
+                  WHITE_SPACE('        ')
+                  Markdown:UNORDERED_LIST
+                    Markdown:LIST_ITEM
+                      Markdown:LIST_BULLET('* ')
+                      Markdown:PARAGRAPH
+                        Markdown:TEXT('vaz')
+                    Markdown:EOL('\n')
+                    WHITE_SPACE('   	   	')
+                    Markdown:LIST_ITEM
+                      Markdown:LIST_BULLET('* ')
+                      Markdown:PARAGRAPH
+                        Markdown:TEXT('gaz')
+                    Markdown:EOL('\n')
+                    WHITE_SPACE('  	   	')
+                    Markdown:LIST_ITEM
+                      Markdown:LIST_BULLET('* ')
+                      Markdown:PARAGRAPH
+                        Markdown:TEXT('gaz')
+                    Markdown:EOL('\n')
+                    WHITE_SPACE(' 	   	')
+                    Markdown:LIST_ITEM
+                      Markdown:LIST_BULLET('* ')
+                      Markdown:PARAGRAPH
+                        Markdown:TEXT('gaz')
+                    Markdown:EOL('\n')
+                    WHITE_SPACE('	   	')
+                    Markdown:LIST_ITEM
+                      Markdown:LIST_BULLET('* ')
+                      Markdown:PARAGRAPH
+                        Markdown:TEXT('gaz')

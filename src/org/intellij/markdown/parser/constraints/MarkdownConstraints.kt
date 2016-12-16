@@ -270,17 +270,20 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                 }
 
                 var offset = startOffset + constraints.getCharsEaten(line)
+                var totalSpaces = 0
                 var spacesSeen = 0
                 val hasKMoreSpaces = { k: Int ->
                     val oldSpacesSeen = spacesSeen
                     val oldOffset = offset
                     afterSpaces@
                     while (spacesSeen < k && offset < line.length) {
-                        when (line[offset]) {
-                            ' ' -> spacesSeen++
-                            '\t' -> spacesSeen += 4 - spacesSeen % 4
+                        val deltaSpaces = when (line[offset]) {
+                            ' ' -> 1
+                            '\t' -> 4 - totalSpaces % 4
                             else -> break@afterSpaces
                         }
+                        spacesSeen += deltaSpaces
+                        totalSpaces += deltaSpaces
                         offset++
                     }
                     if (offset == line.length) {
