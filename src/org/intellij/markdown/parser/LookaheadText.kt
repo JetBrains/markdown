@@ -50,7 +50,7 @@ class LookaheadText(private val text: CharSequence) {
             get() = lines.get(lineN)
 
         val currentLineFromPosition: CharSequence
-            get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
+            get() = currentLine.substring(offsetInCurrentLine)
 
         val nextLine: String?
             get() = if (lineN + 1 < lines.size) {

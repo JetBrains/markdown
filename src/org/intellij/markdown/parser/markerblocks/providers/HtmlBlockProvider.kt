@@ -32,7 +32,7 @@ class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             return -1
         }
         
-        val matchResult = FIND_START_REGEX.find(text.subSequence(offset, text.length))
+        val matchResult = FIND_START_REGEX.find(text.substring(offset))
                 ?: return -1
         assert(matchResult.groups.size == OPEN_CLOSE_REGEXES.size + 2) { "There are some excess capturing groups probably!" }
         for (i in 0..OPEN_CLOSE_REGEXES.size - 1) {
