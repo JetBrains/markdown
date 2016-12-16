@@ -74,6 +74,9 @@ class LookaheadText(private val text: CharSequence) {
             var currentPosition = this
 
             while (true) {
+                if (remaining == 0) {
+                    return currentPosition
+                }
                 if (currentPosition.localPos + remaining < currentPosition.currentLine.length) {
                     return Position(currentPosition.lineN,
                             currentPosition.localPos + remaining,
