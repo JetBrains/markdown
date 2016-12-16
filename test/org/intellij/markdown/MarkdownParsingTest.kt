@@ -158,6 +158,11 @@ class MarkdownParsingTest : TestCase() {
         defaultTest()
     }
 
+    fun testHardLineBreaks() {
+        defaultTest()
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     fun testPuppetApache() {
         defaultTest()
     }

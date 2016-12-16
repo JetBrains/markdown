@@ -1,0 +1,62 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo')
+    Markdown:BR('  ')
+    Markdown:EOL('\n')
+    Markdown:TEXT('baz')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo')
+    Markdown:BR('\')
+    Markdown:EOL('\n')
+    Markdown:TEXT('baz')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo')
+    Markdown:BR('         ')
+    Markdown:EOL('\n')
+    Markdown:TEXT('baz')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo')
+    Markdown:BR('    ')
+    Markdown:EOL('\n')
+    WHITE_SPACE('    ')
+    Markdown:TEXT('bar')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:EMPH
+      Markdown:EMPH('*')
+      Markdown:TEXT('foo')
+      Markdown:BR('  ')
+      Markdown:EOL('\n')
+      Markdown:TEXT('bar')
+      Markdown:EMPH('*')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('code')
+      Markdown:BR('  ')
+      Markdown:EOL('\n')
+      Markdown:TEXT('span')
+      Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo\')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('foo')
+    WHITE_SPACE('  ')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('bar')
+  Markdown:EOL('\n')

@@ -264,7 +264,9 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
   ":" { return Token.COLON; }
   "!" { return Token.EXCLAMATION_MARK; }
 
-
+  \\ / {EOL} {
+    return Token.HARD_LINE_BREAK;
+  }
 
   {WHITE_SPACE}* ({EOL} {WHITE_SPACE}*)+ {
     int lastSpaces = yytext().toString().indexOf("\n");
