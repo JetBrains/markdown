@@ -34,7 +34,7 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
     private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): CharSequence? {
         val line = pos.nextLine ?: return null
-        val nextLineConstraints = MarkdownConstraints.fillFromPrevious(line, 0, constraints)
+        val nextLineConstraints = MarkdownConstraints.fillFromPrevious(pos.nextLinePosition(), constraints)
         if (nextLineConstraints.extendsPrev(constraints)) {
             return nextLineConstraints.eatItselfFromString(line)
         } else {

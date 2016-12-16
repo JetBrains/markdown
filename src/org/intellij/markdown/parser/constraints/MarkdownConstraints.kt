@@ -229,8 +229,8 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
             assert(pos.char == '\n')
 
+            var result = fillFromPrevious(pos, prevLineConstraints)
             val line = pos.currentLine
-            var result = fillFromPrevious(line, 0, prevLineConstraints)
 
             while (true) {
                 val offset = result.getCharsEaten(line)
@@ -241,9 +241,15 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
             return result
         }
 
-        fun fillFromPrevious(line: String,
-                                    startOffset: Int,
-                                    prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
+        fun fillFromPrevious(pos: LookaheadText.Position?,
+                             prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
+            if (pos == null) {
+                return prevLineConstraints.base
+            }
+            assert(pos.offsetInCurrentLine == -1, { "given $pos" })
+
+            val line = pos.currentLine
+            val startOffset = 0
             val prevN = prevLineConstraints.indents.size
             var indexPrev = 0
 

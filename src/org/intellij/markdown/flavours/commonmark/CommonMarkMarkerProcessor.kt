@@ -36,7 +36,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
     override fun updateStateInfo(pos: LookaheadText.Position) {
         if (pos.char == '\n') {
             stateInfo = MarkerProcessor.StateInfo(startConstraints,
-                    MarkdownConstraints.fillFromPrevious(pos.currentLine, 0, topBlockConstraints),
+                    MarkdownConstraints.fillFromPrevious(pos, topBlockConstraints),
                     markersStack)
         } else if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.nextConstraints)) {
             stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
