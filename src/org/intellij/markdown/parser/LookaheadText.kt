@@ -12,9 +12,11 @@ class LookaheadText(private val text: CharSequence) {
     inner class Position internal constructor(private val lineN: Int,
                                                      private val localPos: Int, // -1 if on newline before
                                                      private val globalPos: Int) {
+
+        val currentLine = lines[lineN]
+
         init {
-            assert(lineN < lines.size)
-            assert(localPos >= -1 && localPos < lines.get(lineN).length)
+            assert(localPos >= -1 && localPos < currentLine.length)
         }
 
         override fun toString(): String {
@@ -46,22 +48,19 @@ class LookaheadText(private val text: CharSequence) {
         val textFromPosition: CharSequence
             get() = text.subSequence(globalPos, text.length)
 
-        val currentLine: String
-            get() = lines.get(lineN)
-
         val currentLineFromPosition: CharSequence
             get() = currentLine.substring(offsetInCurrentLine)
 
         val nextLine: String?
             get() = if (lineN + 1 < lines.size) {
-                lines.get(lineN + 1)
+                lines[lineN + 1]
             } else {
                 null
             }
 
         val prevLine: String?
             get() = if (lineN > 0) {
-                lines.get(lineN - 1)
+                lines[lineN - 1]
             } else {
                 null
             }
