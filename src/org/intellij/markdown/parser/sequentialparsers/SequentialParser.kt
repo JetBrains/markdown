@@ -53,8 +53,8 @@ data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
                               override val rangesToProcessFurther: Collection<List<IntRange>>) : SequentialParser.ParsingResult {
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>,
-                delegateIndices: List<Int>)
-    : this(iteratorPosition, parsedNodes, listOf(SequentialParserUtil.indicesToTextRanges(delegateIndices)))
+                delegateRanges: List<IntRange>)
+    : this(iteratorPosition, parsedNodes, listOf(delegateRanges))
     
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>) 

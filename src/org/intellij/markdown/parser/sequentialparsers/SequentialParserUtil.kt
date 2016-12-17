@@ -14,25 +14,6 @@ class SequentialParserUtil {
                 (1 shl Character.FINAL_QUOTE_PUNCTUATION.toInt()) or
                 (1 shl Character.MATH_SYMBOL.toInt())
 
-        fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
-            val size = ranges.sumBy { it.endInclusive - it.start + 1 }
-            return ranges.flatMapTo(ArrayList<Int>(size)) { it.start..it.endInclusive - 1 }
-        }
-
-        fun indicesToTextRanges(indices: List<Int>): List<IntRange> {
-            val result = ArrayList<IntRange>()
-
-            var starting = 0
-            for (i in indices.indices) {
-                if (i + 1 == indices.size || indices[i] + 1 != indices[i + 1]) {
-                    result.add(indices[starting]..indices[i] + 1)
-                    starting = i + 1
-                }
-            }
-
-            return result
-        }
-
         fun isWhitespace(info: TokensCache.Iterator, lookup: Int): Boolean {
             val char = info.charLookup(lookup)
             return char == 0.toChar() || Character.isSpaceChar(char) || Character.isWhitespace(char)
@@ -51,7 +32,7 @@ class SequentialParserUtil {
             for (i in lastStart..R - 1) {
                 if (tokensCache.Iterator(i).type == MarkdownTokenTypes.BLOCK_QUOTE) {
                     if (lastStart < i) {
-                        result.add(lastStart..i)
+                        result.add(lastStart..i - 1)
                     }
                     lastStart = i + 1
                 }
@@ -61,6 +42,32 @@ class SequentialParserUtil {
             }
             return result
         }
+    }
+
+}
+
+class RangesListBuilder {
+    private val list = ArrayList<IntRange>()
+    private var lastStart = -239
+    private var lastEnd = -239
+
+    fun put(index: Int) {
+        if (lastEnd + 1 == index) {
+            lastEnd = index
+            return
+        }
+        if (lastStart != -239) {
+            list.add(lastStart..lastEnd)
+        }
+        lastStart = index
+        lastEnd = index
+    }
+
+    fun get(): List<IntRange> {
+        if (lastStart != -239) {
+            list.add(lastStart..lastEnd)
+        }
+        return list
     }
 
 }

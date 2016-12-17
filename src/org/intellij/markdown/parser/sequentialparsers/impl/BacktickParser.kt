@@ -2,6 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.sequentialparsers.RangesListBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -10,42 +11,39 @@ import java.util.*
 class BacktickParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
+        val delegateIndices = RangesListBuilder()
+        var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
-        val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
-        val delegateIndices = ArrayList<Int>()
-
-        var i = 0
-        while (i < indices.size) {
-            val iterator = tokens.ListIterator(indices, i)
+        while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
 
-                val j = findOfSize(tokens, indices, i + 1, getLength(iterator, true))
+                val endIterator = findOfSize(iterator.advance(), getLength(iterator, true))
 
-                if (j != -1) {
-                    result.withNode(SequentialParser.Node(indices[i]..indices[j] + 1, MarkdownElementTypes.CODE_SPAN))
-                    i = j + 1
+                if (endIterator != null) {
+                    result.withNode(SequentialParser.Node(iterator.index..endIterator.index + 1, MarkdownElementTypes.CODE_SPAN))
+                    iterator = endIterator.advance()
                     continue
                 }
             }
-            delegateIndices.add(indices[i])
-            ++i
+            delegateIndices.put(iterator.index)
+            iterator = iterator.advance()
         }
 
-        return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
+        return result.withFurtherProcessing(delegateIndices.get())
     }
 
-    private fun findOfSize(tokens: TokensCache, indices: List<Int>, from: Int, length: Int): Int {
-        for (i in from..indices.size - 1) {
-            val iterator = tokens.ListIterator(indices, i)
-            if (iterator.type != MarkdownTokenTypes.BACKTICK && iterator.type != MarkdownTokenTypes.ESCAPED_BACKTICKS) {
-                continue
+    private fun findOfSize(it: TokensCache.Iterator, length: Int): TokensCache.Iterator? {
+        var iterator = it
+        while (iterator.type != null) {
+            if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
+                if (getLength(iterator, false) == length) {
+                    return iterator
+                }
             }
 
-            if (getLength(iterator, false) == length) {
-                return i
-            }
+            iterator = iterator.advance()
         }
-        return -1
+        return null
     }
 
 

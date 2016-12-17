@@ -2,57 +2,52 @@ package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.sequentialparsers.RangesListBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.*
 
 class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
-        val delegateIndices = ArrayList<Int>()
-        val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
+        val delegateIndices = RangesListBuilder()
         var lastOpenedPos: Int? = null
+        var iterator = tokens.RangesListIterator(rangesToGlue)
 
-        var i = 0
-        while (i < indices.size) {
-            val iterator = tokens.ListIterator(indices, i)
+        while (iterator.type != null) {
             if (iterator.type != GFMTokenTypes.TILDE) {
-                delegateIndices.add(indices.get(i))
-                i++
+                delegateIndices.put(iterator.index)
+                iterator = iterator.advance()
                 continue
             }
 
             if (lastOpenedPos != null
                     && isGoodType(iterator.rawLookup(-1))
                     && iterator.rawLookup(1) == GFMTokenTypes.TILDE) {
-                result.withNode(SequentialParser.Node(indices.get(lastOpenedPos)..indices.get(i + 1) + 1,
-                        GFMElementTypes.STRIKETHROUGH))
-                i += 2
+                iterator = iterator.advance()
+                result.withNode(SequentialParser.Node(lastOpenedPos..iterator.index + 1, GFMElementTypes.STRIKETHROUGH))
+                iterator = iterator.advance()
                 lastOpenedPos = null
                 continue
             }
             if (lastOpenedPos == null
                     && iterator.rawLookup(1) == GFMTokenTypes.TILDE
                     && isGoodType(iterator.rawLookup(2))) {
-                lastOpenedPos = i
-                i += 2
+                lastOpenedPos = iterator.index
+                iterator = iterator.advance().advance()
                 continue
             }
 
-            delegateIndices.add(indices.get(i))
-
-            i++
+            delegateIndices.put(iterator.index)
+            iterator = iterator.advance()
         }
 
         if (lastOpenedPos != null) {
             for (delta in 0..1) {
-                delegateIndices.add(indices.get(lastOpenedPos + delta))
+                delegateIndices.put(lastOpenedPos + delta)
             }
-            Collections.sort(delegateIndices)
         }
 
-        return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
+        return result.withFurtherProcessing(delegateIndices.get())
     }
 
     private fun isGoodType(type: IElementType?): Boolean {

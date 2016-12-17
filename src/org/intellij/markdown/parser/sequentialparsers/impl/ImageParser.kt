@@ -2,6 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.parser.sequentialparsers.RangesListBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -10,10 +11,8 @@ import java.util.*
 class ImageParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         var result = SequentialParser.ParsingResultBuilder()
-        val delegateIndices = ArrayList<Int>()
-        val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
-
-        var iterator: TokensCache.Iterator = tokens.ListIterator(indices, 0)
+        val delegateIndices = RangesListBuilder()
+        var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.EXCLAMATION_MARK
@@ -30,11 +29,11 @@ class ImageParser : SequentialParser {
                 }
             }
 
-            delegateIndices.add(iterator.index)
+            delegateIndices.put(iterator.index)
             iterator = iterator.advance()
         }
 
-        return result.withFurtherProcessing(SequentialParserUtil.indicesToTextRanges(delegateIndices))
+        return result.withFurtherProcessing(delegateIndices.get())
 
     }
 }

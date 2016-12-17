@@ -3,11 +3,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.parser.sequentialparsers.LocalParsingResult
-import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
-import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.*
+import org.intellij.markdown.parser.sequentialparsers.*
 
 class LinkParserUtil {
     companion object {
@@ -65,11 +61,11 @@ class LinkParserUtil {
 
             val startIndex = it.index
 
-            val indicesToDelegate = ArrayList<Int>()
+            val delegate = RangesListBuilder()
 
             it = it.advance()
             while (it.type != MarkdownTokenTypes.RBRACKET && it.type != null) {
-                indicesToDelegate.add(it.index)
+                delegate.put(it.index)
                 if (it.type == MarkdownTokenTypes.LBRACKET) {
                     break
                 }
@@ -84,7 +80,7 @@ class LinkParserUtil {
 
                 return LocalParsingResult(it,
                         listOf(SequentialParser.Node(startIndex..endIndex + 1, MarkdownElementTypes.LINK_LABEL)),
-                        indicesToDelegate)
+                        delegate.get())
             }
             return null
         }
@@ -97,7 +93,7 @@ class LinkParserUtil {
             }
 
             val startIndex = it.index
-            val indicesToDelegate = ArrayList<Int>()
+            val delegate = RangesListBuilder()
 
             var bracketDepth = 1
 
@@ -109,7 +105,7 @@ class LinkParserUtil {
                     }
                 }
 
-                indicesToDelegate.add(it.index)
+                delegate.put(it.index)
                 if (it.type == MarkdownTokenTypes.LBRACKET) {
                     bracketDepth++
                 }
@@ -119,7 +115,7 @@ class LinkParserUtil {
             if (it.type == MarkdownTokenTypes.RBRACKET) {
                 return LocalParsingResult(it,
                         listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_TEXT)),
-                        indicesToDelegate)
+                        delegate.get())
             }
             return null
         }

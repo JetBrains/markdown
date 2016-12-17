@@ -11,16 +11,13 @@ class EmphStrongParser : SequentialParser {
 
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
-
-        val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)
+        var iterator = tokens.RangesListIterator(rangesToGlue)
 
         val openingOnes = ArrayList<OpeningEmphInfo>()
 
-        var i = 0
-        while (i < indices.size) {
-            val iterator = tokens.ListIterator(indices, i)
+        while (iterator.type != null) {
             if (iterator.type != MarkdownTokenTypes.EMPH) {
-                i++
+                iterator = iterator.advance()
                 continue
             }
 
@@ -37,14 +34,14 @@ class EmphStrongParser : SequentialParser {
                 val toMakeMax = Math.min(opening.numChars, numCanEnd)
                 val toMake = if (toMakeMax % 2 == 0) 2 else 1
                 val from = opening.pos + (opening.numChars - toMake)
-                val to = i + toMake - 1
+                val to = iterator.index + toMake - 1
 
                 val nodeType = if (toMake == 2) MarkdownElementTypes.STRONG else MarkdownElementTypes.EMPH
-                result.withNode(SequentialParser.Node(indices.get(from)..indices.get(to) + 1, nodeType))
+                result.withNode(SequentialParser.Node(from..to + 1, nodeType))
                 openingOnes.subList(stackIndex, openingOnes.size).clear()
 
                 thisEmphWasEaten = true
-                i += toMake
+                kotlin.repeat(toMake) { iterator = iterator.advance() }
                 numCanEnd -= toMake
                 if (opening.numChars > toMake) {
                     openingOnes.add(OpeningEmphInfo(opening.pos, opening.numChars - toMake, opening.type))
@@ -57,11 +54,11 @@ class EmphStrongParser : SequentialParser {
 
             val numCanStart = canStartNumber(iterator)
             if (numCanStart != 0) {
-                openingOnes.add(OpeningEmphInfo(i, numCanStart, getType(iterator)))
-                i += numCanStart
+                openingOnes.add(OpeningEmphInfo(iterator.index, numCanStart, getType(iterator)))
+                kotlin.repeat(numCanStart) { iterator = iterator.advance() }
                 continue
             }
-            i++
+            iterator = iterator.advance()
         }
 
         return result

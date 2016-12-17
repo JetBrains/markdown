@@ -23,34 +23,36 @@ abstract class TokensCache {
         }
     }
 
-    private fun getIndexForIterator(indices: List<Int>, startIndex: Int): Int {
-        if (startIndex < 0) {
-            return -1
-        }
-        if (startIndex >= indices.size) {
-            return filteredTokens.size
-        }
-        return indices[startIndex]
-    }
+    inner class RangesListIterator private constructor(private val ranges: List<IntRange>,
+                                                       private val listIndex: Int,
+                                                       value: Int) : Iterator(value) {
+        constructor(ranges: List<IntRange>) : this(ranges, 0, ranges.firstOrNull()?.start ?: -1)
 
-
-    inner class ListIterator(private val indices: List<Int>, private val listIndex: Int) : Iterator(getIndexForIterator(indices, listIndex)) {
-
-        override fun advance(): Iterator {
-            return ListIterator(indices, listIndex + 1)
+        override fun advance(): RangesListIterator {
+            if (listIndex >= ranges.size) {
+                return this
+            }
+            if (index == ranges[listIndex].endInclusive) {
+                return RangesListIterator(ranges, listIndex + 1, ranges.getOrNull(listIndex + 1)?.start ?: filteredTokens.size)
+            }
+            return RangesListIterator(ranges, listIndex, index + 1)
         }
 
-        override fun rollback(): Iterator {
-            return ListIterator(indices, listIndex - 1)
+        override fun rollback(): RangesListIterator {
+            if (listIndex < 0) {
+                return this
+            }
+            if (index == ranges[listIndex].start) {
+                return RangesListIterator(ranges, listIndex - 1, ranges.getOrNull(listIndex - 1)?.endInclusive ?: -1)
+            }
+            return RangesListIterator(ranges, listIndex, index - 1)
         }
 
         override fun rawLookup(steps: Int): IElementType? {
-            if (steps > 0 && advance().index != super.advance().index
-                    || steps < 0 && rollback().index != super.rollback().index) {
-                return null
+            if (index + steps in ranges.getOrNull(listIndex) ?: return null) {
+                return super.rawLookup(steps)
             }
-
-            return super.rawLookup(steps)
+            return null
         }
     }
 
