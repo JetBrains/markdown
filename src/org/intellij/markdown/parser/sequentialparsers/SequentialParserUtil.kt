@@ -15,13 +15,8 @@ class SequentialParserUtil {
                 (1 shl Character.MATH_SYMBOL.toInt())
 
         fun textRangesToIndices(ranges: Collection<IntRange>): List<Int> {
-            val result = ArrayList<Int>()
-            for (range in ranges) {
-                for (i in range.start..range.endInclusive - 1) {
-                    result.add(i)
-                }
-            }
-            return result.sorted()
+            val size = ranges.sumBy { it.endInclusive - it.start + 1 }
+            return ranges.flatMapTo(ArrayList<Int>(size)) { it.start..it.endInclusive - 1 }
         }
 
         fun indicesToTextRanges(indices: List<Int>): Collection<IntRange> {
