@@ -27,7 +27,7 @@ class GFMConstraints(indents: IntArray,
                 ?: return null
 
         val line = pos.currentLine
-        var offset = pos.offsetInCurrentLine + baseMarkerInfo.markerText.length
+        var offset = pos.offsetInCurrentLine + baseMarkerInfo.markerLength
 
         while (offset < line.length && (line[offset] == ' ' || line[offset] == '\t')) {
             offset++
@@ -37,9 +37,9 @@ class GFMConstraints(indents: IntArray,
                 && line[offset] == '['
                 && line[offset + 2] == ']'
                 && (line[offset + 1] == 'x' || line[offset + 1] == 'X' || line[offset + 1] == ' ')) {
-            return MarkdownConstraints.ListMarkerInfo(line.subSequence(pos.offsetInCurrentLine, offset + 3),
+            return MarkdownConstraints.ListMarkerInfo(offset + 3 - pos.offsetInCurrentLine,
                     toCheckboxType(baseMarkerInfo.markerType),
-                    baseMarkerInfo.markerText.length)
+                    baseMarkerInfo.markerLength)
         } else {
             return baseMarkerInfo
         }

@@ -100,7 +100,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
 
     protected open fun fetchListMarker(pos: LookaheadText.Position): ListMarkerInfo? {
         if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
-            return ListMarkerInfo(pos.char.toString(), pos.char, 1)
+            return ListMarkerInfo(1, pos.char, 1)
         }
 
         val line = pos.currentLine
@@ -112,7 +112,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                 && offset - pos.offsetInCurrentLine <= 9
                 && offset < line.length
                 && (line[offset] == '.' || line[offset] == ')')) {
-            return ListMarkerInfo(line.subSequence(pos.offsetInCurrentLine, offset + 1),
+            return ListMarkerInfo(offset + 1 - pos.offsetInCurrentLine,
                     line[offset],
                     offset + 1 - pos.offsetInCurrentLine)
         } else {
@@ -120,7 +120,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         }
     }
 
-    data class ListMarkerInfo(val markerText: CharSequence, val markerType: Char, val markerIndent: Int)
+    protected data class ListMarkerInfo(val markerLength: Int, val markerType: Char, val markerIndent: Int)
 
 
     private fun tryAddListItem(pos: LookaheadText.Position): MarkdownConstraints? {
@@ -142,7 +142,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         val markerInfo = fetchListMarker(pos.nextPosition(offset - pos.offsetInCurrentLine)!!)
                 ?: return null
 
-        offset += markerInfo.markerText.length
+        offset += markerInfo.markerLength
         var spacesAfter = 0
 
         val markerEndOffset = offset
