@@ -27,7 +27,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun getIndent(): Int {
-        if (indents.size == 0) {
+        if (indents.isEmpty()) {
             return 0
         }
 
@@ -55,7 +55,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun extendsList(other: MarkdownConstraints): Boolean {
-        if (other.types.size == 0) {
+        if (other.types.isEmpty()) {
             throw IllegalArgumentException("List constraints should contain at least one item")
         }
         return startsWith(other) && !containsListMarkers(other.types.size - 1)
@@ -68,12 +68,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         if (n < m) {
             return false
         }
-        for (i in 0..m - 1) {
-            if (types[i] != other.types[i]) {
-                return false
-            }
-        }
-        return true
+        return (0..m - 1).none { types[it] != other.types[it] }
     }
 
     private fun containsListMarkers(): Boolean {
@@ -81,12 +76,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     private fun containsListMarkers(upToIndex: Int): Boolean {
-        for (i in 0..upToIndex - 1) {
-            if (types[i] != BQ_CHAR && isExplicit[i]) {
-                return true
-            }
-        }
-        return false
+        return (0..upToIndex - 1).any { types[it] != BQ_CHAR && isExplicit[it] }
     }
 
     fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
