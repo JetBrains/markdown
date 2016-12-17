@@ -15,7 +15,7 @@ class ListMarkerBlock(myConstraints: MarkdownConstraints,
     : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = true
 
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.offsetInCurrentLine == -1
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE
@@ -27,7 +27,7 @@ class ListMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun doProcessToken(pos: LookaheadText.Position,
                                 currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints)
         if (eolN >= 3) {

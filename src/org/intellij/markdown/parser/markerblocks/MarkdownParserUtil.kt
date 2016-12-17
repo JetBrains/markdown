@@ -6,7 +6,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 object MarkdownParserUtil {
 
     fun calcNumberOfConsequentEols(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int {
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         var currentPos = pos
         var result = 1

@@ -12,7 +12,7 @@ class HorizontalRuleMarkerBlock(myConstraints: MarkdownConstraints, marker: Prod
 : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = false
 
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.offsetInCurrentLine == -1
 
     override fun getDefaultAction(): MarkerBlock.ClosingAction {
         return MarkerBlock.ClosingAction.DONE

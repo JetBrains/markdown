@@ -32,7 +32,7 @@ class ParagraphMarkerBlock(constraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         if (MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
             return MarkerBlock.ProcessingResult.DEFAULT

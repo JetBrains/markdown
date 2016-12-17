@@ -90,7 +90,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
-        if (pos == null || pos.char == '\n')
+        if (pos == null || pos.offsetInCurrentLine == -1)
             return null
         if (HorizontalRuleProvider.isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
             return null
@@ -99,8 +99,9 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     protected open fun fetchListMarker(pos: LookaheadText.Position): ListMarkerInfo? {
-        if (pos.char == '*' || pos.char == '-' || pos.char == '+') {
-            return ListMarkerInfo(1, pos.char, 1)
+        val c = pos.char
+        if (c == '*' || c == '-' || c == '+') {
+            return ListMarkerInfo(1, c, 1)
         }
 
         val line = pos.currentLine
@@ -227,7 +228,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         }
 
         fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
-            assert(pos.char == '\n')
+            assert(pos.offsetInCurrentLine == -1)
 
             var result = fillFromPrevious(pos, prevLineConstraints)
             val line = pos.currentLine

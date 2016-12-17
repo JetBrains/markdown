@@ -16,7 +16,7 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                                   private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false
 
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.offsetInCurrentLine == -1
 
     private val endLineRegex = Regex("^ {0,3}${fenceStart}+ *$")
 
@@ -41,7 +41,7 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
         if (!nextLineConstraints.extendsPrev(constraints)) {

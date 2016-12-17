@@ -45,7 +45,7 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         val nonemptyPos = MarkdownParserUtil.findNonEmptyLineWithSameConstraints(constraints, pos)
             ?: return MarkerBlock.ProcessingResult.DEFAULT

@@ -11,7 +11,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = true
 
-    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.char == '\n'
+    override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.offsetInCurrentLine == -1
 
     override fun calcNextInterestingOffset(pos: LookaheadText.Position): Int {
         return pos.nextLineOffset ?: -1
@@ -22,7 +22,7 @@ class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: Producti
     }
 
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        assert(pos.char == '\n')
+        assert(pos.offsetInCurrentLine == -1)
 
         val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
         // That means nextLineConstraints are "shorter" so our blockquote char is absent
