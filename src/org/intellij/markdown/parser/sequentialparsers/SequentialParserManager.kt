@@ -5,14 +5,14 @@ import java.util.*
 abstract class SequentialParserManager {
     abstract fun getParserSequence(): List<SequentialParser>
 
-    fun runParsingSequence(tokensCache: TokensCache, rangesToParse: Collection<IntRange>): Collection<SequentialParser.Node> {
+    fun runParsingSequence(tokensCache: TokensCache, rangesToParse: List<IntRange>): Collection<SequentialParser.Node> {
         val result = ArrayList<SequentialParser.Node>()
 
-        var parsingSpaces = ArrayList<Collection<IntRange>>()
+        var parsingSpaces = ArrayList<List<IntRange>>()
         parsingSpaces.add(rangesToParse)
 
         for (sequentialParser in getParserSequence()) {
-            val nextLevelSpaces = ArrayList<Collection<IntRange>>()
+            val nextLevelSpaces = ArrayList<List<IntRange>>()
 
             for (parsingSpace in parsingSpaces) {
                 val currentResult = sequentialParser.parse(tokensCache, parsingSpace)

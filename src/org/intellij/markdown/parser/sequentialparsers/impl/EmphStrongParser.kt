@@ -9,7 +9,7 @@ import java.util.*
 
 class EmphStrongParser : SequentialParser {
 
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

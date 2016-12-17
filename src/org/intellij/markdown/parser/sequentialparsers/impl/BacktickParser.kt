@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
 class BacktickParser : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
 
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

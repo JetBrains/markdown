@@ -9,7 +9,7 @@ import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
 class AutolinkParser(private val typesAfterLT: List<IElementType>) : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

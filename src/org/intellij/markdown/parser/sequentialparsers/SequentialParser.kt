@@ -5,13 +5,13 @@ import java.util.*
 
 interface SequentialParser {
 
-    fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): ParsingResult
+    fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): ParsingResult
 
     data class Node(val range: IntRange, val type: IElementType)
 
     interface ParsingResult {
         val parsedNodes: Collection<Node>
-        val rangesToProcessFurther: Collection<Collection<IntRange>>
+        val rangesToProcessFurther: Collection<List<IntRange>>
     }
     
     class ParsingResultBuilder : ParsingResult {
@@ -20,8 +20,8 @@ interface SequentialParser {
         override val parsedNodes : Collection<Node>
             get() = _parsedNodes
 
-        private val _rangesToProcessFurther : MutableCollection<Collection<IntRange>> = ArrayList()
-        override val rangesToProcessFurther : Collection<Collection<IntRange>>
+        private val _rangesToProcessFurther : MutableCollection<List<IntRange>> = ArrayList()
+        override val rangesToProcessFurther : Collection<List<IntRange>>
             get() = _rangesToProcessFurther
 
         fun withNode(result: Node): ParsingResultBuilder {
@@ -34,7 +34,7 @@ interface SequentialParser {
             return this
         }
 
-        fun withFurtherProcessing(ranges: Collection<IntRange>): ParsingResultBuilder {
+        fun withFurtherProcessing(ranges: List<IntRange>): ParsingResultBuilder {
             _rangesToProcessFurther.add(ranges)
             return this
         }
@@ -50,7 +50,7 @@ interface SequentialParser {
 
 data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
                               override val parsedNodes: Collection<SequentialParser.Node>,
-                              override val rangesToProcessFurther: Collection<Collection<IntRange>>) : SequentialParser.ParsingResult {
+                              override val rangesToProcessFurther: Collection<List<IntRange>>) : SequentialParser.ParsingResult {
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>,
                 delegateIndices: List<Int>)
@@ -58,5 +58,5 @@ data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
     
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>) 
-    : this(iteratorPosition, parsedNodes, emptyList<Collection<IntRange>>())
+    : this(iteratorPosition, parsedNodes, emptyList<List<IntRange>>())
 }

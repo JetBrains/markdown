@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import java.util.*
 
 class ImageParser : SequentialParser {
-    override fun parse(tokens: TokensCache, rangesToGlue: Collection<IntRange>): SequentialParser.ParsingResult {
+    override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         var result = SequentialParser.ParsingResultBuilder()
         val delegateIndices = ArrayList<Int>()
         val indices = SequentialParserUtil.textRangesToIndices(rangesToGlue)

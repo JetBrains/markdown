@@ -19,7 +19,7 @@ class SequentialParserUtil {
             return ranges.flatMapTo(ArrayList<Int>(size)) { it.start..it.endInclusive - 1 }
         }
 
-        fun indicesToTextRanges(indices: List<Int>): Collection<IntRange> {
+        fun indicesToTextRanges(indices: List<Int>): List<IntRange> {
             val result = ArrayList<IntRange>()
 
             var starting = 0
@@ -43,7 +43,7 @@ class SequentialParserUtil {
             return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0
         }
 
-       fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): Collection<IntRange> {
+       fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): List<IntRange> {
             val result = ArrayList<IntRange>()
             var lastStart = textRange.start
 
