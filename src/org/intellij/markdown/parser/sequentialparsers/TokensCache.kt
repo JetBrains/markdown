@@ -63,9 +63,14 @@ abstract class TokensCache {
                 return info(0).type
             }
 
-        val text: String
+        val firstChar: Char
             get() {
-                return originalText.subSequence(info(0).tokenStart, info(0).tokenEnd).toString()
+                return getRawCharAt(info(0).tokenStart)
+            }
+
+        val length: Int
+            get() {
+                return info(0).tokenEnd - info(0).tokenStart
             }
 
         val start: Int
@@ -117,6 +122,9 @@ abstract class TokensCache {
         }
 
         open fun charLookup(steps: Int): Char {
+            if (steps == 0) {
+                return getRawCharAt(start)
+            }
             if (steps == 1) {
                 return getRawCharAt(end)
             } else if (steps == -1) {

@@ -132,7 +132,7 @@ class EmphStrongParser : SequentialParser {
     }
 
     private fun getType(info: TokensCache.Iterator): Char {
-        return info.text[0]
+        return info.firstChar
     }
 
     private data class OpeningEmphInfo(val pos: Int, val numChars: Int, val type: Char)

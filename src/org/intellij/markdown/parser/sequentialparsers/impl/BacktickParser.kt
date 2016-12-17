@@ -48,8 +48,6 @@ class BacktickParser : SequentialParser {
 
 
     private fun getLength(info: TokensCache.Iterator, canEscape: Boolean): Int {
-        val tokenText = info.text
-
         var toSubtract = 0
         if (info.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
             if (canEscape) {
@@ -59,6 +57,6 @@ class BacktickParser : SequentialParser {
             }
         }
 
-        return tokenText.length - toSubtract
+        return info.length - toSubtract
     }
 }
