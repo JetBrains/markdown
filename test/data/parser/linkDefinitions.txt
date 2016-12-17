@@ -48,13 +48,19 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_TITLE(''title (with parens)'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[Foo bar]')
-    WHITE_SPACE(':')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('Foo bar')
+        Markdown:](']')
+    Markdown::(':')
     Markdown:EOL('\n')
-    Markdown:LINK_DESTINATION('<my url>')
+    Markdown:HTML_TAG('<my url>')
     Markdown:EOL('\n')
-    Markdown:LINK_TITLE(''title'')
+    Markdown:'(''')
+    Markdown:TEXT('title')
+    Markdown:'(''')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION

@@ -10,7 +10,6 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.LinkReferenceDefinitionMarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import java.util.*
-import kotlin.text.Regex
 
 class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
@@ -47,24 +46,6 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
     }
 
     companion object {
-        val WHSP = "[ \\t]*"
-
-        val NOT_CHARS = { c: String ->
-            val nonWhitespace = "(?:\\\\[$c]|[^ \\t\\n$c])"
-            val anyChar = "(?:\\\\[$c]|[^$c\\n])"
-            "$anyChar*(?:\\n$anyChar*$nonWhitespace$WHSP)*(?:\\n$WHSP)?"
-        }
-
-        val NONCONTROL = "(?:\\\\[\\(\\)]|[^ \\n\\t\\(\\)])"
-
-        val LINK_DESTINATION = "(?:<(?:\\\\[<>]|[^<>\\n])*>|${NONCONTROL}*\\(${NONCONTROL}*\\)${NONCONTROL}*|${NONCONTROL}+)"
-
-        val LINK_TITLE = "(?:\"${NOT_CHARS("\"")}\"|'${NOT_CHARS("'")}'|\\(${NOT_CHARS("\\)")}\\))"
-
-        val LINK_DESTINATION_REGEX = Regex("\\A$LINK_DESTINATION")
-
-        val LINK_TITLE_REGEX = Regex("\\A$LINK_TITLE")
-
 
         fun addToRangeAndWiden(range: IntRange, t: Int): IntRange {
             return IntRange(range.start + t, range.endInclusive + t + 1)
@@ -84,32 +65,112 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             
             offset = passOneNewline(text, offset)
 
-            val destination = LINK_DESTINATION_REGEX.find(text.subSequence(offset, text.length))
-                    ?: return null
-            val destinationRange = IntRange(destination.range.start + offset, destination.range.endInclusive + offset)
-            
-            offset += destination.range.endInclusive - destination.range.start + 1
+            val destination = matchLinkDestination(text, offset) ?: return null
+            offset = destination.endInclusive + 1
             offset = passOneNewline(text, offset)
 
-            val title = LINK_TITLE_REGEX.find(text.subSequence(offset, text.length))
+            val title = matchLinkTitle(text, offset)
 
             val result = ArrayList<IntRange>()
             result.add(linkLabel)
-            result.add(destinationRange)
+            result.add(destination)
             if (title != null) {
-                val titleRange = IntRange(title.range.start + offset, title.range.endInclusive + offset)
-                
-                offset += title.range.endInclusive - title.range.start + 1
-                while (offset < text.length && text[offset].let { it == ' ' || it == '\t' })
+                offset = title.endInclusive + 1
+                while (offset < text.length && isSpace(text[offset]))
                     offset++
                 if (offset >= text.length || text[offset] == '\n') {
-                    result.add(titleRange)
+                    result.add(title)
                 }
             }
             
             return result
         }
-        
+
+        fun matchLinkDestination(text: CharSequence, start: Int): IntRange? {
+            if (start >= text.length)
+                return null
+
+            var offset = start
+            if (text[start] == '<') {
+                while (offset < text.length) {
+                    val c = text[offset]
+                    if (c == '>')
+                        return IntRange(start, offset)
+                    if (c == '<' || c == '>' || isSpaceOrNewline(c))
+                        return null
+                    if (c == '\\' && offset + 1 < text.length && !isSpaceOrNewline(text[offset + 1]))
+                        offset++
+
+                    offset++
+                }
+                return null
+            }
+            else {
+                var hasParens = false
+                while (offset < text.length) {
+                    val c = text[offset]
+                    if (isSpaceOrNewline(c) || c.toInt() <= 27)
+                        break
+                    if (c == '(') {
+                        if (hasParens)
+                            break
+                        else
+                            hasParens = true
+                    }
+                    else if (c == ')') {
+                        if (!hasParens)
+                            break
+                        else
+                            hasParens = false
+                    }
+                    else if (c == '\\' && offset + 1 < text.length && !isSpaceOrNewline(text[offset + 1]))
+                        offset++
+
+                    offset++
+                }
+                if (start == offset)
+                    return null
+                else
+                    return IntRange(start, offset - 1)
+            }
+
+        }
+
+        fun matchLinkTitle(text: CharSequence, start: Int): IntRange? {
+            if (start >= text.length)
+                return null
+
+            val endDelim = when (text[start]) {
+                '\'' -> '\''
+                '"' -> '"'
+                '(' -> ')'
+                else -> return null
+            }
+
+            var offset = start + 1
+            var isBlank = false
+            while (offset < text.length) {
+                val c = text[offset]
+                if (c == endDelim)
+                    return IntRange(start, offset)
+                if (c == '\n') {
+                    if (isBlank)
+                        return null
+                    else
+                        isBlank = true
+                }
+                else if (!isSpace(c)) {
+                    isBlank = false
+                }
+
+                if (c == '\\' && offset + 1 < text.length && !isSpaceOrNewline(text[offset + 1]))
+                    offset++
+
+                offset++
+            }
+            return null
+        }
+
         fun matchLinkLabel(text: CharSequence, start: Int): IntRange? {
             var offset = start
             if (offset >= text.length || text[offset] != '[') {
@@ -144,14 +205,18 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         
         private fun passOneNewline(text: CharSequence, start: Int): Int {
             var offset = start
-            while (offset < text.length && text[offset].let { it == ' ' || it == '\t' }) 
+            while (offset < text.length && isSpace(text[offset]))
                 offset++
             if (offset < text.length && text[offset] == '\n') {
                 offset++
-                while (offset < text.length && text[offset].let { it == ' ' || it == '\t' })
+                while (offset < text.length && isSpace(text[offset]))
                     offset++
             }
             return offset
         }
+
+        private inline fun isSpace(c: Char) = c == ' ' || c == '\t'
+
+        private inline fun isSpaceOrNewline(c: Char) = isSpace(c) || c == '\n'
     }
 }
