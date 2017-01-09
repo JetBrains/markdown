@@ -278,8 +278,8 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
     return Token.EOL;
   }
 
-  // optimize
-  {ALPHANUM}+ ({WHITE_SPACE}+ {ALPHANUM}+)* {
+  // optimize and eat underscores inside words
+  {ALPHANUM}+ (({WHITE_SPACE}+ | "_"+) {ALPHANUM}+)* {
     return Token.TEXT;
   }
 

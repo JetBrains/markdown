@@ -289,8 +289,8 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
     return Token.TEXT;
   }
 
-  // optimize
-  {ALPHANUM}+ ({WHITE_SPACE}+ {ALPHANUM}+)* {
+  // optimize and eat underscores inside words
+  {ALPHANUM}+ (({WHITE_SPACE}+ | "_"+) {ALPHANUM}+)* {
     return Token.TEXT;
   }
 
