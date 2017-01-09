@@ -229,3 +229,42 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_LINE('            le'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[foo]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('<bar>')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[foo]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('<bar>')
+    WHITE_SPACE(' ')
+    Markdown:LINK_TITLE(''title'')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:HTML_TAG('<bar baz>')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:<('<')
+    Markdown:TEXT('bar')
+    Markdown:EOL('\n')
+    Markdown:TEXT('baz')
+    Markdown:>('>')
+  Markdown:EOL('\n')

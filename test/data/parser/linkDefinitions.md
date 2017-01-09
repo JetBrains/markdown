@@ -60,3 +60,11 @@ Foo
 
             le'
 
+[foo]: <bar>
+
+[foo]: <bar> 'title'
+
+[foo]: <bar baz>
+
+[foo]: <bar
+baz>

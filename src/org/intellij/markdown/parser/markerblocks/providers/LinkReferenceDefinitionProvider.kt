@@ -91,7 +91,8 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                 return null
 
             var offset = start
-            if (text[start] == '<') {
+            if (text[offset] == '<') {
+                offset++
                 while (offset < text.length) {
                     val c = text[offset]
                     if (c == '>')
