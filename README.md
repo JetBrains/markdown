@@ -10,7 +10,7 @@ This parser is an attempt to create a markdown processor that would:
 
 - Use one code base for both client and server-side processing;
 - Support different flavours;
-- Be easily extendable.
+- Be easily extensible.
 
 Since the parser is written in kotlin, it can be compiled in both JS and Java bytecode
 and so can be used elsewhere.
