@@ -188,6 +188,10 @@ internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : Ge
     }
 
     protected fun makeAbsoluteUrl(destination : CharSequence) : CharSequence {
+        if (destination.startsWith('#')) {
+            return destination
+        }
+
         try {
             return baseURI?.resolve(destination.toString())?.toString() ?: destination
         }

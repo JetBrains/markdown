@@ -137,9 +137,13 @@ class HtmlGeneratorTest : TestCase() {
     fun testBaseUriRelativeNoRoot() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
-    
+
     fun testBaseUriWithBadRelativeUrl() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
+    }
+
+    fun testBaseUriWithAnchorLink() {
+        defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
 
     companion object {
