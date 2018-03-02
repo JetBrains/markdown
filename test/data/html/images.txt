@@ -1,12 +1,12 @@
 <body>
 <p>
-<img src="/url" alt="foo" title="title" /></p>
+<img src="/url" alt="foo" title="title" style="max-width: 100%" /></p>
 <p>
-<img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+<img src="train.jpg" alt="foo bar" title="train &amp; tracks" style="max-width: 100%" /></p>
 <p>
-<img src="/url2" alt="foo barurl" /></p>
+<img src="/url2" alt="foo barurl" style="max-width: 100%" /></p>
 <p>
-<img src="/url" alt="" /></p>
+<img src="/url" alt="" style="max-width: 100%" /></p>
 <p>![foo]</p>
 <p>
 !<a href="/url" title="title">foo</a>

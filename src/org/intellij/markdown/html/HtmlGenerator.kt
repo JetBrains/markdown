@@ -10,6 +10,7 @@ import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
+typealias AttributesCustomizer = (node: ASTNode, tagName: CharSequence, attributes: Iterable<CharSequence?>) -> Iterable<CharSequence?>
 
 class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
@@ -27,12 +28,13 @@ class HtmlGenerator(private val markdownText: String,
     
     private val htmlString: StringBuilder = StringBuilder()
 
-    fun generateHtml(): String {
-        HtmlGeneratingVisitor().visitNode(root)
+    @JvmOverloads
+    fun generateHtml(customizer: AttributesCustomizer? = null): String {
+        HtmlGeneratingVisitor(customizer).visitNode(root)
         return htmlString.toString()
     }
 
-    inner class HtmlGeneratingVisitor : RecursiveVisitor() {
+    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer? = null) : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this)
@@ -48,7 +50,7 @@ class HtmlGenerator(private val markdownText: String,
                                   vararg attributes: CharSequence?,
                                   autoClose: Boolean = false) {
             htmlString.append("<$tagName")
-            for (attribute in attributes) {
+            for (attribute in attributes.asIterable().let { customizer?.invoke(node, tagName, it) ?: it }) {
                 if (attribute != null) {
                     htmlString.append(" $attribute")
                 }
