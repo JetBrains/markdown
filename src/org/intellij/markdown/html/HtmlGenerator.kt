@@ -11,6 +11,7 @@ import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 
 typealias AttributesCustomizer = (node: ASTNode, tagName: CharSequence, attributes: Iterable<CharSequence?>) -> Iterable<CharSequence?>
+val DUMMY_ATTRIBUTES_CUSTOMIZER: AttributesCustomizer = { _, _, attributes -> attributes }
 
 class HtmlGenerator(private val markdownText: String,
                            private val root: ASTNode,
@@ -29,12 +30,12 @@ class HtmlGenerator(private val markdownText: String,
     private val htmlString: StringBuilder = StringBuilder()
 
     @JvmOverloads
-    fun generateHtml(customizer: AttributesCustomizer? = null): String {
+    fun generateHtml(customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER): String {
         HtmlGeneratingVisitor(customizer).visitNode(root)
         return htmlString.toString()
     }
 
-    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer? = null) : RecursiveVisitor() {
+    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this)
@@ -50,7 +51,7 @@ class HtmlGenerator(private val markdownText: String,
                                   vararg attributes: CharSequence?,
                                   autoClose: Boolean = false) {
             htmlString.append("<$tagName")
-            for (attribute in attributes.asIterable().let { customizer?.invoke(node, tagName, it) ?: it }) {
+            for (attribute in customizer.invoke(node, tagName, attributes.asIterable())) {
                 if (attribute != null) {
                     htmlString.append(" $attribute")
                 }

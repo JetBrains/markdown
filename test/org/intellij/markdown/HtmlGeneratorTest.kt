@@ -13,7 +13,7 @@ import java.net.URI
 class HtmlGeneratorTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
                             baseURI: URI? = null,
-                            customizer: AttributesCustomizer? = null) {
+                            customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) {
 
         val src = File(getTestDataPath() + "/" + testName + ".md").readText()
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
