@@ -1,7 +1,5 @@
 package org.intellij.markdown.parser.sequentialparsers
 
-import java.util.*
-
 abstract class SequentialParserManager {
     abstract fun getParserSequence(): List<SequentialParser>
 

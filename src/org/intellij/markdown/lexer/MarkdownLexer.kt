@@ -2,7 +2,6 @@ package org.intellij.markdown.lexer
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
-import java.io.IOException
 
 open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
 
@@ -61,8 +60,7 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
     private fun advanceBase(): IElementType? {
         try {
             return baseLexer.advance()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
             throw AssertionError("This could not be!")
         }
 

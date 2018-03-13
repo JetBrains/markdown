@@ -6,7 +6,7 @@ import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
-import java.net.URI
+import org.intellij.markdown.html.URI
 
 interface MarkdownFlavourDescriptor {
     val markerProcessorFactory: MarkerProcessorFactory

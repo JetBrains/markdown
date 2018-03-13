@@ -13,6 +13,7 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.AtxHeaderProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import kotlin.math.min
 
 class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
@@ -54,7 +55,7 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Co
                 MarkdownTokenTypes.LIST_BULLET
         }
         val middleOffset = pos.offset - pos.offsetInCurrentLine + offset
-        val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
+        val endOffset = min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
                 pos.nextLineOrEofOffset)
 
         productionHolder.addProduction(listOf(

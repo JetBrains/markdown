@@ -29,14 +29,13 @@ class HtmlGenerator(private val markdownText: String,
     
     private val htmlString: StringBuilder = StringBuilder()
 
-    @Deprecated("To be removed, pass custom visitor instead", 
+    @Deprecated("To be removed, pass custom visitor instead",
             ReplaceWith("generateHtml(HtmlGeneratingVisitor)"))
     fun generateHtml(customizer: AttributesCustomizer): String {
         HtmlGeneratingVisitor(DefaultTagRenderer(customizer, includeSrcPositions)).visitNode(root)
         return htmlString.toString()
     }
 
-    @JvmOverloads
     fun generateHtml(tagRenderer: TagRenderer =
                              DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, includeSrcPositions)): String {
         HtmlGeneratingVisitor(tagRenderer).visitNode(root)
@@ -69,8 +68,8 @@ class HtmlGenerator(private val markdownText: String,
             htmlString.append(tagRenderer.printHtml(html))
         }
     }
-    
-    open class DefaultTagRenderer(protected val customizer: AttributesCustomizer, 
+
+    open class DefaultTagRenderer(protected val customizer: AttributesCustomizer,
                                   protected val includeSrcPositions: Boolean) : TagRenderer {
         override fun openTag(node: ASTNode, tagName: CharSequence, vararg attributes: CharSequence?, autoClose: Boolean): CharSequence {
             return buildString {
@@ -96,15 +95,15 @@ class HtmlGenerator(private val markdownText: String,
 
         override fun printHtml(html: CharSequence): CharSequence = html
     }
-    
+
     interface TagRenderer {
         fun openTag(node: ASTNode,
                     tagName: CharSequence,
                     vararg attributes: CharSequence?,
                     autoClose: Boolean = false): CharSequence
-        
+
         fun closeTag(tagName: CharSequence): CharSequence
-        
+
         fun printHtml(html: CharSequence): CharSequence
     }
 

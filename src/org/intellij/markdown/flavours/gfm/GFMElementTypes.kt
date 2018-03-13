@@ -5,23 +5,23 @@ import org.intellij.markdown.MarkdownElementType
 
 object GFMTokenTypes {
 
-    @JvmField val TILDE: IElementType = MarkdownElementType("~", true)
+    val TILDE: IElementType = MarkdownElementType("~", true)
 
-    @JvmField val TABLE_SEPARATOR: IElementType = MarkdownElementType("TABLE_SEPARATOR", true)
+    val TABLE_SEPARATOR: IElementType = MarkdownElementType("TABLE_SEPARATOR", true)
 
-    @JvmField val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true)
+    val GFM_AUTOLINK: IElementType = MarkdownElementType("GFM_AUTOLINK", true)
 
-    @JvmField val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true)
+    val CHECK_BOX: IElementType = MarkdownElementType("CHECK_BOX", true)
 
-    @JvmField val CELL: IElementType = MarkdownElementType("CELL", true)
+    val CELL: IElementType = MarkdownElementType("CELL", true)
 }
 
 object  GFMElementTypes {
-    @JvmField val STRIKETHROUGH: IElementType = MarkdownElementType("STRIKETHROUGH")
+    val STRIKETHROUGH: IElementType = MarkdownElementType("STRIKETHROUGH")
 
-    @JvmField val TABLE: IElementType = MarkdownElementType("TABLE")
+    val TABLE: IElementType = MarkdownElementType("TABLE")
 
-    @JvmField val HEADER: IElementType = MarkdownElementType("HEADER")
+    val HEADER: IElementType = MarkdownElementType("HEADER")
 
-    @JvmField val ROW: IElementType = MarkdownElementType("ROW")
+    val ROW: IElementType = MarkdownElementType("ROW")
 }

@@ -28,13 +28,13 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
     private fun calcTailStartPos(pos: LookaheadText.Position, headerSize: Int): Int {
         val line = pos.currentLineFromPosition
         var offset = line.length - 1
-        while (offset > headerSize && Character.isWhitespace(line[offset])) {
+        while (offset > headerSize && line[offset].isWhitespace()) {
             offset--
         }
         while (offset > headerSize && line[offset] == '#' && line[offset - 1] != '\\') {
             offset--
         }
-        if (offset + 1 < line.length && Character.isWhitespace(line[offset]) && line[offset + 1] == '#') {
+        if (offset + 1 < line.length && line[offset].isWhitespace() && line[offset + 1] == '#') {
             return pos.offset + offset + 1
         } else {
             return pos.offset + line.length
@@ -47,18 +47,24 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
 
     private fun matches(pos: LookaheadText.Position): IntRange? {
         if (pos.offsetInCurrentLine != -1) {
-            val matchResult = getRegex().find(pos.currentLineFromPosition)
-            if (matchResult != null) {
-                return matchResult.groups[1]!!.range
+            val text = pos.currentLineFromPosition
+            var offset = MarkerBlockProvider.passSmallIndent(text)
+            if (offset >= text.length || text[offset] != '#') {
+                return null
             }
+            
+            val start = offset
+            repeat(6) {
+                if (offset < text.length && text[offset] == '#') {
+                    offset++
+                }
+            }
+            
+            if (requireSpace && offset < text.length && text[offset] != ' ') {
+                return null
+            }
+            return IntRange(start, offset - 1)
         }
         return null
-    }
-    
-    private fun getRegex() = if (requireSpace) REGEX_WITH_SPACE else REGEX_NO_SPACE
-
-    companion object {
-        val REGEX_WITH_SPACE: Regex = Regex("\\A {0,3}(#{1,6})( |$)")
-        val REGEX_NO_SPACE: Regex = Regex("\\A {0,3}(#{1,6})")
     }
 }

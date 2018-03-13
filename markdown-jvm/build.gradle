@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7"
+    }
+}
+
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+    mavenCentral()
+}
+
+apply plugin: 'kotlin-platform-jvm'
+
+dependencies {
+    expectedBy project(":")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile name: 'idea_rt'
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    main.kotlin.srcDirs = ['src']
+    test.kotlin.srcDirs = ['test']
+}
+
+task performanceTest(type: Test, group: 'verification', dependsOn: [classes, testClasses]) {
+    useJUnit {
+        includeCategories 'org.intellij.markdown.ParserPerformanceTest'
+    }
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+configurePublishing markdown_version
+

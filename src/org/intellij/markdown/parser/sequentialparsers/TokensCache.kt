@@ -1,6 +1,7 @@
 package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.lexer.Compat.assert
 
 abstract class TokensCache {
     abstract val cachedTokens: List<TokenInfo>

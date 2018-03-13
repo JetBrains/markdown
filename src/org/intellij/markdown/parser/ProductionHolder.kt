@@ -3,8 +3,6 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-import java.util.ArrayList
-
 class ProductionHolder {
     var currentPosition: Int = 0
         private set

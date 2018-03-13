@@ -1,0 +1,3 @@
+rootProject.name = 'markdown'
+
+include "markdown-js", "markdown-jvm"

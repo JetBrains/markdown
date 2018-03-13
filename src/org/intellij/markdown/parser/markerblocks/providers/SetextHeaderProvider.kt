@@ -44,6 +44,6 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     }
 
     companion object {
-        val REGEX: Regex = Regex("\\A {0,3}(\\-+|=+) *$")
+        val REGEX: Regex = Regex("^ {0,3}(\\-+|=+) *$")
     }
 }

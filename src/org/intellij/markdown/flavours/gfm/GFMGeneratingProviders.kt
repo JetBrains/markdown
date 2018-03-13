@@ -8,7 +8,7 @@ import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.InlineHolderGeneratingProvider
 import org.intellij.markdown.html.SimpleTagProvider
-import java.util.*
+import org.intellij.markdown.lexer.Compat.assert
 import kotlin.text.Regex
 
 internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {

@@ -1,5 +1,8 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.lexer.Compat.assert
+import kotlin.math.max
+
 class LookaheadText(private val text: CharSequence) {
     private val lines: List<String> = text.split('\n')
 
@@ -104,7 +107,7 @@ class LookaheadText(private val text: CharSequence) {
 
         fun charsToNonWhitespace(): Int? {
             val line = currentLine
-            var offset = Math.max(localPos, 0)
+            var offset = max(localPos, 0)
             while (offset < line.length) {
                 val c = line[offset]
                 if (c != ' ' && c != '\t') {
@@ -117,7 +120,8 @@ class LookaheadText(private val text: CharSequence) {
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (other?.javaClass != javaClass) return false
+            if (other == null) return false
+            if (other::class != this::class) return false
 
             other as Position
 

@@ -3,7 +3,6 @@ package org.intellij.markdown.parser.sequentialparsers
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.lexer.MarkdownLexer
-import java.util.*
 
 class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
     override val cachedTokens: List<TokensCache.TokenInfo>
