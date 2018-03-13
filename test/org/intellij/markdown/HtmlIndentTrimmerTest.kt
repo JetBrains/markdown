@@ -1,12 +1,11 @@
 package org.intellij.markdown
 
-import junit.framework.TestCase
 import org.intellij.markdown.html.HtmlGenerator
-import java.io.File
+import kotlin.test.*
 
-class HtmlIndentTrimmerTest : TestCase() {
+class HtmlIndentTrimmerTest: TestCase() {
     private fun defaultTest(maxIndent: Int) {
-        val src = File(getTestDataPath() + "/" + testName + ".txt").readText()
+        val src = readFromFile(getTestDataPath() + "/" + testName + ".txt")
 
         val result = buildString {
             for (indent in 0..maxIndent) {
@@ -18,26 +17,31 @@ class HtmlIndentTrimmerTest : TestCase() {
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + "_after.txt", result)
     }
 
-    protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/htmlTrimming").absolutePath
+    private fun getTestDataPath(): String {
+        return getIntellijMarkdownHome() + "/test/data/htmlTrimming"
     }
 
+    @Test
     fun testSimple() {
         defaultTest(4)
     }
 
+    @Test
     fun testExcessTrimming() {
         defaultTest(8)
     }
 
+    @Test
     fun testSeveralNewlines() {
         defaultTest(3)
     }
 
+    @Test
     fun testConserveWhiteLines() {
         defaultTest(3)
     }
 
+    @Test
     fun testTabs() {
         defaultTest(6)
     }

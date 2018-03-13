@@ -1,0 +1,80 @@
+buildscript {
+    ext.kotlin_version = '1.2.50'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        repositories {
+            maven { url "https://plugins.gradle.org/m2/" }
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7"
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'kotlin-platform-js'
+apply plugin: 'com.moowork.node'
+
+dependencies {
+    expectedBy project(":")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+}
+
+sourceSets {
+    main.kotlin.srcDirs = ['src']
+    test.kotlin.srcDirs = ['test']
+}
+
+compileKotlin2Js {
+    kotlinOptions {
+        outputFile = "${projectDir}/build/classes/main/${name}.js"
+        moduleKind = "umd"
+        sourceMap = true
+        sourceMapEmbedSources = "always"
+    }
+}
+
+compileTestKotlin2Js {
+    kotlinOptions {
+        moduleKind = "umd"
+        sourceMap = true
+        sourceMapEmbedSources = "always"
+    }
+}
+
+node {
+    download = true
+    version = '10.5.0'
+    nodeModulesDir = buildDir
+}
+
+task initNpm(type: NpmTask) {
+    args = ['init', '--yes']
+}
+
+task installNodeModules(type: NpmTask, dependsOn: [initNpm]) {
+    args = ['install', 'mocha', "kotlin@$kotlin_version", "kotlin-test@$kotlin_version"]
+}
+
+task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installNodeModules]) {
+    script = file("$buildDir/node_modules/mocha/bin/mocha")
+    args = [compileTestKotlin2Js.outputFile]
+
+    execOverrides {
+        it.environment('NODE_PATH', [file(compileKotlin2Js.outputFile).parent, "$buildDir/node_modules"].join(File.pathSeparator))
+    }
+}
+
+test.dependsOn runMocha
+
+configurePublishing markdown_version

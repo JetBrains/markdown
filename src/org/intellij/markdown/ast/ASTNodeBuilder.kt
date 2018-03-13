@@ -5,7 +5,6 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
-import java.util.ArrayList
 
 open class ASTNodeBuilder(protected val text: CharSequence) {
     open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {

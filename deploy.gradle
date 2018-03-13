@@ -24,6 +24,8 @@ bintray {
             name = "0.1.$buildNumber"
             released = new Date()
         }
+        
+        artifact sourcesJar
     }
 }
 

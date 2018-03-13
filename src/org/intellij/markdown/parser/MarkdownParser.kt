@@ -23,7 +23,7 @@ class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
 
         val rootMarker = productionHolder.mark()
 
-        val text = CharArrayCharSequence(textString.toCharArray())
+        val text = CharArrayCharSequence(textString)
         val textHolder = LookaheadText(text)
         var pos: LookaheadText.Position? = textHolder.startPosition
         while (pos != null) {

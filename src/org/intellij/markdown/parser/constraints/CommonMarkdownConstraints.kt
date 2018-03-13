@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.constraints
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
 import kotlin.math.min
@@ -95,7 +96,7 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
                     offset++
                 }
                 if (offset == line.length) {
-                    spacesSeen = Integer.MAX_VALUE
+                    spacesSeen = Int.MAX_VALUE
                 }
 
                 if (k <= spacesSeen) {
@@ -276,12 +277,9 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
                            newExplicit: Boolean,
                            newOffset: Int): CommonMarkdownConstraints {
             val n = parent.indents.size
-            val indents = IntArray(n + 1)
-            val types = CharArray(n + 1)
-            val isExplicit = BooleanArray(n + 1)
-            System.arraycopy(parent.indents, 0, indents, 0, n)
-            System.arraycopy(parent.types, 0, types, 0, n)
-            System.arraycopy(parent.isExplicit, 0, isExplicit, 0, n)
+            val indents = parent.indents.copyOf(n + 1)
+            val types = parent.types.copyOf(n + 1)
+            val isExplicit = parent.isExplicit.copyOf(n + 1)
 
             indents[n] = parent.indent + newIndentDelta
             types[n] = newType

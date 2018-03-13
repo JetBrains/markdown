@@ -1,5 +1,8 @@
 buildscript {
-    ext.kotlin_version = '1.3.41'
+    ext {
+        kotlin_version = '1.3.41'
+        markdown_version = (hasProperty('buildNumber') ? "0.2.0.pre-$buildNumber" : "0.2.0.pre-SNAPSHOT")
+    }
 
     repositories {
         jcenter()
@@ -14,27 +17,73 @@ buildscript {
 
 
 repositories {
-    flatDir {
-        dirs 'lib'
-    }
     mavenCentral()
 }
 
-apply plugin: 'kotlin'
+apply plugin: 'kotlin-platform-common'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile name: 'idea_rt'
-    testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+}
 
+allprojects {
+
+    ext.configurePublishing = { baseName ->
+        apply plugin: 'java'
+
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        artifacts {
+            archives sourcesJar
+        }
+
+        if (hasProperty("bintrayUser")) {
+
+            def fullName = "$baseName-kotlin-$kotlin_version"
+
+            publishing {
+                publications {
+                    MyPublication(MavenPublication) {
+                        from components.java
+                        groupId 'org.jetbrains'
+                        artifactId name
+                        version fullName
+
+                        artifact sourcesJar
+                    }
+                }
+            }
+
+            bintray {
+                publish = false
+
+                user = bintrayUser
+                key = bintrayKey
+                publications = ['MyPublication']
+                pkg {
+                    userOrg = 'jetbrains'
+                    repo = "markdown"
+                    name = fullName
+                    version {
+                        released = new Date()
+                    }
+
+                    artifact sourcesJar
+                }
+            }
+        }
+    }
 }
 
 sourceSets {
-    main.java.srcDirs = ['src']
     main.kotlin.srcDirs = ['src']
-    test.java.srcDirs = ['test']
     test.kotlin.srcDirs = ['test']
 
     main.resources.srcDirs = []
@@ -48,15 +97,6 @@ test {
         exceptionFormat = 'full'
     }
     outputs.upToDateWhen { false }
-}
-
-task performanceTest(type: Test, group: 'verification', dependsOn: [classes, testClasses]) {
-    useJUnit {
-        includeCategories 'org.intellij.markdown.ParserPerformanceTest'
-    }
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }
 
 task downloadCommonmark(type: Exec) {
@@ -81,13 +121,4 @@ task runSpec(type: Exec, group: 'verification', dependsOn: [downloadCommonmark, 
     args 'test/spec_tests.py', '-p', '../run_html_gen.sh'
 }
 
-jar {
-    archiveName 'markdown.jar'
-}
-
-if (hasProperty("bintrayUser")) {
-    apply from: "deploy.gradle"
-}
-
-sourceCompatibility=1.6
-targetCompatibility=1.6
+configurePublishing markdown_version

@@ -32,9 +32,9 @@ object EntityConverter {
                     } else if (g[1] != null) {
                         Entities.map[match.value]
                     } else if (g[2] != null) {
-                        Integer.parseInt(g[2]!!.value)
+                        g[2]!!.value.toInt()
                     } else if (g[3] != null) {
-                        Integer.parseInt(g[3]!!.value, 16)
+                        g[3]!!.value.toInt(16)
                     } else {
                         null
                     }

@@ -5,6 +5,7 @@ import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import org.junit.experimental.categories.Category
 import java.io.File
+import kotlin.test.*
 
 @Category(ParserPerformanceTest::class) class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
@@ -12,7 +13,7 @@ import java.io.File
     }
 
     private fun defaultTest(fullParse: Boolean) {
-        val fileName = testName.let {
+        val fileName = name.let {
             if (it.endsWith("Full")) {
                 it.substring(0, it.length - 4)
             } else {
@@ -36,22 +37,27 @@ import java.io.File
         println("$fileName: ${(testTime / TEST_NUM / 1e6)}ms")
     }
 
+    @Test
     fun testGitBook() {
         defaultTest(false)
     }
 
+    @Test
     fun testGitBookFull() {
         defaultTest(true)
     }
 
+    @Test
     fun testCommonMarkSpec() {
         defaultTest(false)
     }
 
+    @Test
     fun testCommonMarkSpecFull() {
         defaultTest(true)
     }
     
+    @Test
     fun testFogChangelog() {
         defaultTest(false)
     }

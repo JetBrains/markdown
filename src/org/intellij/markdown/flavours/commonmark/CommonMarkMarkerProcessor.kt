@@ -12,6 +12,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import kotlin.math.min
 
 open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
 : MarkerProcessor<MarkerProcessor.StateInfo>(productionHolder, constraintsBase) {
@@ -55,7 +56,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
         }
 
         val startOffset = pos.offset
-        val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
+        val endOffset = min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
                 pos.nextLineOrEofOffset)
 
         val type = when (constraints.types.lastOrNull()) {

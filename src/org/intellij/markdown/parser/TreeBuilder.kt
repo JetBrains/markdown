@@ -2,8 +2,9 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
+import org.intellij.markdown.lexer.Compat.assert
+import org.intellij.markdown.lexer.Stack
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import java.util.*
 
 abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
 
@@ -63,7 +64,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 events.add(MyEvent(endTokenId, index, result))
             }
         }
-        Collections.sort(events)
+        events.sort()
         return events
     }
 

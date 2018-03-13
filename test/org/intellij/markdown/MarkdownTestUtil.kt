@@ -1,33 +1,22 @@
 package org.intellij.markdown
 
-import java.io.File
-import com.intellij.rt.execution.junit.FileComparisonFailure
-import junit.framework.AssertionFailedError
-import junit.framework.TestCase
+import org.intellij.markdown.lexer.Compat.assert
 
 val INTELLIJ_MARKDOWN_TEST_KEY = "Intellij.markdown.home"
 
-fun TestCase.assertSameLinesWithFile(filePath: String, text: String) {
-    val file = File(filePath)
-
-    if (!file.exists()) {
-        file.writeText(text)
-        throw AssertionFailedError("File not found. Created $filePath.")
-    }
-
-    val fileText = file.readText()
-    if (!fileText.equals(text)) {
-        throw FileComparisonFailure("File contents differ from the answer", fileText, text, filePath)
-    }
+expect abstract class TestCase() {
+    fun getName(): String
 }
 
-fun TestCase.getIntellijMarkdownHome(): String {
-    return System.getProperty(INTELLIJ_MARKDOWN_TEST_KEY) ?: "."
-}
+expect fun readFromFile(path: String): String
 
-val TestCase.testName : String
+expect fun assertSameLinesWithFile(path: String, result: String)
+
+expect fun getIntellijMarkdownHome(): String
+
+val TestCase.testName: String
     get() {
-        val name = name
+        val name = getName()
         assert(name.startsWith("test"))
         return name.substring("test".length).decapitalize()
     }

@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.constraints
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import kotlin.math.min
 

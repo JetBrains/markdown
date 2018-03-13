@@ -1,6 +1,5 @@
 package org.intellij.markdown
 
-import junit.framework.TestCase
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
@@ -9,15 +8,14 @@ import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.html.*
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
-import java.io.File
-import java.net.URI
+import kotlin.test.*
 
 class HtmlGeneratorTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
                             baseURI: URI? = null,
                             tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)) {
 
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText()
+        val src = readFromFile(getTestDataPath() + "/" + testName + ".md")
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
         val html = HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml(tagRenderer)
@@ -27,66 +25,81 @@ class HtmlGeneratorTest : TestCase() {
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
     }
 
-    protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/html").absolutePath
+    private fun getTestDataPath(): String {
+        return getIntellijMarkdownHome() + "/test/data/html"
     }
 
+    @Test
     fun testSimple() {
         defaultTest()
     }
 
+    @Test
     fun testMarkers() {
         defaultTest()
     }
 
+    @Test
     fun testTightLooseLists() {
         defaultTest()
     }
 
+    @Test
     fun testPuppetApache() {
         defaultTest()
     }
 
+    @Test
     fun testGoPlugin() {
         defaultTest()
     }
 
+    @Test
     fun testHeaders() {
         defaultTest()
     }
 
+    @Test
     fun testCodeFence() {
         defaultTest()
     }
 
+    @Test
     fun testEscaping() {
         defaultTest()
     }
 
+    @Test
     fun testHtmlBlocks() {
         defaultTest()
     }
 
+    @Test
     fun testLinks() {
         defaultTest()
     }
 
+    @Test
     fun testBlockquotes() {
         defaultTest()
     }
 
+    @Test
     fun testExample226() {
         defaultTest()
     }
 
+    @Test
     fun testExample2() {
         defaultTest()
     }
 
+    @Test
     fun testEntities() {
         defaultTest()
     }
 
+    @Test
     fun testImages() {
         defaultTest(tagRenderer = HtmlGenerator.DefaultTagRenderer(customizer = { node, _, attributes ->
             when {
@@ -96,66 +109,82 @@ class HtmlGeneratorTest : TestCase() {
         }, includeSrcPositions = false))
     }
 
+    @Test
     fun testRuby17052() {
         defaultTest()
     }
 
+    @Test
     fun testRuby17351() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testBug28() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testStrikethrough() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testSfmAutolink() {
         defaultTest(SFMFlavourDescriptor())
     }
 
+    @Test
     fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testCheckedLists() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
     fun testGitBook() {
         defaultTest()
     }
 
+    @Test
     fun testBaseUriHttp() {
         defaultTest(baseURI = URI("http://example.com/foo/bar.html"))
     }
 
+    @Test
     fun testBaseUriFile() {
         defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
     }
 
+    @Test
     fun testBaseUriRelativeRoot() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
 
+    @Test
     fun testBaseUriRelativeNoRoot() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
 
+    @Test
     fun testBaseUriWithBadRelativeUrl() {
         defaultTest(baseURI = URI("user/repo-name/blob/master"))
     }
 
+    @Test
     fun testBaseUriWithAnchorLink() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
 
+    @Test
     fun testCustomRenderer() {
         defaultTest(tagRenderer = object: HtmlGenerator.TagRenderer {
             override fun openTag(node: ASTNode, tagName: CharSequence, vararg attributes: CharSequence?, autoClose: Boolean): CharSequence {

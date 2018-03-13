@@ -1,16 +1,15 @@
 package org.intellij.markdown
 
-import junit.framework.TestCase
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
-import java.io.File
+import kotlin.test.*
 
 class MarkdownSrcPosTest : TestCase() {
     private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor()) {
-        val src = File(getTestDataPath() + "/" + testName + ".md").readText()
+        val src = readFromFile(getTestDataPath() + "/" + testName + ".md")
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val html = HtmlGenerator(src, tree, flavour, includeSrcPositions = true).generateHtml()
 
@@ -19,11 +18,12 @@ class MarkdownSrcPosTest : TestCase() {
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".pos.txt", result)
     }
 
+    @Test
     fun testPuppetApache() {
         defaultTest(GFMFlavourDescriptor())
     }
 
-    protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/html").absolutePath
+    private fun getTestDataPath(): String {
+        return getIntellijMarkdownHome() + "/test/data/html"
     }
 }

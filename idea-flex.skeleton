@@ -21,9 +21,6 @@
   };
 
 --- isFinal list
-  /** the input device */
-  private java.io.Reader zzReader;
-
   /** the current state of the DFA */
   private int zzState;
 
@@ -160,7 +157,7 @@
     try {
       message = ZZ_ERROR_MSG[errorCode];
     }
-    catch (ArrayIndexOutOfBoundsException e) {
+    catch (Exception e) {
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 

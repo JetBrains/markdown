@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.markerblocks.providers
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
@@ -72,17 +73,18 @@ class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          * nulls mean "Next line should be blank"
          * */
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
-                Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
+                Pair(Regex("<(?:script|pre|style)(?: |>|$)", RegexOption.IGNORE_CASE), 
+                        Regex("</(?:script|style|pre)>", RegexOption.IGNORE_CASE)),
                 Pair(Regex("<!--"), Regex("-->")),
                 Pair(Regex("<\\?"), Regex("\\?>")),
                 Pair(Regex("<![A-Z]"), Regex(">")),
                 Pair(Regex("<!\\[CDATA\\["), Regex("\\]\\]>")),
-                Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
+                Pair(Regex("</?(?:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)", RegexOption.IGNORE_CASE), null),
                 Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})(?: |$)"), null)
         )
 
         val FIND_START_REGEX = Regex(
-                "\\A(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
+                "^(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
         )
 
     }
