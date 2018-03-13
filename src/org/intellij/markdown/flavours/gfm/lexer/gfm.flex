@@ -5,10 +5,6 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes;
 import org.intellij.markdown.IElementType;
 import org.intellij.markdown.lexer.GeneratedLexer;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
-
 /* Auto generated File */
 %%
 
@@ -24,7 +20,7 @@ import java.util.Stack;
 %{
   private static class Token extends MarkdownTokenTypes {}
 
-  private Stack<Integer> stateStack = new Stack<Integer>();
+  private List<Integer> stateStack = new ArrayList<Integer>();
 
   private boolean isHeader = false;
 
@@ -63,15 +59,15 @@ import java.util.Stack;
 
   private static IElementType getDelimiterTokenType(char c) {
     switch (c) {
-      case '"': return Token.DOUBLE_QUOTE;
-      case '\'': return Token.SINGLE_QUOTE;
-      case '(': return Token.LPAREN;
-      case ')': return Token.RPAREN;
-      case '[': return Token.LBRACKET;
-      case ']': return Token.RBRACKET;
-      case '<': return Token.LT;
-      case '>': return Token.GT;
-      default: return Token.BAD_CHARACTER;
+      case '"': return MarkdownTokenTypes.DOUBLE_QUOTE;
+      case '\'': return MarkdownTokenTypes.SINGLE_QUOTE;
+      case '(': return MarkdownTokenTypes.LPAREN;
+      case ')': return MarkdownTokenTypes.RPAREN;
+      case '[': return MarkdownTokenTypes.LBRACKET;
+      case ']': return MarkdownTokenTypes.RBRACKET;
+      case '<': return MarkdownTokenTypes.LT;
+      case '>': return MarkdownTokenTypes.GT;
+      default: return MarkdownTokenTypes.BAD_CHARACTER;
     }
   }
 
@@ -200,7 +196,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
 
   // blockquote
   {WHITE_SPACE}{0,3} ">" {
-    return Token.BLOCK_QUOTE;
+    return MarkdownTokenTypes.BLOCK_QUOTE;
   }
 
   {ANY_CHAR} {
@@ -216,85 +212,85 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
 <AFTER_LINE_START, PARSE_DELIMITED> {
   // The special case of a backtick
   \\"`"+ {
-    return getReturnGeneralized(Token.ESCAPED_BACKTICKS);
+    return getReturnGeneralized(MarkdownTokenTypes.ESCAPED_BACKTICKS);
   }
 
   // Escaping
   \\[\\\"'`*_{}\[\]()#+.,!:@#$%&~<>/-] {
-    return getReturnGeneralized(Token.TEXT);
+    return getReturnGeneralized(MarkdownTokenTypes.TEXT);
   }
 
   // Backticks (code span)
   "`"+ {
     if (canInline()) {
-      return Token.BACKTICK;
+      return MarkdownTokenTypes.BACKTICK;
     }
     return parseDelimited.returnType;
   }
 
   // Emphasis
   {WHITE_SPACE}+ ("*" | "_") {WHITE_SPACE}+ {
-    return getReturnGeneralized(Token.TEXT);
+    return getReturnGeneralized(MarkdownTokenTypes.TEXT);
   }
 
   "*" | "_" {
-    return getReturnGeneralized(Token.EMPH);
+    return getReturnGeneralized(MarkdownTokenTypes.EMPH);
   }
 
   "~" {
     return getReturnGeneralized(GFMTokenTypes.TILDE);
   }
 
-  {AUTOLINK} { return parseDelimited(Token.AUTOLINK, false); }
-  {EMAIL_AUTOLINK} { return parseDelimited(Token.EMAIL_AUTOLINK, false); }
+  {AUTOLINK} { return parseDelimited(MarkdownTokenTypes.AUTOLINK, false); }
+  {EMAIL_AUTOLINK} { return parseDelimited(MarkdownTokenTypes.EMAIL_AUTOLINK, false); }
 
-  {HTML_TAG} { return Token.HTML_TAG; }
+  {HTML_TAG} { return MarkdownTokenTypes.HTML_TAG; }
 
 }
 
 <AFTER_LINE_START> {
 
   {WHITE_SPACE}+ {
-    return Token.WHITE_SPACE;
+    return MarkdownTokenTypes.WHITE_SPACE;
   }
 
   \" | "'"| "(" | ")" | "[" | "]" | "<" | ">" {
     return getDelimiterTokenType(yycharat(0));
   }
-  ":" { return Token.COLON; }
-  "!" { return Token.EXCLAMATION_MARK; }
+  ":" { return MarkdownTokenTypes.COLON; }
+  "!" { return MarkdownTokenTypes.EXCLAMATION_MARK; }
 
   \\ / {EOL} {
-    return Token.HARD_LINE_BREAK;
+    return MarkdownTokenTypes.HARD_LINE_BREAK;
   }
 
   {WHITE_SPACE}* ({EOL} {WHITE_SPACE}*)+ {
     int lastSpaces = yytext().toString().indexOf("\n");
     if (lastSpaces >= 2) {
       yypushback(yylength() - lastSpaces);
-      return Token.HARD_LINE_BREAK;
+      return MarkdownTokenTypes.HARD_LINE_BREAK;
     }
     else if (lastSpaces > 0) {
       yypushback(yylength() - lastSpaces);
-      return Token.WHITE_SPACE;
+      return MarkdownTokenTypes.WHITE_SPACE;
     }
 
     processEol();
-    return Token.EOL;
+    return MarkdownTokenTypes.EOL;
   }
 
   {GFM_AUTOLINK} { return GFMTokenTypes.GFM_AUTOLINK; }
 
   {ALPHANUM}+ / {WHITE_SPACE}+ {GFM_AUTOLINK} {
-    return Token.TEXT;
+    return MarkdownTokenTypes.TEXT;
   }
 
   // optimize and eat underscores inside words
   {ALPHANUM}+ (({WHITE_SPACE}+ | "_"+) {ALPHANUM}+)* {
-    return Token.TEXT;
+    return MarkdownTokenTypes.TEXT;
   }
 
-  {ANY_CHAR} { return Token.TEXT; }
+  {ANY_CHAR} { return MarkdownTokenTypes.TEXT; }
 
 }
 
@@ -311,4 +307,4 @@ GFM_AUTOLINK = (("http" "s"? | "ftp")"://" | "www.") ({ALPHANUM}([a-zA-Z0-9-]*{A
 
 }
 
-{ANY_CHAR} { return Token.TEXT; }
+{ANY_CHAR} { return MarkdownTokenTypes.TEXT; }

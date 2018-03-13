@@ -23,7 +23,7 @@ open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
-        return MarkdownLexer(_MarkdownLexer(null as Reader?))
+        return MarkdownLexer(_MarkdownLexer())
     }
 
     override val sequentialParserManager = object : SequentialParserManager() {
