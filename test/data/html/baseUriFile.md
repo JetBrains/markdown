@@ -24,6 +24,7 @@
 + [parent directory relative link definition]
 + [absolute link definition]
 + [root link definition]
++ [bookmark link definition]
 
 
 [implicit current directory relative link definition]: baz.html
@@ -31,3 +32,4 @@
 [parent directory relative link definition]: ../quux.html
 [absolute link definition]: https://google.com/
 [root link definition]: /root
+[bookmark link definition]: #abc
