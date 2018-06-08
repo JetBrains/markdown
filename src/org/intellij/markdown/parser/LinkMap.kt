@@ -7,7 +7,6 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.html.entities.EntityConverter
 import java.net.URLEncoder
-import java.util.*
 import kotlin.text.Regex
 
 data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
@@ -39,7 +38,7 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
         }
 
         private fun normalizeLabel(label: CharSequence): CharSequence {
-            return SPACES_REGEX.replace(label, " ").toLowerCase(Locale.US)
+            return SPACES_REGEX.replace(label, " ").toLowerCase()
         }
 
         fun normalizeDestination(s: CharSequence): CharSequence {

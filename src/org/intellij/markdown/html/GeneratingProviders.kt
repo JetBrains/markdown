@@ -5,9 +5,9 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LinkMap
 import java.net.URI
-import java.util.*
 import kotlin.text.Regex
 
 abstract class OpenCloseGeneratingProvider : GeneratingProvider {

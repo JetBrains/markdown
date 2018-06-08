@@ -28,13 +28,13 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
     private fun calcTailStartPos(pos: LookaheadText.Position, headerSize: Int): Int {
         val line = pos.currentLineFromPosition
         var offset = line.length - 1
-        while (offset > headerSize && Character.isWhitespace(line[offset])) {
+        while (offset > headerSize && line[offset].isWhitespace()) {
             offset--
         }
         while (offset > headerSize && line[offset] == '#' && line[offset - 1] != '\\') {
             offset--
         }
-        if (offset + 1 < line.length && Character.isWhitespace(line[offset]) && line[offset + 1] == '#') {
+        if (offset + 1 < line.length && line[offset].isWhitespace() && line[offset + 1] == '#') {
             return pos.offset + offset + 1
         } else {
             return pos.offset + line.length

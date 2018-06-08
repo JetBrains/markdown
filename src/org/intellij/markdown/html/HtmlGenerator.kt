@@ -29,13 +29,12 @@ class HtmlGenerator(private val markdownText: String,
     
     private val htmlString: StringBuilder = StringBuilder()
 
-    @JvmOverloads
     fun generateHtml(customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER): String {
         HtmlGeneratingVisitor(customizer).visitNode(root)
         return htmlString.toString()
     }
 
-    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
+    inner class HtmlGeneratingVisitor constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this)

@@ -1,10 +1,10 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
-import java.util.*
 
 abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
                                                                      protected val startConstraints: MarkdownConstraints) {
@@ -99,7 +99,7 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
     private fun calculateNextPosForExistingMarkers(pos: LookaheadText.Position): Int {
         val result = markersStack.lastOrNull()?.getNextInterestingOffset(pos) ?: pos.nextLineOrEofOffset
         return if (result == -1)
-            Integer.MAX_VALUE
+            Int.MAX_VALUE
         else
             result
     }

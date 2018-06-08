@@ -1,7 +1,9 @@
 package org.intellij.markdown.parser.constraints
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
+import kotlin.math.min
 
 open class MarkdownConstraints protected constructor(private val indents: IntArray,
                                                             private val types: CharArray,
@@ -35,7 +37,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun getCharsEaten(s: CharSequence): Int {
-        return Math.min(charsEaten, s.length)
+        return min(charsEaten, s.length)
     }
 
     open fun getLastType(): Char? {
@@ -156,7 +158,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                 || offset == line.length) {
             // 3. Starts with an empty string
             return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + 1, markerInfo.markerType, true,
-                    Math.min(offset, markerEndOffset + 1))
+                    min(offset, markerEndOffset + 1))
         }
 
         return null
@@ -204,12 +206,9 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                                         newExplicit: Boolean,
                                         newOffset: Int): MarkdownConstraints {
             val n = parent.indents.size
-            val _indents = IntArray(n + 1)
-            val _types = CharArray(n + 1)
-            val _isExplicit = BooleanArray(n + 1)
-            System.arraycopy(parent.indents, 0, _indents, 0, n)
-            System.arraycopy(parent.types, 0, _types, 0, n)
-            System.arraycopy(parent.isExplicit, 0, _isExplicit, 0, n)
+            val _indents = parent.indents.copyOf(n + 1)
+            val _types = parent.types.copyOf(n + 1)
+            val _isExplicit = parent.isExplicit.copyOf(n + 1)
 
             _indents[n] = parent.getIndent() + newIndentDelta
             _types[n] = newType
@@ -284,7 +283,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                         offset++
                     }
                     if (offset == line.length) {
-                        spacesSeen = Integer.MAX_VALUE
+                        spacesSeen = Int.MAX_VALUE
                     }
 
                     if (k <= spacesSeen) {

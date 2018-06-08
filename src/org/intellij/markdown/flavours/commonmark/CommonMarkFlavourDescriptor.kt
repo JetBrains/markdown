@@ -16,8 +16,6 @@ import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
-import java.io.Reader
-import java.net.URI
 
 open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory

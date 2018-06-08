@@ -4,7 +4,6 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import java.util.*
 
 
 abstract class InlineStructureHoldingMarkerBlock(
@@ -19,7 +18,7 @@ abstract class InlineStructureHoldingMarkerBlock(
                     && getDefaultAction() == MarkerBlock.ClosingAction.DONE) {
                 for (range in getRangesContainingInlineStructure()) {
                     productionHolder.addProduction(
-                            Collections.singletonList(SequentialParser.Node(range, MarkdownElementTypes.ATX_1)))
+                            listOf(SequentialParser.Node(range, MarkdownElementTypes.ATX_1)))
                 }
             }
         }

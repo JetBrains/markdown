@@ -3,12 +3,14 @@ package org.intellij.markdown.parser.markerblocks.impl
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import kotlin.math.min
 import kotlin.text.Regex
 
 class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
@@ -57,7 +59,7 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
                     MarkdownTokenTypes.CODE_FENCE_END)))
             scheduleProcessingResult(nextLineOffset, MarkerBlock.ProcessingResult.DEFAULT)
         } else {
-            val contentRange = Math.min(pos.offset + 1 + constraints.getCharsEaten(pos.currentLine), nextLineOffset)..nextLineOffset
+            val contentRange = min(pos.offset + 1 + constraints.getCharsEaten(pos.currentLine), nextLineOffset)..nextLineOffset
             if (contentRange.start < contentRange.endInclusive) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         contentRange, MarkdownTokenTypes.CODE_FENCE_CONTENT)))

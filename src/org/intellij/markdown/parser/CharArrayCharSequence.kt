@@ -23,7 +23,8 @@ class CharArrayCharSequence(private val chars: CharArray,
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other?.javaClass != javaClass) return false
+        if (other == null) return false
+        if (other::class != this::class) return false
 
         other as CharArrayCharSequence
         

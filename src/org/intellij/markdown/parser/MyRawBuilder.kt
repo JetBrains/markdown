@@ -4,7 +4,6 @@ import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
-import java.util.*
 
 class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
 

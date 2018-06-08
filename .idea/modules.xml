@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/intellij-markdown.iml" filepath="$PROJECT_DIR$/.idea/intellij-markdown.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-markdown.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-markdown.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-markdown_main.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-markdown_main.iml" group="intellij-markdown" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/intellij-markdown_test.iml" filepath="$PROJECT_DIR$/.idea/modules/intellij-markdown_test.iml" group="intellij-markdown" />

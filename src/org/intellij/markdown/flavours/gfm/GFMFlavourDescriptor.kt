@@ -16,14 +16,13 @@ import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
-import java.io.Reader
 import java.net.URI
 
 class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
     override val markerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
-        return MarkdownLexer(_GFMLexer(null as Reader?))
+        return MarkdownLexer(_GFMLexer())
     }
 
     override val sequentialParserManager = object : SequentialParserManager() {
