@@ -6,6 +6,10 @@ actual class URI actual constructor(val str: String) {
     actual fun resolve(str: String): URI {
         return URI(URL(str, this.str).href)
     }
+
+    override fun toString(): String {
+        return str
+    }
 }
 
 actual fun isWhitespace(char: Char): Boolean {
