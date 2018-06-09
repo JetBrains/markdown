@@ -1,5 +1,7 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.html.String
+
 class CharArrayCharSequence(private val chars: CharArray,
                             private val start: Int = 0,
                             override val length: Int = chars.size - start) : CharSequence {
@@ -18,6 +20,7 @@ class CharArrayCharSequence(private val chars: CharArray,
     
     
     override fun toString(): String {
+        chars.asList().subList(start, start + length).toString()
         return String(chars, start, length)
     }
 

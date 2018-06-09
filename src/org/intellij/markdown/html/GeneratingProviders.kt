@@ -7,7 +7,7 @@ import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LinkMap
-import java.net.URI
+import org.intellij.markdown.html.URI
 import kotlin.text.Regex
 
 abstract class OpenCloseGeneratingProvider : GeneratingProvider {

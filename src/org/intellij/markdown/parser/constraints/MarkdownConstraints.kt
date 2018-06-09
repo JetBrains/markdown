@@ -192,7 +192,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     override fun toString(): String {
-        return "MdConstraints: " + String(types) + "(" + getIndent() + ")"
+        return "MdConstraints: " + types + "(" + getIndent() + ")"
     }
 
     companion object {

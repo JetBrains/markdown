@@ -8,7 +8,6 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ListItemMarkerBlock
 import org.intellij.markdown.parser.markerblocks.impl.ListMarkerBlock
-import java.util.ArrayList
 
 class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,

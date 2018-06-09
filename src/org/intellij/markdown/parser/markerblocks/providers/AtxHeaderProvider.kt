@@ -49,7 +49,7 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
         if (pos.offsetInCurrentLine != -1) {
             val matchResult = getRegex().find(pos.currentLineFromPosition)
             if (matchResult != null) {
-                return matchResult.groups[1]!!.range
+                TODO("return matchResult.groups[1]!!.range does not work in JS")
             }
         }
         return null

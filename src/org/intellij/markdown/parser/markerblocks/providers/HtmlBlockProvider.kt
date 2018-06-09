@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.markerblocks.providers
 
+import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder

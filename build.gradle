@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.41'
 
     repositories {
         jcenter()
@@ -36,8 +36,8 @@ dependencies {
 sourceSets {
     main.java.srcDirs = ['src']
     main.kotlin.srcDirs = ['src']
-    test.java.srcDirs = ['test']
-    test.kotlin.srcDirs = ['test']
+//    test.java.srcDirs = ['test']
+//    test.kotlin.srcDirs = ['test']
 
     main.resources.srcDirs = []
 }

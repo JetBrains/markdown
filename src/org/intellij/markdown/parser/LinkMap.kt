@@ -6,7 +6,7 @@ import org.intellij.markdown.ast.accept
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.html.entities.EntityConverter
-import java.net.URLEncoder
+import org.intellij.markdown.html.urlEncode
 import kotlin.text.Regex
 
 data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
@@ -49,7 +49,7 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
                 if (code == 32) {
                     sb.append("%20")
                 } else if (code < 32 || code >= 128 || "\".<>\\^_`{|}~".contains(c)) {
-                    sb.append(URLEncoder.encode("${c}", "UTF-8"))
+                    sb.append(urlEncode("${c}"))
                 } else {
                     sb.append(c)
                 }

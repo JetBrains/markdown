@@ -1,0 +1,38 @@
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7"
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'kotlin-platform-js'
+
+dependencies {
+    expectedBy project(":")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+}
+
+sourceSets {
+    main.allSource.srcDirs = ['src']
+//    main.kotlin.srcDirs = ['src']
+//
+//    main.resources.srcDirs = []
+}
+
+compileKotlin2Js {
+    kotlinOptions.outputFile = "${projectDir}/web/output.js"
+    kotlinOptions.moduleKind = "amd"
+    kotlinOptions.sourceMap = true
+}

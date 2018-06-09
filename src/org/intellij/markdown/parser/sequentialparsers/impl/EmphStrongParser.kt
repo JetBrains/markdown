@@ -5,7 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
-import java.util.*
+import kotlin.math.min
 
 class EmphStrongParser : SequentialParser {
 
@@ -31,7 +31,7 @@ class EmphStrongParser : SequentialParser {
                 }
                 val opening = openingOnes[stackIndex]
 
-                val toMakeMax = Math.min(opening.numChars, numCanEnd)
+                val toMakeMax = min(opening.numChars, numCanEnd)
                 val toMake = if (toMakeMax % 2 == 0) 2 else 1
                 val from = opening.pos + (opening.numChars - toMake)
                 val to = iterator.index + toMake - 1

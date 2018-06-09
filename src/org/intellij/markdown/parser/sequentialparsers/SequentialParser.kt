@@ -1,7 +1,6 @@
 package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
-import java.util.*
 
 interface SequentialParser {
 

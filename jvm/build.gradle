@@ -1,0 +1,32 @@
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7"
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'kotlin-platform-jvm'
+
+dependencies {
+    expectedBy project(":")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+sourceSets {
+//    main.js.srcDirs = ['src']
+    main.kotlin.srcDirs = ['src']
+//
+//    main.resources.srcDirs = []
+}
