@@ -22,9 +22,9 @@ actual fun isPunctuation(char: Char): Boolean {
 }
 
 actual fun urlEncode(str: String): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return js("encodeURIComponent")(str) as String
 }
 
 actual fun String(charArray: CharArray, start: Int, length: Int): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return charArray.copyOfRange(start, start + length).toString()
 }
