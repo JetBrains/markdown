@@ -31,6 +31,8 @@ dependencies {
 }
 
 allprojects {
+    
+    ext.projectName = name
 
     ext.configurePublishing = { baseName ->
         apply plugin: 'java'
@@ -53,7 +55,7 @@ allprojects {
                     MyPublication(MavenPublication) {
                         from components.java
                         groupId 'org.jetbrains'
-                        artifactId name
+                        artifactId projectName
                         version fullName
 
                         artifact sourcesJar

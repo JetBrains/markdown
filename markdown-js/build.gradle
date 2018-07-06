@@ -37,7 +37,7 @@ sourceSets {
 
 compileKotlin2Js {
     kotlinOptions {
-        outputFile = "${projectDir}/build/classes/main/${name}.js"
+        outputFile = "${projectDir}/build/classes/main/${projectName}.js"
         moduleKind = "umd"
         sourceMap = true
         sourceMapEmbedSources = "always"
