@@ -21,8 +21,6 @@ repositories {
 }
 
 apply plugin: 'kotlin-platform-common'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
@@ -35,6 +33,8 @@ allprojects {
     ext.projectName = name
 
     ext.configurePublishing = { baseName ->
+        apply plugin: 'maven-publish'
+        apply plugin: 'com.jfrog.bintray'
         apply plugin: 'java'
 
         task sourcesJar(type: Jar) {
@@ -46,8 +46,7 @@ allprojects {
             archives sourcesJar
         }
 
-        if (hasProperty("bintrayUser")) {
-
+        if (project(':').hasProperty('bintrayUser')) {
             def fullName = "$baseName-kotlin-$kotlin_version"
 
             publishing {
@@ -72,12 +71,14 @@ allprojects {
                 pkg {
                     userOrg = 'jetbrains'
                     repo = "markdown"
-                    name = fullName
+                    name = projectName
+                    licenses = ['Apache-2.0']
+                    vcsUrl = 'https://github.com/valich/intellij-markdown'
+                    
                     version {
+                        name = fullName
                         released = new Date()
                     }
-
-                    artifact sourcesJar
                 }
             }
         }
