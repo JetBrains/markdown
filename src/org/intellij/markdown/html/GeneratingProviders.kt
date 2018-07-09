@@ -176,7 +176,9 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
         if (lastChildWasContent) {
             visitor.consumeHtml("\n")
         }
-        visitor.consumeHtml("</code></pre>")
+
+        visitor.consumeTagClose("code")
+        visitor.consumeHtml("</pre>")
     }
 }
 

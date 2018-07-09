@@ -35,7 +35,12 @@ class HtmlGenerator(private val markdownText: String,
         return htmlString.toString()
     }
 
-    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
+    fun generateHtml(visitor: HtmlGeneratingVisitor): String {
+        visitor.visitNode(root)
+        return htmlString.toString()
+    }
+
+    open inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this)
@@ -46,10 +51,10 @@ class HtmlGenerator(private val markdownText: String,
                     ?: consumeHtml(leafText(markdownText, node))
         }
 
-        fun consumeTagOpen(node: ASTNode,
-                                  tagName: CharSequence,
-                                  vararg attributes: CharSequence?,
-                                  autoClose: Boolean = false) {
+        open fun consumeTagOpen(node: ASTNode,
+                                tagName: CharSequence,
+                                vararg attributes: CharSequence?,
+                                autoClose: Boolean = false) {
             htmlString.append("<$tagName")
             for (attribute in customizer.invoke(node, tagName, attributes.asIterable())) {
                 if (attribute != null) {
@@ -67,11 +72,11 @@ class HtmlGenerator(private val markdownText: String,
             }
         }
 
-        fun consumeTagClose(tagName: CharSequence) {
+        open fun consumeTagClose(tagName: CharSequence) {
             htmlString.append("</$tagName>")
         }
 
-        fun consumeHtml(html: CharSequence) {
+        open fun consumeHtml(html: CharSequence) {
             htmlString.append(html)
         }
     }
