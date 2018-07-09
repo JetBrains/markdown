@@ -29,13 +29,21 @@ class HtmlGenerator(private val markdownText: String,
     
     private val htmlString: StringBuilder = StringBuilder()
 
-    @JvmOverloads
-    fun generateHtml(customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER): String {
-        HtmlGeneratingVisitor(customizer).visitNode(root)
+    @Deprecated("To be removed, pass custom visitor instead", 
+            ReplaceWith("generateHtml(HtmlGeneratingVisitor)"))
+    fun generateHtml(customizer: AttributesCustomizer): String {
+        HtmlGeneratingVisitor(DefaultTagRenderer(customizer, includeSrcPositions)).visitNode(root)
         return htmlString.toString()
     }
 
-    inner class HtmlGeneratingVisitor @JvmOverloads constructor(private val customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER) : RecursiveVisitor() {
+    @JvmOverloads
+    fun generateHtml(tagRenderer: TagRenderer =
+                             DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, includeSrcPositions)): String {
+        HtmlGeneratingVisitor(tagRenderer).visitNode(root)
+        return htmlString.toString()
+    }
+
+    inner class HtmlGeneratingVisitor(private val tagRenderer: TagRenderer) : RecursiveVisitor() {
         override fun visitNode(node: ASTNode) {
             providers[node.type]?.processNode(this, markdownText, node)
                     ?: node.acceptChildren(this)
@@ -47,33 +55,57 @@ class HtmlGenerator(private val markdownText: String,
         }
 
         fun consumeTagOpen(node: ASTNode,
-                                  tagName: CharSequence,
-                                  vararg attributes: CharSequence?,
-                                  autoClose: Boolean = false) {
-            htmlString.append("<$tagName")
-            for (attribute in customizer.invoke(node, tagName, attributes.asIterable())) {
-                if (attribute != null) {
-                    htmlString.append(" $attribute")
-                }
-            }
-            if (includeSrcPositions) {
-                htmlString.append(" ${getSrcPosAttribute(node)}")
-            }
-
-            if (autoClose) {
-                htmlString.append(" />")
-            } else {
-                htmlString.append(">")
-            }
+                                tagName: CharSequence,
+                                vararg attributes: CharSequence?,
+                                autoClose: Boolean = false) {
+            htmlString.append(tagRenderer.openTag(node, tagName, *attributes, autoClose = autoClose))
         }
 
         fun consumeTagClose(tagName: CharSequence) {
-            htmlString.append("</$tagName>")
+            htmlString.append(tagRenderer.closeTag(tagName))
         }
 
         fun consumeHtml(html: CharSequence) {
-            htmlString.append(html)
+            htmlString.append(tagRenderer.printHtml(html))
         }
+    }
+    
+    open class DefaultTagRenderer(protected val customizer: AttributesCustomizer, 
+                                  protected val includeSrcPositions: Boolean) : TagRenderer {
+        override fun openTag(node: ASTNode, tagName: CharSequence, vararg attributes: CharSequence?, autoClose: Boolean): CharSequence {
+            return buildString {
+                append("<$tagName")
+                for (attribute in customizer.invoke(node, tagName, attributes.asIterable())) {
+                    if (attribute != null) {
+                        append(" $attribute")
+                    }
+                }
+                if (includeSrcPositions) {
+                    append(" ${getSrcPosAttribute(node)}")
+                }
+
+                if (autoClose) {
+                    append(" />")
+                } else {
+                    append(">")
+                }
+            }
+        }
+
+        override fun closeTag(tagName: CharSequence): CharSequence = "</$tagName>"
+
+        override fun printHtml(html: CharSequence): CharSequence = html
+    }
+    
+    interface TagRenderer {
+        fun openTag(node: ASTNode,
+                    tagName: CharSequence,
+                    vararg attributes: CharSequence?,
+                    autoClose: Boolean = false): CharSequence
+        
+        fun closeTag(tagName: CharSequence): CharSequence
+        
+        fun printHtml(html: CharSequence): CharSequence
     }
 
     companion object {
