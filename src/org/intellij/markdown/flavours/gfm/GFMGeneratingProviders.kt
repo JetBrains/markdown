@@ -2,6 +2,7 @@ package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.*
+import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
@@ -31,7 +32,10 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
 
         visitor.consumeTagOpen(node, "li", listItemClass)
 
-        val isLoose = (node as ListItemCompositeNode).parent!!.loose
+        val listNode = node.parent
+        assert(listNode is ListCompositeNode)
+
+        val isLoose = (listNode as ListCompositeNode).loose
 
         var flushedInput = false
         for (child in node.children) {

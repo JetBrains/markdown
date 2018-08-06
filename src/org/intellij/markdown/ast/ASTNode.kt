@@ -7,6 +7,7 @@ interface ASTNode {
     val type : IElementType
     val startOffset : Int
     val endOffset : Int
+    val parent: ASTNode?
     val children : List<ASTNode>
 }
 

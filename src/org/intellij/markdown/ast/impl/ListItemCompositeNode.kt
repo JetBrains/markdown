@@ -4,8 +4,4 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 
-class ListItemCompositeNode(children: List<ASTNode>)
-: CompositeASTNode(MarkdownElementTypes.LIST_ITEM, children) {
-    var parent: ListCompositeNode? = null
-        internal set
-}
+class ListItemCompositeNode(children: List<ASTNode>) : CompositeASTNode(MarkdownElementTypes.LIST_ITEM, children)

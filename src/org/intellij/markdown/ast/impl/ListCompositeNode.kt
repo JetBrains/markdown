@@ -5,17 +5,8 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
-import kotlin.properties.Delegates
 
 class ListCompositeNode(type: IElementType, children: List<ASTNode>) : CompositeASTNode(type, children) {
-    init {
-        for (child in children) {
-            if (child is ListItemCompositeNode) {
-                child.parent = this
-            }
-        }
-    }
-
     val loose: Boolean by lazy(LazyThreadSafetyMode.NONE) { isLoose() }
 
     private fun isLoose(): Boolean {
