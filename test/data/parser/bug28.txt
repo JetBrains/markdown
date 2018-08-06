@@ -1,0 +1,11 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:GFM_AUTOLINK('http://localhost:8000')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:GFM_AUTOLINK('http://localhost:8000')
+      Markdown:)(')')

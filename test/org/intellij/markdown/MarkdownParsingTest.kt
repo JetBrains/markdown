@@ -222,6 +222,10 @@ class MarkdownParsingTest : TestCase() {
     fun testRuby18936() {
         defaultTest(CommonMarkFlavourDescriptor())
     }
+
+    fun testBug28() {
+        defaultTest(GFMFlavourDescriptor())
+    }
     
     fun testNewlinesAndAnyChars() {
         defaultTest(GFMFlavourDescriptor())

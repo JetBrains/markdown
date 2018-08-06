@@ -11,20 +11,11 @@ This is bold: <em>
 </em>
 </p>
 <p>
-<a href="http://foo.bar">
-<a href="http://www.not.rendered.as.autolink.yo">www.not.rendered.as.autolink.yo</a>
-</a>
+<a href="http://foo.bar">www.not.rendered.as.autolink.yo</a>
 </p>
-<p>
-[<a href="http://www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
-]</p>
-<p>
-[<a href="http://www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
-][]</p>
-<p>
-[<a href="http://www.not.rendered.as.autolink.too">www.not.rendered.as.autolink.too</a>
-][<a href="http://www.and.this.too">www.and.this.too</a>
-]</p>
+<p>[www.not.rendered.as.autolink.too]</p>
+<p>[www.not.rendered.as.autolink.too][]</p>
+<p>[www.not.rendered.as.autolink.too][www.and.this.too]</p>
 <p>
 <a href="http://plain.auto.link">http://plain.auto.link</a>
 </p>

@@ -103,6 +103,10 @@ class HtmlGeneratorTest : TestCase() {
         defaultTest(GFMFlavourDescriptor())
     }
 
+    fun testBug28() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     fun testStrikethrough() {
         defaultTest(GFMFlavourDescriptor())
     }
@@ -146,7 +150,7 @@ class HtmlGeneratorTest : TestCase() {
     fun testBaseUriWithAnchorLink() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
-    
+
     fun testCustomRenderer() {
         defaultTest(tagRenderer = object: HtmlGenerator.TagRenderer {
             override fun openTag(node: ASTNode, tagName: CharSequence, vararg attributes: CharSequence?, autoClose: Boolean): CharSequence {
@@ -174,7 +178,7 @@ class HtmlGeneratorTest : TestCase() {
                         && html[next.range.start + 1] == '/') {
                     matchResult.value
                 } else if (matchResult.value.contains("pre") && next?.value?.contains("code") == true
-                    || matchResult.value.contains("/code") && next?.value?.contains("/pre") == true) {
+                        || matchResult.value.contains("/code") && next?.value?.contains("/pre") == true) {
                     matchResult.value
                 } else {
                     matchResult.value + "\n"
