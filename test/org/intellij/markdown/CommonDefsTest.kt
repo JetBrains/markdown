@@ -20,10 +20,4 @@ class CommonDefsTest {
         }
         assertFalse(isPunctuation(' '), "' ' should not be punctuation")
     }
-
-    @Test fun exclamationIsPunctuation() {
-    }
-
-    @Test fun spaceIsNotPunctuation() {
-    }
 }
