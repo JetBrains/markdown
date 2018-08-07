@@ -1,6 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.2.50'
-
     repositories {
         jcenter()
         mavenCentral()
@@ -63,7 +61,11 @@ task initNpm(type: NpmTask) {
 }
 
 task installNodeModules(type: NpmTask, dependsOn: [initNpm]) {
-    args = ['install', 'mocha', "kotlin@$kotlin_version", "kotlin-test@$kotlin_version"]
+    args = ['install',
+            'mocha',
+            'mocha-headless-chrome',
+            "kotlin@$kotlin_version",
+            "kotlin-test@$kotlin_version"]
 }
 
 task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installNodeModules]) {
@@ -75,6 +77,40 @@ task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installNodeModul
     }
 }
 
+def mochaChromeTestPage = file("$buildDir/test-page.html")
+
+task prepareMochaChrome(dependsOn: [compileTestKotlin2Js, installNodeModules]) {
+    outputs.file(mochaChromeTestPage)
+}
+
+prepareMochaChrome.doLast {
+    mochaChromeTestPage.text = """<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Mocha Tests</title>
+            <meta charset="utf-8">
+            <link rel="stylesheet" href="$node.nodeModulesDir/node_modules/mocha/mocha.css">
+        </head>
+        <body>
+        <div id="mocha"></div>
+        <script src="$node.nodeModulesDir/node_modules/mocha/mocha.js"></script>
+        <script>mocha.setup('bdd');</script>
+        <script src="$node.nodeModulesDir/node_modules/kotlin/kotlin.js"></script>
+        <script src="$node.nodeModulesDir/node_modules/kotlin-test/kotlin-test.js"></script>
+        <script src="$compileKotlin2Js.outputFile"></script>
+        <script src="$compileTestKotlin2Js.outputFile"></script>
+        <script>mocha.run();</script>
+        </body>
+        </html>
+    """
+}
+
+task runMochaChrome(type: NodeTask, dependsOn: prepareMochaChrome) {
+    script = file("$node.nodeModulesDir/node_modules/mocha-headless-chrome/bin/start")
+    args = [compileTestKotlin2Js.outputFile, '--file', mochaChromeTestPage]
+}
+
 test.dependsOn runMocha
+//test.dependsOn runMochaChrome
 
 configurePublishing markdown_version
