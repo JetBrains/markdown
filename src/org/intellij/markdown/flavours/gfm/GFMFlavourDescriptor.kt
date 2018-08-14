@@ -19,7 +19,7 @@ import org.intellij.markdown.parser.sequentialparsers.impl.*
 import java.io.Reader
 import java.net.URI
 
-class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
+open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
     override val markerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
