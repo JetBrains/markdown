@@ -68,5 +68,8 @@
 <li>
 <a href="file:/root">root link definition</a>
 </li>
+<li>
+<a href="#abc">bookmark link definition</a>
+</li>
 </ul>
 </body>
