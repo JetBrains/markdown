@@ -1873,7 +1873,8 @@ Specifies an array of <code md-src-pos="55005..55018">path =&gt; URI</code>
 <code md-src-pos="56049..56057">params</code>
  is an optional parameter. It allows to provide the ProxyPass key=value parameters (Connection settings).
 <code md-src-pos="56163..56171">setenv</code>
- is optional and is an array to set environment variables for the proxy directive, for details see http://httpd.apache.org/docs/current/mod/mod_proxy.html#envsettings</p>
+ is optional and is an array to set environment variables for the proxy directive, for details see <a href="http://httpd.apache.org/docs/current/mod/mod_proxy.html#envsettings" md-src-pos="56270..56337">http://httpd.apache.org/docs/current/mod/mod_proxy.html#envsettings</a>
+</p>
 <h5 md-src-pos="56339..56362">
 <code md-src-pos="56344..56362">proxy_dest_match</code>
 </h5>

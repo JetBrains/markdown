@@ -11,8 +11,8 @@ This is a single .war file deployment of <strong>Knowtify Log Analytics</strong>
 <ol>
 <li>
 <p>
-Red Hat 7 family (version 7.x  Red Hat Enterprise Linux, CentOS, Fedora, Scientific Linux, Oracle Linux and others) Commands for the Red Hat 6 family, where different, are noted in square brackets [RH6: ~command~ ] see: <a href="http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,">http://www.unixmen.com/postgresql-9-4-released-install-centos-7/,</a>
- and <a href="http://www.postgresql.org/download/linux/redhat/">http://www.postgresql.org/download/linux/redhat/</a>
+Red Hat 7 family (version 7.x  Red Hat Enterprise Linux, CentOS, Fedora, Scientific Linux, Oracle Linux and others) Commands for the Red Hat 6 family, where different, are noted in square brackets [RH6: ~command~ ] see: <a href="http://www.unixmen.com/postgresql-9-4-released-install-centos-7/">http://www.unixmen.com/postgresql-9-4-released-install-centos-7/</a>
+, and <a href="http://www.postgresql.org/download/linux/redhat/">http://www.postgresql.org/download/linux/redhat/</a>
 </p>
 <ol>
 <li>
@@ -540,7 +540,7 @@ Download TAR.GZ from Elastic: <code>wget https://download.elastic.co/logstash/lo
 </ol>
 </li>
 <li>
-install the solr_http output plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html">www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html</a>
+install the solr_http output plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html">https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr_http.html</a>
 ):<ol>
 <li>
 <code>cd /opt/logstash-1.5.4</code>
@@ -624,7 +624,7 @@ Test in a newly opened command prompt with <code>cd %JAVA_HOME%</code>
 </ol>
 </li>
 <li>
-Install the Windows Event Log input plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type">www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type</a>
+Install the Windows Event Log input plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type">https://www.elastic.co/guide/en/logstash/current/plugins-inputs-eventlog.html#plugins-inputs-eventlog-type</a>
 ):<ol>
 <li>
 <code>cd %LOGSTASH_HOME%</code>
@@ -635,7 +635,7 @@ install the plugin: <code>bin\plugin install logstash-input-eventlog</code>
 </ol>
 </li>
 <li>
-Install the solr_http output plugin (info at https://<a href="www.elastic.co/guide/en/logstash/current/plugins-outputs-solr">www.elastic.co/guide/en/logstash/current/plugins-outputs-solr</a>
+Install the solr_http output plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr">https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr</a>
 _http.html):<ol>
 <li>
 <code>cd %LOGSTASH_HOME%</code>
@@ -657,7 +657,9 @@ Create a run.bat file in %LOGSTASH_HOME%\bin. It should contain this command <co
 </li>
 <li>
 To install Logstash to run as a Windows Service:<ol>
-<li>Download NSSM from http://nssm.cc/</li>
+<li>
+Download NSSM from <a href="http://nssm.cc/">http://nssm.cc/</a>
+</li>
 <li>Unzip NSSM-??.zip to a temporary directory</li>
 <li>Copy the win32 or win64 version (as appropriate) of nssm.exe to %LOGSTASH_HOME%\bin</li>
 <li>
