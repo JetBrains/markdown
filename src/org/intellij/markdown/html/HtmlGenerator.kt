@@ -31,7 +31,7 @@ class HtmlGenerator(private val markdownText: String,
 
     @Deprecated("To be removed, pass custom visitor instead", 
             ReplaceWith("generateHtml(HtmlGeneratingVisitor)"))
-    fun generateHtml(customizer: AttributesCustomizer): String {
+    fun generateHtml(customizer: AttributesCustomizer = DUMMY_ATTRIBUTES_CUSTOMIZER): String {
         HtmlGeneratingVisitor(DefaultTagRenderer(customizer, includeSrcPositions)).visitNode(root)
         return htmlString.toString()
     }
