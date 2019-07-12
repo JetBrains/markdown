@@ -1,6 +1,15 @@
 Markdown:MARKDOWN_FILE
   Markdown:CODE_FENCE
     Markdown:CODE_FENCE_START('```')
+    Markdown:FENCE_LANG('yaml')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_CONTENT('---')
+    Markdown:EOL('\n')
+    Markdown:CODE_FENCE_END('```')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:CODE_FENCE
+    Markdown:CODE_FENCE_START('```')
     Markdown:EOL('\n')
     Markdown:CODE_FENCE_CONTENT('<')
     Markdown:EOL('\n')

@@ -20,11 +20,11 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
     private val markerBlockProviders = listOf(
             CodeBlockProvider(),
             HorizontalRuleProvider(),
+            CodeFenceProvider(),
             SetextHeaderProvider(),
             BlockQuoteProvider(),
             ListMarkerProvider(),
             AtxHeaderProvider(true),
-            CodeFenceProvider(),
             HtmlBlockProvider(),
             LinkReferenceDefinitionProvider()
     )
