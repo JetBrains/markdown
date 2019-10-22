@@ -42,8 +42,8 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
             return SPACES_REGEX.replace(label, " ").toLowerCase(Locale.US)
         }
 
-        fun normalizeDestination(s: CharSequence): CharSequence {
-            val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, true)
+        fun normalizeDestination(s: CharSequence, processEscapes: Boolean): CharSequence {
+            val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, processEscapes)
             val sb = StringBuilder()
             for (c in dest) {
                 val code = c.toInt()
@@ -80,7 +80,8 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
         companion object {
             internal fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
                 val destination: CharSequence = normalizeDestination(
-                        node.children.first({ it.type == MarkdownElementTypes.LINK_DESTINATION }).getTextInNode(fileText))
+                        node.children.first({ it.type == MarkdownElementTypes.LINK_DESTINATION }).getTextInNode(fileText),
+                        true)
                 val title: CharSequence? = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TITLE })
                         ?.getTextInNode(fileText)?.let { normalizeTitle(it) }
                 return LinkInfo(node, destination, title)

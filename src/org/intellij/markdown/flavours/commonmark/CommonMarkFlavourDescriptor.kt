@@ -82,7 +82,7 @@ open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     val linkText = node.getTextInNode(text)
                     val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length - 1), true, false)
-                    visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText)}\"")
+                    visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText, false)}\"")
                     visitor.consumeHtml(link)
                     visitor.consumeTagClose("a")
                 }

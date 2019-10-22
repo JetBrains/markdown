@@ -11,6 +11,7 @@ import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.SimpleInlineTagProvider
 import org.intellij.markdown.html.TrimmingInlineHolderProvider
+import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -52,9 +53,10 @@ open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
                 GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                        val linkDestination = node.getTextInNode(text)
-                        visitor.consumeTagOpen(node, "a", "href=\"$linkDestination\"")
-                        visitor.consumeHtml(linkDestination)
+                        val linkText = node.getTextInNode(text)
+                        val link = EntityConverter.replaceEntities(linkText, true, false)
+                        visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText, false)}\"")
+                        visitor.consumeHtml(link)
                         visitor.consumeTagClose("a")
                     }
                 },
