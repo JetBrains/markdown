@@ -635,8 +635,8 @@ install the plugin: <code>bin\plugin install logstash-input-eventlog</code>
 </ol>
 </li>
 <li>
-Install the solr_http output plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr">https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr</a>
-_http.html):<ol>
+Install the solr_http output plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr\_http.html">https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr\_http.html</a>
+):<ol>
 <li>
 <code>cd %LOGSTASH_HOME%</code>
 </li>

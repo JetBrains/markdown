@@ -45,3 +45,15 @@ http://code.google.com/events/#&product=browser
 http://a.b-c.de
 
 https://foo_bar.example.com/
+
+https://test.com/~repo/large-files-editor
+
+https://test.com/~repo~
+
+https://test.com/~repo~/
+
+https://youtrack.jetbrains.com/issues?q=for:%20me%20
+
+https://youtrack.jetbrains.com/issues?q=for:%20me%20:
+
+https://youtrack.jetbrains.com/issues?q=for:%20me%20:/

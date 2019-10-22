@@ -31,4 +31,13 @@ This is bold: <em>
 <p>
 This is code <code>http://vk.com</code>
  really</p>
+<p>
+<a href="https://test.com/~repo/large-files-editor">https://test.com/~repo/large-files-editor</a>
+</p>
+<p>
+<a href="https://youtrack.jetbrains.com/issues?q=for:%20me%20">https://youtrack.jetbrains.com/issues?q=for:%20me%20</a>
+</p>
+<p>
+Install the solr_http output plugin (info at <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr\_http.html">https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr\_http.html</a>
+):</p>
 </body>

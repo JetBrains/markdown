@@ -15,3 +15,10 @@ This is bold: *www.gohere.yea*
 <http://plain.auto.link>
 
 This is code `http://vk.com` really
+
+
+https://test.com/~repo/large-files-editor
+
+https://youtrack.jetbrains.com/issues?q=for:%20me%20
+
+Install the solr\_http output plugin (info at https://www.elastic.co/guide/en/logstash/current/plugins-outputs-solr\_http.html):

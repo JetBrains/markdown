@@ -129,3 +129,29 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:GFM_AUTOLINK('https://foo_bar.example.com/')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://test.com/~repo/large-files-editor')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://test.com/~repo')
+    Markdown:~('~')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://test.com/~repo~/')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://youtrack.jetbrains.com/issues?q=for:%20me%20')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://youtrack.jetbrains.com/issues?q=for:%20me%20')
+    Markdown::(':')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://youtrack.jetbrains.com/issues?q=for:%20me%20:/')
