@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.3.41'
-        markdown_version = (hasProperty('buildNumber') ? "0.2.0.pre-$buildNumber" : "0.2.0.pre-SNAPSHOT")
+        markdown_version = (project(':').hasProperty('buildNumber') ? "0.2.0.pre-$buildNumber" : "0.2.0.pre-SNAPSHOT")
     }
 
     repositories {
@@ -93,6 +93,8 @@ sourceSets {
 }
 
 test {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
     useJUnit {
         excludeCategories 'org.intellij.markdown.ParserPerformanceTest'
     }
