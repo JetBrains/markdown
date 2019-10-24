@@ -43,8 +43,8 @@ task performanceTest(type: Test, group: 'verification', dependsOn: [classes, tes
     }
 }
 
-sourceCompatibility=1.6
-targetCompatibility=1.6
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
 
 configurePublishing markdown_version
 
