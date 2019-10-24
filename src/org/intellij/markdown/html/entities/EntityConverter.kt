@@ -39,9 +39,13 @@ object EntityConverter {
                         null
                     }
 
-                    code?.toChar()?.let {
-                        replacements[it] ?: it.toString()
-                    } ?: "&amp;${match.value.substring(1)}"
+                    val char = code?.toChar()
+                    if (char != null) {
+                        replacements[char] ?: char.toString()
+                    }
+                    else {
+                        "&amp;${match.value.substring(1)}"
+                    }
 
                 }
         })
