@@ -155,3 +155,37 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:GFM_AUTOLINK('https://youtrack.jetbrains.com/issues?q=for:%20me%20:/')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_XSS')
+    Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_XSS')
+    Markdown:TEXT('..')
+    Markdown:)(')')
+    Markdown:TEXT('..')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS..)')
+    Markdown:TEXT('..')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS][📭')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]$')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting/////asd')
+    Markdown:!('!')

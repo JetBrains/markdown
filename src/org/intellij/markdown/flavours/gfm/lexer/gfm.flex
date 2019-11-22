@@ -156,6 +156,53 @@ import java.util.Stack;
     return result;
   }
 
+  private int calcBalance(int startPos) {
+      int balance = 0;
+      for (int i = startPos; i >= 0; --i) {
+          char c = yycharat(i);
+          if (c == ')') {
+              balance++;
+          }
+          else if (c == '(') {
+              balance--;
+              if (balance <= 0) break;
+          }
+      }
+      return balance;
+  }
+
+  private void pushbackAutolink() {
+      int length = yylength();
+      int balance = -1;
+
+      // See GFM_AUTOLINK rule
+      String badEnding = ".,:;!?\"'*_~]`";
+
+      for (int i = length - 1; i >= 0; --i) {
+          char c = yycharat(i);
+          if (c == ')') {
+              if (balance == -1) {
+                  balance = calcBalance(i);
+              }
+
+              // If there are not enough opening brackets to match this closing one, drop this bracket
+              if (balance > 0) {
+                  balance--;
+              }
+              else {
+                  break;
+              }
+          }
+          else if (badEnding.indexOf(c) == -1) {
+              break;
+          }
+
+          length--;
+      }
+
+      yypushback(yylength() - length);
+  }
+
 %}
 
 DIGIT = [0-9]
@@ -190,7 +237,8 @@ AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
 HOST_PART={ALPHANUM}([a-zA-Z0-9_-]*{ALPHANUM})?
-GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"\S+)* [a-zA-Z0-9#/]
+// See pushbackAutolink method
+GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"\S+)* [\S&&[^.,:;!?\"'*_~\]`]]
 
 %state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 
@@ -285,7 +333,10 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
     return Token.EOL;
   }
 
-  {GFM_AUTOLINK} { return GFMTokenTypes.GFM_AUTOLINK; }
+  {GFM_AUTOLINK} {
+    pushbackAutolink();
+    return GFMTokenTypes.GFM_AUTOLINK;
+  }
 
   {ALPHANUM}+ (({WHITE_SPACE}+ | "_"+) {ALPHANUM}+)* / {WHITE_SPACE}+ {GFM_AUTOLINK} {
     return Token.TEXT;

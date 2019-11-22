@@ -57,3 +57,17 @@ https://youtrack.jetbrains.com/issues?q=for:%20me%20
 https://youtrack.jetbrains.com/issues?q=for:%20me%20:
 
 https://youtrack.jetbrains.com/issues?q=for:%20me%20:/
+
+https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
+
+https://www.owasp.org/index.php/Cross-site_Scripting_XSS)
+
+https://www.owasp.org/index.php/Cross-site_Scripting_XSS..)..
+
+https://www.owasp.org/index.php/Cross-site_Scripting_(XSS..)..
+
+https://www.owasp.org/index.php/Cross-site_Scripting_(XSS][📭
+
+https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]$
+
+https://www.owasp.org/index.php/Cross-site_Scripting/////asd!
