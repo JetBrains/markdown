@@ -237,8 +237,9 @@ AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
 HOST_PART={ALPHANUM}([a-zA-Z0-9_-]*{ALPHANUM})?
+PATH_PART=[\S&&[^\]]]|\][^\[(]
 // See pushbackAutolink method
-GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"\S+)* [\S&&[^.,:;!?\"'*_~\]`]]
+GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"{PATH_PART}+)* ([\S&&[^.,:;!?\"'*_~\]`]]|\][^\[(])
 
 %state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 

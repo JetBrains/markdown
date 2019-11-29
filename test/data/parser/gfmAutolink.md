@@ -66,8 +66,12 @@ https://www.owasp.org/index.php/Cross-site_Scripting_XSS..)..
 
 https://www.owasp.org/index.php/Cross-site_Scripting_(XSS..)..
 
-https://www.owasp.org/index.php/Cross-site_Scripting_(XSS][📭
+https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]📭
 
 https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]$
 
 https://www.owasp.org/index.php/Cross-site_Scripting/////asd!
+
+Reference link [https://github.com/nodeca/pica][id]
+
+Inline link [https://github.com/nodeca/pica](id)

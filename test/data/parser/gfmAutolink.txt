@@ -179,7 +179,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS][📭')
+    Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]📭')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -189,3 +189,31 @@ Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
     Markdown:GFM_AUTOLINK('https://www.owasp.org/index.php/Cross-site_Scripting/////asd')
     Markdown:!('!')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Reference link')
+    WHITE_SPACE(' ')
+    Markdown:FULL_REFERENCE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:GFM_AUTOLINK('https://github.com/nodeca/pica')
+        Markdown:](']')
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('id')
+        Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Inline link')
+    WHITE_SPACE(' ')
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:GFM_AUTOLINK('https://github.com/nodeca/pica')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:TEXT('id')
+      Markdown:)(')')
