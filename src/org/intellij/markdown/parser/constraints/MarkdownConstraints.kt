@@ -2,16 +2,17 @@ package org.intellij.markdown.parser.constraints
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.markerblocks.providers.HorizontalRuleProvider
+import kotlin.math.min
 
 open class MarkdownConstraints protected constructor(private val indents: IntArray,
-                                                            private val types: CharArray,
-                                                            private val isExplicit: BooleanArray,
-                                                            private val charsEaten: Int) {
+                                                     private val types: CharArray,
+                                                     private val isExplicit: BooleanArray,
+                                                     private val charsEaten: Int) {
 
-    open val base: MarkdownConstraints
+    protected open val base: MarkdownConstraints
         get() = BASE
 
-    open fun createNewConstraints(indents: IntArray,
+    protected open fun createNewConstraints(indents: IntArray,
                                          types: CharArray,
                                          isExplicit: BooleanArray,
                                          charsEaten: Int): MarkdownConstraints {
@@ -19,10 +20,10 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun eatItselfFromString(s: CharSequence): CharSequence {
-        if (s.length < charsEaten) {
-            return ""
+        return if (s.length < charsEaten) {
+            ""
         } else {
-            return s.subSequence(charsEaten, s.length)
+            s.subSequence(charsEaten, s.length)
         }
     }
 
@@ -35,7 +36,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     fun getCharsEaten(s: CharSequence): Int {
-        return Math.min(charsEaten, s.length)
+        return min(charsEaten, s.length)
     }
 
     open fun getLastType(): Char? {
@@ -68,7 +69,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         if (n < m) {
             return false
         }
-        return (0..m - 1).none { types[it] != other.types[it] }
+        return (0 until m).none { types[it] != other.types[it] }
     }
 
     private fun containsListMarkers(): Boolean {
@@ -76,7 +77,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     }
 
     private fun containsListMarkers(upToIndex: Int): Boolean {
-        return (0..upToIndex - 1).any { types[it] != BQ_CHAR && isExplicit[it] }
+        return (0 until upToIndex).any { types[it] != BQ_CHAR && isExplicit[it] }
     }
 
     fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints? {
@@ -99,15 +100,15 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
         while (offset < line.length && line[offset] in '0'..'9') {
             offset++
         }
-        if (offset > pos.offsetInCurrentLine
+        return if (offset > pos.offsetInCurrentLine
                 && offset - pos.offsetInCurrentLine <= 9
                 && offset < line.length
                 && (line[offset] == '.' || line[offset] == ')')) {
-            return ListMarkerInfo(offset + 1 - pos.offsetInCurrentLine,
+            ListMarkerInfo(offset + 1 - pos.offsetInCurrentLine,
                     line[offset],
                     offset + 1 - pos.offsetInCurrentLine)
         } else {
-            return null
+            null
         }
     }
 
@@ -149,14 +150,14 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
 
         // By the classification http://spec.commonmark.org/0.20/#list-items
         // 1. Basic case
-        if (spacesAfter > 0 && spacesAfter < 5 && offset < line.length) {
-            return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + spacesAfter, markerInfo.markerType, true, offset)
+        if (spacesAfter in 1..4 && offset < line.length) {
+            return create(this, spacesBefore + markerInfo.markerIndent + spacesAfter, markerInfo.markerType, true, offset)
         }
         if (spacesAfter >= 5 && offset < line.length // 2. Starts with an indented code
                 || offset == line.length) {
             // 3. Starts with an empty string
-            return MarkdownConstraints(this, spacesBefore + markerInfo.markerIndent + 1, markerInfo.markerType, true,
-                    Math.min(offset, markerEndOffset + 1))
+            return create(this, spacesBefore + markerInfo.markerIndent + 1, markerInfo.markerType, true,
+                    min(offset, markerEndOffset + 1))
         }
 
         return null
@@ -186,7 +187,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
             }
         }
 
-        return MarkdownConstraints(this, spacesBefore + 1 + spacesAfter, BQ_CHAR, true, offset)
+        return create(this, spacesBefore + 1 + spacesAfter, BQ_CHAR, true, offset)
     }
 
     override fun toString(): String {
@@ -196,25 +197,25 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
     companion object {
         val BASE: MarkdownConstraints = MarkdownConstraints(IntArray(0), CharArray(0), BooleanArray(0), 0)
 
-        val BQ_CHAR: Char = '>'
+        const val BQ_CHAR: Char = '>'
 
-        private fun MarkdownConstraints(parent: MarkdownConstraints,
-                                        newIndentDelta: Int,
-                                        newType: Char,
-                                        newExplicit: Boolean,
-                                        newOffset: Int): MarkdownConstraints {
+        private fun create(parent: MarkdownConstraints,
+                           newIndentDelta: Int,
+                           newType: Char,
+                           newExplicit: Boolean,
+                           newOffset: Int): MarkdownConstraints {
             val n = parent.indents.size
-            val _indents = IntArray(n + 1)
-            val _types = CharArray(n + 1)
-            val _isExplicit = BooleanArray(n + 1)
-            System.arraycopy(parent.indents, 0, _indents, 0, n)
-            System.arraycopy(parent.types, 0, _types, 0, n)
-            System.arraycopy(parent.isExplicit, 0, _isExplicit, 0, n)
+            val indents = IntArray(n + 1)
+            val types = CharArray(n + 1)
+            val isExplicit = BooleanArray(n + 1)
+            System.arraycopy(parent.indents, 0, indents, 0, n)
+            System.arraycopy(parent.types, 0, types, 0, n)
+            System.arraycopy(parent.isExplicit, 0, isExplicit, 0, n)
 
-            _indents[n] = parent.getIndent() + newIndentDelta
-            _types[n] = newType
-            _isExplicit[n] = newExplicit
-            return parent.createNewConstraints(_indents, _types, _isExplicit, newOffset)
+            indents[n] = parent.getIndent() + newIndentDelta
+            types[n] = newType
+            isExplicit[n] = newExplicit
+            return parent.createNewConstraints(indents, types, isExplicit, newOffset)
         }
 
         fun fromBase(pos: LookaheadText.Position, prevLineConstraints: MarkdownConstraints): MarkdownConstraints {
@@ -237,10 +238,9 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
             if (pos == null) {
                 return prevLineConstraints.base
             }
-            assert(pos.offsetInCurrentLine == -1, { "given $pos" })
+            assert(pos.offsetInCurrentLine == -1) { "given $pos" }
 
             val line = pos.currentLine
-            val startOffset = 0
             val prevN = prevLineConstraints.indents.size
             var indexPrev = 0
 
@@ -266,7 +266,7 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                     return constraints
                 }
 
-                var offset = startOffset + constraints.getCharsEaten(line)
+                var offset = constraints.getCharsEaten(line)
                 var totalSpaces = 0
                 var spacesSeen = 0
                 val hasKMoreSpaces = { k: Int ->
@@ -325,15 +325,15 @@ open class MarkdownConstraints protected constructor(private val indents: IntArr
                 var result = constraints
                 if (bqIndent != null) {
                     val bonusForTheBlockquote = if (hasKMoreSpaces(1)) 1 else 0
-                    result = MarkdownConstraints(result, bqIndent + bonusForTheBlockquote, BQ_CHAR, true, offset)
+                    result = create(result, bqIndent + bonusForTheBlockquote, BQ_CHAR, true, offset)
                 }
-                for (index in oldIndexPrev..indexPrev - 1) {
+                for (index in oldIndexPrev until indexPrev) {
                     val deltaIndent = prevLineConstraints.indents[index] -
                             if (index == 0)
                                 0
                             else
                                 prevLineConstraints.indents[index - 1]
-                    result = MarkdownConstraints(result, deltaIndent, prevLineConstraints.types[index], false, offset)
+                    result = create(result, deltaIndent, prevLineConstraints.types[index], false, offset)
                 }
                 return result
             }
