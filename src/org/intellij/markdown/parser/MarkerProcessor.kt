@@ -1,13 +1,14 @@
 package org.intellij.markdown.parser
 
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
 import java.util.*
 
 abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
-                                                                     protected val startConstraints: MarkdownConstraints) {
+                                                              protected val startConstraints: MarkdownConstraints) {
 
     protected val NO_BLOCKS: List<MarkerBlock> = emptyList()
 
@@ -39,7 +40,7 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
     }
 
     open fun createNewMarkerBlocks(pos: LookaheadText.Position,
-                                          productionHolder: ProductionHolder): List<MarkerBlock> {
+                                   productionHolder: ProductionHolder): List<MarkerBlock> {
         assert(MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.currentConstraints))
 
         for (provider in getMarkerBlockProviders()) {
@@ -50,7 +51,7 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
         }
 
         if (//!Character.isWhitespace(pos.char) &&
-                //stateInfo.paragraphBlock == null &&
+        //stateInfo.paragraphBlock == null &&
                 pos.offsetInCurrentLine >= stateInfo.nextConstraints.getCharsEaten(pos.currentLine)
                 && pos.charsToNonWhitespace() != null) {
             return listOf(ParagraphMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(), interruptsParagraph))
@@ -86,7 +87,7 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
                 || MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.currentConstraints)) {
             val delta = stateInfo.nextConstraints.getCharsEaten(pos.currentLine) - pos.offsetInCurrentLine
             if (delta > 0) {
-                if (pos.offsetInCurrentLine != -1 && stateInfo.nextConstraints.getIndent() <= topBlockConstraints.getIndent()) {
+                if (pos.offsetInCurrentLine != -1 && stateInfo.nextConstraints.indent <= topBlockConstraints.indent) {
                     populateConstraintsTokens(pos, stateInfo.nextConstraints, productionHolder)
                 }
                 return pos.nextPosition(delta)
@@ -172,8 +173,8 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
     }
 
     open class StateInfo(val currentConstraints: MarkdownConstraints,
-                                val nextConstraints: MarkdownConstraints,
-                                private val markersStack: List<MarkerBlock>) {
+                         val nextConstraints: MarkdownConstraints,
+                         private val markersStack: List<MarkerBlock>) {
 
         val paragraphBlock: ParagraphMarkerBlock?
             get() = markersStack.firstOrNull { block -> block is ParagraphMarkerBlock } as ParagraphMarkerBlock?

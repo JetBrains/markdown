@@ -1,17 +1,17 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.parser.LookaheadText
-import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 
 class GFMConstraints(indents: IntArray,
                             types: CharArray,
                             isExplicit: BooleanArray,
                             charsEaten: Int,
-                            private val isCheckbox: Boolean) : MarkdownConstraints(indents, types, isExplicit, charsEaten) {
-    override val base: MarkdownConstraints
+                            private val isCheckbox: Boolean) : CommonMarkdownConstraints(indents, types, isExplicit, charsEaten) {
+    override val base: CommonMarkdownConstraints
         get() = BASE
 
-    override fun createNewConstraints(indents: IntArray, types: CharArray, isExplicit: BooleanArray, charsEaten: Int): MarkdownConstraints {
+    override fun createNewConstraints(indents: IntArray, types: CharArray, isExplicit: BooleanArray, charsEaten: Int): CommonMarkdownConstraints {
         val initialType = types[types.size - 1]
         val originalType = toOriginalType(initialType)
         types[types.size - 1] = originalType
@@ -22,7 +22,7 @@ class GFMConstraints(indents: IntArray,
         return isCheckbox
     }
 
-    override fun fetchListMarker(pos: LookaheadText.Position): MarkdownConstraints.ListMarkerInfo? {
+    override fun fetchListMarker(pos: LookaheadText.Position): CommonMarkdownConstraints.ListMarkerInfo? {
         val baseMarkerInfo = super.fetchListMarker(pos)
                 ?: return null
 
@@ -37,7 +37,7 @@ class GFMConstraints(indents: IntArray,
                 && line[offset] == '['
                 && line[offset + 2] == ']'
                 && (line[offset + 1] == 'x' || line[offset + 1] == 'X' || line[offset + 1] == ' ')) {
-            return MarkdownConstraints.ListMarkerInfo(offset + 3 - pos.offsetInCurrentLine,
+            return CommonMarkdownConstraints.ListMarkerInfo(offset + 3 - pos.offsetInCurrentLine,
                     toCheckboxType(baseMarkerInfo.markerType),
                     baseMarkerInfo.markerLength)
         } else {

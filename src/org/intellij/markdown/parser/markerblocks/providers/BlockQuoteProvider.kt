@@ -4,6 +4,7 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.BlockQuoteMarkerBlock
@@ -21,7 +22,7 @@ class BlockQuoteProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         if (pos.offsetInCurrentLine != currentConstraints.getCharsEaten(pos.currentLine)) {
             return emptyList()
         }
-        if (nextConstraints != currentConstraints && nextConstraints.getLastType() == '>') {
+        if (nextConstraints != currentConstraints && nextConstraints.types.lastOrNull() == '>') {
             return listOf(BlockQuoteMarkerBlock(nextConstraints, productionHolder.mark()))
         } else {
             return emptyList()

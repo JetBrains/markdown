@@ -4,9 +4,10 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.eatItselfFromString
+import org.intellij.markdown.parser.constraints.extendsPrev
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
-import kotlin.text.Regex
 
 class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -38,7 +39,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
 
     private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): CharSequence? {
         val line = pos.nextLine ?: return null
-        val nextLineConstraints = MarkdownConstraints.fillFromPrevious(pos.nextLinePosition(), constraints)
+        val nextLineConstraints = constraints.applyToNextLine(pos.nextLinePosition())
         if (nextLineConstraints.extendsPrev(constraints)) {
             return nextLineConstraints.eatItselfFromString(line)
         } else {

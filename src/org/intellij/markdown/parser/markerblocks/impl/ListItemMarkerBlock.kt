@@ -5,12 +5,14 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.applyToNextLineAndAddModifiers
+import org.intellij.markdown.parser.constraints.extendsPrev
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
-                                 marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
+                          marker: ProductionHolder.Marker) : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = true
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = pos.offsetInCurrentLine == -1
@@ -33,7 +35,7 @@ class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
 
         val nonemptyPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos, eolN)
                 ?: return MarkerBlock.ProcessingResult.DEFAULT
-        val nextLineConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(nonemptyPos)
         if (!nextLineConstraints.extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

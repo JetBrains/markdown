@@ -7,7 +7,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 
 abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
-                                      protected val marker: ProductionHolder.Marker) : MarkerBlock {
+                               protected val marker: ProductionHolder.Marker) : MarkerBlock {
 
     private var lastInterestingOffset: Int = -2
 
@@ -25,7 +25,7 @@ abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
     }
 
     final override fun processToken(pos: LookaheadText.Position,
-                              currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
+                                    currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         if (lastInterestingOffset != pos.offset && scheduledResult != null) {
             return MarkerBlock.ProcessingResult.CANCEL
         }

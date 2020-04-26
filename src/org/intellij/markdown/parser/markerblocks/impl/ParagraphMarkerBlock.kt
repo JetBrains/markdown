@@ -5,13 +5,16 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.applyToNextLineAndAddModifiers
+import org.intellij.markdown.parser.constraints.getCharsEaten
+import org.intellij.markdown.parser.constraints.upstreamWith
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 class ParagraphMarkerBlock(constraints: MarkdownConstraints,
-                                  marker: ProductionHolder.Marker,
-                                  val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean)
+                           marker: ProductionHolder.Marker,
+                           val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean)
         : MarkerBlockImpl(constraints, marker) {
     override fun allowsSubBlocks(): Boolean = false
 
@@ -38,7 +41,7 @@ class ParagraphMarkerBlock(constraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
         if (!nextLineConstraints.upstreamWith(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

@@ -5,13 +5,15 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.applyToNextLineAndAddModifiers
+import org.intellij.markdown.parser.constraints.extendsList
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 class ListMarkerBlock(myConstraints: MarkdownConstraints,
-                             marker: ProductionHolder.Marker,
-                             private val listType: Char)
+                      marker: ProductionHolder.Marker,
+                      private val listType: Char)
     : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = true
 
@@ -36,7 +38,7 @@ class ListMarkerBlock(myConstraints: MarkdownConstraints,
 
         val nonemptyPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos, eolN)
                 ?: return MarkerBlock.ProcessingResult.DEFAULT
-        val nextLineConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(nonemptyPos)
         if (!nextLineConstraints.extendsList(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

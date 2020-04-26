@@ -1,7 +1,7 @@
 package org.intellij.markdown.parser.markerblocks
 
 import org.intellij.markdown.parser.LookaheadText
-import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.*
 
 object MarkdownParserUtil {
 
@@ -12,7 +12,7 @@ object MarkdownParserUtil {
         var result = 1
 
         val isClearLine: (LookaheadText.Position) -> Boolean = { pos ->
-            val currentConstraints = MarkdownConstraints.fillFromPrevious(pos, constraints)
+            val currentConstraints = constraints.applyToNextLine(pos)
             val constraintsLength = currentConstraints.getCharsEaten(pos.currentLine)
 
             currentConstraints.upstreamWith(constraints) && (
@@ -45,7 +45,7 @@ object MarkdownParserUtil {
     }
 
     fun hasCodeBlockIndent(pos: LookaheadText.Position,
-                                  constraints: MarkdownConstraints): Boolean {
+                           constraints: MarkdownConstraints): Boolean {
         val constraintsLength = constraints.getCharsEaten(pos.currentLine)
 
         if (pos.offsetInCurrentLine >= constraintsLength + 4) {
@@ -69,13 +69,13 @@ object MarkdownParserUtil {
     }
 
     fun findNonEmptyLineWithSameConstraints(constraints: MarkdownConstraints,
-                                                   pos: LookaheadText.Position): LookaheadText.Position? {
+                                            pos: LookaheadText.Position): LookaheadText.Position? {
         var currentPos = pos
 
         while (true) {
 //            currentPos = currentPos.nextLinePosition() ?: return null
 
-            val nextLineConstraints = MarkdownConstraints.fromBase(currentPos, constraints)
+            val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(currentPos)
             // kinda equals
             if (!(nextLineConstraints.upstreamWith(constraints) && nextLineConstraints.extendsPrev(constraints))) {
                 return null

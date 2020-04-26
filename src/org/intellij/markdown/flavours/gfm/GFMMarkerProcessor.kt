@@ -7,12 +7,14 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.AtxHeaderProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: MarkdownConstraints)
+class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
     private val markerBlockProviders = super.getMarkerBlockProviders()
@@ -43,7 +45,7 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Ma
             return
         }
 
-        val type = when (constraints.getLastType()) {
+        val type = when (constraints.types.lastOrNull()) {
             '>' ->
                 MarkdownTokenTypes.BLOCK_QUOTE
             '.', ')' ->

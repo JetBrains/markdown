@@ -5,7 +5,9 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
@@ -36,7 +38,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
     override fun updateStateInfo(pos: LookaheadText.Position) {
         if (pos.offsetInCurrentLine == -1) {
             stateInfo = MarkerProcessor.StateInfo(startConstraints,
-                    MarkdownConstraints.fillFromPrevious(pos, topBlockConstraints),
+                    topBlockConstraints.applyToNextLine(pos),
                     markersStack)
         } else if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.nextConstraints)) {
             stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
@@ -48,7 +50,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
     override fun populateConstraintsTokens(pos: LookaheadText.Position,
                                            constraints: MarkdownConstraints,
                                            productionHolder: ProductionHolder) {
-        if (constraints.getIndent() == 0) {
+        if (constraints.indent == 0) {
             return
         }
 
@@ -56,7 +58,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
         val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
                 pos.nextLineOrEofOffset)
 
-        val type = when (constraints.getLastType()) {
+        val type = when (constraints.types.lastOrNull()) {
             '>' ->
                 MarkdownTokenTypes.BLOCK_QUOTE
             '.', ')' ->
@@ -78,7 +80,7 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
 
     object Factory : MarkerProcessorFactory {
         override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
-            return CommonMarkMarkerProcessor(productionHolder, MarkdownConstraints.BASE)
+            return CommonMarkMarkerProcessor(productionHolder, CommonMarkdownConstraints.BASE)
         }
     }
 }

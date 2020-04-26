@@ -5,15 +5,14 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.*
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import kotlin.text.Regex
 
 class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
-                                  private val productionHolder: ProductionHolder,
-                                  private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+                           private val productionHolder: ProductionHolder,
+                           private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.offsetInCurrentLine == -1
@@ -43,7 +42,7 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
 
         assert(pos.offsetInCurrentLine == -1)
 
-        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
         if (!nextLineConstraints.extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

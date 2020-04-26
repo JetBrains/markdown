@@ -9,8 +9,8 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
 class LinkReferenceDefinitionMarkerBlock(myConstraints: MarkdownConstraints,
-                                                marker: ProductionHolder.Marker,
-                                                private val endPosition: Int)
+                                         marker: ProductionHolder.Marker,
+                                         private val endPosition: Int)
 : MarkerBlockImpl(myConstraints, marker) {
     override fun allowsSubBlocks(): Boolean = false
 

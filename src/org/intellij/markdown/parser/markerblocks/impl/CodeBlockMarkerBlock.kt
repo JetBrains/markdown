@@ -6,14 +6,16 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.applyToNextLineAndAddModifiers
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
-                                  private val productionHolder: ProductionHolder, 
-                                  startPosition: LookaheadText.Position) 
+                           private val productionHolder: ProductionHolder,
+                           startPosition: LookaheadText.Position)
 : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     
     init {
@@ -50,7 +52,7 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
         val nonemptyPos = MarkdownParserUtil.findNonEmptyLineWithSameConstraints(constraints, pos)
             ?: return MarkerBlock.ProcessingResult.DEFAULT
 
-        val nextConstraints = MarkdownConstraints.fromBase(nonemptyPos, constraints)
+        val nextConstraints = constraints.applyToNextLineAndAddModifiers(nonemptyPos)
         val shifted = nonemptyPos.nextPosition(1 + nextConstraints.getCharsEaten(nonemptyPos.currentLine))
         val nonWhitespace = shifted?.nextPosition(shifted.charsToNonWhitespace() ?: 0)
             ?: return MarkerBlock.ProcessingResult.DEFAULT
@@ -59,7 +61,7 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
             // We'll add the current line anyway
-            val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+            val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
             val nodeRange = pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset
             if (nodeRange.endInclusive - nodeRange.start > 0) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(

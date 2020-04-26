@@ -14,7 +14,7 @@ interface MarkerBlock {
     fun allowsSubBlocks(): Boolean
 
     fun processToken(pos: LookaheadText.Position,
-                            currentConstraints: MarkdownConstraints): ProcessingResult
+                     currentConstraints: MarkdownConstraints): ProcessingResult
 
     fun getBlockConstraints(): MarkdownConstraints
 

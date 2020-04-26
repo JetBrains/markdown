@@ -4,6 +4,7 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 
 interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
     fun createMarkerBlocks(pos: LookaheadText.Position,

@@ -29,11 +29,11 @@ class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             return emptyList()
         }
         if (nextConstraints != currentConstraints
-                && nextConstraints.getLastType() != '>' && nextConstraints.getLastExplicit() == true) {
+                && nextConstraints.types.lastOrNull() != '>' && nextConstraints.getLastExplicit() == true) {
 
             val result = ArrayList<MarkerBlock>()
             if (stateInfo.lastBlock !is ListMarkerBlock) {
-                result.add(ListMarkerBlock(nextConstraints, productionHolder.mark(), nextConstraints.getLastType()!!))
+                result.add(ListMarkerBlock(nextConstraints, productionHolder.mark(), nextConstraints.types.lastOrNull()!!))
             }
             result.add(ListItemMarkerBlock(nextConstraints, productionHolder.mark()))
             return result
@@ -45,5 +45,9 @@ class ListMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         // Actually, list item interrupts a paragraph, but we have MarkdownConstraints for these cases
         return false
+    }
+
+    private fun MarkdownConstraints.getLastExplicit(): Boolean? {
+        return isExplicit.lastOrNull()
     }
 }

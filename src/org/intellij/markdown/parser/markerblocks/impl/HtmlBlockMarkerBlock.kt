@@ -5,7 +5,10 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.extendsPrev
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
@@ -13,9 +16,9 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.text.Regex
 
 class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
-                                  private val productionHolder: ProductionHolder,
-                                  private val endCheckingRegex: Regex?,
-                                  startPosition: LookaheadText.Position)
+                           private val productionHolder: ProductionHolder,
+                           private val endCheckingRegex: Regex?,
+                           startPosition: LookaheadText.Position)
 : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     init {
         productionHolder.addProduction(listOf(SequentialParser.Node(
@@ -37,7 +40,7 @@ class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
 
         val prevLine = pos.prevLine ?: return MarkerBlock.ProcessingResult.DEFAULT
-        if (!MarkdownConstraints.fillFromPrevious(pos, constraints).extendsPrev(constraints)) {
+        if (!constraints.applyToNextLine(pos).extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 

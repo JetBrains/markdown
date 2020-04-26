@@ -5,6 +5,8 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.applyToNextLineAndAddModifiers
+import org.intellij.markdown.parser.constraints.extendsPrev
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 
@@ -24,7 +26,7 @@ class BlockQuoteMarkerBlock(myConstraints: MarkdownConstraints, marker: Producti
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         assert(pos.offsetInCurrentLine == -1)
 
-        val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
         // That means nextLineConstraints are "shorter" so our blockquote char is absent
         if (!nextLineConstraints.extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
