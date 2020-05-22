@@ -192,6 +192,19 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://google.com/p')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://google.com/p')
+    Markdown:EMPH('_')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://google.com/p/')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
     Markdown:TEXT('Reference link')
     WHITE_SPACE(' ')
     Markdown:FULL_REFERENCE_LINK

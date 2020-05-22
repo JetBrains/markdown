@@ -173,6 +173,12 @@ import java.util.Stack;
 
   private void pushbackAutolink() {
       int length = yylength();
+      if (yycharat(length - 1) == '/') {
+          while (yycharat(length - 2) == '/') length--;
+          yypushback(yylength() - length);
+          return;
+      }
+
       int balance = -1;
 
       // See GFM_AUTOLINK rule
@@ -239,7 +245,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 HOST_PART={ALPHANUM}([a-zA-Z0-9_-]*{ALPHANUM})?
 PATH_PART=[\S&&[^\]]]|\][^\[(]
 // See pushbackAutolink method
-GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"{PATH_PART}+)* ([\S&&[^.,:;!?\"'*_~\]`]]|\][^\[(])
+GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"{PATH_PART}+)* "/"?
 
 %state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 
