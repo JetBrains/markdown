@@ -5,6 +5,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.html.*
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
@@ -113,6 +114,10 @@ class HtmlGeneratorTest : TestCase() {
 
     fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
+    }
+
+    fun testSfmAutolink() {
+        defaultTest(SFMFlavourDescriptor())
     }
 
     fun testGfmTable() {

@@ -6,6 +6,7 @@ import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import java.io.File
 
@@ -193,6 +194,10 @@ class MarkdownParsingTest : TestCase() {
 
     fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
+    }
+
+    fun testSfmAutolink() {
+        defaultTest(SFMFlavourDescriptor())
     }
 
     fun testCheckLists() {

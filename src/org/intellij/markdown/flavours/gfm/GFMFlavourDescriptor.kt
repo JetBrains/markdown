@@ -65,12 +65,21 @@ open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
                         }
 
                         // according to GFM_AUTOLINK rule in lexer, link either starts with scheme or with 'www.'
-                        val linkDestination = if (linkText.startsWith("www.")) "http://$linkText" else linkText
+                        val linkDestination = if (hasSchema(linkText)) linkText else "http://$linkText"
 
                         val link = EntityConverter.replaceEntities(linkText, true, false)
                         visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkDestination, false)}\"")
                         visitor.consumeHtml(link)
                         visitor.consumeTagClose("a")
+                    }
+
+                    private fun hasSchema(linkText: CharSequence): Boolean {
+                        val index = linkText.indexOf('/')
+                        if (index == -1) return false
+                        return index != 0
+                                && index + 1 < linkText.length
+                                && linkText[index - 1] == ':'
+                                && linkText[index + 1] == '/'
                     }
                 },
 
