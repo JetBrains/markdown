@@ -30,11 +30,12 @@ open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
     override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
-            return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
+            return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK)),
                     BacktickParser(),
                     ImageParser(),
                     InlineLinkParser(),
                     ReferenceLinkParser(),
+                    GfmAutolinkParser(),
                     StrikeThroughParser(),
                     EmphStrongParser())
         }
@@ -52,7 +53,7 @@ open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
                 GFMTokenTypes.CELL to TrimmingInlineHolderProvider(),
 
-                GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
+                GFMElementTypes.GFM_AUTOLINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         val linkText = node.getTextInNode(text)
 

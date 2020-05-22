@@ -2,6 +2,7 @@ package org.intellij.markdown.flavours.gfm.lexer;
 
 import org.intellij.markdown.MarkdownTokenTypes;
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes;
+import org.intellij.markdown.flavours.gfm.GFMElementTypes;
 import org.intellij.markdown.IElementType;
 import org.intellij.markdown.lexer.GeneratedLexer;
 
@@ -247,7 +248,7 @@ PATH_PART=[\S&&[^\]]]|\][^\[(]
 // See pushbackAutolink method
 GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"{PATH_PART}+)* "/"?
 
-%state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
+%state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE, AUTOLINK_EXT
 
 %%
 
@@ -340,11 +341,6 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
     return Token.EOL;
   }
 
-  {GFM_AUTOLINK} {
-    pushbackAutolink();
-    return GFMTokenTypes.GFM_AUTOLINK;
-  }
-
   {ALPHANUM}+ (({WHITE_SPACE}+ | "_"+) {ALPHANUM}+)* / {WHITE_SPACE}+ {GFM_AUTOLINK} {
     return Token.TEXT;
   }
@@ -356,6 +352,13 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
 
   {ANY_CHAR} { return Token.TEXT; }
 
+}
+
+<AUTOLINK_EXT> {
+  {GFM_AUTOLINK} {
+    pushbackAutolink();
+    return GFMElementTypes.GFM_AUTOLINK;
+  }
 }
 
 <PARSE_DELIMITED> {
