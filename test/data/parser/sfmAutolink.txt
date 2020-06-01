@@ -28,7 +28,7 @@ Markdown:MARKDOWN_FILE
     Markdown:SHORT_REFERENCE_LINK
       Markdown:LINK_LABEL
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('www.not.rendered.as.autolink.be')
+        Markdown:TEXT('www.not.rendered.as.autolink.be')
         Markdown:](']')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -36,7 +36,7 @@ Markdown:MARKDOWN_FILE
     Markdown:SHORT_REFERENCE_LINK
       Markdown:LINK_LABEL
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('www.not.rendered.as.autolink.be')
+        Markdown:TEXT('www.not.rendered.as.autolink.be')
         Markdown:](']')
       Markdown:[('[')
       Markdown:](']')
@@ -46,11 +46,11 @@ Markdown:MARKDOWN_FILE
     Markdown:FULL_REFERENCE_LINK
       Markdown:LINK_TEXT
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('www.not.rendered.as.autolink.be')
+        Markdown:TEXT('www.not.rendered.as.autolink.be')
         Markdown:](']')
       Markdown:LINK_LABEL
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('www.and.this.be')
+        Markdown:TEXT('www.and.this.be')
         Markdown:](']')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -196,7 +196,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:GFM_AUTOLINK('https://google.com/p')
+    Markdown:TEXT('https://google.com/p')
     Markdown:EMPH('_')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -221,6 +221,26 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
+    Markdown:TEXT('FullyQN.WS')
+    Markdown:EMPH('_')
+    Markdown:TEXT('FOO_BAR')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:"('"')
+    Markdown:TEXT('FullyQN.WS')
+    Markdown:"('"')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('boo_foobar.com')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('name.name@gmail.com')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
     Markdown:GFM_AUTOLINK('kek.рф')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -230,7 +250,7 @@ Markdown:MARKDOWN_FILE
     Markdown:FULL_REFERENCE_LINK
       Markdown:LINK_TEXT
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('https://github.com/nodeca/pica')
+        Markdown:TEXT('https://github.com/nodeca/pica')
         Markdown:](']')
       Markdown:LINK_LABEL
         Markdown:[('[')
@@ -244,7 +264,7 @@ Markdown:MARKDOWN_FILE
     Markdown:INLINE_LINK
       Markdown:LINK_TEXT
         Markdown:[('[')
-        Markdown:GFM_AUTOLINK('https://github.com/nodeca/pica')
+        Markdown:TEXT('https://github.com/nodeca/pica')
         Markdown:](']')
       Markdown:(('(')
       Markdown:LINK_DESTINATION

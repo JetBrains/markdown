@@ -2462,11 +2462,14 @@ public class _SFMLexer implements GeneratedLexer {
       yypushback(yylength() - length);
   }
 
-  private boolean breaksWord() {
-      return (yycharat(yylength() - 1) != '/'
-        && zzStartRead+yylength() < zzEndRead
-        && Character.isLetterOrDigit(yycharat(yylength())));
+  private final String beforeSfmAutolink = " \n\t(";
+  private final String afterSfmAutolink = " \n\t).,;:!?~";
 
+  private boolean breaksWord() {
+      return (zzStartRead != 0 && beforeSfmAutolink.indexOf(yycharat(-1)) == -1) ||
+       (yycharat(yylength() - 1) != '/'
+        && zzStartRead+yylength() < zzEndRead
+        && afterSfmAutolink.indexOf(yycharat(yylength())) == -1);
   }
 
 

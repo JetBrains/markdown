@@ -92,6 +92,14 @@ jetbrains.team/abc
 
 yandex.ru
 
+FullyQN.WS_FOO_BAR
+
+"FullyQN.WS"
+
+boo_foobar.com
+
+name.name@gmail.com
+
 kek.рф
 
 Reference link [https://github.com/nodeca/pica][id]

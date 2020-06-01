@@ -115,9 +115,7 @@ Credits for the testdata to <a href="https://mathiasbynens.be/demo/url-regex">ht
 <p>
 <a href="https://google.com/p">https://google.com/p</a>
 </p>
-<p>
-<a href="https://google.com/p">https://google.com/p</a>
-_</p>
+<p>https://google.com/p_</p>
 <p>
 <a href="https://google.com/p/">https://google.com/p/</a>
 </p>
@@ -130,6 +128,12 @@ _</p>
 <p>
 <a href="http://yandex.ru">yandex.ru</a>
 </p>
+<p>FullyQN.WS_FOO_BAR</p>
+<p>&quot;FullyQN.WS&quot;</p>
+<p>
+<a href="http://boo_foobar.com">boo_foobar.com</a>
+</p>
+<p>name.name@gmail.com</p>
 <p>
 <a href="http://kek.%D1%80%D1%84">kek.рф</a>
 </p>
