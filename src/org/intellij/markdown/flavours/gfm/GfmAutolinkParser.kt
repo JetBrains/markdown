@@ -31,6 +31,10 @@ class GfmAutolinkParser : SequentialParser {
                     result.withNode(SequentialParser.Node(startIndex .. endIndex, GFMElementTypes.GFM_AUTOLINK))
                 }
             } while (tokenType != null)
+            while (iterator.index <= range.last) {
+                delegateIndices.put(iterator.index)
+                iterator = iterator.advance()
+            }
         }
 
         return result.withFurtherProcessing(delegateIndices.get())
