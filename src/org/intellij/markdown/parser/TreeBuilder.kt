@@ -68,9 +68,9 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
     }
 
 
-    protected class MyEvent(val position: Int,
-                          val timeClosed: Int,
-                          val info: SequentialParser.Node) : Comparable<MyEvent> {
+    protected data class MyEvent(val position: Int,
+                                 val timeClosed: Int,
+                                 val info: SequentialParser.Node) : Comparable<MyEvent> {
 
         fun isStart(): Boolean {
             return info.range.endInclusive != position
@@ -105,6 +105,6 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         }
     }
 
-    protected class MyASTNodeWrapper(val astNode: ASTNode, val startTokenIndex: Int, val endTokenIndex: Int)
+    protected data class MyASTNodeWrapper(val astNode: ASTNode, val startTokenIndex: Int, val endTokenIndex: Int)
 
 }
