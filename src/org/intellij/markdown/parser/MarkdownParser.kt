@@ -1,6 +1,7 @@
 package org.intellij.markdown.parser
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -63,16 +64,10 @@ class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
 
     private inner class InlineExpandingASTNodeBuilder(text: CharSequence) : ASTNodeBuilder(text) {
         override fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
-            return when (type) {
-                MarkdownElementTypes.PARAGRAPH,
-                MarkdownTokenTypes.ATX_CONTENT,
-                MarkdownTokenTypes.SETEXT_CONTENT,
-                GFMTokenTypes.CELL ->
-                    listOf(parseInline(type, text, startOffset, endOffset))
-                else ->
-                    super.createLeafNodes(type, startOffset, endOffset)
-            }
+            return if (type is MarkdownElementType && type.isLazy)
+                listOf(parseInline(type, text, startOffset, endOffset))
+            else
+                super.createLeafNodes(type, startOffset, endOffset)
         }
     }
-
 }

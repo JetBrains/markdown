@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -15,17 +16,19 @@ class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCach
         }
 
         while (currentTokenPosition < event.position) {
-            flushOneTokenToTree(tokensCache, currentNodeChildren, currentTokenPosition)
+            if (currentNodeChildren != null) {
+                flushOneTokenToTree(tokensCache, currentNodeChildren, currentTokenPosition)
+            }
             currentTokenPosition++
         }
     }
 
-    private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?, currentTokenPosition: Int) {
+    private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
         val nodes = nodeBuilder.createLeafNodes(iterator.type!!, iterator.start, iterator.end)
         for (node in nodes) {
-            currentNodeChildren?.add(TreeBuilder.MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
+            currentNodeChildren.add(TreeBuilder.MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
         }
     }
 
@@ -35,6 +38,18 @@ class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCach
         val type = event.info.`type`
         val startTokenId = event.info.range.start
         val endTokenId = event.info.range.endInclusive
+
+        if (type is MarkdownElementType && type.isToken) {
+            val startOffset = tokensCache.Iterator(startTokenId).start
+            val endOffset = if (endTokenId != startTokenId) {
+                tokensCache.Iterator(endTokenId - 1).end
+            } else {
+                startOffset
+            }
+
+            val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)
+            return TreeBuilder.MyASTNodeWrapper(nodes.first(), startTokenId, endTokenId)
+        }
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 

@@ -38,13 +38,13 @@ open class MarkdownTokenTypes {
 
         @JvmField val ATX_HEADER: IElementType = MarkdownElementType("ATX_HEADER", true)
 
-        @JvmField val ATX_CONTENT: IElementType = MarkdownElementType("ATX_CONTENT", true)
+        @JvmField val ATX_CONTENT: IElementType = MarkdownElementType("ATX_CONTENT", isLazy = true)
 
         @JvmField val SETEXT_1: IElementType = MarkdownElementType("SETEXT_1", true)
 
         @JvmField val SETEXT_2: IElementType = MarkdownElementType("SETEXT_2", true)
 
-        @JvmField val SETEXT_CONTENT: IElementType = MarkdownElementType("SETEXT_CONTENT", true)
+        @JvmField val SETEXT_CONTENT: IElementType = MarkdownElementType("SETEXT_CONTENT", isLazy = true)
 
         @JvmField val EMPH: IElementType = MarkdownElementType("EMPH", true)
 

@@ -18,7 +18,7 @@ class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
         val startOffset = event.info.range.start
         val endOffset = event.info.range.endInclusive
 
-        if (type is MarkdownElementType && type.isToken) {
+        if (type is MarkdownElementType && (type.isLazy || type.isToken)) {
             val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)
             return TreeBuilder.MyASTNodeWrapper(nodes.first(), startOffset, endOffset)
         }

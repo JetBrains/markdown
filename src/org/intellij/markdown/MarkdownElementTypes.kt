@@ -19,17 +19,17 @@ object MarkdownElementTypes {
 
     @JvmField val HTML_BLOCK: IElementType = MarkdownElementType("HTML_BLOCK")
 
-    @JvmField val PARAGRAPH: IElementType = MarkdownElementType("PARAGRAPH", true)
+    @JvmField val PARAGRAPH: IElementType = MarkdownElementType("PARAGRAPH", isLazy = true)
 
     @JvmField val EMPH: IElementType = MarkdownElementType("EMPH")
 
     @JvmField val STRONG: IElementType = MarkdownElementType("STRONG")
 
     @JvmField val LINK_DEFINITION: IElementType = MarkdownElementType("LINK_DEFINITION")
-    @JvmField val LINK_LABEL: IElementType = MarkdownElementType("LINK_LABEL", true)
+    @JvmField val LINK_LABEL: IElementType = MarkdownElementType("LINK_LABEL")
     @JvmField val LINK_DESTINATION: IElementType = MarkdownElementType("LINK_DESTINATION", true)
-    @JvmField val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE", true)
-    @JvmField val LINK_TEXT: IElementType = MarkdownElementType("LINK_TEXT", true)
+    @JvmField val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE")
+    @JvmField val LINK_TEXT: IElementType = MarkdownElementType("LINK_TEXT")
     @JvmField val INLINE_LINK: IElementType = MarkdownElementType("INLINE_LINK")
     @JvmField val FULL_REFERENCE_LINK: IElementType = MarkdownElementType("FULL_REFERENCE_LINK")
     @JvmField val SHORT_REFERENCE_LINK: IElementType = MarkdownElementType("SHORT_REFERENCE_LINK")

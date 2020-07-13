@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.MarkdownElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -18,8 +19,9 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         for (i in events.indices) {
             val event = events.get(i)
 
-            flushEverythingBeforeEvent(event, if (markersStack.isEmpty()) null else markersStack.peek().second)
-
+            val eventIsLeaf = event.info.type.let { it is MarkdownElementType && it.isToken }
+            // one shouldn't add children to "leaf-overridden" nodes
+            flushEverythingBeforeEvent(event, if (!event.isStart() && eventIsLeaf || markersStack.isEmpty()) null else markersStack.peek().second)
 
             if (event.isStart()) {
                 markersStack.push(Pair(event, ArrayList()))
@@ -29,6 +31,9 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 } else {
                     val eventAndChildren = markersStack.pop()
                     assert(eventAndChildren.first.info == event.info)
+                    assert(eventAndChildren.second.isEmpty() || !eventIsLeaf) {
+                        "Leaf node with assigned children is a bug. Node=$eventAndChildren"
+                    }
                     eventAndChildren.second
                 }
                 val isTopmostNode = markersStack.isEmpty()
