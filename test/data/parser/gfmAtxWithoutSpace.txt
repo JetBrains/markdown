@@ -43,6 +43,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:ATX_6
     Markdown:ATX_HEADER('######')
+    Markdown:ATX_CONTENT
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
     Markdown:TEXT('Not a header')

@@ -6,6 +6,5 @@ Markdown:MARKDOWN_FILE
         Markdown:GFM_AUTOLINK('http://localhost:8000')
         Markdown:](']')
       Markdown:(('(')
-      Markdown:LINK_DESTINATION
-        Markdown:GFM_AUTOLINK('http://localhost:8000')
+      Markdown:LINK_DESTINATION('http://localhost:8000')
       Markdown:)(')')

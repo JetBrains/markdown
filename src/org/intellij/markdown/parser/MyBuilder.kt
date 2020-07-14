@@ -39,14 +39,14 @@ class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCach
         val startTokenId = event.info.range.start
         val endTokenId = event.info.range.endInclusive
 
-        if (type is MarkdownElementType && type.isToken) {
-            val startOffset = tokensCache.Iterator(startTokenId).start
-            val endOffset = if (endTokenId != startTokenId) {
-                tokensCache.Iterator(endTokenId - 1).end
-            } else {
-                startOffset
-            }
+        val startOffset = tokensCache.Iterator(startTokenId).start
+        val endOffset = if (endTokenId != startTokenId) {
+            tokensCache.Iterator(endTokenId - 1).end
+        } else {
+            startOffset
+        }
 
+        if (type is MarkdownElementType && type.isToken) {
             val nodes = nodeBuilder.createLeafNodes(type, startOffset, endOffset)
             return TreeBuilder.MyASTNodeWrapper(nodes.first(), startTokenId, endTokenId)
         }
@@ -71,7 +71,7 @@ class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCach
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
-        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
+        newNode = nodeBuilder.createCompositeNode(type, startOffset, endOffset, childrenWithWhitespaces)
         return TreeBuilder.MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 

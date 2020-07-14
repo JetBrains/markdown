@@ -23,14 +23,16 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
             // one shouldn't add children to "leaf-overridden" nodes
             flushEverythingBeforeEvent(event, if (!event.isStart() && eventIsLeaf || markersStack.isEmpty()) null else markersStack.peek().second)
 
-            if (event.isStart()) {
+            if (event.isStart() && !event.isEmpty()) {
                 markersStack.push(Pair(event, ArrayList()))
             } else {
                 val currentNodeChildren = if (event.isEmpty()) {
                     ArrayList()
                 } else {
                     val eventAndChildren = markersStack.pop()
-                    assert(eventAndChildren.first.info == event.info)
+                    assert(eventAndChildren.first.info == event.info) {
+                        "${eventAndChildren.first}.info == ${event}.info"
+                    }
                     assert(eventAndChildren.second.isEmpty() || !eventIsLeaf) {
                         "Leaf node with assigned children is a bug. Node=$eventAndChildren"
                     }
@@ -78,7 +80,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                                  val info: SequentialParser.Node) : Comparable<MyEvent> {
 
         fun isStart(): Boolean {
-            return info.range.endInclusive != position
+            return info.range.start == position
         }
 
         fun isEmpty(): Boolean {
@@ -89,7 +91,13 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
             if (position != other.position) {
                 return position - other.position
             }
-            if (isStart() == other.isStart()) {
+            if (isEmpty()) {
+                return if (other.isStart() || other.timeClosed > timeClosed) -1 else 1
+            }
+            else if (other.isEmpty()) {
+                return if (isStart() || timeClosed > other.timeClosed) 1 else -1
+            }
+            else if (isStart() == other.isStart()) {
                 val positionDiff = info.range.start + info.range.endInclusive - (other.info.range.start + other.info.range.endInclusive)
                 if (positionDiff != 0) {
                     return -positionDiff

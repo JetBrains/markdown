@@ -33,17 +33,17 @@ open class ASTNodeBuilder(protected val text: CharSequence) {
         return listOf(LeafASTNode(type, startOffset, endOffset))
     }
 
-    open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
+    open fun createCompositeNode(type: IElementType, startOffset: Int, endOffset: Int, children: List<ASTNode>): CompositeASTNode {
         when (type) {
             MarkdownElementTypes.UNORDERED_LIST,
             MarkdownElementTypes.ORDERED_LIST -> {
-                return ListCompositeNode(type, children)
+                return ListCompositeNode(type, startOffset, endOffset, children)
             }
             MarkdownElementTypes.LIST_ITEM -> {
-                return ListItemCompositeNode(children)
+                return ListItemCompositeNode(startOffset, endOffset, children)
             }
             else -> {
-                return CompositeASTNode(type, children)
+                return CompositeASTNode(type, startOffset, endOffset, children)
             }
         }
     }

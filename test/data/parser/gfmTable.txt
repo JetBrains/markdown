@@ -223,9 +223,13 @@ Markdown:MARKDOWN_FILE
   Markdown:TABLE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
       Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
       Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
       Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
       Markdown:TABLE_SEPARATOR('|')
     Markdown:EOL('\n')
     Markdown:TABLE_SEPARATOR('---|---|---|---')

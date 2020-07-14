@@ -6,7 +6,8 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 
-class ListCompositeNode(type: IElementType, children: List<ASTNode>) : CompositeASTNode(type, children) {
+class ListCompositeNode(type: IElementType, startOffset: Int, endOffset: Int, children: List<ASTNode>)
+    : CompositeASTNode(type, startOffset, endOffset, children) {
     val loose: Boolean by lazy(LazyThreadSafetyMode.NONE) { isLoose() }
 
     private fun isLoose(): Boolean {

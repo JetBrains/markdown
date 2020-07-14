@@ -33,8 +33,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('TooTallNate/node-gyp')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('https://github.com/TooTallNate/node-gyp')
+          Markdown:LINK_DESTINATION('https://github.com/TooTallNate/node-gyp')
           Markdown:)(')')
         WHITE_SPACE(' ')
         Markdown:TEXT('adding io.js support')
@@ -61,8 +60,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('gyp')
         Markdown:](']')
       Markdown:(('(')
-      Markdown:LINK_DESTINATION
-        Markdown:GFM_AUTOLINK('https://code.google.com/p/gyp/')
+      Markdown:LINK_DESTINATION('https://code.google.com/p/gyp/')
       Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:TEXT('project used by the Chromium team and takes away the pain of dealing with the')
@@ -923,8 +921,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('a nodeschool.io tutorial')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('http://nodeschool.io/#goingnative')
+          Markdown:LINK_DESTINATION('http://nodeschool.io/#goingnative')
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
@@ -940,8 +937,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('node addon example')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('https://github.com/joyent/node/tree/master/test/addons/hello-world')
+          Markdown:LINK_DESTINATION('https://github.com/joyent/node/tree/master/test/addons/hello-world')
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
@@ -953,8 +949,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('gyp user documentation')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('http://code.google.com/p/gyp/wiki/GypUserDocumentation')
+          Markdown:LINK_DESTINATION('http://code.google.com/p/gyp/wiki/GypUserDocumentation')
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
@@ -966,8 +961,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('gyp input format reference')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('http://code.google.com/p/gyp/wiki/InputFormatReference')
+          Markdown:LINK_DESTINATION('http://code.google.com/p/gyp/wiki/InputFormatReference')
           Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
@@ -988,8 +982,7 @@ Markdown:MARKDOWN_FILE
             Markdown:TEXT('wiki page')
             Markdown:](']')
           Markdown:(('(')
-          Markdown:LINK_DESTINATION
-            Markdown:GFM_AUTOLINK('https://github.com/TooTallNate/node-gyp/wiki/%22binding.gyp%22-files-out-in-the-wild')
+          Markdown:LINK_DESTINATION('https://github.com/TooTallNate/node-gyp/wiki/%22binding.gyp%22-files-out-in-the-wild')
           Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

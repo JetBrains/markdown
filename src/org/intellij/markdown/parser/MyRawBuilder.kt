@@ -44,7 +44,7 @@ class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
             }
 //        }
 
-        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
+        newNode = nodeBuilder.createCompositeNode(type, startOffset, endOffset, childrenWithWhitespaces)
         return TreeBuilder.MyASTNodeWrapper(newNode, startOffset, endOffset)
     }
 

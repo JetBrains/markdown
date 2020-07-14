@@ -8,13 +8,9 @@ Markdown:MARKDOWN_FILE
           Markdown:TEXT('foo')
           Markdown:](']')
         Markdown:(('(')
-        Markdown:LINK_DESTINATION
-          Markdown:TEXT('/url')
+        Markdown:LINK_DESTINATION('/url')
         WHITE_SPACE(' ')
-        Markdown:LINK_TITLE
-          Markdown:"('"')
-          Markdown:TEXT('title')
-          Markdown:"('"')
+        Markdown:LINK_TITLE('"title"')
         Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -56,13 +52,11 @@ Markdown:MARKDOWN_FILE
               Markdown:TEXT('bar')
               Markdown:](']')
             Markdown:(('(')
-            Markdown:LINK_DESTINATION
-              Markdown:TEXT('/url')
+            Markdown:LINK_DESTINATION('/url')
             Markdown:)(')')
           Markdown:](']')
         Markdown:(('(')
-        Markdown:LINK_DESTINATION
-          Markdown:TEXT('/url2')
+        Markdown:LINK_DESTINATION('/url2')
         Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -74,8 +68,7 @@ Markdown:MARKDOWN_FILE
           Markdown:[('[')
           Markdown:](']')
         Markdown:(('(')
-        Markdown:LINK_DESTINATION
-          Markdown:TEXT('/url')
+        Markdown:LINK_DESTINATION('/url')
         Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

@@ -81,3 +81,5 @@ https://google.com/p/
 Reference link [https://github.com/nodeca/pica][id]
 
 Inline link [https://github.com/nodeca/pica](id)
+
+[Rust](https://google.com/?123456789)[💬](https://google.com/?123456789)
