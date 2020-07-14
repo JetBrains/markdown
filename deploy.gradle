@@ -1,11 +1,46 @@
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier "sources"
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "valich"
+            name "Valentin Fondaratov"
+            email "fondarat@gmail.com"
+            organization "JetBrains"
+            organizationUrl "https://jetbrains.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/valich/intellij-markdown"
+    }
+}
 
 publishing {
     publications {
         MyPublication(MavenPublication) {
             from components.java
+            artifact sourcesJar
             groupId 'org.jetbrains'
             artifactId 'markdown'
             version "0.1.$buildNumber"
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Markdown parser in Kotlin')
+                root.appendNode('name', 'markdown')
+                root.appendNode('url', 'https://github.com/valich/intellij-markdown')
+                root.children().last() + pomConfig
+            }
         }
     }
 }
@@ -26,4 +61,3 @@ bintray {
         }
     }
 }
-
