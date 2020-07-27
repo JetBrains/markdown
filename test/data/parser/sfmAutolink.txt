@@ -247,6 +247,5 @@ Markdown:MARKDOWN_FILE
         Markdown:GFM_AUTOLINK('https://github.com/nodeca/pica')
         Markdown:](']')
       Markdown:(('(')
-      Markdown:LINK_DESTINATION
-        Markdown:TEXT('id')
+      Markdown:LINK_DESTINATION('id')
       Markdown:)(')')

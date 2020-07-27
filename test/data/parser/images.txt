@@ -30,7 +30,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo *bar*]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo *bar*]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('train.jpg')
     WHITE_SPACE(' ')

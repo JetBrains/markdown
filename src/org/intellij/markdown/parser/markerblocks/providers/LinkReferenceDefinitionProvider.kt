@@ -24,7 +24,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         for ((i, range) in matchResult.withIndex()) {
             productionHolder.addProduction(listOf(SequentialParser.Node(
                     addToRangeAndWiden(range, pos.offset), when (i) {
-                0 -> MarkdownElementTypes.LINK_LABEL
+                0 -> MarkdownElementTypes.LINK_LABEL_IN_DEFINITION
                 1 -> MarkdownElementTypes.LINK_DESTINATION
                 2 -> MarkdownElementTypes.LINK_TITLE
                 else -> throw AssertionError("There are no more than three groups in this regex")

@@ -1,6 +1,6 @@
 Markdown:MARKDOWN_FILE
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
   Markdown:EOL('\n')
@@ -13,7 +13,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url\bar\*baz')
     WHITE_SPACE(' ')
@@ -21,7 +21,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
     WHITE_SPACE(' ')
@@ -30,7 +30,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
     WHITE_SPACE('   ')
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(':')
     Markdown:EOL('\n')
     WHITE_SPACE('      ')
@@ -41,7 +41,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[Foo*bar\]]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[Foo*bar\]]')
     WHITE_SPACE(':')
     Markdown:LINK_DESTINATION('my_(url)')
     WHITE_SPACE(' ')
@@ -64,7 +64,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(':')
     Markdown:EOL('\n')
     Markdown:LINK_DESTINATION('/url')
@@ -88,7 +88,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[ΑΓΩ]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[ΑΓΩ]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/φου')
   Markdown:EOL('\n')
@@ -138,7 +138,7 @@ Markdown:MARKDOWN_FILE
           Markdown:](']')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
   Markdown:EOL('\n')
@@ -149,14 +149,14 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/foo-url')
     WHITE_SPACE(' ')
     Markdown:LINK_TITLE('"foo"')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[bar]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[bar]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/bar-url')
     Markdown:EOL('\n')
@@ -164,7 +164,7 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_TITLE('"bar"')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[baz]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[baz]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/baz-url')
   Markdown:EOL('\n')
@@ -172,13 +172,13 @@ Markdown:MARKDOWN_FILE
   Markdown:BLOCK_QUOTE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:LINK_DEFINITION
-      Markdown:LINK_LABEL('[foo]')
+      Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
       WHITE_SPACE(': ')
       Markdown:LINK_DESTINATION('/url')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[*foo*]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[*foo*]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
     WHITE_SPACE(' ')
@@ -186,7 +186,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo`]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo`]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
     WHITE_SPACE(' ')
@@ -194,7 +194,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[Foo\n  bar]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[Foo\n  bar]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')
     WHITE_SPACE(' ')
@@ -230,13 +230,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('<bar>')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[foo]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('<bar>')
     WHITE_SPACE(' ')

@@ -26,7 +26,8 @@ object MarkdownElementTypes {
     @JvmField val STRONG: IElementType = MarkdownElementType("STRONG")
 
     @JvmField val LINK_DEFINITION: IElementType = MarkdownElementType("LINK_DEFINITION")
-    @JvmField val LINK_LABEL: IElementType = MarkdownElementType("LINK_LABEL", isLazy = true)
+    @JvmField val LINK_LABEL: IElementType = MarkdownElementType("LINK_LABEL")
+    @JvmField val LINK_LABEL_IN_DEFINITION: IElementType = MarkdownElementType("LINK_LABEL_IN_DEFINITION", true)
     @JvmField val LINK_DESTINATION: IElementType = MarkdownElementType("LINK_DESTINATION", true)
     @JvmField val LINK_TITLE: IElementType = MarkdownElementType("LINK_TITLE", true)
     @JvmField val LINK_TEXT: IElementType = MarkdownElementType("LINK_TEXT")

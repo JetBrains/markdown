@@ -1283,32 +1283,32 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[windows-python]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[windows-python]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://www.python.org/getit/windows')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[windows-python-v2.7.3]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[windows-python-v2.7.3]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://www.python.org/download/releases/2.7.3#download')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[msvc2010]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[msvc2010]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://go.microsoft.com/?linkid=9709949')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[msvc2012]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[msvc2012]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://go.microsoft.com/?linkid=9816758')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[win7sdk]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[win7sdk]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://www.microsoft.com/en-us/download/details.aspx?id=8279')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
-    Markdown:LINK_LABEL('[compiler update for the Windows SDK 7.1]')
+    Markdown:LINK_LABEL_IN_DEFINITION('[compiler update for the Windows SDK 7.1]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('http://www.microsoft.com/en-us/download/details.aspx?id=4422')
   Markdown:EOL('\n')
