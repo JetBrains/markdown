@@ -2,6 +2,7 @@ package org.intellij.markdown.flavours.space.lexer;
 
 import org.intellij.markdown.MarkdownTokenTypes;
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes;
+import org.intellij.markdown.flavours.gfm.GFMElementTypes;
 import org.intellij.markdown.IElementType;
 import org.intellij.markdown.lexer.GeneratedLexer;
 
@@ -356,7 +357,7 @@ SFM_AUTOLINK = (({SCHEME}"://") {HOST_PART} ("." {HOST_PART})* | ({HOST_PART} ".
     if (breaksWord()) {
       return Token.TEXT;
     } else {
-      return GFMTokenTypes.GFM_AUTOLINK;
+      return GFMElementTypes.GFM_AUTOLINK;
     }
   }
 
