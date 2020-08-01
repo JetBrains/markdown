@@ -55,8 +55,8 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         val events = ArrayList<MyEvent>()
         for (index in production.indices) {
             val result = production.get(index)
-            val startTokenId = result.range.start
-            val endTokenId = result.range.endInclusive
+            val startTokenId = result.range.first
+            val endTokenId = result.range.last
 
             events.add(MyEvent(startTokenId, index, result))
             if (endTokenId != startTokenId) {
@@ -73,11 +73,11 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                           val info: SequentialParser.Node) : Comparable<MyEvent> {
 
         fun isStart(): Boolean {
-            return info.range.endInclusive != position
+            return info.range.last != position
         }
 
         fun isEmpty(): Boolean {
-            return info.range.start == info.range.endInclusive
+            return info.range.first == info.range.last
         }
 
         override fun compareTo(other: MyEvent): Int {
@@ -85,7 +85,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 return position - other.position
             }
             if (isStart() == other.isStart()) {
-                val positionDiff = info.range.start + info.range.endInclusive - (other.info.range.start + other.info.range.endInclusive)
+                val positionDiff = info.range.first + info.range.last - (other.info.range.first + other.info.range.last)
                 if (positionDiff != 0) {
                     return -positionDiff
                 }

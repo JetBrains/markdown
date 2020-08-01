@@ -31,7 +31,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             })))
         }
 
-        val matchLength = matchResult.last().endInclusive - pos.offset + 1
+        val matchLength = matchResult.last().last - pos.offset + 1
         val endPosition = pos.nextPosition(matchLength)
 
         if (endPosition != null && !isEndOfLine(endPosition)) {
@@ -48,7 +48,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
     companion object {
 
         fun addToRangeAndWiden(range: IntRange, t: Int): IntRange {
-            return IntRange(range.start + t, range.endInclusive + t + 1)
+            return IntRange(range.first + t, range.last + t + 1)
         }
 
         fun isEndOfLine(pos: LookaheadText.Position): Boolean {
@@ -58,7 +58,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         fun matchLinkDefinition(text: CharSequence, startOffset: Int): List<IntRange>? {
             var offset = MarkerBlockProvider.passSmallIndent(text, startOffset)
             val linkLabel = matchLinkLabel(text, offset) ?: return null
-            offset = linkLabel.endInclusive + 1
+            offset = linkLabel.last + 1
             if (offset >= text.length || text[offset] != ':') 
                 return null
             offset++
@@ -66,7 +66,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             offset = passOneNewline(text, offset)
 
             val destination = matchLinkDestination(text, offset) ?: return null
-            offset = destination.endInclusive + 1
+            offset = destination.last + 1
             offset = passOneNewline(text, offset)
 
             val title = matchLinkTitle(text, offset)
@@ -75,7 +75,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             result.add(linkLabel)
             result.add(destination)
             if (title != null) {
-                offset = title.endInclusive + 1
+                offset = title.last + 1
                 while (offset < text.length && isSpace(text[offset]))
                     offset++
                 if (offset >= text.length || text[offset] == '\n') {

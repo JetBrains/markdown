@@ -63,7 +63,7 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
             // We'll add the current line anyway
             val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
             val nodeRange = pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset
-            if (nodeRange.endInclusive - nodeRange.start > 0) {
+            if (nodeRange.last - nodeRange.first > 0) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         nodeRange, MarkdownTokenTypes.CODE_LINE)))
             }

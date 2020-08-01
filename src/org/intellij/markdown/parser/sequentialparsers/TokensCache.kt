@@ -9,8 +9,8 @@ abstract class TokensCache {
     abstract val originalTextRange: IntRange
 
     fun getRawCharAt(index: Int): Char {
-        if (index < originalTextRange.start) return 0.toChar()
-        if (index > originalTextRange.endInclusive) return 0.toChar()
+        if (index < originalTextRange.first) return 0.toChar()
+        if (index > originalTextRange.last) return 0.toChar()
         return originalText[index]
     }
 
@@ -32,7 +32,7 @@ abstract class TokensCache {
             if (listIndex >= ranges.size) {
                 return this
             }
-            if (index == ranges[listIndex].endInclusive) {
+            if (index == ranges[listIndex].last) {
                 return RangesListIterator(ranges, listIndex + 1, ranges.getOrNull(listIndex + 1)?.start ?: filteredTokens.size)
             }
             return RangesListIterator(ranges, listIndex, index + 1)
@@ -42,7 +42,7 @@ abstract class TokensCache {
             if (listIndex < 0) {
                 return this
             }
-            if (index == ranges[listIndex].start) {
+            if (index == ranges[listIndex].first) {
                 return RangesListIterator(ranges, listIndex - 1, ranges.getOrNull(listIndex - 1)?.endInclusive ?: -1)
             }
             return RangesListIterator(ranges, listIndex, index - 1)
@@ -93,9 +93,9 @@ abstract class TokensCache {
 
         private fun info(rawSteps: Int): TokenInfo {
             if (index < 0) {
-                return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
+                return TokenInfo(null, originalTextRange.first, originalTextRange.first, 0, 0)
             } else if (index > filteredTokens.size) {
-                return TokenInfo(null, originalTextRange.endInclusive + 1, originalTextRange.endInclusive + 1, 0, 0)
+                return TokenInfo(null, originalTextRange.last + 1, originalTextRange.last + 1, 0, 0)
             }
 
             val rawIndex = if (index < filteredTokens.size)
@@ -104,9 +104,9 @@ abstract class TokensCache {
                 cachedTokens.size + rawSteps
 
             if (rawIndex < 0) {
-                return TokenInfo(null, originalTextRange.start, originalTextRange.start, 0, 0)
+                return TokenInfo(null, originalTextRange.first, originalTextRange.first, 0, 0)
             } else if (rawIndex >= cachedTokens.size) {
-                return TokenInfo(null, originalTextRange.endInclusive + 1, originalTextRange.endInclusive + 1, 0, 0)
+                return TokenInfo(null, originalTextRange.last + 1, originalTextRange.last + 1, 0, 0)
             }
 
             return cachedTokens[rawIndex]

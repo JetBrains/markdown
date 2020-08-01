@@ -33,8 +33,8 @@ class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCach
         val newNode: ASTNode
 
         val type = event.info.`type`
-        val startTokenId = event.info.range.start
-        val endTokenId = event.info.range.endInclusive
+        val startTokenId = event.info.range.first
+        val endTokenId = event.info.range.last
 
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 

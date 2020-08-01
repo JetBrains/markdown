@@ -17,7 +17,7 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
             return listOf(AtxHeaderMarkerBlock(stateInfo.currentConstraints,
                     productionHolder,
                     headerRange,
-                    calcTailStartPos(pos, headerRange.endInclusive),
+                    calcTailStartPos(pos, headerRange.last),
                     pos.nextLineOrEofOffset))
         } else {
             return emptyList()

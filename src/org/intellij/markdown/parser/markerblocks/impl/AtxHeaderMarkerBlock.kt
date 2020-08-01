@@ -21,9 +21,9 @@ class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
     init {
         val curPos = productionHolder.currentPosition
         productionHolder.addProduction(listOf(SequentialParser.Node(
-                curPos + headerRange.start..curPos + headerRange.endInclusive + 1, MarkdownTokenTypes.ATX_HEADER
+                curPos + headerRange.first..curPos + headerRange.last + 1, MarkdownTokenTypes.ATX_HEADER
         ), SequentialParser.Node(
-                curPos + headerRange.endInclusive + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
+                curPos + headerRange.last + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
         ), SequentialParser.Node(
                 tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
         )))
@@ -31,7 +31,7 @@ class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
 
-    private val nodeType = calcNodeType(headerRange.endInclusive - headerRange.start + 1)
+    private val nodeType = calcNodeType(headerRange.last - headerRange.first + 1)
 
     private fun calcNodeType(headerSize: Int): IElementType {
         when (headerSize) {

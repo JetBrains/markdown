@@ -26,9 +26,9 @@ class SequentialParserUtil {
 
        fun filterBlockquotes(tokensCache: TokensCache, textRange: IntRange): List<IntRange> {
             val result = ArrayList<IntRange>()
-            var lastStart = textRange.start
+            var lastStart = textRange.first
 
-            val R = textRange.endInclusive
+            val R = textRange.last
             for (i in lastStart..R - 1) {
                 if (tokensCache.Iterator(i).type == MarkdownTokenTypes.BLOCK_QUOTE) {
                     if (lastStart < i) {

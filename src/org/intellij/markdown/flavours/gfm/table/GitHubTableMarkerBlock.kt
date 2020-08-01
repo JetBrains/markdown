@@ -42,7 +42,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         }
         val cellsAndSeps = fillCells(pos)
         productionHolder.addProduction(
-                listOf(SequentialParser.Node(cellsAndSeps.first().range.start..cellsAndSeps.last().range.endInclusive,
+                listOf(SequentialParser.Node(cellsAndSeps.first().range.first..cellsAndSeps.last().range.last,
                         GFMElementTypes.ROW))
                         + cellsAndSeps)
         return MarkerBlock.ProcessingResult.CANCEL
