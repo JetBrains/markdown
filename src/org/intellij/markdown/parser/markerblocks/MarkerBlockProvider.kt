@@ -18,8 +18,8 @@ interface MarkerBlockProvider<T : MarkerProcessor.StateInfo> {
             return pos.offsetInCurrentLine == constraints.getCharsEaten(pos.currentLine)
         }
         
-        fun passSmallIndent(text: CharSequence): Int {
-            var offset = 0
+        fun passSmallIndent(text: CharSequence, startOffset: Int = 0): Int {
+            var offset = startOffset
             repeat(3) {
                 if (offset < text.length && text[offset] == ' ') {
                     offset++

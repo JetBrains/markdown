@@ -20,10 +20,10 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             return emptyList()
         }
 
-        val matchResult = matchLinkDefinition(pos.textFromPosition) ?: return emptyList()
+        val matchResult = matchLinkDefinition(pos.originalText, pos.offset) ?: return emptyList()
         for ((i, range) in matchResult.withIndex()) {
             productionHolder.addProduction(listOf(SequentialParser.Node(
-                    addToRangeAndWiden(range, pos.offset), when (i) {
+                    addToRangeAndWiden(range, 0), when (i) {
                 0 -> MarkdownElementTypes.LINK_LABEL
                 1 -> MarkdownElementTypes.LINK_DESTINATION
                 2 -> MarkdownElementTypes.LINK_TITLE
@@ -31,7 +31,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             })))
         }
 
-        val matchLength = matchResult.last().endInclusive + 1
+        val matchLength = matchResult.last().endInclusive - pos.offset + 1
         val endPosition = pos.nextPosition(matchLength)
 
         if (endPosition != null && !isEndOfLine(endPosition)) {
@@ -55,8 +55,8 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             return pos.offsetInCurrentLine == -1 || pos.charsToNonWhitespace() == null
         }
         
-        fun matchLinkDefinition(text: CharSequence): List<IntRange>? {
-            var offset = MarkerBlockProvider.passSmallIndent(text)
+        fun matchLinkDefinition(text: CharSequence, startOffset: Int): List<IntRange>? {
+            var offset = MarkerBlockProvider.passSmallIndent(text, startOffset)
             val linkLabel = matchLinkLabel(text, offset) ?: return null
             offset = linkLabel.endInclusive + 1
             if (offset >= text.length || text[offset] != ':') 

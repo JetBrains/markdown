@@ -13,6 +13,8 @@ class LookaheadText(private val text: CharSequence) {
                                                      private val localPos: Int, // -1 if on newline before
                                                      private val globalPos: Int) {
 
+        val originalText: CharSequence get() = text
+
         val currentLine = lines[lineN]
 
         init {
