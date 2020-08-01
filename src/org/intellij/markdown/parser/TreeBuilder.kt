@@ -11,12 +11,13 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         val events = constructEvents(production)
         val markersStack = Stack<Pair<MyEvent, MutableList<MyASTNodeWrapper>>>()
 
-        assert(!events.isEmpty()) { "nonsense" }
-        assert(events.first().info == events.last().info,
-                { -> "more than one root?\nfirst: ${events.first().info}\nlast: ${events.last().info}" })
+        assert(events.isNotEmpty()) { "nonsense" }
+        assert(events.first().info == events.last().info) {
+            "more than one root?\nfirst: ${events.first().info}\nlast: ${events.last().info}"
+        }
 
         for (i in events.indices) {
-            val event = events.get(i)
+            val event = events[i]
 
             flushEverythingBeforeEvent(event, if (markersStack.isEmpty()) null else markersStack.peek().second)
 
@@ -54,7 +55,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
     private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
         val events = ArrayList<MyEvent>()
         for (index in production.indices) {
-            val result = production.get(index)
+            val result = production[index]
             val startTokenId = result.range.first
             val endTokenId = result.range.last
 
@@ -63,7 +64,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 events.add(MyEvent(endTokenId, index, result))
             }
         }
-        Collections.sort(events)
+        events.sort()
         return events
     }
 
@@ -91,17 +92,17 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                 }
 
                 val timeDiff = timeClosed - other.timeClosed
-                if (isStart()) {
-                    return -timeDiff
+                return if (isStart()) {
+                    -timeDiff
                 } else {
-                    return timeDiff
+                    timeDiff
                 }
             }
             return if (isStart()) 1 else -1
         }
 
         override fun toString(): String {
-            return "${if (isStart()) "Open" else "Close"}: ${position} (${info})"
+            return "${if (isStart()) "Open" else "Close"}: $position (${info})"
         }
     }
 
