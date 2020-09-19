@@ -197,6 +197,9 @@ internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : Ge
         }
 
         try {
+            if (destination.startsWith('#')) {
+                return destination
+            }
             return baseURI?.resolve(destination.toString())?.toString() ?: destination
         }
         catch (e : IllegalArgumentException) {
