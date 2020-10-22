@@ -20,4 +20,16 @@ a*a*a~~a*a*a~~*a*
 
 ~~a*a*a a*a*a ~~
 
+~~`foo`~~
+
+~~*foo*~~
+
+~~_foo_~~
+
+~~**foo**~~
+
+~~[Crossed link](https://google.com)~~
+
+`~~foo~~`
+
 end.

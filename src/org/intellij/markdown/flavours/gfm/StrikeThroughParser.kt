@@ -51,11 +51,11 @@ class StrikeThroughParser : SequentialParser {
     }
 
     private fun isGoodType(type: IElementType?): Boolean {
-        return type != null
-                && type != MarkdownTokenTypes.WHITE_SPACE
+        return type == null ||
+                (type != MarkdownTokenTypes.WHITE_SPACE
                 && type != MarkdownTokenTypes.EOL
                 && type != GFMTokenTypes.TILDE
                 && type != MarkdownTokenTypes.HTML_TAG
-                && type != MarkdownTokenTypes.HTML_BLOCK_CONTENT
+                && type != MarkdownTokenTypes.HTML_BLOCK_CONTENT)
     }
 }

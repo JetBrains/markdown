@@ -82,6 +82,52 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:CODE_SPAN
+        Markdown:BACKTICK('`')
+        Markdown:TEXT('foo')
+        Markdown:BACKTICK('`')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('_')
+      Markdown:EMPH('_')
+      Markdown:CODE_SPAN
+        Markdown:BACKTICK('`')
+        Markdown:TEXT('foo')
+        Markdown:BACKTICK('`')
+      Markdown:EMPH('_')
+      Markdown:EMPH('_')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('foo')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:EMPH('_')
+      Markdown:EMPH('_')
+      Markdown:TEXT('foo')
+      Markdown:EMPH('_')
+      Markdown:EMPH('_')
+      Markdown:BACKTICK('`')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
     Markdown:TEXT('The')
     WHITE_SPACE(' ')
     Markdown:CODE_SPAN
