@@ -278,6 +278,6 @@ class MarkdownParsingTest : TestCase() {
     }
 
     private fun getTestDataPath(): String {
-        return getIntellijMarkdownHome() + "/test/data/parser"
+        return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/parser"
     }
 }

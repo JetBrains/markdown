@@ -26,7 +26,7 @@ class HtmlGeneratorTest : TestCase() {
     }
 
     private fun getTestDataPath(): String {
-        return getIntellijMarkdownHome() + "/test/data/html"
+        return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/html"
     }
 
     @Test
