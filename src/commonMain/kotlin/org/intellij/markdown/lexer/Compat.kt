@@ -1,8 +1,29 @@
 package org.intellij.markdown.lexer
 
 object Compat {
-    private val MIN_SUPPLEMENTARY_CODE_POINT = 0x010000
+    private const val MIN_SUPPLEMENTARY_CODE_POINT = 0x010000
+    private const val MIN_HIGH_SURROGATE = '\uD800'
+    private const val MIN_LOW_SURROGATE = '\uDC00'
 
+    fun CharSequence.forEachCodePoint(f: (Int) -> Unit) {
+        var offset = 0
+        while (offset < length) {
+            val codePoint = codePointAt(this, offset)
+            f(codePoint)
+            offset += charCount(codePoint)
+        }
+    }
+
+    fun codePointToString(c: Int): String {
+        return if (charCount(c) == 1) {
+            c.toChar().toString()
+        }
+        else {
+            val high = ((c ushr 10) + (MIN_HIGH_SURROGATE.toInt() - (MIN_SUPPLEMENTARY_CODE_POINT ushr 10))).toChar()
+            val low = ((c and 0x3ff) + MIN_LOW_SURROGATE.toInt()).toChar()
+            charArrayOf(high, low).concatToString()
+        }
+    }
 
     fun offsetByCodePoints(seq: CharSequence, index: Int,
                            codePointOffset: Int): Int {
