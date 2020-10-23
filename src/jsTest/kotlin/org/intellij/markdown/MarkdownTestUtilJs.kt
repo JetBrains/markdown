@@ -1,6 +1,6 @@
 package org.intellij.markdown
 
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 private val intellijMarkdownHome: Lazy<String> = lazy {
     var dir = (js("process.cwd()") as String)
@@ -14,15 +14,22 @@ private val intellijMarkdownHome: Lazy<String> = lazy {
 }
 
 actual fun readFromFile(path: String): String {
-    return js("require('fs').readFileSync")(path).toString()
+    return js("require('fs').readFileSync")(path, "utf-8") as String
 }
 
 actual fun assertSameLinesWithFile(path: String, result: String) {
-    assertEquals(readFromFile(path), result)
+    assertEqualsIdeaFriendly(readFromFile(path), result)
 }
 
 actual fun getIntellijMarkdownHome(): String {
     return intellijMarkdownHome.value
+}
+
+private fun assertEqualsIdeaFriendly(expected: String, actual: String) {
+    if (actual != expected) {
+        @Suppress("ReplaceAssertBooleanWithAssertEquality")
+        assertTrue(actual == expected, "expected:<$expected> but was:<$actual>")
+    }
 }
 
 actual abstract class TestCase {
