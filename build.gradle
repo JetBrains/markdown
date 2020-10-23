@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.3.41'
+        kotlin_version = '1.4.10'
         markdown_version = (project(':').hasProperty('buildNumber') ? "0.2.0.pre-$buildNumber" : "0.2.0.pre-SNAPSHOT")
     }
 
@@ -10,24 +10,73 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
     }
 }
 
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version '1.4.10'
+}
+
+group = 'org.jetbrains'
+version = markdown_version
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
-apply plugin: 'kotlin-platform-common'
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+kotlin {
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = '1.6'
+        }
+        testRuns["test"].executionTask.configure {
+            useJUnit()
+        }
+    }
+    js(IR) {
+        nodejs {
+            binaries.executable()
+//            testTask {
+//                useMocha {
+//                    useChromeHeadless()
+//                }
+//            }
+        }
+    }
+    sourceSets {
+        commonMain {
+
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        jvmMain {
+
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin('test-junit')
+            }
+        }
+        jsMain {
+
+        }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
+            }
+        }
+    }
 }
 
+/*
 allprojects {
     
     ext.projectName = name
@@ -127,3 +176,4 @@ task runSpec(type: Exec, group: 'verification', dependsOn: [downloadCommonmark, 
 }
 
 configurePublishing markdown_version
+*/
