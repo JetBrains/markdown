@@ -20,7 +20,7 @@ actual abstract class TestCase {
             throw Exception()
         }
         catch (e: Exception) {
-            val stack = js("e.stack.toString()") as String
+            val stack = e.stackTraceToString()
             val matches = Regex("\\s+at (\\S+) ").findAll(stack)
             return matches
                     .map { it.groupValues[1] }
