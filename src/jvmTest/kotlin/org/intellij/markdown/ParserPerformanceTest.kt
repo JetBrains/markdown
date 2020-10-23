@@ -13,7 +13,7 @@ import kotlin.test.*
     }
 
     private fun defaultTest(fullParse: Boolean) {
-        val fileName = name.let {
+        val fileName = testName.let {
             if (it.endsWith("Full")) {
                 it.substring(0, it.length - 4)
             } else {
