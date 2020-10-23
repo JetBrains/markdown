@@ -104,7 +104,7 @@ Credits for the testdata to <a href="https://mathiasbynens.be/demo/url-regex">ht
 <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS..)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS..)</a>
 ..</p>
 <p>
-<a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]%3F%3F">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]📭</a>
+<a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]%F0%9F%93%AD">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]📭</a>
 </p>
 <p>
 <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]$">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS]$</a>

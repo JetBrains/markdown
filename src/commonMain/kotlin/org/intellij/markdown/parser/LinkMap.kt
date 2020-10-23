@@ -7,6 +7,8 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.html.urlEncode
+import org.intellij.markdown.lexer.Compat.codePointToString
+import org.intellij.markdown.lexer.Compat.forEachCodePoint
 import kotlin.text.Regex
 
 data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
@@ -44,12 +46,12 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
         fun normalizeDestination(s: CharSequence, processEscapes: Boolean): CharSequence {
             val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, processEscapes)
             val sb = StringBuilder()
-            for (c in dest) {
-                val code = c.toInt()
+            dest.forEachCodePoint { code ->
+                val c = code.toChar()
                 if (code == 32) {
                     sb.append("%20")
                 } else if (code < 32 || code >= 128 || "\".<>\\^_`{|}~".contains(c)) {
-                    sb.append(urlEncode("${c}"))
+                    sb.append(urlEncode(codePointToString(code)))
                 } else {
                     sb.append(c)
                 }
