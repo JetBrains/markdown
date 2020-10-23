@@ -2,7 +2,9 @@ package org.intellij.markdown
 
 import org.intellij.markdown.lexer.Compat.assert
 
-val INTELLIJ_MARKDOWN_TEST_KEY = "Intellij.markdown.home"
+const val INTELLIJ_MARKDOWN_TEST_KEY = "Intellij.markdown.home"
+
+const val MARKDOWN_TEST_DATA_PATH = "src/commonTest/resources/data"
 
 expect abstract class TestCase() {
     fun getName(): String

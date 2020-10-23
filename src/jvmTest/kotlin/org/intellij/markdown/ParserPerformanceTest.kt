@@ -9,7 +9,7 @@ import kotlin.test.*
 
 @Category(ParserPerformanceTest::class) class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/test/data/performance").absolutePath
+        return File(getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/performance").absolutePath
     }
 
     private fun defaultTest(fullParse: Boolean) {

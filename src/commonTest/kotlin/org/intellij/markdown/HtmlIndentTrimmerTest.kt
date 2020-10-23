@@ -18,7 +18,7 @@ class HtmlIndentTrimmerTest: TestCase() {
     }
 
     private fun getTestDataPath(): String {
-        return getIntellijMarkdownHome() + "/test/data/htmlTrimming"
+        return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/htmlTrimming"
     }
 
     @Test
