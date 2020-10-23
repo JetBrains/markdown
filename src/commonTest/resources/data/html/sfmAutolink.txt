@@ -74,13 +74,13 @@ Credits for the testdata to <a href="https://mathiasbynens.be/demo/url-regex">ht
 <a href="https://foo_bar.example.com/">https://foo_bar.example.com/</a>
 </p>
 <p>
-<a href="https://test.com/%7Erepo/large-files-editor">https://test.com/~repo/large-files-editor</a>
+<a href="https://test.com/~repo/large-files-editor">https://test.com/~repo/large-files-editor</a>
 </p>
 <p>
-<a href="https://test.com/%7Erepo">https://test.com/~repo</a>
+<a href="https://test.com/~repo">https://test.com/~repo</a>
 ~</p>
 <p>
-<a href="https://test.com/%7Erepo%7E/">https://test.com/~repo~/</a>
+<a href="https://test.com/~repo~/">https://test.com/~repo~/</a>
 </p>
 <p>
 <a href="https://youtrack.jetbrains.com/issues?q=for:%20me%20">https://youtrack.jetbrains.com/issues?q=for:%20me%20</a>
