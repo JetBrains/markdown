@@ -18,7 +18,12 @@ actual fun isWhitespace(char: Char): Boolean {
 }
 
 actual fun isPunctuation(char: Char): Boolean {
-    return (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0
+    return isAsciiPunctuationFix(char) || (PUNCTUATION_MASK shr Character.getType(char)) and 1 != 0
+}
+
+private fun isAsciiPunctuationFix(char: Char): Boolean {
+    // the ones which are not covered by a more general check
+    return "$^`".contains(char)
 }
 
 actual fun isLetterOrDigit(char: Char): Boolean {
