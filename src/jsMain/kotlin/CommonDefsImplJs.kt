@@ -10,7 +10,7 @@ actual class URI actual constructor(str: String) {
     }
 
     actual fun resolve(str: String): URI {
-        return URI(trimFake(URL(str, base).href))
+        return URI(trimFake(URL(str, base).href)).apply { println("Resolve $base to $str -> $this") }
     }
 
 
@@ -19,8 +19,11 @@ actual class URI actual constructor(str: String) {
     }
 
     companion object {
-        private const val fakeStart = "fake://"
-        
+        // A tricky trick for distinguishing invalid relative and absolute paths.
+        // Absolute ones will eat 'r001ez' on resolution, relative ones won't.
+        private const val fakeHost = "fake://h"
+        private const val fakeStart = "$fakeHost/r001ez"
+
         private fun isGoodURL(str: String): Boolean {
             return try {
                 URL(str); true
@@ -28,9 +31,13 @@ actual class URI actual constructor(str: String) {
                 false
             }
         }
-        
+
         private fun trimFake(str: String): String {
-            return str.substringAfter(fakeStart)
+            return if (str.startsWith(fakeStart)) {
+                str.substringAfter(fakeStart)
+            } else {
+                str.substringAfter(fakeHost)
+            }
         }
     }
 }
