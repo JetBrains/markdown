@@ -50,15 +50,6 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     companion object {
         val SPLIT_REGEX = Regex("\\|")
 
-        fun CharSequence.contains(char: Char): Boolean {
-            for (c in this) {
-                if (c == char) {
-                    return true
-                }
-            }
-            return false
-        }
-
         /**
          * @return number of cells in the separator line
          */

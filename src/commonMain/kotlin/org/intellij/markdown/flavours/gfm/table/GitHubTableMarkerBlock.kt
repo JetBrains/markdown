@@ -2,7 +2,6 @@ package org.intellij.markdown.flavours.gfm.table
 
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
-import org.intellij.markdown.flavours.gfm.table.GitHubTableMarkerProvider.Companion.contains
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
