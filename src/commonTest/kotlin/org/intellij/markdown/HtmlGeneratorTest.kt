@@ -15,14 +15,22 @@ class HtmlGeneratorTest : TestCase() {
                             baseURI: URI? = null,
                             tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)) {
 
+        val result = generateHtmlFromFile(flavour, baseURI, tagRenderer)
+        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
+    }
+
+    private fun generateHtmlFromFile(
+        flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
+        baseURI: URI? = null,
+        tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)
+    ): String {
         val src = readFromFile(getTestDataPath() + "/" + testName + ".md")
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
-        val html = HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml(tagRenderer)
+        val html =
+            HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml(tagRenderer)
 
-        val result = formatHtmlForTests(html)
-
-        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
+        return formatHtmlForTests(html)
     }
 
     private fun getTestDataPath(): String {
@@ -176,7 +184,12 @@ class HtmlGeneratorTest : TestCase() {
 
     @Test
     fun testBaseUriWithBadRelativeUrl() {
-        defaultTest(baseURI = URI("user/repo-name/blob/master"))
+        try {
+            generateHtmlFromFile(baseURI = URI("user/repo-name/blob/master"))
+        }
+        catch (t: Throwable) {
+            fail("Expected to work without exception, got: $t")
+        }
     }
 
     @Test
