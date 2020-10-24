@@ -1,39 +1,13 @@
 package org.intellij.markdown
 
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
-import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.html.*
-import org.intellij.markdown.parser.LinkMap
-import org.intellij.markdown.parser.MarkdownParser
 import kotlin.test.*
 
-class HtmlGeneratorTest : TestCase() {
-    private fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
-                            baseURI: URI? = null,
-                            tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)) {
-
-        val result = generateHtmlFromFile(flavour, baseURI, tagRenderer)
-        assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
-    }
-
-    private fun generateHtmlFromFile(
-        flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
-        baseURI: URI? = null,
-        tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)
-    ): String {
-        val src = readFromFile(getTestDataPath() + "/" + testName + ".md")
-        val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
-        val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
-        val html =
-            HtmlGenerator(src, tree, htmlGeneratingProviders, includeSrcPositions = false).generateHtml(tagRenderer)
-
-        return formatHtmlForTests(html)
-    }
-
-    private fun getTestDataPath(): String {
+class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
+    override fun getTestDataPath(): String {
         return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/html"
     }
 
@@ -168,11 +142,6 @@ class HtmlGeneratorTest : TestCase() {
     }
 
     @Test
-    fun testBaseUriFile() {
-        defaultTest(baseURI = URI("file:///c:/foo/bar.html"))
-    }
-
-    @Test
     fun testBaseUriRelativeRoot() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
     }
@@ -214,25 +183,4 @@ class HtmlGeneratorTest : TestCase() {
         })
     }
 
-    companion object {
-        fun formatHtmlForTests(html: String): String {
-            val tags = Regex("</?[^>]+>")
-
-            val split = tags.replace(html as CharSequence, { matchResult ->
-                val next = matchResult.next()
-                if (html[matchResult.range.first + 1] != '/'
-                        && next != null
-                        && html[next.range.first + 1] == '/') {
-                    matchResult.value
-                } else if (matchResult.value.contains("pre") && next?.value?.contains("code") == true
-                        || matchResult.value.contains("/code") && next?.value?.contains("/pre") == true) {
-                    matchResult.value
-                } else {
-                    matchResult.value + "\n"
-                }
-            })
-            return split
-        }
-
-    }
 }

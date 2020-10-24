@@ -13,7 +13,7 @@ class MarkdownSrcPosTest : TestCase() {
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val html = HtmlGenerator(src, tree, flavour, includeSrcPositions = true).generateHtml()
 
-        val result = HtmlGeneratorTest.formatHtmlForTests(html)
+        val result = HtmlGeneratorTestBase.formatHtmlForTests(html)
 
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".pos.txt", result)
     }
