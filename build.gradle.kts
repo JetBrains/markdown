@@ -1,0 +1,184 @@
+val kotlin_version = "1.4.10"
+val markdown_version = "0.2.0.pre-${findProperty("buildNumber") ?: "SNAPSHOT"}"
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+    }
+}
+
+plugins {
+    kotlin("multiplatform") version "1.4.10"
+    `maven-publish`
+    id("com.jfrog.bintray") version "1.8.5"
+}
+
+group = "org.jetbrains"
+version = markdown_version
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+
+kotlin {
+    jvm {
+        compilations {
+            all {
+                kotlinOptions.jvmTarget = "1.6"
+            }
+            val main by getting
+
+            val test by getting
+
+            val specRunner by compilations.creating {
+                defaultSourceSet {
+                    dependencies {
+                        implementation(
+                            main.compileDependencyFiles
+                                    + main.output.classesDirs
+                                    + test.output.classesDirs
+                        )
+                    }
+                }
+            }
+        }
+
+        testRuns["test"].executionTask.configure {
+            useJUnit {
+                excludeCategories("org.intellij.markdown.ParserPerformanceTest")
+            }
+        }
+    }
+    js(IR) {
+        nodejs {
+            binaries.executable()
+        }
+    }
+    sourceSets {
+        val commonMain by getting {
+
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+        val jvmMain by getting {
+
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
+        val jsMain by getting {
+
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
+            }
+        }
+    }
+}
+
+task("downloadCommonmark", type = Exec::class) {
+    onlyIf { !File("CommonMark").exists() }
+    executable("git")
+    args("clone", "https://github.com/jgm/CommonMark")
+}
+
+task("specRunnerJar", type = Jar::class) {
+    from(kotlin.sourceSets["commonMain"].kotlin.classesDirectory)
+    from(kotlin.sourceSets["jvmMain"].kotlin.classesDirectory)
+    archiveName = "markdown-test.jar"
+    manifest {
+        attributes(
+            mapOf(
+                "Main-Class" to "org.intellij.markdown.SpecRunner",
+                "Class-Path" to "TODO()" //configurations.testRuntime.join(" ")
+            )
+        )
+    }
+}
+
+tasks {
+    val runSpec by registering(Exec::class) {
+        group = "verification"
+        dependsOn("downloadCommonmark", "specRunnerJar")
+        executable("python3")
+        workingDir("CommonMark")
+        args("test/spec_tests.py", "-p", "../run_html_gen.sh")
+    }
+}
+
+publishing {
+    publications.apply {
+        (findByName("jvm") as MavenPublication).apply {
+            groupId = "org.jetbrains"
+            artifactId = "markdown"
+            version = markdown_version
+            setUpPom()
+        }
+        (findByName("js") as MavenPublication).apply {
+            groupId = "org.jetbrains"
+            artifactId = "markdown-js"
+            version = markdown_version
+            setUpPom()
+        }
+    }
+}
+
+bintray {
+    publish = false
+    dryRun = false
+
+    user = findProperty("bintrayUser").toString()
+    key = findProperty("bintrayKey").toString()
+    setPublications("js", "jvm")
+    pkg.apply {
+        userOrg = "jetbrains"
+        repo = "markdown"
+        name = "markdown"
+        version.apply {
+            name = markdown_version
+//            released = Date() // TODO: can't access date in mpp
+        }
+    }
+}
+
+fun MavenPublication.setUpPom() {
+    pom {
+        name.set("markdown")
+        description.set("Markdown parser in Kotlin")
+        licenses {
+            license {
+                name.set("The Apache Software License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("repo")
+            }
+        }
+        url.set("https://github.com/valich/intellij-markdown")
+        scm {
+            url.set("https://github.com/valich/intellij-markdown")
+        }
+        developers {
+            developer {
+                id.set("valich")
+                name.set("Valentin Fondaratov")
+                email.set("fondarat@gmail.com")
+                organization.set("JetBrains")
+                organizationUrl.set("https://jetbrains.com")
+            }
+        }
+    }
+}
