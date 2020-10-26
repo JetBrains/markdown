@@ -17,3 +17,7 @@ build/
 
 # jflex binary
 jflex*.jar
+
+# cloned repos for test generation
+commonmark-spec/
+cmark-gfm/

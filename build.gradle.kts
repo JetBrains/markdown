@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.io.ByteArrayOutputStream
 
 val kotlin_version = "1.4.10"
 val markdown_version = "0.2.0.pre-${findProperty("buildNumber") ?: "SNAPSHOT"}"
@@ -109,9 +110,63 @@ task("performanceTest", type = Test::class) {
 
 
 task("downloadCommonmark", type = Exec::class) {
-    onlyIf { !File("CommonMark").exists() }
+    group = "Code Generation"
+    description = "Clone the CommonMark repo locally"
+    onlyIf { !File("commonmark-spec").exists() }
     executable("git")
-    args("clone", "https://github.com/jgm/CommonMark")
+    args("clone", "https://github.com/commonmark/commonmark-spec")
+}
+
+task("downloadGfm", type = Exec::class) {
+    group = "Code Generation"
+    description = "Clone the GFM repo locally"
+    onlyIf { !File("cmark-gfm").exists() }
+    executable("git")
+    args("clone", "https://github.com/github/cmark-gfm")
+}
+
+task("generateCommonMarkTest", type = Exec::class) {
+    group = "Code Generation"
+    description = "Generate unit tests for the CommonMark spec"
+    dependsOn("downloadCommonmark")
+    executable("python")
+    workingDir("commonmark-spec")
+    args("test/spec_tests.py", "--dump-tests")
+    val output = ByteArrayOutputStream()
+    standardOutput = output
+    doLast {
+        val tests = String(output.toByteArray())
+        generateSpecTest(
+                tests,
+                "CommonMarkSpecTest",
+                "org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor"
+        )
+    }
+}
+
+task("generateGfmTest", type = Exec::class) {
+    group = "Code Generation"
+    description = "Generate unit tests for the GFM spec"
+    dependsOn("downloadGfm")
+    executable("python")
+    workingDir("cmark-gfm/test")
+    args("spec_tests.py", "--dump-tests")
+    val output = ByteArrayOutputStream()
+    standardOutput = output
+    doLast {
+        val tests = String(output.toByteArray())
+        generateSpecTest(
+                tests,
+                "GfmSpecTest",
+                "org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor"
+        )
+    }
+}
+
+task("generateAllTests") {
+    group = "Code Generation"
+    description = "Generate unit tests for the all markdown specs"
+    dependsOn("generateCommonMarkTest", "generateGfmTest")
 }
 
 task("specRunnerJar", type = Jar::class) {
@@ -133,7 +188,7 @@ tasks {
         group = "verification"
         dependsOn("downloadCommonmark", "specRunnerJar")
         executable("python3")
-        workingDir("CommonMark")
+        workingDir("commonmark-spec")
         args("test/spec_tests.py", "-p", "../run_html_gen.sh")
     }
 }
