@@ -123,17 +123,21 @@ tasks {
 
 publishing {
     publications.apply {
-        (findByName("jvm") as MavenPublication).apply {
-            groupId = "org.jetbrains"
+        (findByName("kotlinMultiplatform") as MavenPublication).apply {
             artifactId = "markdown"
-            version = markdown_version
-            setUpPom()
+            setUpPublication()
+        }
+        (findByName("jvm") as MavenPublication).apply {
+            artifactId = "markdown-jvm"
+            setUpPublication()
         }
         (findByName("js") as MavenPublication).apply {
-            groupId = "org.jetbrains"
             artifactId = "markdown-js"
-            version = markdown_version
-            setUpPom()
+            setUpPublication()
+        }
+        (findByName("metadata") as MavenPublication).apply {
+            artifactId = "markdown-metadata"
+            setUpPublication()
         }
     }
 }
@@ -144,7 +148,7 @@ bintray {
 
     user = findProperty("bintrayUser").toString()
     key = findProperty("bintrayKey").toString()
-    setPublications("js", "jvm")
+    setPublications("kotlinMultiplatform", "js", "jvm", "metadata")
     pkg.apply {
         userOrg = "jetbrains"
         repo = "markdown"
@@ -156,7 +160,10 @@ bintray {
     }
 }
 
-fun MavenPublication.setUpPom() {
+fun MavenPublication.setUpPublication() {
+    groupId = "org.jetbrains"
+    version = markdown_version
+
     pom {
         name.set("markdown")
         description.set("Markdown parser in Kotlin")
