@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 val kotlin_version = "1.4.10"
 val markdown_version = "0.2.0.pre-${findProperty("buildNumber") ?: "SNAPSHOT"}"
 
@@ -90,6 +92,22 @@ kotlin {
         }
     }
 }
+
+task("performanceTest", type = Test::class) {
+    val testCompilation = kotlin.jvm().compilations["test"]
+
+    group = "verification"
+    setTestClassesDirs(testCompilation.output.classesDirs)
+    setClasspath(testCompilation.runtimeDependencyFiles)
+    dependsOn("compileTestKotlinJvm")
+    useJUnit {
+        includeCategories("org.intellij.markdown.ParserPerformanceTest")
+    }
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+    }
+}
+
 
 task("downloadCommonmark", type = Exec::class) {
     onlyIf { !File("CommonMark").exists() }
