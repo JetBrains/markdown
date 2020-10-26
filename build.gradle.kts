@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
@@ -109,10 +110,64 @@ tasks {
     }
 
 
-    val downloadCommonmark by registering(Exec::class) {
-        onlyIf { !File("CommonMark").exists() }
+    task("downloadCommonmark", type = Exec::class) {
+        group = "Code Generation"
+        description = "Clone the CommonMark repo locally"
+        onlyIf { !File("commonmark-spec").exists() }
         executable("git")
-        args("clone", "https://github.com/jgm/CommonMark")
+        args("clone", "https://github.com/commonmark/commonmark-spec")
+    }
+
+    task("downloadGfm", type = Exec::class) {
+        group = "Code Generation"
+        description = "Clone the GFM repo locally"
+        onlyIf { !File("cmark-gfm").exists() }
+        executable("git")
+        args("clone", "https://github.com/github/cmark-gfm")
+    }
+
+    task("generateCommonMarkTest", type = Exec::class) {
+        group = "Code Generation"
+        description = "Generate unit tests for the CommonMark spec"
+        dependsOn("downloadCommonmark")
+        executable("python")
+        workingDir("commonmark-spec")
+        args("test/spec_tests.py", "--dump-tests")
+        val output = ByteArrayOutputStream()
+        standardOutput = output
+        doLast {
+            val tests = String(output.toByteArray())
+            generateSpecTest(
+                    tests,
+                    "CommonMarkSpecTest",
+                    "org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor"
+            )
+        }
+    }
+
+    task("generateGfmTest", type = Exec::class) {
+        group = "Code Generation"
+        description = "Generate unit tests for the GFM spec"
+        dependsOn("downloadGfm")
+        executable("python")
+        workingDir("cmark-gfm/test")
+        args("spec_tests.py", "--dump-tests")
+        val output = ByteArrayOutputStream()
+        standardOutput = output
+        doLast {
+            val tests = String(output.toByteArray())
+            generateSpecTest(
+                    tests,
+                    "GfmSpecTest",
+                    "org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor"
+            )
+        }
+    }
+
+    task("generateAllTests") {
+        group = "Code Generation"
+        description = "Generate unit tests for the all markdown specs"
+        dependsOn("generateCommonMarkTest", "generateGfmTest")
     }
 
     val specRunnerJar by registering(Jar::class) {
@@ -153,10 +208,10 @@ tasks.register<Jar>("javadocJar") {
 }
 
 val publicationsToArtifacts = mapOf(
-    "kotlinMultiplatform" to "markdown",
-    "jvm" to "markdown-jvm",
-    "js" to "markdown-js",
-    "metadata" to "markdown-metadata"
+        "kotlinMultiplatform" to "markdown",
+        "jvm" to "markdown-jvm",
+        "js" to "markdown-js",
+        "metadata" to "markdown-metadata"
 )
 
 publicationsToArtifacts.forEach { publicationName, artifactId ->
