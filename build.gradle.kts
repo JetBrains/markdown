@@ -57,7 +57,7 @@ kotlin {
             }
         }
     }
-    js(IR) {
+    js(LEGACY) {
         nodejs {
             binaries.executable()
         }
