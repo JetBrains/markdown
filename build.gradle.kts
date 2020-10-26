@@ -17,7 +17,6 @@ buildscript {
 plugins {
     kotlin("multiplatform") version "1.4.10"
     `maven-publish`
-    id("com.jfrog.bintray") version "1.8.5"
 }
 
 group = "org.jetbrains"
@@ -158,22 +157,16 @@ publishing {
             setUpPublication()
         }
     }
-}
-
-bintray {
-    publish = false
-    dryRun = false
-
-    user = findProperty("bintrayUser").toString()
-    key = findProperty("bintrayKey").toString()
-    setPublications("kotlinMultiplatform", "js", "jvm", "metadata")
-    pkg.apply {
-        userOrg = "jetbrains"
-        repo = "markdown"
-        name = "markdown"
-        version.apply {
-            name = markdown_version
-//            released = Date() // TODO: can't access date in mpp
+    repositories {
+        maven {
+            val userOrg = "jetbrains"
+            val repo = "markdown"
+            val name = "markdown"
+            setUrl("https://api.bintray.com/maven/$userOrg/$repo/$name/;publish=0")
+            credentials {
+                username = findProperty("bintrayUser").toString()
+                password = findProperty("bintrayKey").toString()
+            }
         }
     }
 }
