@@ -162,7 +162,7 @@ publishing {
             val userOrg = "jetbrains"
             val repo = "markdown"
             val name = "markdown"
-            setUrl("https://api.bintray.com/maven/$userOrg/$repo/$name/$markdown_version/;publish=0")
+            setUrl("https://api.bintray.com/maven/$userOrg/$repo/$name/;publish=0")
             credentials {
                 username = findProperty("bintrayUser").toString()
                 password = findProperty("bintrayKey").toString()
