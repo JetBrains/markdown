@@ -7,7 +7,7 @@ private val intellijMarkdownHome: Lazy<String> = lazy {
     while (!js("require('fs').existsSync")("$dir/README.md") as Boolean) {
         dir = dir.substringBeforeLast('/', "")
         if (dir.isEmpty()) {
-            error("could not find repo root")
+            error("could not find repo root. cwd=${js("process.cwd()")}")
         }
     }
     dir
