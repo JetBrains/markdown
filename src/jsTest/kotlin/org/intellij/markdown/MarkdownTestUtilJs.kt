@@ -2,10 +2,15 @@ package org.intellij.markdown
 
 import kotlin.test.assertTrue
 
+private val fsSeparator = lazy {
+    (js("require('path').sep") as String)[0]
+}
+
 private val intellijMarkdownHome: Lazy<String> = lazy {
+    val sep = fsSeparator.value
     var dir = (js("process.cwd()") as String)
-    while (!js("require('fs').existsSync")("$dir/README.md") as Boolean) {
-        dir = dir.substringBeforeLast('/', "")
+    while (!js("require('fs').existsSync")("$dir${sep}README.md") as Boolean) {
+        dir = dir.substringBeforeLast(sep, "")
         if (dir.isEmpty()) {
             error("could not find repo root. cwd=${js("process.cwd()")}")
         }
