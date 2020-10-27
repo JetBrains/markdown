@@ -118,7 +118,7 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
 
     @Test
     fun testSfmAutolink() {
-        defaultTest(SFMFlavourDescriptor())
+        defaultTest(SFMFlavourDescriptor(false))
     }
 
     @Test
@@ -183,4 +183,45 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
         })
     }
 
+    @Test
+    fun testXssProtection() {
+        val disallowedLinkMd1 = "[Click me](javascript:alert(document.domain))"
+        val disallowedLinkMd2 = "[Click me](file:///123)"
+        val disallowedLinkMd3 = "[Click me](  VBSCRIPT:alert(1))"
+        val disallowedLinkMd4 = "<VBSCRIPT:alert(1))>"
+
+        val disallowedLinkHtml = """
+             <body><p><a href="#">Click me</a></p></body>
+             """.trimIndent()
+        val disallowedAutolinkHtml = """
+             <body><p><a href="#">VBSCRIPT:alert(1))</a></p></body>
+             """.trimIndent()
+
+        assertEqualsIgnoreLines(disallowedLinkHtml,  generateHtmlFromString(disallowedLinkMd1))
+        assertEqualsIgnoreLines(disallowedLinkHtml,  generateHtmlFromString(disallowedLinkMd2))
+        assertEqualsIgnoreLines(disallowedLinkHtml,  generateHtmlFromString(disallowedLinkMd3))
+        assertEqualsIgnoreLines(disallowedAutolinkHtml,  generateHtmlFromString(disallowedLinkMd4))
+
+        val disallowedImgMd = "![](javascript:alert('XSS');)"
+
+        val disallowedImgHtml = """
+             <body><p><img src="#" alt="" /></p></body>
+         """.trimIndent()
+
+        assertEqualsIgnoreLines(disallowedImgHtml,  generateHtmlFromString(disallowedImgMd))
+
+        val allowedImgMd =
+            "![](data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7)"
+
+        val allowedImgHtml = """
+             <body><p><img src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" alt="" /></p></body>
+         """.trimIndent()
+
+        assertEqualsIgnoreLines(allowedImgHtml,  generateHtmlFromString(allowedImgMd))
+    }
+
+}
+
+private fun assertEqualsIgnoreLines(expected: String, actual: String) {
+    return assertEquals(expected.replace("\n", ""), actual.replace("\n", ""))
 }

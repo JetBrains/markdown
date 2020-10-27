@@ -7,7 +7,7 @@ import org.intellij.markdown.lexer.MarkdownLexer
 /**
  * JetBrains Space-flavoured markdown
  */
-open class SFMFlavourDescriptor : GFMFlavourDescriptor() {
+open class SFMFlavourDescriptor(useSafeLinks: Boolean = true) : GFMFlavourDescriptor(useSafeLinks) {
     override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_SFMLexer())
     }

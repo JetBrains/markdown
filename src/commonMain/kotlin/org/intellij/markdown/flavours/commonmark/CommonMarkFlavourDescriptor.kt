@@ -17,7 +17,13 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 
-open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
+/**
+ * CommonMark spec based flavour, to be used as a base for other flavours
+ *
+ * @param useSafeLinks `true` if all rendered links should be checked for XSS and `false` otherwise.
+ * See [makeXSSSafeDestination]
+ */
+open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = true) : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -79,9 +85,16 @@ open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.AUTOLINK to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     val linkText = node.getTextInNode(text)
-                    val link = EntityConverter.replaceEntities(linkText.subSequence(1, linkText.length - 1), true, false)
-                    visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkText, false)}\"")
-                    visitor.consumeHtml(link)
+                    val linkLabel = EntityConverter.replaceEntities(
+                        linkText.subSequence(1, linkText.length - 1),
+                        processEntities = true,
+                        processEscapes = false
+                    )
+                    val linkDestination = LinkMap.normalizeDestination(linkText, false).let {
+                        if (useSafeLinks) makeXssSafeDestination(it) else it
+                    }
+                    visitor.consumeTagOpen(node, "a", "href=\"$linkDestination\"")
+                    visitor.consumeHtml(linkLabel)
                     visitor.consumeTagClose("a")
                 }
 
@@ -92,12 +105,14 @@ open class CommonMarkFlavourDescriptor : MarkdownFlavourDescriptor {
             MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
             MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
 
-            MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(baseURI),
+            MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(baseURI).makeXssSafe(useSafeLinks),
 
-            MarkdownElementTypes.FULL_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap, baseURI),
-            MarkdownElementTypes.SHORT_REFERENCE_LINK to ReferenceLinksGeneratingProvider(linkMap, baseURI),
+            MarkdownElementTypes.FULL_REFERENCE_LINK to
+                    ReferenceLinksGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
+            MarkdownElementTypes.SHORT_REFERENCE_LINK to
+                    ReferenceLinksGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
 
-            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap, baseURI),
+            MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
 
             MarkdownElementTypes.LINK_DEFINITION to object : GeneratingProvider {
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {

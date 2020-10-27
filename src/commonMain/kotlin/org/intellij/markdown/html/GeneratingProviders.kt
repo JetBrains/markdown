@@ -183,8 +183,8 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     }
 }
 
-abstract class LinkGeneratingProvider(protected val baseURI: URI?) : GeneratingProvider {
-    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+abstract class LinkGeneratingProvider(val baseURI: URI?) : GeneratingProvider {
+    final override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
         renderLink(visitor, text, node, info)

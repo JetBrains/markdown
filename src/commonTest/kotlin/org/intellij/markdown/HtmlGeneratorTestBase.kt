@@ -8,13 +8,15 @@ import org.intellij.markdown.html.URI
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
 
+private val defaultTagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)
+
 abstract class HtmlGeneratorTestBase : TestCase() {
     protected abstract fun getTestDataPath(): String
 
     protected fun defaultTest(flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
                               baseURI: URI? = null,
-                              tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(
-                                  DUMMY_ATTRIBUTES_CUSTOMIZER, false)) {
+                              tagRenderer: HtmlGenerator.TagRenderer = defaultTagRenderer
+    ) {
 
         val result = generateHtmlFromFile(flavour, baseURI, tagRenderer)
         assertSameLinesWithFile(getTestDataPath() + "/" + testName + ".txt", result)
@@ -23,9 +25,18 @@ abstract class HtmlGeneratorTestBase : TestCase() {
     protected fun generateHtmlFromFile(
         flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
         baseURI: URI? = null,
-        tagRenderer: HtmlGenerator.TagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)
+        tagRenderer: HtmlGenerator.TagRenderer = defaultTagRenderer
     ): String {
         val src = readFromFile(getTestDataPath() + "/" + testName + ".md")
+        return generateHtmlFromString(src, flavour, baseURI, tagRenderer)
+    }
+
+    protected fun generateHtmlFromString(
+        src: String,
+        flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
+        baseURI: URI? = null,
+        tagRenderer: HtmlGenerator.TagRenderer = defaultTagRenderer
+    ): String {
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(src)
         val htmlGeneratingProviders = flavour.createHtmlGeneratingProviders(LinkMap.buildLinkMap(tree, src), baseURI)
         val html =

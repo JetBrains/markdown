@@ -8,19 +8,15 @@ import org.intellij.markdown.ast.getParentOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
-import org.intellij.markdown.html.GeneratingProvider
-import org.intellij.markdown.html.HtmlGenerator
-import org.intellij.markdown.html.SimpleInlineTagProvider
-import org.intellij.markdown.html.TrimmingInlineHolderProvider
+import org.intellij.markdown.html.*
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
-import org.intellij.markdown.html.URI
 
-open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
+open class GFMFlavourDescriptor(useSafeLinks: Boolean = true) : CommonMarkFlavourDescriptor(useSafeLinks) {
     override val markerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -64,10 +60,13 @@ open class GFMFlavourDescriptor : CommonMarkFlavourDescriptor() {
                         }
 
                         // according to GFM_AUTOLINK rule in lexer, link either starts with scheme or with 'www.'
-                        val linkDestination = if (hasSchema(linkText)) linkText else "http://$linkText"
+                        val absoluteLink = if (hasSchema(linkText)) linkText else "http://$linkText"
 
                         val link = EntityConverter.replaceEntities(linkText, true, false)
-                        visitor.consumeTagOpen(node, "a", "href=\"${LinkMap.normalizeDestination(linkDestination, false)}\"")
+                        val normalizedDestination = LinkMap.normalizeDestination(absoluteLink, false).let {
+                            if (useSafeLinks) makeXssSafeDestination(it) else it
+                        }
+                        visitor.consumeTagOpen(node, "a", "href=\"$normalizedDestination\"")
                         visitor.consumeHtml(link)
                         visitor.consumeTagClose("a")
                     }
