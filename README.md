@@ -1,22 +1,65 @@
 intellij-markdown [![Build Status](https://teamcity.jetbrains.com/app/rest/builds/buildType:(id:IntelliJMarkdownParser_BuildForIdeaPlugin)/statusIcon.svg?guest=1)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=IntelliJMarkdownParser_BuildForIdeaPlugin&guest=1) [![Download](https://api.bintray.com/packages/jetbrains/markdown/markdown/images/download.svg) ](https://bintray.com/jetbrains/markdown/markdown/_latestVersion) [![official JetBrains project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 =================
 
-**Markdown parser and generator written in Kotlin**
+## Multiplatform Markdown processor written in Kotlin
 
 Introduction
 -------------
 
-[intellij-markdown][self] is a fast and extensible markdown processor.
-It is aimed to suit the following needs:
+[intellij-markdown][self] is an extensible markdown processor.
+It aims to suit the following needs:
 - Use one code base for both client and server-side processing;
+- Produce consistent output on different platforms;
 - Support different flavours;
 - Be easily extensible.
 
-Since the parser is written in [Kotlin], it can be compiled to both JS and Java bytecode
-thus can be used everywhere.
+The processor is written in pure [Kotlin] (with a little [flex][jflex]) so it can be compiled to both JS and Java bytecode
+and thus can be used everywhere.
 
 Usage
 -----
+
+### Adding `intellij-markdown` as a dependency
+
+The library is hosted in jcenter and bintray, so in order to add it you need to set up one of repositories:
+```groovy
+repositories {
+    // other repos...
+    
+    // select one of these
+    jcenter()
+    maven { url "https://dl.bintray.com/jetbrains/markdown" }
+}
+```
+
+This is a [Kotlin Multiplatform](https://kotlinlang.org/docs/reference/multiplatform.html) project
+and hence is better served under gradle. If you have fresh enough gradle (`>= 5.4`), you can just
+add the main artifact as a dependency: 
+```groovy
+dependencies {
+    // other deps...
+
+    implementation "org.jetbrains:markdown:0.2.0.pre-55"
+}
+```
+
+Gradle should resolve your target platform and decide which artifact (jvm or js) to download.
+
+If you are writing **multiplatform** project as well, you can add one dependency for `commonMain`:
+```groovy
+commonMain {
+     dependencies {
+         implementation "org.jetbrains:markdown:0.2.0.pre-55"
+     }
+ }
+```
+
+If you are using Maven or older gradle, you should specify the respective artifact for your platform,
+e.g.
+* `org.jetbrains:markdown-jvm:0.2.0.pre-55` for jvm version
+* `org.jetbrains:markdown-js:0.2.0.pre-55` for js version
+
+### Using `intellij-markdown` for parsing and generating html
 
 One of the goals of this project is to provide flexibility in terms of the tasks being solved.
 [Markdown plugin] for JetBrains IDEs is an example of usage when markdown processing is done
@@ -45,6 +88,29 @@ final MarkdownFlavourDescriptor flavour = new GFMFlavourDescriptor();
 final ASTNode parsedTree = new MarkdownParser(flavour).buildMarkdownTreeFromString(text);
 final String html = new HtmlGenerator(src, parsedTree, flavour, false).generateHtml()
 ```
+
+Development gotchas
+-------------------
+
+1. The currently used CI is [TeamCity](https://teamcity.jetbrains.com/project/IntelliJMarkdownParser?mode=builds).
+
+   Incoming pull requests will be tested there, you can check the build status (manually) via the link above.
+
+
+2. The only non-Kotlin files are `.flex` lexer definitions. They are used for generating lexers which are
+   the first stage of inlines parsing. Unfortunately, due to bugs, native `java->kt` conversion crashes for these files.  
+   
+   So, conversion from `.flex` to respective Kotlin files deserves a special instruction (use IntelliJ please):
+   1. Install `grammar-kit` plugin, as will be suggested on `.flex` files opening.
+   1. Install [`jflexToKotlin`](https://github.com/valich/jflexToKotlin) plugin (manually, via settings). 
+   1. Run `Run JFlex Generator` action while having `.flex` file opened.
+        * On the first run a dialog will open, suggesting to place to download jflex. Select project root,
+          then delete excessively downloaded `.skeleton` file.
+   1. A respective `_<SomeName>Lexer.java` will be generated somewhere. Move it near existing `_<SomeName>Lexer.kt`.
+   1. Delete `.kt` lexer.
+   1. Run `Convert JFlex Lexer to Kotlin` action while having the new `.java` file opened.
+   1. Fix the small problems such as imports in kt file. There should be no major issues; if there are,
+      feel free to complain :)
 
 Parsing algorithm
 -----------------
@@ -171,6 +237,7 @@ API
 
 [self]: https://github.com/valich/intellij-markdown
 [Kotlin]: https://github.com/JetBrains/kotlin
+[jflex]: https://github.com/jflex-de/jflex
 [markdown plugin]: https://github.com/JetBrains/intellij-plugins/tree/master/markdown
 
 [AST]: https://en.wikipedia.org/wiki/Abstract_syntax_tree 'Wikipedia reference'
