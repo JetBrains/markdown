@@ -215,7 +215,7 @@ abstract class LinkGeneratingProvider(protected val baseURI: URI?) : GeneratingP
     }
 }
 
-class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
+open class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
                 ?: return null
@@ -231,7 +231,7 @@ class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseU
     }
 }
 
-class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
+open class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
 : LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.children.firstOrNull { it.type == MarkdownElementTypes.LINK_LABEL }
