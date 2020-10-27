@@ -3,10 +3,11 @@ package org.intellij.markdown.parser.sequentialparsers
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.lexer.MarkdownLexer
+import org.intellij.markdown.lexer.TokenInfo
 
 class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
-    override val cachedTokens: List<TokensCache.TokenInfo>
-    override val filteredTokens: List<TokensCache.TokenInfo>
+    override val cachedTokens: List<TokenInfo>
+    override val filteredTokens: List<TokenInfo>
     override val originalText: CharSequence
     override val originalTextRange: IntRange
 
@@ -16,7 +17,7 @@ class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
         cachedTokens = _cachedTokens
         filteredTokens = _filteredTokens
         originalText = lexer.originalText
-        originalTextRange = lexer.bufferStart..lexer.bufferEnd - 1
+        originalTextRange = lexer.bufferStart until lexer.bufferEnd
 
         verify()
     }
@@ -26,17 +27,24 @@ class LexerBasedTokensCache(lexer: MarkdownLexer) : TokensCache() {
             return elementType == MarkdownTokenTypes.WHITE_SPACE
         }
 
-        data class ResultOfCaching(val cachedTokens : List<TokensCache.TokenInfo>, val filteredTokens : List<TokensCache.TokenInfo>)
-        private fun cacheTokens(lexer: MarkdownLexer) : ResultOfCaching {
-            val cachedTokens = ArrayList<TokensCache.TokenInfo>()
-            val filteredTokens = ArrayList<TokensCache.TokenInfo>()
+        data class ResultOfCaching(val cachedTokens: List<TokenInfo>, val filteredTokens: List<TokenInfo>)
+
+        private fun cacheTokens(lexer: MarkdownLexer): ResultOfCaching {
+            val cachedTokens = ArrayList<TokenInfo>()
+            val filteredTokens = ArrayList<TokenInfo>()
 
             while (lexer.type != null) {
-                val info = TokensCache.TokenInfo(lexer.type!!, lexer.tokenStart, lexer.tokenEnd, cachedTokens.size, -1)
-                cachedTokens.add(info)
+                val isWhitespace = isWhitespace(lexer.type)
+                val info = TokenInfo(
+                    type = lexer.type,
+                    tokenStart = lexer.tokenStart,
+                    tokenEnd = lexer.tokenEnd,
+                    rawIndex = cachedTokens.size,
+                    normIndex = if (isWhitespace) -1 else filteredTokens.size
+                )
 
-                if (!isWhitespace(info.type)) {
-                    info.normIndex = filteredTokens.size
+                cachedTokens.add(info)
+                if (!isWhitespace) {
                     filteredTokens.add(info)
                 }
 

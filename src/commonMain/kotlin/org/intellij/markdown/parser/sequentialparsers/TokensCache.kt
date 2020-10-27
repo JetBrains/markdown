@@ -2,6 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.lexer.Compat.assert
+import org.intellij.markdown.lexer.TokenInfo
 
 abstract class TokensCache {
     abstract val cachedTokens: List<TokenInfo>
@@ -115,7 +116,7 @@ abstract class TokensCache {
 
 
         open fun rawLookup(steps: Int): IElementType? {
-            return info(steps).`type`
+            return info(steps).type
         }
 
         fun rawStart(steps: Int): Int {
@@ -138,17 +139,6 @@ abstract class TokensCache {
 
         override fun toString(): String {
             return "Iterator: $index: $type"
-        }
-    }
-
-    class TokenInfo(val `type`: IElementType?,
-                           val tokenStart: Int,
-                           val tokenEnd: Int,
-                           val rawIndex: Int,
-                           var normIndex: Int) {
-
-        override fun toString(): String {
-            return "TokenInfo: " + `type`.toString() + " [" + tokenStart + ", " + tokenEnd + ")"
         }
     }
 
