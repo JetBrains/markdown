@@ -183,7 +183,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     }
 }
 
-internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : GeneratingProvider {
+abstract class LinkGeneratingProvider(protected val baseURI: URI?) : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
@@ -215,7 +215,7 @@ internal abstract class LinkGeneratingProvider(protected val baseURI: URI?) : Ge
     }
 }
 
-internal class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
+class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
                 ?: return null
@@ -231,7 +231,7 @@ internal class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvi
     }
 }
 
-internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
+class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
 : LinkGeneratingProvider(baseURI) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.children.firstOrNull { it.type == MarkdownElementTypes.LINK_LABEL }
@@ -248,9 +248,9 @@ internal class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, ba
     }
 }
 
-internal class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGeneratingProvider(baseURI) {
-    private val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap, baseURI)
-    private val inlineLinkProvider = InlineLinkGeneratingProvider(baseURI)
+open class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGeneratingProvider(baseURI) {
+    protected val referenceLinkProvider = ReferenceLinksGeneratingProvider(linkMap, baseURI)
+    protected val inlineLinkProvider = InlineLinkGeneratingProvider(baseURI)
 
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         node.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.let { linkNode ->
