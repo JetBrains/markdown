@@ -208,7 +208,7 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 %}
 
 DIGIT = [0-9]
-ALPHANUM = [a-zA-Z0-9]
+ALPHANUM = [\p{Letter}\p{Number}]
 WHITE_SPACE = [ \t\f]
 EOL = \R
 ANY_CHAR = [^]

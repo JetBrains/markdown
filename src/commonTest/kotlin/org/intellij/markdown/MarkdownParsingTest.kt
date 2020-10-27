@@ -268,6 +268,12 @@ class MarkdownParsingTest : TestCase() {
         defaultTest(CommonMarkFlavourDescriptor())
     }
 
+    fun testNonEnglishSentences() {
+        defaultTest(CommonMarkFlavourDescriptor())
+        defaultTest(GFMFlavourDescriptor())
+        defaultTest(SFMFlavourDescriptor())
+    }
+
     fun testBug28() {
         defaultTest(GFMFlavourDescriptor())
     }

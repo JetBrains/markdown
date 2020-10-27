@@ -21,6 +21,9 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
     var tokenEnd: Int = 0
         private set
 
+//    fun lex(originalText: CharSequence, bufferStart: Int = 0,
+//            bufferEnd: Int = originalText.length) : Stream
+
     fun start(originalText: CharSequence,
                      bufferStart: Int = 0,
                      bufferEnd: Int = originalText.length) {

@@ -94,9 +94,7 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:TEXT('пристаням')
-    Markdown:EMPH('_')
-    Markdown:TEXT('стремятся')
+    Markdown:TEXT('пристаням_стремятся')
     Markdown:EMPH('_')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
