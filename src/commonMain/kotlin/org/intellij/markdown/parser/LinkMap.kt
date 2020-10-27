@@ -82,7 +82,7 @@ class LinkMap private constructor(private val map: Map<CharSequence, LinkInfo>) 
 
     data class LinkInfo(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
         companion object {
-            internal fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
+            fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
                 val destination: CharSequence = normalizeDestination(
                     node.children
                         .first { it.type == MarkdownElementTypes.LINK_DESTINATION }
