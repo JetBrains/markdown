@@ -11,9 +11,9 @@ import org.intellij.markdown.lexer.Compat.codePointToString
 import org.intellij.markdown.lexer.Compat.forEachCodePoint
 import kotlin.text.Regex
 
-data class LinkMap private constructor(private val map: Map<CharSequence, LinkMap.LinkInfo>) {
+class LinkMap private constructor(private val map: Map<CharSequence, LinkInfo>) {
     fun getLinkInfo(label: CharSequence): LinkInfo? {
-        return map.get(normalizeLabel(label))
+        return map[normalizeLabel(label)]
     }
 
     companion object Builder {
@@ -24,13 +24,12 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
                 override fun visitNode(node: ASTNode) {
                     if (node.type == MarkdownElementTypes.LINK_DEFINITION) {
                         val linkLabel = normalizeLabel(
-                                node.children.first({ it.type == MarkdownElementTypes.LINK_LABEL }).getTextInNode(text)
+                            node.children.first { it.type == MarkdownElementTypes.LINK_LABEL }.getTextInNode(text)
                         )
                         if (!map.containsKey(linkLabel)) {
-                            map.put(linkLabel, LinkInfo.create(node, text))
+                            map[linkLabel] = LinkInfo.create(node, text)
                         }
-                    }
-                    else {
+                    } else {
                         super.visitNode(node)
                     }
                 }
@@ -44,9 +43,9 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
         }
 
         fun normalizeDestination(s: CharSequence, processEscapes: Boolean): CharSequence {
-            val dest = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, processEscapes)
+            val destination = EntityConverter.replaceEntities(clearBounding(s, "<>"), true, processEscapes)
             val sb = StringBuilder()
-            dest.forEachCodePoint { code ->
+            destination.forEachCodePoint { code ->
                 val c = code.toChar()
                 if (code == 32) {
                     sb.append("%20")
@@ -59,10 +58,15 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
             return sb.toString()
         }
 
-        fun normalizeTitle(s: CharSequence): CharSequence = EntityConverter.replaceEntities(clearBounding(s, "\"\"", "''", "()"), true, true)
+        fun normalizeTitle(s: CharSequence): CharSequence =
+            EntityConverter.replaceEntities(
+                clearBounding(s, "\"\"", "''", "()"),
+                processEntities = true,
+                processEscapes = true
+            )
 
         private fun clearBounding(s: CharSequence, vararg boundQuotes: String): CharSequence {
-            if (s.length == 0) {
+            if (s.isEmpty()) {
                 return s
             }
             for (quotePair in boundQuotes) {
@@ -73,18 +77,19 @@ data class LinkMap private constructor(private val map: Map<CharSequence, LinkMa
             return s
         }
 
-        val SPACES_REGEX = Regex("\\s+")
-
+        private val SPACES_REGEX = Regex("\\s+")
     }
 
-    data class LinkInfo private constructor(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
+    data class LinkInfo(val node: ASTNode, val destination: CharSequence, val title: CharSequence?) {
         companion object {
             internal fun create(node: ASTNode, fileText: CharSequence): LinkInfo {
                 val destination: CharSequence = normalizeDestination(
-                        node.children.first({ it.type == MarkdownElementTypes.LINK_DESTINATION }).getTextInNode(fileText),
-                        true)
-                val title: CharSequence? = node.children.firstOrNull({ it.type == MarkdownElementTypes.LINK_TITLE })
-                        ?.getTextInNode(fileText)?.let { normalizeTitle(it) }
+                    node.children
+                        .first { it.type == MarkdownElementTypes.LINK_DESTINATION }
+                        .getTextInNode(fileText),
+                    true)
+                val title: CharSequence? = node.children.firstOrNull { it.type == MarkdownElementTypes.LINK_TITLE }
+                    ?.getTextInNode(fileText)?.let { normalizeTitle(it) }
                 return LinkInfo(node, destination, title)
             }
         }

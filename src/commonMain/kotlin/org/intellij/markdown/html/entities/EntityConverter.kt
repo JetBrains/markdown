@@ -3,12 +3,12 @@ package org.intellij.markdown.html.entities
 import kotlin.text.Regex
 
 object EntityConverter {
-    private val escapeAllowedString = "\\!\"#\\$%&'\\(\\)\\*\\+,\\-.\\/:;<=>\\?@\\[\\\\\\]\\^_`{\\|}\\~"
+    private const val escapeAllowedString = "\\!\"#\\$%&'\\(\\)\\*\\+,\\-.\\/:;<=>\\?@\\[\\\\\\]\\^_`{\\|}\\~"
     private val replacements: Map<Char, String> = mapOf(
-            '"' to "&quot;",
-            '&' to "&amp;",
-            '<' to "&lt;",
-            '>' to "&gt;"
+        '"' to "&quot;",
+        '&' to "&amp;",
+        '<' to "&lt;",
+        '>' to "&gt;"
     )
 
     private val REGEX = Regex("&(?:([a-zA-Z0-9]+)|#([0-9]{1,8})|#[xX]([a-fA-F0-9]{1,8}));|([\"&<>])")
@@ -18,7 +18,7 @@ object EntityConverter {
         return (if (processEscapes)
             REGEX_ESCAPES
         else
-            REGEX).replace(text, { match ->
+            REGEX).replace(text) { match ->
             val g = match.groups
             if (g.size > 5 && g[5] != null) {
                 val char = g[5]!!.value[0]
@@ -42,12 +42,11 @@ object EntityConverter {
                     val char = code?.toChar()
                     if (char != null) {
                         replacements[char] ?: char.toString()
-                    }
-                    else {
+                    } else {
                         "&amp;${match.value.substring(1)}"
                     }
 
                 }
-        })
+        }
     }
 }
