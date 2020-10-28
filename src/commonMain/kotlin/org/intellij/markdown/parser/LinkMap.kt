@@ -11,12 +11,16 @@ import org.intellij.markdown.lexer.Compat.codePointToString
 import org.intellij.markdown.lexer.Compat.forEachCodePoint
 import kotlin.text.Regex
 
-class LinkMap private constructor(private val map: Map<CharSequence, LinkInfo>) {
+class LinkMap(private val map: Map<CharSequence, LinkInfo>) {
     fun getLinkInfo(label: CharSequence): LinkInfo? {
         return map[normalizeLabel(label)]
     }
 
     companion object Builder {
+        fun normalizeLabel(label: CharSequence): CharSequence {
+            return SPACES_REGEX.replace(label, " ").toLowerCase()
+        }
+
         fun buildLinkMap(root: ASTNode, text: CharSequence): LinkMap {
             val map = HashMap<CharSequence, LinkInfo>()
 
@@ -36,10 +40,6 @@ class LinkMap private constructor(private val map: Map<CharSequence, LinkInfo>) 
             })
 
             return LinkMap(map)
-        }
-
-        private fun normalizeLabel(label: CharSequence): CharSequence {
-            return SPACES_REGEX.replace(label, " ").toLowerCase()
         }
 
         fun normalizeDestination(s: CharSequence, processEscapes: Boolean): CharSequence {
