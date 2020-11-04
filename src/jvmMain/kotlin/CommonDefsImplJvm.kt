@@ -26,10 +26,6 @@ private fun isAsciiPunctuationFix(char: Char): Boolean {
     return "$^`".contains(char)
 }
 
-actual fun isLetterOrDigit(char: Char): Boolean {
-    return Character.isLetterOrDigit(char)
-}
-
 actual fun urlEncode(str: String): String {
     return URLEncoder.encode(str, "UTF-8")
 }

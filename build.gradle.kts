@@ -62,6 +62,8 @@ kotlin {
             binaries.executable()
         }
     }
+    mingwX64()
+
     sourceSets {
         val commonMain by getting {
 
