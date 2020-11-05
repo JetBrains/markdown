@@ -9,22 +9,17 @@ import kotlin.test.assertEquals
 
 actual fun readFromFile(path: String): String {
     val file = requireNotNull(fopen(path, "r")) { "Invalid path $path" }
-    val chunks = StringBuilder()
+    val bytes = mutableListOf<Byte>()
     try {
-        memScoped {
-            val bufferLength = 64 * 1024
-            val buffer = allocArray<ByteVar>(bufferLength)
-
-            while (true) {
-                val chunk = fgets(buffer, bufferLength, file)?.toKString()
-                if (chunk == null || chunk.isEmpty()) break
-                chunks.append(chunk)
-            }
+        while (true) {
+            val c = fgetc(file)
+            if (c == EOF) break
+            bytes.add(c.toByte())
         }
     } finally {
         fclose(file)
     }
-    return chunks.toString()
+    return bytes.toByteArray().decodeToString()
 }
 
 actual fun assertSameLinesWithFile(path: String, result: String) {

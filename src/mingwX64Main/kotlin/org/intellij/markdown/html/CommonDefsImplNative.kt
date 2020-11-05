@@ -2,13 +2,14 @@ package org.intellij.markdown.html
 
 
 actual class URI actual constructor(str: String) {
+    private val base = str
 
-    actual fun resolve(str: String): URI {
-        return this
+    actual  fun resolve(str: String): URI {
+        return URI(serializeUrl(parseUrl(str, parseUrl(base, null))))
     }
 
     override fun toString(): String {
-        return "TODO"
+        return base
     }
 }
 
@@ -23,16 +24,6 @@ actual fun isPunctuation(char: Char): Boolean {
     return PUNCT_REGEX.matches(char.toString())
 }
 
-// RFC 3986 reserved characters, space, and #
-private val CHARS_TO_ESCAPE = ";,/?:@&=+$ #"
-
-actual fun urlEncode(str: String): String = buildString {
-    for (c in str) {
-        if (c in CHARS_TO_ESCAPE) {
-            append('%')
-            append(c.toInt().toString(16))
-        } else {
-            append(c)
-        }
-    }
+actual fun urlEncode(str: String): String {
+    return percentEncode(str, PERCENT_ENCODE_SET_URL_ENCODE)
 }

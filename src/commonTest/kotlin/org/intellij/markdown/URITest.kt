@@ -74,6 +74,26 @@ class URITest {
         assertEquals("https://google.com/bar", URI("https://google.com/").resolve("bar").toString())
     }
 
+    @Test
+    fun testResolveUnqualified1() {
+        assertEquals("user/repo-name/blob/baz.html", URI("user/repo-name/blob/master").resolve("baz.html").toString())
+    }
+
+    @Test
+    fun testResolveUnqualified2() {
+        assertEquals("/user/repo-name/blob/baz.html", URI("/user/repo-name/blob/master").resolve("baz.html").toString())
+    }
+
+    @Test
+    fun testResolveUnqualified3() {
+        assertEquals("/root", URI("user/repo-name/blob/master").resolve("/root").toString())
+    }
+
+    @Test
+    fun testResolveUnqualified4() {
+        assertEquals("/root", URI("/user/repo-name/blob/master").resolve("/root").toString())
+    }
+
     // JVM thinks that `bar` is continuation of `com` which is weird. But it's stdlib so not sure it must be fixed.
     @Ignore
     @Test
