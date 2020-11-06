@@ -50,11 +50,12 @@ actual abstract class TestCase {
         try {
             throw Exception()
         } catch (e: Exception) {
-            val stack = e.stackTraceToString()
-            val matches = Regex("""\s+at \S+#(test\w+)\(\)""").findAll(stack)
-            return matches
-                    .map { it.groupValues[1] }
-                    .first()
+            val stack = e.getStackTrace()
+            val re = Regex("""(?:kfun:)?org\.intellij\.markdown\.\w+Test#(test\w+)\(""")
+            return stack
+                    .mapNotNull { re.find(it)?.groupValues?.get(1) }
+                    .firstOrNull()
+                    ?: error("can't find name: ```${stack.asList()}```")
         }
     }
 }
