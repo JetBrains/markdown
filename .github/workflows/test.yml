@@ -33,7 +33,8 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         with:
           dependencies-cache-enabled: true
-          arguments: macosX64Test iosX64Test --stacktrace
+          # arguments: macosX64Test iosX64Test --stacktrace
+          arguments: macosX64Test --stacktrace
       - name: Bundle the build report
         if: failure()
         run: find . -type d -name 'reports' | zip -@ -r build-reports.zip

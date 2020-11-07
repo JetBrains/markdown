@@ -54,8 +54,7 @@ actual abstract class TestCase {
             val re = Regex("""(?:kfun:)?org\.intellij\.markdown\.\w+Test#(test\w+)\(""")
             return stack
                     .mapNotNull { re.find(it)?.groupValues?.get(1) }
-                    .firstOrNull()
-                    ?: error("can't find name: ```${stack.asList()}```")
+                    .first()
         }
     }
 }
