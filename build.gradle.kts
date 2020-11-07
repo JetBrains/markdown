@@ -37,18 +37,6 @@ kotlin {
             val main by getting
 
             val test by getting
-
-            val specRunner by compilations.creating {
-                defaultSourceSet {
-                    dependencies {
-                        implementation(
-                                main.compileDependencyFiles
-                                        + main.output.classesDirs
-                                        + test.output.classesDirs
-                        )
-                    }
-                }
-            }
         }
 
         testRuns["test"].executionTask.configure {
@@ -168,28 +156,6 @@ tasks {
         group = "Code Generation"
         description = "Generate unit tests for the all markdown specs"
         dependsOn("generateCommonMarkTest", "generateGfmTest")
-    }
-
-    val specRunnerJar by registering(Jar::class) {
-        from(kotlin.sourceSets["commonMain"].kotlin.classesDirectory)
-        from(kotlin.sourceSets["jvmMain"].kotlin.classesDirectory)
-        archiveFileName.set("markdown-test.jar")
-        manifest {
-            attributes(
-                    mapOf(
-                            "Main-Class" to "org.intellij.markdown.SpecRunner",
-                            "Class-Path" to "TODO()" //configurations.testRuntime.join(" ")
-                    )
-            )
-        }
-    }
-
-    register<Exec>("runSpec") {
-        group = "verification"
-        dependsOn(downloadCommonmark, specRunnerJar)
-        executable("python3")
-        workingDir("CommonMark")
-        args("test/spec_tests.py", "-p", "../run_html_gen.sh")
     }
 }
 
