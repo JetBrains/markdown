@@ -1,7 +1,9 @@
 package org.intellij.markdown
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore
 class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor()) {
     @Test
     fun testTabsExample1() = doTest(
