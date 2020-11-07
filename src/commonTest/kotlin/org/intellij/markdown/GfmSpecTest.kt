@@ -1,7 +1,9 @@
 package org.intellij.markdown
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore
 class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor()) {
     @Test
     fun testTabsExample1() = doTest(
