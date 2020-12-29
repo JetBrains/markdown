@@ -15,7 +15,7 @@ group = "org.jetbrains"
 val baseVersion = project.property("version").toString()
 version = if (project.property("snapshot")?.toString()?.toBoolean() != false) {
     baseVersion.substringBefore("-").split('.').let { (major, minor, patch) ->
-        "$major.$minor.${patch + 1}-SNAPSHOT"
+        "$major.$minor.${patch.toInt() + 1}-SNAPSHOT"
     }
 } else {
     baseVersion
