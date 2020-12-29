@@ -22,12 +22,9 @@ fun Project.registerPublicationFromKotlinPlugin(publicationName: String, artifac
             }
         }
     }
-
-    configureBintrayPublicationIfNecessary()
-    configureSonatypePublicationIfNecessary(publicationName)
 }
 
-private fun Project.configureBintrayPublicationIfNecessary() {
+fun Project.configureBintrayPublicationIfNecessary() {
     if (publicationChannels.any { it.isBintrayRepository }) {
         configure<PublishingExtension> {
             repositories {
@@ -46,7 +43,7 @@ private fun Project.configureBintrayPublicationIfNecessary() {
     }
 }
 
-private fun Project.configureSonatypePublicationIfNecessary(vararg publications: String) {
+fun Project.configureSonatypePublicationIfNecessary(vararg publications: String) {
     if (publicationChannels.any { it.isMavenRepository }) {
         configure<PublishingExtension> {
             repositories {

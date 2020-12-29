@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.configureBintrayPublicationIfNecessary
+import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.registerPublicationFromKotlinPlugin
-
-val markdown_version = "0.2.0" + "SNAPSHOT".takeIf { findProperty("buildNumber") != null }.orEmpty()
 
 plugins {
     kotlin("multiplatform") version "1.4.10"
@@ -12,7 +12,15 @@ plugins {
 }
 
 group = "org.jetbrains"
-version = markdown_version
+val baseVersion = project.property("version").toString()
+version = if (project.property("snapshot")?.toString()?.toBoolean() != false) {
+    baseVersion.substringBefore("-").split('.').let { (major, minor, patch) ->
+        "$major.$minor.${patch + 1}-SNAPSHOT"
+    }
+} else {
+    baseVersion
+}
+
 
 repositories {
     jcenter()
@@ -144,7 +152,15 @@ tasks.register<Jar>("javadocJar") {
     from(dokkaOutputDir)
 }
 
-registerPublicationFromKotlinPlugin("kotlinMultiplatform", "markdown")
-registerPublicationFromKotlinPlugin("jvm", "markdown-jvm")
-registerPublicationFromKotlinPlugin("js", "markdown-js")
-registerPublicationFromKotlinPlugin("metadata", "markdown-metadata")
+val publicationsToArtifacts = mapOf(
+    "kotlinMultiplatform" to "markdown",
+    "jvm" to "markdown-jvm",
+    "js" to "markdown-js",
+    "metadata" to "markdown-metadata"
+)
+
+publicationsToArtifacts.forEach { publicationName, artifactId ->
+    registerPublicationFromKotlinPlugin(publicationName, artifactId)
+    configureSonatypePublicationIfNecessary(publicationName)
+}
+configureBintrayPublicationIfNecessary()
