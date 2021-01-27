@@ -95,6 +95,10 @@
     return zzLexicalState;
   }
 
+  public final int getState() {
+    return zzLexicalState;
+  }
+
 
   /**
    * Enters a new lexical state
