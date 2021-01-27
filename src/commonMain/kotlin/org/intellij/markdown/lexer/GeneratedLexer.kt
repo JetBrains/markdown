@@ -11,6 +11,7 @@ interface GeneratedLexer {
 
     fun advance(): IElementType?
 
+    val state: Int
 }
 
 

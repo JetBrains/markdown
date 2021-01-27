@@ -16,6 +16,9 @@ import org.intellij.markdown.lexer.push
  * from the specification file <tt>gfm.flex</tt>
  */
 class _GFMLexer : GeneratedLexer {
+    override val state: Int
+        get() = yystate()
+
     /** the current state of the DFA  */
     private var zzState = 0
 
@@ -223,7 +226,7 @@ class _GFMLexer : GeneratedLexer {
      *
      * @exception   IOException  if any I/O-Error occurs
      */
-    
+
     private fun zzRefill(): Boolean {
         return true
     }
@@ -317,7 +320,7 @@ class _GFMLexer : GeneratedLexer {
      * @return      the next token
      * @exception   IOException  if any I/O-Error occurs
      */
-    
+
     override fun advance(): IElementType? {
         var zzInput: Int
         var zzAction: Int
@@ -379,7 +382,7 @@ class _GFMLexer : GeneratedLexer {
                         if (zzAttributes and 8 == 8) break@zzForAction
                     }
                 }
-            
+
             zzMarkedPos = zzMarkedPosL
             if (zzInput == YYEOF && tokenStart == zzCurrentPos) {
                 zzAtEOF = true
@@ -754,5 +757,5 @@ class _GFMLexer : GeneratedLexer {
      *
      * @param   in  the Reader to read input from.
      */
-    
+
 }

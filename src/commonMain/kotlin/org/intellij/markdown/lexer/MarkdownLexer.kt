@@ -21,20 +21,16 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
     var tokenEnd: Int = 0
         private set
 
+    val state = baseLexer.state
+
 //    fun lex(originalText: CharSequence, bufferStart: Int = 0,
 //            bufferEnd: Int = originalText.length) : Stream
 
     fun start(originalText: CharSequence,
                      bufferStart: Int = 0,
-                     bufferEnd: Int = originalText.length) {
-        this.originalText = originalText
-        this.bufferStart = bufferStart
-        this.bufferEnd = bufferEnd
-
-        baseLexer.reset(originalText, bufferStart, bufferEnd, 0)
-        type = advanceBase()
-        tokenStart = baseLexer.tokenStart
-
+                     bufferEnd: Int = originalText.length,
+                     state: Int = 0) {
+        reset(originalText, bufferStart, bufferEnd, state)
         calcNextType()
     }
 
@@ -66,7 +62,15 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
         } catch (e: Exception) {
             throw AssertionError("This could not be!")
         }
+    }
 
+    fun reset(buffer: CharSequence, start: Int, end: Int, initialState: Int) {
+        this.originalText = buffer
+        this.bufferStart = start
+        this.bufferEnd = end
+        baseLexer.reset(buffer, start, end, initialState)
+        type = advanceBase()
+        tokenStart = baseLexer.tokenStart
     }
 
     companion object {
