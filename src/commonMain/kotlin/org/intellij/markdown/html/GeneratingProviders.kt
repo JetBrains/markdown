@@ -183,7 +183,7 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
     }
 }
 
-abstract class LinkGeneratingProvider(val baseURI: URI?) : GeneratingProvider {
+abstract class LinkGeneratingProvider(val baseURI: URI?, val resolveAnchors: Boolean = false) : GeneratingProvider {
     final override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val info = getRenderInfo(text, node)
                 ?: return fallbackProvider.processNode(visitor, text, node)
@@ -191,7 +191,7 @@ abstract class LinkGeneratingProvider(val baseURI: URI?) : GeneratingProvider {
     }
 
     protected fun makeAbsoluteUrl(destination : CharSequence) : CharSequence {
-        if (destination.startsWith('#')) {
+        if (!resolveAnchors && destination.startsWith('#')) {
             return destination
         }
 
@@ -215,7 +215,8 @@ abstract class LinkGeneratingProvider(val baseURI: URI?) : GeneratingProvider {
     }
 }
 
-open class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(baseURI) {
+open class InlineLinkGeneratingProvider(baseURI: URI?, resolveAnchors: Boolean = false)
+    : LinkGeneratingProvider(baseURI, resolveAnchors) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
                 ?: return null
@@ -231,8 +232,8 @@ open class InlineLinkGeneratingProvider(baseURI: URI?) : LinkGeneratingProvider(
     }
 }
 
-open class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?)
-: LinkGeneratingProvider(baseURI) {
+open class ReferenceLinksGeneratingProvider(private val linkMap: LinkMap, baseURI: URI?, resolveAnchors: Boolean = false)
+    : LinkGeneratingProvider(baseURI, resolveAnchors) {
     override fun getRenderInfo(text: String, node: ASTNode): RenderInfo? {
         val label = node.children.firstOrNull { it.type == MarkdownElementTypes.LINK_LABEL }
             ?: return null

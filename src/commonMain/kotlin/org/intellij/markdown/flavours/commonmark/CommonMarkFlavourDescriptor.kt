@@ -21,9 +21,13 @@ import org.intellij.markdown.parser.sequentialparsers.impl.*
  * CommonMark spec based flavour, to be used as a base for other flavours
  *
  * @param useSafeLinks `true` if all rendered links should be checked for XSS and `false` otherwise.
- * See [makeXSSSafeDestination]
+ * See [makeXssSafeDestination]
+ *
+ * @param absolutizeAnchorLinks `true` if anchor links (e.g. `#foo`) should be resolved against `baseURI` and
+ * `false` otherwise
  */
-open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = true) : MarkdownFlavourDescriptor {
+open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = true,
+                                       protected val absolutizeAnchorLinks: Boolean = false) : MarkdownFlavourDescriptor {
     override val markerProcessorFactory: MarkerProcessorFactory = CommonMarkMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -41,7 +45,8 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?): Map<IElementType, GeneratingProvider> = hashMapOf(
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap,
+                                               baseURI: URI?): Map<IElementType, GeneratingProvider> = hashMapOf(
 
             MarkdownElementTypes.MARKDOWN_FILE to SimpleTagProvider("body"),
             MarkdownElementTypes.HTML_BLOCK to HtmlBlockGeneratingProvider(),
@@ -105,12 +110,13 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
             MarkdownElementTypes.LINK_TEXT to TransparentInlineHolderProvider(),
             MarkdownElementTypes.LINK_TITLE to TransparentInlineHolderProvider(),
 
-            MarkdownElementTypes.INLINE_LINK to InlineLinkGeneratingProvider(baseURI).makeXssSafe(useSafeLinks),
+            MarkdownElementTypes.INLINE_LINK to
+                    InlineLinkGeneratingProvider(baseURI, absolutizeAnchorLinks).makeXssSafe(useSafeLinks),
 
             MarkdownElementTypes.FULL_REFERENCE_LINK to
-                    ReferenceLinksGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
+                    ReferenceLinksGeneratingProvider(linkMap, baseURI, absolutizeAnchorLinks).makeXssSafe(useSafeLinks),
             MarkdownElementTypes.SHORT_REFERENCE_LINK to
-                    ReferenceLinksGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
+                    ReferenceLinksGeneratingProvider(linkMap, baseURI, absolutizeAnchorLinks).makeXssSafe(useSafeLinks),
 
             MarkdownElementTypes.IMAGE to ImageGeneratingProvider(linkMap, baseURI).makeXssSafe(useSafeLinks),
 

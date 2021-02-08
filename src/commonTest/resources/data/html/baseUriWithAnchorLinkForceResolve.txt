@@ -1,0 +1,6 @@
+<body>
+<p>
+<a href="/user/repo-name/blob/master#anchor">This link</a>
+ should not be resolved with base uri</p>
+<h1>Anchor</h1>
+</body>

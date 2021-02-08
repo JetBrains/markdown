@@ -17,7 +17,7 @@ fun makeXssSafeDestination(s: CharSequence): CharSequence {
 fun LinkGeneratingProvider.makeXssSafe(useSafeLinks: Boolean = true): LinkGeneratingProvider {
     if (!useSafeLinks) return this
 
-    return object : LinkGeneratingProvider(baseURI) {
+    return object : LinkGeneratingProvider(baseURI, resolveAnchors) {
         override fun renderLink(
             visitor: HtmlGenerator.HtmlGeneratingVisitor,
             text: String,

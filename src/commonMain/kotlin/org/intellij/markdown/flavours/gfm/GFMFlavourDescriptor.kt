@@ -16,7 +16,8 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 
-open class GFMFlavourDescriptor(useSafeLinks: Boolean = true) : CommonMarkFlavourDescriptor(useSafeLinks) {
+open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLinks: Boolean = false)
+    : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
     override val markerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -35,7 +36,8 @@ open class GFMFlavourDescriptor(useSafeLinks: Boolean = true) : CommonMarkFlavou
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?): Map<IElementType, GeneratingProvider> {
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap,
+                                               baseURI: URI?): Map<IElementType, GeneratingProvider> {
         return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
                 GFMElementTypes.STRIKETHROUGH to object: SimpleInlineTagProvider("span", 2, -2) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {

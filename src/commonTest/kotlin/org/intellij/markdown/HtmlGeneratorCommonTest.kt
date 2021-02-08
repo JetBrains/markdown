@@ -1,6 +1,7 @@
 package org.intellij.markdown
 
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.html.*
@@ -164,6 +165,12 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     @Test
     fun testBaseUriWithAnchorLink() {
         defaultTest(baseURI = URI("/user/repo-name/blob/master"))
+    }
+
+    @Test
+    fun testBaseUriWithAnchorLinkForceResolve() {
+        defaultTest(baseURI = URI("/user/repo-name/blob/master"),
+                flavour = CommonMarkFlavourDescriptor(absolutizeAnchorLinks = true))
     }
 
     @Test
