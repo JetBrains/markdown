@@ -50,6 +50,13 @@ kotlin {
             binaries.executable()
         }
     }
+    linuxX64()
+    mingwX64()
+    macosX64()
+// Disabled until test data loading is fixed. iOS tests run on the simulator, and so don't have
+// access to test resources on the local file system.
+//    ios()
+
     sourceSets {
         val commonMain by getting {
 
@@ -77,6 +84,37 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
             }
         }
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+        val linuxX64Main by getting {
+            dependsOn(nativeMain)
+        }
+        val mingwX64Main by getting {
+            dependsOn(nativeMain)
+        }
+        val macosX64Main by getting {
+            dependsOn(nativeMain)
+        }
+//        val iosMain by getting {
+//            dependsOn(nativeMain)
+//        }
+
+        val nativeTest by creating {
+            dependsOn(commonTest)
+        }
+        val linuxX64Test by getting {
+            dependsOn(nativeTest)
+        }
+        val mingwX64Test by getting {
+            dependsOn(nativeTest)
+        }
+        val macosX64Test by getting {
+            dependsOn(nativeTest)
+        }
+//        val iosTest by getting {
+//            dependsOn(nativeTest)
+//        }
     }
 }
 
