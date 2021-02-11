@@ -29,7 +29,7 @@ internal enum class PublicationChannel {
 internal val Project.publicationChannels: Set<PublicationChannel>
     get() = properties["publication_channels"]
             ?.toString()
-            ?.split("&")
+            ?.split(",")
             ?.map { channel -> PublicationChannel.fromPropertyString(channel) }
             ?.toSet()
             .orEmpty()
