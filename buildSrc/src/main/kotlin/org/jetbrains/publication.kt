@@ -43,7 +43,11 @@ fun Project.configureBintrayPublicationIfNecessary() {
     }
 }
 
-fun Project.configureSonatypePublicationIfNecessary(vararg publications: String) {
+fun Project.signPublicationsIfNecessary(vararg publications: String) {
+    signPublicationsIfKeyPresent(*publications)
+}
+
+fun Project.configureSonatypePublicationIfNecessary() {
     if (publicationChannels.any { it.isMavenRepository }) {
         configure<PublishingExtension> {
             repositories {
@@ -60,7 +64,6 @@ fun Project.configureSonatypePublicationIfNecessary(vararg publications: String)
                 }
             }
         }
-        signPublicationsIfKeyPresent(*publications)
     }
 }
 

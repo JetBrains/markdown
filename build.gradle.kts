@@ -3,6 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.registerPublicationFromKotlinPlugin
+import org.jetbrains.signPublicationsIfNecessary
 
 plugins {
     kotlin("multiplatform") version "1.4.10"
@@ -220,6 +221,7 @@ val publicationsToArtifacts = mapOf(
 
 publicationsToArtifacts.forEach { publicationName, artifactId ->
     registerPublicationFromKotlinPlugin(publicationName, artifactId)
-    configureSonatypePublicationIfNecessary(publicationName)
 }
+signPublicationsIfNecessary(*publicationsToArtifacts.keys.toTypedArray())
+configureSonatypePublicationIfNecessary()
 configureBintrayPublicationIfNecessary()
