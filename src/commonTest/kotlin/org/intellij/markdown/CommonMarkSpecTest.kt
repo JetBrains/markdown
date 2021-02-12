@@ -3,7 +3,6 @@ package org.intellij.markdown
 import kotlin.test.Ignore
 import kotlin.test.Test
 
-@Ignore
 class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor()) {
     @Test
     fun testTabsExample1() = doTest(
@@ -30,18 +29,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testTabsExample5() = doTest(
             markdown = "- foo\n\n\t\tbar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<pre><code>  bar\n</code></pre>\n</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testTabsExample6() = doTest(
             markdown = ">\t\tfoo\n",
             html = "<blockquote>\n<pre><code>  foo\n</code></pre>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testTabsExample7() = doTest(
             markdown = "-\t\tfoo\n",
             html = "<ul>\n<li>\n<pre><code>  foo\n</code></pre>\n</li>\n</ul>\n"
@@ -60,6 +62,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testTabsExample10() = doTest(
             markdown = "#\tFoo\n",
             html = "<h1>Foo</h1>\n"
@@ -150,12 +153,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEntityAndNumericCharacterReferencesExample25() = doTest(
             markdown = "&nbsp; &amp; &copy; &AElig; &Dcaron;\n&frac34; &HilbertSpace; &DifferentialD;\n&ClockwiseContourIntegral; &ngE;\n",
             html = "<p>  &amp; © Æ Ď\n¾ ℋ ⅆ\n∲ ≧̸</p>\n"
     )
 
     @Test
+    @Ignore
     fun testEntityAndNumericCharacterReferencesExample26() = doTest(
             markdown = "&#35; &#1234; &#992; &#0;\n",
             html = "<p># Ӓ Ϡ �</p>\n"
@@ -168,6 +173,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEntityAndNumericCharacterReferencesExample28() = doTest(
             markdown = "&nbsp &x; &#; &#x;\n&#87654321;\n&#abcdef0;\n&ThisIsNotDefined; &hi?;\n",
             html = "<p>&amp;nbsp &amp;x; &amp;#; &amp;#x;\n&amp;#87654321;\n&amp;#abcdef0;\n&amp;ThisIsNotDefined; &amp;hi?;</p>\n"
@@ -294,6 +300,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testThematicBreaksExample49() = doTest(
             markdown = "Foo\n    ***\n",
             html = "<p>Foo\n***</p>\n"
@@ -420,6 +427,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testATXHeadingsExample70() = doTest(
             markdown = "foo\n    # bar\n",
             html = "<p>foo\n# bar</p>\n"
@@ -486,12 +494,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample81() = doTest(
             markdown = "Foo *bar\nbaz*\n====\n",
             html = "<h1>Foo <em>bar\nbaz</em></h1>\n"
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample82() = doTest(
             markdown = "  Foo *bar\nbaz*\t\n====\n",
             html = "<h1>Foo <em>bar\nbaz</em></h1>\n"
@@ -522,6 +532,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample87() = doTest(
             markdown = "Foo\n    ---\n",
             html = "<p>Foo\n---</p>\n"
@@ -570,6 +581,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample95() = doTest(
             markdown = "Foo\nBar\n---\n",
             html = "<h2>Foo\nBar</h2>\n"
@@ -678,6 +690,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testIndentedCodeBlocksExample113() = doTest(
             markdown = "Foo\n    bar\n\n",
             html = "<p>Foo\nbar</p>\n"
@@ -828,6 +841,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testFencedCodeBlocksExample138() = doTest(
             markdown = "``` ```\naaa\n",
             html = "<p><code> </code>\naaa</p>\n"
@@ -876,6 +890,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testFencedCodeBlocksExample146() = doTest(
             markdown = "~~~ aa ``` ~~~\nfoo\n~~~\n",
             html = "<pre><code class=\"language-aa\">foo\n</code></pre>\n"
@@ -888,6 +903,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample148() = doTest(
             markdown = "<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>\n",
             html = "<table><tr><td>\n<pre>\n**Hello**,\n<p><em>world</em>.\n</pre></p>\n</td></tr></table>\n"
@@ -936,18 +952,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample156() = doTest(
             markdown = "<div id=\"foo\"\n*hi*\n",
             html = "<div id=\"foo\"\n*hi*\n"
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample157() = doTest(
             markdown = "<div class\nfoo\n",
             html = "<div class\nfoo\n"
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample158() = doTest(
             markdown = "<div *???-&&&-<---\n*foo*\n",
             html = "<div *???-&&&-<---\n*foo*\n"
@@ -1026,6 +1045,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample171() = doTest(
             markdown = "<textarea>\n\n*foo*\n\n_bar_\n\n</textarea>\n",
             html = "<textarea>\n\n*foo*\n\n_bar_\n\n</textarea>\n"
@@ -1170,6 +1190,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample195() = doTest(
             markdown = "[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n",
             html = "<p><a href=\"my%20url\" title=\"title\">Foo bar</a></p>\n"
@@ -1206,6 +1227,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample201() = doTest(
             markdown = "[foo]: <bar>(baz)\n\n[foo]\n",
             html = "<p>[foo]: <bar>(baz)</p>\n<p>[foo]</p>\n"
@@ -1296,6 +1318,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample216() = doTest(
             markdown = "[foo]: /url\n===\n[foo]\n",
             html = "<p>===\n<a href=\"/url\">foo</a></p>\n"
@@ -1332,12 +1355,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testParagraphsExample222() = doTest(
             markdown = "  aaa\n bbb\n",
             html = "<p>aaa\nbbb</p>\n"
     )
 
     @Test
+    @Ignore
     fun testParagraphsExample223() = doTest(
             markdown = "aaa\n             bbb\n                                       ccc\n",
             html = "<p>aaa\nbbb\nccc</p>\n"
@@ -1368,18 +1393,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample228() = doTest(
             markdown = "> # Foo\n> bar\n> baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample229() = doTest(
             markdown = "># Foo\n>bar\n> baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample230() = doTest(
             markdown = "   > # Foo\n   > bar\n > baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
@@ -1398,6 +1426,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample233() = doTest(
             markdown = "> bar\nbaz\n> foo\n",
             html = "<blockquote>\n<p>bar\nbaz\nfoo</p>\n</blockquote>\n"
@@ -1428,6 +1457,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample238() = doTest(
             markdown = "> foo\n    - bar\n",
             html = "<blockquote>\n<p>foo\n- bar</p>\n</blockquote>\n"
@@ -1458,6 +1488,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample243() = doTest(
             markdown = "> foo\n> bar\n",
             html = "<blockquote>\n<p>foo\nbar</p>\n</blockquote>\n"
@@ -1506,6 +1537,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample251() = doTest(
             markdown = ">>> foo\n> bar\n>>baz\n",
             html = "<blockquote>\n<blockquote>\n<blockquote>\n<p>foo\nbar\nbaz</p>\n</blockquote>\n</blockquote>\n</blockquote>\n"
@@ -1524,6 +1556,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample254() = doTest(
             markdown = "1.  A paragraph\n    with two lines.\n\n        indented code\n\n    > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
@@ -1572,6 +1605,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample262() = doTest(
             markdown = "- foo\n\n\n  bar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>\n"
@@ -1680,6 +1714,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample280() = doTest(
             markdown = "-\n\n  foo\n",
             html = "<ul>\n<li></li>\n</ul>\n<p>foo</p>\n"
@@ -1710,24 +1745,28 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample285() = doTest(
             markdown = "foo\n*\n\nfoo\n1.\n",
             html = "<p>foo\n*</p>\n<p>foo\n1.</p>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample286() = doTest(
             markdown = " 1.  A paragraph\n     with two lines.\n\n         indented code\n\n     > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample287() = doTest(
             markdown = "  1.  A paragraph\n      with two lines.\n\n          indented code\n\n      > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample288() = doTest(
             markdown = "   1.  A paragraph\n       with two lines.\n\n           indented code\n\n       > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
@@ -1746,6 +1785,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample291() = doTest(
             markdown = "  1.  A paragraph\n    with two lines.\n",
             html = "<ol>\n<li>A paragraph\nwith two lines.</li>\n</ol>\n"
@@ -1758,6 +1798,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListItemsExample293() = doTest(
             markdown = "> 1. > Blockquote\n> continued here.\n",
             html = "<blockquote>\n<ol>\n<li>\n<blockquote>\n<p>Blockquote\ncontinued here.</p>\n</blockquote>\n</li>\n</ol>\n</blockquote>\n"
@@ -1824,6 +1865,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListsExample304() = doTest(
             markdown = "The number of windows in my house is\n14.  The number of doors is 6.\n",
             html = "<p>The number of windows in my house is\n14.  The number of doors is 6.</p>\n"
@@ -1836,12 +1878,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListsExample306() = doTest(
             markdown = "- foo\n\n- bar\n\n\n- baz\n",
             html = "<ul>\n<li>\n<p>foo</p>\n</li>\n<li>\n<p>bar</p>\n</li>\n<li>\n<p>baz</p>\n</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testListsExample307() = doTest(
             markdown = "- foo\n  - bar\n    - baz\n\n\n      bim\n",
             html = "<ul>\n<li>foo\n<ul>\n<li>bar\n<ul>\n<li>\n<p>baz</p>\n<p>bim</p>\n</li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>\n"
@@ -1872,12 +1916,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testListsExample312() = doTest(
             markdown = "- a\n - b\n  - c\n   - d\n    - e\n",
             html = "<ul>\n<li>a</li>\n<li>b</li>\n<li>c</li>\n<li>d\n- e</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testListsExample313() = doTest(
             markdown = "1. a\n\n  2. b\n\n    3. c\n",
             html = "<ol>\n<li>\n<p>a</p>\n</li>\n<li>\n<p>b</p>\n</li>\n</ol>\n<pre><code>3. c\n</code></pre>\n"
@@ -1986,48 +2032,56 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample331() = doTest(
             markdown = "`  ``  `\n",
             html = "<p><code> `` </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample332() = doTest(
             markdown = "` a`\n",
             html = "<p><code> a</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample333() = doTest(
             markdown = "` b `\n",
             html = "<p><code> b </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample334() = doTest(
             markdown = "` `\n`  `\n",
             html = "<p><code> </code>\n<code>  </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample335() = doTest(
             markdown = "``\nfoo\nbar  \nbaz\n``\n",
             html = "<p><code>foo bar   baz</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample336() = doTest(
             markdown = "``\nfoo \n``\n",
             html = "<p><code>foo </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample337() = doTest(
             markdown = "`foo   bar \nbaz`\n",
             html = "<p><code>foo   bar  baz</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample338() = doTest(
             markdown = "`foo\\`bar`\n",
             html = "<p><code>foo\\</code>bar`</p>\n"
@@ -2058,6 +2112,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample343() = doTest(
             markdown = "`<a href=\"`\">`\n",
             html = "<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>\n"
@@ -2070,6 +2125,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample345() = doTest(
             markdown = "`<http://foo.bar.`baz>`\n",
             html = "<p><code>&lt;http://foo.bar.</code>baz&gt;`</p>\n"
@@ -2196,6 +2252,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample366() = doTest(
             markdown = "*foo bar\n*\n",
             html = "<p>*foo bar\n*</p>\n"
@@ -2460,12 +2517,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample410() = doTest(
             markdown = "*foo**bar**baz*\n",
             html = "<p><em>foo<strong>bar</strong>baz</em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample411() = doTest(
             markdown = "*foo**bar*\n",
             html = "<p><em>foo**bar</em></p>\n"
@@ -2484,12 +2543,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample414() = doTest(
             markdown = "*foo**bar***\n",
             html = "<p><em>foo<strong>bar</strong></em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample415() = doTest(
             markdown = "foo***bar***baz\n",
             html = "<p>foo<em><strong>bar</strong></em>baz</p>\n"
@@ -2568,6 +2629,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample428() = doTest(
             markdown = "**foo*bar*baz**\n",
             html = "<p><strong>foo<em>bar</em>baz</strong></p>\n"
@@ -2616,6 +2678,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample436() = doTest(
             markdown = "foo *\\**\n",
             html = "<p>foo <em>*</em></p>\n"
@@ -2634,6 +2697,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample439() = doTest(
             markdown = "foo **\\***\n",
             html = "<p>foo <strong>*</strong></p>\n"
@@ -2688,6 +2752,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample448() = doTest(
             markdown = "foo _\\__\n",
             html = "<p>foo <em>_</em></p>\n"
@@ -2706,6 +2771,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample451() = doTest(
             markdown = "foo __\\___\n",
             html = "<p>foo <strong>_</strong></p>\n"
@@ -2796,12 +2862,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample466() = doTest(
             markdown = "***foo***\n",
             html = "<p><em><strong>foo</strong></em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample467() = doTest(
             markdown = "_____foo_____\n",
             html = "<p><em><strong><strong>foo</strong></strong></em></p>\n"
@@ -2922,6 +2990,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample487() = doTest(
             markdown = "[link](/my uri)\n",
             html = "<p>[link](/my uri)</p>\n"
@@ -2940,6 +3009,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample490() = doTest(
             markdown = "[link](<foo\nbar>)\n",
             html = "<p>[link](<foo\nbar>)</p>\n"
@@ -2958,6 +3028,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample493() = doTest(
             markdown = "[a](<b)c\n[a](<b)c>\n[a](<b>c)\n",
             html = "<p>[a](&lt;b)c\n[a](&lt;b)c&gt;\n[a](<b>c)</p>\n"
@@ -2970,6 +3041,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample495() = doTest(
             markdown = "[link](foo(and(bar)))\n",
             html = "<p><a href=\"foo(and(bar))\">link</a></p>\n"
@@ -3018,6 +3090,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample503() = doTest(
             markdown = "[link](\"title\")\n",
             html = "<p><a href=\"%22title%22\">link</a></p>\n"
@@ -3036,6 +3109,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample506() = doTest(
             markdown = "[link](/url \"title\")\n",
             html = "<p><a href=\"/url%C2%A0%22title%22\">link</a></p>\n"
@@ -3102,18 +3176,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample517() = doTest(
             markdown = "[foo [bar](/uri)](/uri)\n",
             html = "<p>[foo <a href=\"/uri\">bar</a>](/uri)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample518() = doTest(
             markdown = "[foo *[bar [baz](/uri)](/uri)*](/uri)\n",
             html = "<p>[foo <em>[bar <a href=\"/uri\">baz</a>](/uri)</em>](/uri)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample519() = doTest(
             markdown = "![[[foo](uri1)](uri2)](uri3)\n",
             html = "<p><img src=\"uri3\" alt=\"[foo](uri2)\" /></p>\n"
@@ -3132,6 +3209,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample522() = doTest(
             markdown = "*foo [bar* baz]\n",
             html = "<p><em>foo [bar</em> baz]</p>\n"
@@ -3150,6 +3228,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample525() = doTest(
             markdown = "[foo<http://example.com/?search=](uri)>\n",
             html = "<p>[foo<a href=\"http://example.com/?search=%5D(uri)\">http://example.com/?search=](uri)</a></p>\n"
@@ -3186,12 +3265,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample531() = doTest(
             markdown = "[foo [bar](/uri)][ref]\n\n[ref]: /uri\n",
             html = "<p>[foo <a href=\"/uri\">bar</a>]<a href=\"/uri\">ref</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample532() = doTest(
             markdown = "[foo *bar [baz][ref]*][ref]\n\n[ref]: /uri\n",
             html = "<p>[foo <em>bar <a href=\"/uri\">baz</a></em>]<a href=\"/uri\">ref</a></p>\n"
@@ -3222,6 +3303,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample537() = doTest(
             markdown = "[foo<http://example.com/?search=][ref]>\n\n[ref]: /uri\n",
             html = "<p>[foo<a href=\"http://example.com/?search=%5D%5Bref%5D\">http://example.com/?search=][ref]</a></p>\n"
@@ -3234,6 +3316,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample539() = doTest(
             markdown = "[ẞ]\n\n[SS]: /url\n",
             html = "<p><a href=\"/url\">ẞ</a></p>\n"
@@ -3246,12 +3329,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample541() = doTest(
             markdown = "[foo] [bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo] <a href=\"/url\" title=\"title\">bar</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample542() = doTest(
             markdown = "[foo]\n[bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo]\n<a href=\"/url\" title=\"title\">bar</a></p>\n"
@@ -3306,6 +3391,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample551() = doTest(
             markdown = "[\n ]\n\n[\n ]: /uri\n",
             html = "<p>[\n]</p>\n<p>[\n]: /uri</p>\n"
@@ -3330,6 +3416,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample555() = doTest(
             markdown = "[foo] \n[]\n\n[foo]: /url \"title\"\n",
             html = "<p><a href=\"/url\" title=\"title\">foo</a>\n[]</p>\n"
@@ -3402,12 +3489,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample567() = doTest(
             markdown = "[foo](not a link)\n\n[foo]: /url1\n",
             html = "<p><a href=\"/url1\">foo</a>(not a link)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample568() = doTest(
             markdown = "[foo][bar][baz]\n\n[baz]: /url\n",
             html = "<p>[foo]<a href=\"/url\">bar</a></p>\n"
@@ -3420,6 +3509,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testLinksExample570() = doTest(
             markdown = "[foo][bar][baz]\n\n[baz]: /url1\n[foo]: /url2\n",
             html = "<p>[foo]<a href=\"/url1\">bar</a></p>\n"
@@ -3438,12 +3528,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testImagesExample573() = doTest(
             markdown = "![foo ![bar](/url)](/url2)\n",
             html = "<p><img src=\"/url2\" alt=\"foo bar\" /></p>\n"
     )
 
     @Test
+    @Ignore
     fun testImagesExample574() = doTest(
             markdown = "![foo [bar](/url)](/url2)\n",
             html = "<p><img src=\"/url2\" alt=\"foo bar\" /></p>\n"
@@ -3516,6 +3608,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testImagesExample586() = doTest(
             markdown = "![foo] \n[]\n\n[foo]: /url \"title\"\n",
             html = "<p><img src=\"/url\" alt=\"foo\" title=\"title\" />\n[]</p>\n"
@@ -3582,12 +3675,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample597() = doTest(
             markdown = "<a+b+c:d>\n",
             html = "<p><a href=\"a+b+c:d\">a+b+c:d</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample598() = doTest(
             markdown = "<made-up-scheme://foo,bar>\n",
             html = "<p><a href=\"made-up-scheme://foo,bar\">made-up-scheme://foo,bar</a></p>\n"
@@ -3612,18 +3707,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample602() = doTest(
             markdown = "<http://example.com/\\[\\>\n",
             html = "<p><a href=\"http://example.com/%5C%5B%5C\">http://example.com/\\[\\</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample603() = doTest(
             markdown = "<foo@bar.example.com>\n",
             html = "<p><a href=\"mailto:foo@bar.example.com\">foo@bar.example.com</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample604() = doTest(
             markdown = "<foo+special@Bar.baz-bar0.com>\n",
             html = "<p><a href=\"mailto:foo+special@Bar.baz-bar0.com\">foo+special@Bar.baz-bar0.com</a></p>\n"
@@ -3648,6 +3746,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample608() = doTest(
             markdown = "<m:abc>\n",
             html = "<p>&lt;m:abc&gt;</p>\n"
@@ -3684,18 +3783,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample614() = doTest(
             markdown = "<a  /><b2\ndata=\"foo\" >\n",
             html = "<p><a  /><b2\ndata=\"foo\" ></p>\n"
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample615() = doTest(
             markdown = "<a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 />\n",
             html = "<p><a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 /></p>\n"
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample616() = doTest(
             markdown = "Foo <responsive-image src=\"foo.jpg\" />\n",
             html = "<p>Foo <responsive-image src=\"foo.jpg\" /></p>\n"
@@ -3756,6 +3858,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample626() = doTest(
             markdown = "foo <!--> foo -->\n\nfoo <!-- foo--->\n",
             html = "<p>foo &lt;!--&gt; foo --&gt;</p>\n<p>foo &lt;!-- foo---&gt;</p>\n"
@@ -3768,6 +3871,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample628() = doTest(
             markdown = "foo <!ELEMENT br EMPTY>\n",
             html = "<p>foo <!ELEMENT br EMPTY></p>\n"
@@ -3792,6 +3896,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample632() = doTest(
             markdown = "<a href=\"\\\"\">\n",
             html = "<p>&lt;a href=&quot;&quot;&quot;&gt;</p>\n"
@@ -3816,12 +3921,14 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample636() = doTest(
             markdown = "foo  \n     bar\n",
             html = "<p>foo<br />\nbar</p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample637() = doTest(
             markdown = "foo\\\n     bar\n",
             html = "<p>foo<br />\nbar</p>\n"
@@ -3840,24 +3947,28 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample640() = doTest(
             markdown = "`code  \nspan`\n",
             html = "<p><code>code   span</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample641() = doTest(
             markdown = "`code\\\nspan`\n",
             html = "<p><code>code\\ span</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample642() = doTest(
             markdown = "<a href=\"foo  \nbar\">\n",
             html = "<p><a href=\"foo  \nbar\"></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample643() = doTest(
             markdown = "<a href=\"foo\\\nbar\">\n",
             html = "<p><a href=\"foo\\\nbar\"></p>\n"
@@ -3894,6 +4005,7 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    @Ignore
     fun testSoftLineBreaksExample649() = doTest(
             markdown = "foo \n baz\n",
             html = "<p>foo\nbaz</p>\n"
