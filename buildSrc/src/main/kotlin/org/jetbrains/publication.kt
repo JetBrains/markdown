@@ -14,7 +14,7 @@ import java.net.URI
 fun Project.registerPublicationFromKotlinPlugin(publicationName: String, artifactId: String) {
     configure<PublishingExtension> {
         publications {
-            (findByName(publicationName) as MavenPublication).apply {
+            (findByName(publicationName) as? MavenPublication)?.apply {
                 this.artifactId = artifactId
 
                 artifact(tasks["javadocJar"])
