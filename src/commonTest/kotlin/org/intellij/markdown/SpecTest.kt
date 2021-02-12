@@ -6,7 +6,7 @@ import org.intellij.markdown.parser.MarkdownParser
 import kotlin.test.assertEquals
 
 
-abstract class SpecTest(private val flavour: MarkdownFlavourDescriptor) : TestCase() {
+abstract class SpecTest(private val flavour: MarkdownFlavourDescriptor) {
     fun doTest(markdown: String, html: String) {
         val tree = MarkdownParser(flavour).buildMarkdownTreeFromString(markdown)
         val generated = HtmlGenerator(markdown, tree, flavour, false).generateHtml()
