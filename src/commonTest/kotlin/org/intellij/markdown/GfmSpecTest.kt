@@ -3,7 +3,6 @@ package org.intellij.markdown
 import kotlin.test.Ignore
 import kotlin.test.Test
 
-@Ignore
 class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor()) {
     @Test
     fun testTabsExample1() = doTest(
@@ -30,18 +29,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testTabsExample5() = doTest(
             markdown = "- foo\n\n\t\tbar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<pre><code>  bar\n</code></pre>\n</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testTabsExample6() = doTest(
             markdown = ">\t\tfoo\n",
             html = "<blockquote>\n<pre><code>  foo\n</code></pre>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testTabsExample7() = doTest(
             markdown = "-\t\tfoo\n",
             html = "<ul>\n<li>\n<pre><code>  foo\n</code></pre>\n</li>\n</ul>\n"
@@ -114,6 +116,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testThematicBreaksExample19() = doTest(
             markdown = "Foo\n    ***\n",
             html = "<p>Foo\n***</p>\n"
@@ -186,6 +189,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testThematicBreaksExample31() = doTest(
             markdown = "- Foo\n- * * *\n",
             html = "<ul>\n<li>Foo</li>\n<li>\n<hr />\n</li>\n</ul>\n"
@@ -198,12 +202,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testATXHeadingsExample33() = doTest(
             markdown = "####### foo\n",
             html = "<p>####### foo</p>\n"
     )
 
     @Test
+    @Ignore
     fun testATXHeadingsExample34() = doTest(
             markdown = "#5 bolt\n\n#hashtag\n",
             html = "<p>#5 bolt</p>\n<p>#hashtag</p>\n"
@@ -240,6 +246,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testATXHeadingsExample40() = doTest(
             markdown = "foo\n    # bar\n",
             html = "<p>foo\n# bar</p>\n"
@@ -306,12 +313,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample51() = doTest(
             markdown = "Foo *bar\nbaz*\n====\n",
             html = "<h1>Foo <em>bar\nbaz</em></h1>\n"
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample52() = doTest(
             markdown = "  Foo *bar\nbaz*\t\n====\n",
             html = "<h1>Foo <em>bar\nbaz</em></h1>\n"
@@ -342,6 +351,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample57() = doTest(
             markdown = "Foo\n    ---\n",
             html = "<p>Foo\n---</p>\n"
@@ -390,6 +400,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testSetextHeadingsExample65() = doTest(
             markdown = "Foo\nBar\n---\n",
             html = "<h2>Foo\nBar</h2>\n"
@@ -498,6 +509,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testIndentedCodeBlocksExample83() = doTest(
             markdown = "Foo\n    bar\n\n",
             html = "<p>Foo\nbar</p>\n"
@@ -648,6 +660,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testFencedCodeBlocksExample108() = doTest(
             markdown = "``` ```\naaa\n",
             html = "<p><code> </code>\naaa</p>\n"
@@ -696,6 +709,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testFencedCodeBlocksExample116() = doTest(
             markdown = "~~~ aa ``` ~~~\nfoo\n~~~\n",
             html = "<pre><code class=\"language-aa\">foo\n</code></pre>\n"
@@ -708,6 +722,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample118() = doTest(
             markdown = "<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>\n",
             html = "<table><tr><td>\n<pre>\n**Hello**,\n<p><em>world</em>.\n</pre></p>\n</td></tr></table>\n"
@@ -756,18 +771,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample126() = doTest(
             markdown = "<div id=\"foo\"\n*hi*\n",
             html = "<div id=\"foo\"\n*hi*\n"
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample127() = doTest(
             markdown = "<div class\nfoo\n",
             html = "<div class\nfoo\n"
     )
 
     @Test
+    @Ignore
     fun testHTMLBlocksExample128() = doTest(
             markdown = "<div *???-&&&-<---\n*foo*\n",
             html = "<div *???-&&&-<---\n*foo*\n"
@@ -984,6 +1002,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample164() = doTest(
             markdown = "[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n",
             html = "<p><a href=\"my%20url\" title=\"title\">Foo bar</a></p>\n"
@@ -1020,6 +1039,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample170() = doTest(
             markdown = "[foo]: <bar>(baz)\n\n[foo]\n",
             html = "<p>[foo]: <bar>(baz)</p>\n<p>[foo]</p>\n"
@@ -1110,6 +1130,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinkReferenceDefinitionsExample185() = doTest(
             markdown = "[foo]: /url\n===\n[foo]\n",
             html = "<p>===\n<a href=\"/url\">foo</a></p>\n"
@@ -1152,12 +1173,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testParagraphsExample192() = doTest(
             markdown = "  aaa\n bbb\n",
             html = "<p>aaa\nbbb</p>\n"
     )
 
     @Test
+    @Ignore
     fun testParagraphsExample193() = doTest(
             markdown = "aaa\n             bbb\n                                       ccc\n",
             html = "<p>aaa\nbbb\nccc</p>\n"
@@ -1194,12 +1217,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testTablesExample199() = doTest(
             markdown = "| abc | defghi |\n:-: | -----------:\nbar | baz\n",
             html = "<table>\n<thead>\n<tr>\n<th align=\"center\">abc</th>\n<th align=\"right\">defghi</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"center\">bar</td>\n<td align=\"right\">baz</td>\n</tr>\n</tbody>\n</table>\n"
     )
 
     @Test
+    @Ignore
     fun testTablesExample200() = doTest(
             markdown = "| f\\|oo  |\n| ------ |\n| b `\\|` az |\n| b **\\|** im |\n",
             html = "<table>\n<thead>\n<tr>\n<th>f|oo</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>b <code>|</code> az</td>\n</tr>\n<tr>\n<td>b <strong>|</strong> im</td>\n</tr>\n</tbody>\n</table>\n"
@@ -1212,6 +1237,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testTablesExample202() = doTest(
             markdown = "| abc | def |\n| --- | --- |\n| bar | baz |\nbar\n\nbar\n",
             html = "<table>\n<thead>\n<tr>\n<th>abc</th>\n<th>def</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>bar</td>\n<td>baz</td>\n</tr>\n<tr>\n<td>bar</td>\n<td></td>\n</tr>\n</tbody>\n</table>\n<p>bar</p>\n"
@@ -1224,6 +1250,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testTablesExample204() = doTest(
             markdown = "| abc | def |\n| --- | --- |\n| bar |\n| bar | baz | boo |\n",
             html = "<table>\n<thead>\n<tr>\n<th>abc</th>\n<th>def</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>bar</td>\n<td></td>\n</tr>\n<tr>\n<td>bar</td>\n<td>baz</td>\n</tr>\n</tbody>\n</table>\n"
@@ -1236,18 +1263,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample206() = doTest(
             markdown = "> # Foo\n> bar\n> baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample207() = doTest(
             markdown = "># Foo\n>bar\n> baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample208() = doTest(
             markdown = "   > # Foo\n   > bar\n > baz\n",
             html = "<blockquote>\n<h1>Foo</h1>\n<p>bar\nbaz</p>\n</blockquote>\n"
@@ -1266,6 +1296,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample211() = doTest(
             markdown = "> bar\nbaz\n> foo\n",
             html = "<blockquote>\n<p>bar\nbaz\nfoo</p>\n</blockquote>\n"
@@ -1296,6 +1327,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample216() = doTest(
             markdown = "> foo\n    - bar\n",
             html = "<blockquote>\n<p>foo\n- bar</p>\n</blockquote>\n"
@@ -1326,6 +1358,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample221() = doTest(
             markdown = "> foo\n> bar\n",
             html = "<blockquote>\n<p>foo\nbar</p>\n</blockquote>\n"
@@ -1374,6 +1407,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testBlockQuotesExample229() = doTest(
             markdown = ">>> foo\n> bar\n>>baz\n",
             html = "<blockquote>\n<blockquote>\n<blockquote>\n<p>foo\nbar\nbaz</p>\n</blockquote>\n</blockquote>\n</blockquote>\n"
@@ -1392,6 +1426,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample232() = doTest(
             markdown = "1.  A paragraph\n    with two lines.\n\n        indented code\n\n    > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
@@ -1440,6 +1475,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample240() = doTest(
             markdown = "- foo\n\n\n  bar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>\n"
@@ -1548,6 +1584,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample258() = doTest(
             markdown = "-\n\n  foo\n",
             html = "<ul>\n<li></li>\n</ul>\n<p>foo</p>\n"
@@ -1578,24 +1615,28 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample263() = doTest(
             markdown = "foo\n*\n\nfoo\n1.\n",
             html = "<p>foo\n*</p>\n<p>foo\n1.</p>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample264() = doTest(
             markdown = " 1.  A paragraph\n     with two lines.\n\n         indented code\n\n     > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample265() = doTest(
             markdown = "  1.  A paragraph\n      with two lines.\n\n          indented code\n\n      > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
     )
 
     @Test
+    @Ignore
     fun testListItemsExample266() = doTest(
             markdown = "   1.  A paragraph\n       with two lines.\n\n           indented code\n\n       > A block quote.\n",
             html = "<ol>\n<li>\n<p>A paragraph\nwith two lines.</p>\n<pre><code>indented code\n</code></pre>\n<blockquote>\n<p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
@@ -1614,6 +1655,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample269() = doTest(
             markdown = "  1.  A paragraph\n    with two lines.\n",
             html = "<ol>\n<li>A paragraph\nwith two lines.</li>\n</ol>\n"
@@ -1626,6 +1668,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample271() = doTest(
             markdown = "> 1. > Blockquote\n> continued here.\n",
             html = "<blockquote>\n<ol>\n<li>\n<blockquote>\n<p>Blockquote\ncontinued here.</p>\n</blockquote>\n</li>\n</ol>\n</blockquote>\n"
@@ -1668,6 +1711,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListItemsExample278() = doTest(
             markdown = "- # Foo\n- Bar\n  ---\n  baz\n",
             html = "<ul>\n<li>\n<h1>Foo</h1>\n</li>\n<li>\n<h2>Bar</h2>\nbaz</li>\n</ul>\n"
@@ -1692,6 +1736,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListsExample284() = doTest(
             markdown = "The number of windows in my house is\n14.  The number of doors is 6.\n",
             html = "<p>The number of windows in my house is\n14.  The number of doors is 6.</p>\n"
@@ -1704,12 +1749,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListsExample286() = doTest(
             markdown = "- foo\n\n- bar\n\n\n- baz\n",
             html = "<ul>\n<li>\n<p>foo</p>\n</li>\n<li>\n<p>bar</p>\n</li>\n<li>\n<p>baz</p>\n</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testListsExample287() = doTest(
             markdown = "- foo\n  - bar\n    - baz\n\n\n      bim\n",
             html = "<ul>\n<li>foo\n<ul>\n<li>bar\n<ul>\n<li>\n<p>baz</p>\n<p>bim</p>\n</li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>\n"
@@ -1740,12 +1787,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testListsExample292() = doTest(
             markdown = "- a\n - b\n  - c\n   - d\n    - e\n",
             html = "<ul>\n<li>a</li>\n<li>b</li>\n<li>c</li>\n<li>d\n- e</li>\n</ul>\n"
     )
 
     @Test
+    @Ignore
     fun testListsExample293() = doTest(
             markdown = "1. a\n\n  2. b\n\n    3. c\n",
             html = "<ol>\n<li>\n<p>a</p>\n</li>\n<li>\n<p>b</p>\n</li>\n</ol>\n<pre><code>3. c\n</code></pre>\n"
@@ -1914,12 +1963,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEntityAndNumericCharacterReferencesExample321() = doTest(
             markdown = "&nbsp; &amp; &copy; &AElig; &Dcaron;\n&frac34; &HilbertSpace; &DifferentialD;\n&ClockwiseContourIntegral; &ngE;\n",
             html = "<p>  &amp; © Æ Ď\n¾ ℋ ⅆ\n∲ ≧̸</p>\n"
     )
 
     @Test
+    @Ignore
     fun testEntityAndNumericCharacterReferencesExample322() = doTest(
             markdown = "&#35; &#1234; &#992; &#0;\n",
             html = "<p># Ӓ Ϡ �</p>\n"
@@ -2034,48 +2085,56 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample341() = doTest(
             markdown = "`  ``  `\n",
             html = "<p><code> `` </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample342() = doTest(
             markdown = "` a`\n",
             html = "<p><code> a</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample343() = doTest(
             markdown = "` b `\n",
             html = "<p><code> b </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample344() = doTest(
             markdown = "` `\n`  `\n",
             html = "<p><code> </code>\n<code>  </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample345() = doTest(
             markdown = "``\nfoo\nbar  \nbaz\n``\n",
             html = "<p><code>foo bar   baz</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample346() = doTest(
             markdown = "``\nfoo \n``\n",
             html = "<p><code>foo </code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample347() = doTest(
             markdown = "`foo   bar \nbaz`\n",
             html = "<p><code>foo   bar  baz</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample348() = doTest(
             markdown = "`foo\\`bar`\n",
             html = "<p><code>foo\\</code>bar`</p>\n"
@@ -2106,6 +2165,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample353() = doTest(
             markdown = "`<a href=\"`\">`\n",
             html = "<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>\n"
@@ -2118,6 +2178,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testCodeSpansExample355() = doTest(
             markdown = "`<http://foo.bar.`baz>`\n",
             html = "<p><code>&lt;http://foo.bar.</code>baz&gt;`</p>\n"
@@ -2244,6 +2305,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample376() = doTest(
             markdown = "*foo bar\n*\n",
             html = "<p>*foo bar\n*</p>\n"
@@ -2508,12 +2570,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample420() = doTest(
             markdown = "*foo**bar**baz*\n",
             html = "<p><em>foo<strong>bar</strong>baz</em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample421() = doTest(
             markdown = "*foo**bar*\n",
             html = "<p><em>foo**bar</em></p>\n"
@@ -2532,12 +2596,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample424() = doTest(
             markdown = "*foo**bar***\n",
             html = "<p><em>foo<strong>bar</strong></em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample425() = doTest(
             markdown = "foo***bar***baz\n",
             html = "<p>foo<em><strong>bar</strong></em>baz</p>\n"
@@ -2616,6 +2682,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample438() = doTest(
             markdown = "**foo*bar*baz**\n",
             html = "<p><strong>foo<em>bar</em>baz</strong></p>\n"
@@ -2664,6 +2731,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample446() = doTest(
             markdown = "foo *\\**\n",
             html = "<p>foo <em>*</em></p>\n"
@@ -2682,6 +2750,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample449() = doTest(
             markdown = "foo **\\***\n",
             html = "<p>foo <strong>*</strong></p>\n"
@@ -2736,6 +2805,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample458() = doTest(
             markdown = "foo _\\__\n",
             html = "<p>foo <em>_</em></p>\n"
@@ -2754,6 +2824,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample461() = doTest(
             markdown = "foo __\\___\n",
             html = "<p>foo <strong>_</strong></p>\n"
@@ -2844,12 +2915,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample476() = doTest(
             markdown = "***foo***\n",
             html = "<p><em><strong>foo</strong></em></p>\n"
     )
 
     @Test
+    @Ignore
     fun testEmphasisAndStrongEmphasisExample477() = doTest(
             markdown = "_____foo_____\n",
             html = "<p><em><strong><strong>foo</strong></strong></em></p>\n"
@@ -2934,6 +3007,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testStrikethroughExample491() = doTest(
             markdown = "~~Hi~~ Hello, world!\n",
             html = "<p><del>Hi</del> Hello, world!</p>\n"
@@ -2970,6 +3044,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample497() = doTest(
             markdown = "[link](/my uri)\n",
             html = "<p>[link](/my uri)</p>\n"
@@ -2988,6 +3063,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample500() = doTest(
             markdown = "[link](<foo\nbar>)\n",
             html = "<p>[link](<foo\nbar>)</p>\n"
@@ -3006,6 +3082,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample503() = doTest(
             markdown = "[a](<b)c\n[a](<b)c>\n[a](<b>c)\n",
             html = "<p>[a](&lt;b)c\n[a](&lt;b)c&gt;\n[a](<b>c)</p>\n"
@@ -3018,6 +3095,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample505() = doTest(
             markdown = "[link](foo(and(bar)))\n",
             html = "<p><a href=\"foo(and(bar))\">link</a></p>\n"
@@ -3060,6 +3138,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample512() = doTest(
             markdown = "[link](\"title\")\n",
             html = "<p><a href=\"%22title%22\">link</a></p>\n"
@@ -3078,6 +3157,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample515() = doTest(
             markdown = "[link](/url \"title\")\n",
             html = "<p><a href=\"/url%C2%A0%22title%22\">link</a></p>\n"
@@ -3144,18 +3224,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample526() = doTest(
             markdown = "[foo [bar](/uri)](/uri)\n",
             html = "<p>[foo <a href=\"/uri\">bar</a>](/uri)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample527() = doTest(
             markdown = "[foo *[bar [baz](/uri)](/uri)*](/uri)\n",
             html = "<p>[foo <em>[bar <a href=\"/uri\">baz</a>](/uri)</em>](/uri)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample528() = doTest(
             markdown = "![[[foo](uri1)](uri2)](uri3)\n",
             html = "<p><img src=\"uri3\" alt=\"[foo](uri2)\" /></p>\n"
@@ -3174,6 +3257,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample531() = doTest(
             markdown = "*foo [bar* baz]\n",
             html = "<p><em>foo [bar</em> baz]</p>\n"
@@ -3192,6 +3276,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample534() = doTest(
             markdown = "[foo<http://example.com/?search=](uri)>\n",
             html = "<p>[foo<a href=\"http://example.com/?search=%5D(uri)\">http://example.com/?search=](uri)</a></p>\n"
@@ -3228,12 +3313,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample540() = doTest(
             markdown = "[foo [bar](/uri)][ref]\n\n[ref]: /uri\n",
             html = "<p>[foo <a href=\"/uri\">bar</a>]<a href=\"/uri\">ref</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample541() = doTest(
             markdown = "[foo *bar [baz][ref]*][ref]\n\n[ref]: /uri\n",
             html = "<p>[foo <em>bar <a href=\"/uri\">baz</a></em>]<a href=\"/uri\">ref</a></p>\n"
@@ -3264,6 +3351,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample546() = doTest(
             markdown = "[foo<http://example.com/?search=][ref]>\n\n[ref]: /uri\n",
             html = "<p>[foo<a href=\"http://example.com/?search=%5D%5Bref%5D\">http://example.com/?search=][ref]</a></p>\n"
@@ -3288,12 +3376,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample550() = doTest(
             markdown = "[foo] [bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo] <a href=\"/url\" title=\"title\">bar</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample551() = doTest(
             markdown = "[foo]\n[bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo]\n<a href=\"/url\" title=\"title\">bar</a></p>\n"
@@ -3348,6 +3438,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample560() = doTest(
             markdown = "[\n ]\n\n[\n ]: /uri\n",
             html = "<p>[\n]</p>\n<p>[\n]: /uri</p>\n"
@@ -3372,6 +3463,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample564() = doTest(
             markdown = "[foo] \n[]\n\n[foo]: /url \"title\"\n",
             html = "<p><a href=\"/url\" title=\"title\">foo</a>\n[]</p>\n"
@@ -3444,12 +3536,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample576() = doTest(
             markdown = "[foo](not a link)\n\n[foo]: /url1\n",
             html = "<p><a href=\"/url1\">foo</a>(not a link)</p>\n"
     )
 
     @Test
+    @Ignore
     fun testLinksExample577() = doTest(
             markdown = "[foo][bar][baz]\n\n[baz]: /url\n",
             html = "<p>[foo]<a href=\"/url\">bar</a></p>\n"
@@ -3462,6 +3556,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testLinksExample579() = doTest(
             markdown = "[foo][bar][baz]\n\n[baz]: /url1\n[foo]: /url2\n",
             html = "<p>[foo]<a href=\"/url1\">bar</a></p>\n"
@@ -3480,12 +3575,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testImagesExample582() = doTest(
             markdown = "![foo ![bar](/url)](/url2)\n",
             html = "<p><img src=\"/url2\" alt=\"foo bar\" /></p>\n"
     )
 
     @Test
+    @Ignore
     fun testImagesExample583() = doTest(
             markdown = "![foo [bar](/url)](/url2)\n",
             html = "<p><img src=\"/url2\" alt=\"foo bar\" /></p>\n"
@@ -3558,6 +3655,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testImagesExample595() = doTest(
             markdown = "![foo] \n[]\n\n[foo]: /url \"title\"\n",
             html = "<p><img src=\"/url\" alt=\"foo\" title=\"title\" />\n[]</p>\n"
@@ -3624,12 +3722,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample606() = doTest(
             markdown = "<a+b+c:d>\n",
             html = "<p><a href=\"a+b+c:d\">a+b+c:d</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample607() = doTest(
             markdown = "<made-up-scheme://foo,bar>\n",
             html = "<p><a href=\"made-up-scheme://foo,bar\">made-up-scheme://foo,bar</a></p>\n"
@@ -3648,24 +3748,28 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample610() = doTest(
             markdown = "<http://foo.bar/baz bim>\n",
             html = "<p>&lt;http://foo.bar/baz bim&gt;</p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample611() = doTest(
             markdown = "<http://example.com/\\[\\>\n",
             html = "<p><a href=\"http://example.com/%5C%5B%5C\">http://example.com/\\[\\</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample612() = doTest(
             markdown = "<foo@bar.example.com>\n",
             html = "<p><a href=\"mailto:foo@bar.example.com\">foo@bar.example.com</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample613() = doTest(
             markdown = "<foo+special@Bar.baz-bar0.com>\n",
             html = "<p><a href=\"mailto:foo+special@Bar.baz-bar0.com\">foo+special@Bar.baz-bar0.com</a></p>\n"
@@ -3684,12 +3788,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample616() = doTest(
             markdown = "< http://foo.bar >\n",
             html = "<p>&lt; http://foo.bar &gt;</p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample617() = doTest(
             markdown = "<m:abc>\n",
             html = "<p>&lt;m:abc&gt;</p>\n"
@@ -3702,6 +3808,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample619() = doTest(
             markdown = "http://example.com\n",
             html = "<p>http://example.com</p>\n"
@@ -3744,12 +3851,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample626() = doTest(
             markdown = "www.google.com/search?q=commonmark&hl=en\n\nwww.google.com/search?q=commonmark&hl;\n",
             html = "<p><a href=\"http://www.google.com/search?q=commonmark&amp;hl=en\">www.google.com/search?q=commonmark&amp;hl=en</a></p>\n<p><a href=\"http://www.google.com/search?q=commonmark\">www.google.com/search?q=commonmark</a>&amp;hl;</p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample627() = doTest(
             markdown = "www.commonmark.org/he<lp\n",
             html = "<p><a href=\"http://www.commonmark.org/he\">www.commonmark.org/he</a>&lt;lp</p>\n"
@@ -3762,18 +3871,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample629() = doTest(
             markdown = "foo@bar.baz\n",
             html = "<p><a href=\"mailto:foo@bar.baz\">foo@bar.baz</a></p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample630() = doTest(
             markdown = "hello@mail+xyz.example isn't valid, but hello+xyz@mail.example is.\n",
             html = "<p>hello@mail+xyz.example isn't valid, but <a href=\"mailto:hello+xyz@mail.example\">hello+xyz@mail.example</a> is.</p>\n"
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample631() = doTest(
             markdown = "a.b-c_d@a.b\n\na.b-c_d@a.b.\n\na.b-c_d@a.b-\n\na.b-c_d@a.b_\n",
             html = "<p><a href=\"mailto:a.b-c_d@a.b\">a.b-c_d@a.b</a></p>\n<p><a href=\"mailto:a.b-c_d@a.b\">a.b-c_d@a.b</a>.</p>\n<p>a.b-c_d@a.b-</p>\n<p>a.b-c_d@a.b_</p>\n"
@@ -3792,18 +3904,21 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample634() = doTest(
             markdown = "<a  /><b2\ndata=\"foo\" >\n",
             html = "<p><a  /><b2\ndata=\"foo\" ></p>\n"
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample635() = doTest(
             markdown = "<a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 />\n",
             html = "<p><a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 /></p>\n"
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample636() = doTest(
             markdown = "Foo <responsive-image src=\"foo.jpg\" />\n",
             html = "<p>Foo <responsive-image src=\"foo.jpg\" /></p>\n"
@@ -3864,6 +3979,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample646() = doTest(
             markdown = "foo <!--> foo -->\n\nfoo <!-- foo--->\n",
             html = "<p>foo &lt;!--&gt; foo --&gt;</p>\n<p>foo &lt;!-- foo---&gt;</p>\n"
@@ -3876,6 +3992,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample648() = doTest(
             markdown = "foo <!ELEMENT br EMPTY>\n",
             html = "<p>foo <!ELEMENT br EMPTY></p>\n"
@@ -3900,12 +4017,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testRawHTMLExample652() = doTest(
             markdown = "<a href=\"\\\"\">\n",
             html = "<p>&lt;a href=&quot;&quot;&quot;&gt;</p>\n"
     )
 
     @Test
+    @Ignore
     fun testDisallowedRawHTMLExample653() = doTest(
             markdown = "<strong> <title> <style> <em>\n\n<blockquote>\n  <xmp> is disallowed.  <XMP> is also disallowed.\n</blockquote>\n",
             html = "<p><strong> &lt;title> &lt;style> <em></p>\n<blockquote>\n  &lt;xmp> is disallowed.  &lt;XMP> is also disallowed.\n</blockquote>\n"
@@ -3930,12 +4049,14 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample657() = doTest(
             markdown = "foo  \n     bar\n",
             html = "<p>foo<br />\nbar</p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample658() = doTest(
             markdown = "foo\\\n     bar\n",
             html = "<p>foo<br />\nbar</p>\n"
@@ -3954,24 +4075,28 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample661() = doTest(
             markdown = "`code  \nspan`\n",
             html = "<p><code>code   span</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample662() = doTest(
             markdown = "`code\\\nspan`\n",
             html = "<p><code>code\\ span</code></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample663() = doTest(
             markdown = "<a href=\"foo  \nbar\">\n",
             html = "<p><a href=\"foo  \nbar\"></p>\n"
     )
 
     @Test
+    @Ignore
     fun testHardLineBreaksExample664() = doTest(
             markdown = "<a href=\"foo\\\nbar\">\n",
             html = "<p><a href=\"foo\\\nbar\"></p>\n"
@@ -4008,6 +4133,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testSoftLineBreaksExample670() = doTest(
             markdown = "foo \n baz\n",
             html = "<p>foo\nbaz</p>\n"
