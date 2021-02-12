@@ -101,10 +101,10 @@ private fun MavenPublication.configurePom() {
                 distribution.set("repo")
             }
         }
-        url.set("https://github.com/valich/intellij-markdown")
+        url.set("https://github.com/JetBrains/markdown")
         scm {
-            url.set("https://github.com/valich/intellij-markdown")
-            connection.set("scm:git:git://github.com/valich/intellij-markdown.git")
+            url.set("https://github.com/JetBrains/markdown")
+            connection.set("scm:git:git://github.com/JetBrains/markdown.git")
         }
         developers {
             developer {
