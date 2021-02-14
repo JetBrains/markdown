@@ -43,21 +43,23 @@ publishing {
             }
         }
     }
-}
-
-bintray {
-    publish = false
-    
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['MyPublication']
-    pkg {
-        userOrg = 'jetbrains'
-        repo = "markdown"
-        name = "markdown"
-        version {
-            name = "0.1.$buildNumber"
-            released = new Date()
+    repositories {
+        maven {
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = System.getenv("SONATYPE_USER")
+                password = System.getenv("SONATYPE_PASSWORD")
+            }
         }
     }
+}
+
+signing {
+    def signingKey = System.getenv("SIGN_KEY")
+    def signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
+    useInMemoryPgpKeys(signingKey, signingKeyPassphrase)
+    sign publishing.publications.MyPublication
 }
