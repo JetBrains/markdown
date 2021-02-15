@@ -52,9 +52,7 @@ kotlin {
     linuxX64()
     mingwX64()
     macosX64()
-// Disabled until test data loading is fixed. iOS tests run on the simulator, and so don't have
-// access to test resources on the local file system.
-//    ios()
+    ios()
 
     sourceSets {
         val commonMain by getting {
@@ -66,10 +64,15 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        val fileBasedTest by creating {
+            dependsOn(commonTest)
+        }
         val jvmMain by getting {
 
         }
         val jvmTest by getting {
+            dependsOn(fileBasedTest)
+
             dependencies {
                 implementation(kotlin("test-junit"))
             }
@@ -78,6 +81,8 @@ kotlin {
 
         }
         val jsTest by getting {
+            dependsOn(fileBasedTest)
+
             dependencies {
                 implementation(kotlin("test-js"))
             }
@@ -94,25 +99,27 @@ kotlin {
         val macosX64Main by getting {
             dependsOn(nativeMain)
         }
-//        val iosMain by getting {
-//            dependsOn(nativeMain)
-//        }
+        val iosMain by getting {
+            dependsOn(nativeMain)
+        }
 
         val nativeTest by creating {
             dependsOn(commonTest)
         }
         val linuxX64Test by getting {
             dependsOn(nativeTest)
+            dependsOn(fileBasedTest)
         }
         val mingwX64Test by getting {
             dependsOn(nativeTest)
+            dependsOn(fileBasedTest)
         }
         val macosX64Test by getting {
             dependsOn(nativeTest)
+            dependsOn(fileBasedTest)
         }
-//        val iosTest by getting {
-//            dependsOn(nativeTest)
-//        }
+        val iosTest by getting {
+        }
     }
 }
 
