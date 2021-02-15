@@ -9,7 +9,7 @@ import kotlin.test.*
 
 @Category(ParserPerformanceTest::class) class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
-        return File(getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/performance").absolutePath
+        return File(getIntellijMarkdownHome() + "/src/jvmTest/resources/data/performance").absolutePath
     }
 
     private fun defaultTest(fullParse: Boolean) {
@@ -56,7 +56,7 @@ import kotlin.test.*
     fun testCommonMarkSpecFull() {
         defaultTest(true)
     }
-    
+
     @Test
     fun testFogChangelog() {
         defaultTest(false)
