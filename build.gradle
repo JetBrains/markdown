@@ -39,6 +39,10 @@ sourceSets {
     main.resources.srcDirs = []
 }
 
+java {
+    withJavadocJar()
+}
+
 test {
     useJUnit {
         excludeCategories 'org.intellij.markdown.ParserPerformanceTest'
