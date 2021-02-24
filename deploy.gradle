@@ -3,6 +3,11 @@ task sourcesJar(type: Jar) {
     classifier "sources"
 }
 
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier "javadoc"
+}
+
 def pomConfig = {
     licenses {
         license {
@@ -31,6 +36,7 @@ publishing {
         MyPublication(MavenPublication) {
             from components.java
             artifact sourcesJar
+            artifact javadocJar
             groupId 'org.jetbrains'
             artifactId 'markdown'
             version "0.1.$buildNumber"

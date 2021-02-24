@@ -1,6 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.3.41'
-    ext.buildNumber = '45'
+    ext.buildNumber = '46'
 
     repositories {
         jcenter()
@@ -39,8 +39,7 @@ sourceSets {
     main.resources.srcDirs = []
 }
 
-java {
-    withJavadocJar()
+javadoc {
 }
 
 test {
