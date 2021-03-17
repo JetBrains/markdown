@@ -46,10 +46,8 @@ kotlin {
             }
         }
     }
-    js(LEGACY) {
-        nodejs {
-            binaries.executable()
-        }
+    js(BOTH) {
+        nodejs {}
     }
     linuxX64()
     mingwX64()
@@ -82,7 +80,6 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
-                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
             }
         }
         val nativeMain by creating {
