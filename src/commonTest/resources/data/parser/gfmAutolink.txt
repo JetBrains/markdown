@@ -230,3 +230,38 @@ Markdown:MARKDOWN_FILE
       Markdown:LINK_DESTINATION
         Markdown:TEXT('id')
       Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:TEXT('Rust')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:GFM_AUTOLINK('https://jetbrains.team/team?team=Rust-MNVpW0Zos2C')
+      Markdown:)(')')
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:TEXT('💬')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:GFM_AUTOLINK('https://jetbrains.team/m/Arseniy.Pendryak')
+      Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:HTML_TAG('<i>')
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:TEXT('1')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:GFM_AUTOLINK('http://a/b')
+      Markdown:)(')')
+    Markdown:HTML_TAG('</i>')

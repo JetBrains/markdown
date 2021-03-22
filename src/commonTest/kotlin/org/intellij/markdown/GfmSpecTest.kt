@@ -3843,6 +3843,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
+    @Ignore
     fun testAutolinksExample625() = doTest(
             markdown = "www.google.com/search?q=(business))+ok\n",
             html = "<p><a href=\"http://www.google.com/search?q=(business))+ok\">www.google.com/search?q=(business))+ok</a></p>\n"

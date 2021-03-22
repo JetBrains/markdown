@@ -81,3 +81,7 @@ https://google.com/p/
 Reference link [https://github.com/nodeca/pica][id]
 
 Inline link [https://github.com/nodeca/pica](id)
+
+[Rust](https://jetbrains.team/team?team=Rust-MNVpW0Zos2C)[💬](https://jetbrains.team/m/Arseniy.Pendryak)
+
+<i>[1](http://a/b)</i>
