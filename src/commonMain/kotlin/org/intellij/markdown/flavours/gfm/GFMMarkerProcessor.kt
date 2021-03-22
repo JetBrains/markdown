@@ -19,10 +19,7 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Co
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
     private val markerBlockProviders = super.getMarkerBlockProviders()
-            .filterNot { it is AtxHeaderProvider }
-            .plus(listOf(
-                    GitHubTableMarkerProvider(),
-                    AtxHeaderProvider(false)))
+            .plus(listOf(GitHubTableMarkerProvider()))
 
     override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {
         return markerBlockProviders

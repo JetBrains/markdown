@@ -209,7 +209,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testATXHeadingsExample34() = doTest(
             markdown = "#5 bolt\n\n#hashtag\n",
             html = "<p>#5 bolt</p>\n<p>#hashtag</p>\n"

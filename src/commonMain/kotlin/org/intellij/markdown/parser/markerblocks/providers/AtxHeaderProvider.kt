@@ -8,7 +8,7 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.AtxHeaderMarkerBlock
 
-class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class AtxHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -60,7 +60,7 @@ class AtxHeaderProvider(private val requireSpace: Boolean) : MarkerBlockProvider
                 }
             }
             
-            if (requireSpace && offset < text.length && text[offset] != ' ') {
+            if (offset < text.length && text[offset] !in listOf(' ', '\t')) {
                 return null
             }
             return IntRange(start, offset - 1)
