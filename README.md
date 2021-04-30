@@ -39,7 +39,7 @@ add the main artifact as a dependency:
 dependencies {
     // other deps...
 
-    implementation "org.jetbrains:markdown:0.2.0.pre-55"
+    implementation "org.jetbrains:markdown:0.2.2"
 }
 ```
 
@@ -49,15 +49,15 @@ If you are writing **multiplatform** project as well, you can add one dependency
 ```groovy
 commonMain {
      dependencies {
-         implementation "org.jetbrains:markdown:0.2.0.pre-55"
+         implementation "org.jetbrains:markdown:0.2.2"
      }
  }
 ```
 
 If you are using Maven or older gradle, you should specify the respective artifact for your platform,
 e.g.
-* `org.jetbrains:markdown-jvm:0.2.0.pre-55` for jvm version
-* `org.jetbrains:markdown-js:0.2.0.pre-55` for js version
+* `org.jetbrains:markdown-jvm:0.2.2` for jvm version
+* `org.jetbrains:markdown-js:0.2.2` for js version
 
 ### Using `intellij-markdown` for parsing and generating html
 
