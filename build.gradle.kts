@@ -223,6 +223,8 @@ val publicationsToArtifacts = mapOf(
         "linuxX64" to "markdown-linuxx64",
         "mingwX64" to "markdown-mingwx64",
         "macosX64" to "markdown-macosx64",
+        "iosX64" to "markdown-iosx64",
+        "iosArm64" to "markdown-iosarm64",
         "metadata" to "markdown-metadata"
 )
 
