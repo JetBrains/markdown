@@ -21,14 +21,11 @@ Usage
 
 ### Adding `intellij-markdown` as a dependency
 
-The library is hosted in jcenter and bintray, so in order to add it you need to set up one of repositories:
+The library is hosted in [mavenCentral](https://search.maven.org/artifact/org.jetbrains/markdown), so you need it configured like this:
+
 ```groovy
 repositories {
-    // other repos...
-    
-    // select one of these
-    jcenter()
-    maven { url "https://dl.bintray.com/jetbrains/markdown" }
+    mavenCentral()
 }
 ```
 
