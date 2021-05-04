@@ -1,8 +1,11 @@
 package org.intellij.markdown.html
 
 import org.intellij.markdown.ast.ASTNode
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 private val UNSAFE_LINK_REGEX = Regex("^(vbscript|javascript|file|data):", RegexOption.IGNORE_CASE)
+@SharedImmutable
 private val ALLOWED_DATA_LINK_REGEX = Regex("^data:image/(gif|png|jpeg|webp);", RegexOption.IGNORE_CASE)
 
 fun makeXssSafeDestination(s: CharSequence): CharSequence {

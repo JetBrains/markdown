@@ -5,6 +5,7 @@ import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
 import platform.posix.*
+import kotlin.native.concurrent.SharedImmutable
 import kotlin.test.assertEquals
 
 actual fun readFromFile(path: String): String {
@@ -27,6 +28,7 @@ actual fun assertSameLinesWithFile(path: String, result: String) {
     assertEquals(fileText, result)
 }
 
+@SharedImmutable
 private val intellijMarkdownHome: Lazy<String> = lazy {
     memScoped {
         val buffer = allocArray<ByteVar>(PATH_MAX)

@@ -3,6 +3,7 @@ package org.intellij.markdown
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
+import kotlin.native.concurrent.SharedImmutable
 import kotlin.test.assertEquals
 
 
@@ -17,6 +18,7 @@ abstract class SpecTest(private val flavour: MarkdownFlavourDescriptor) {
     }
 }
 
+@SharedImmutable
 private val HTML_TAG_REGEX = Regex("<[^>]+>")
 
 /** Remove newlines from [html], unless they occur in a tag or within text enclosed by `<pre>` tags. */

@@ -9,8 +9,11 @@ import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
+import kotlin.native.concurrent.SharedImmutable
 
 typealias AttributesCustomizer = (node: ASTNode, tagName: CharSequence, attributes: Iterable<CharSequence?>) -> Iterable<CharSequence?>
+
+@SharedImmutable
 val DUMMY_ATTRIBUTES_CUSTOMIZER: AttributesCustomizer = { _, _, attributes -> attributes }
 
 class HtmlGenerator(private val markdownText: String,

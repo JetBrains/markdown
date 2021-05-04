@@ -7,7 +7,9 @@ import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.URI
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkdownParser
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 private val defaultTagRenderer = HtmlGenerator.DefaultTagRenderer(DUMMY_ATTRIBUTES_CUSTOMIZER, false)
 
 abstract class HtmlGeneratorTestBase : TestCase() {
