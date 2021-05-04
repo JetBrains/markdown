@@ -2,6 +2,9 @@ import java.io.ByteArrayOutputStream
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 
@@ -121,8 +124,21 @@ kotlin {
         val iosTest by getting {
         }
     }
-}
 
+    targets.withType<KotlinNativeTargetWithTests<*>> {
+        binaries {
+            // Configure a separate test where code runs in background
+            test("background", setOf(NativeBuildType.DEBUG)) {
+                freeCompilerArgs += "-trw"
+            }
+        }
+        testRuns {
+            val background by creating {
+                setExecutionSourceFrom(binaries.getByName("backgroundDebugTest") as TestExecutable)
+            }
+        }
+    }
+}
 
 tasks {
     register<Test>("performanceTest") {
