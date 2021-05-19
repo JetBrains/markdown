@@ -263,7 +263,7 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
     }
 
     override fun toString(): String {
-        return "MdConstraints: " + String(types) + "(" + indent + ")"
+        return "MdConstraints: " + types.concatToString() + "(" + indent + ")"
     }
 
     companion object {
