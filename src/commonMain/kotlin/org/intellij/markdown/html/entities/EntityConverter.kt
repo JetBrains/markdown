@@ -3,7 +3,7 @@ package org.intellij.markdown.html.entities
 import kotlin.text.Regex
 
 object EntityConverter {
-    private const val escapeAllowedString = "\\!\"#\\$%&'\\(\\)\\*\\+,\\-.\\/:;<=>\\?@\\[\\\\\\]\\^_`{\\|}\\~"
+    private const val escapeAllowedString = """!"#\$%&'\(\)\*\+,\-.\/:;<=>\?@\[\\\]\^_`{\|}~"""
     private val replacements: Map<Char, String> = mapOf(
         '"' to "&quot;",
         '&' to "&amp;",
@@ -11,7 +11,7 @@ object EntityConverter {
         '>' to "&gt;"
     )
 
-    private val REGEX = Regex("&(?:([a-zA-Z0-9]+)|#([0-9]{1,8})|#[xX]([a-fA-F0-9]{1,8}));|([\"&<>])")
+    private val REGEX = Regex("""&(?:([a-zA-Z0-9]+)|#([0-9]{1,8})|#[xX]([a-fA-F0-9]{1,8}));|(["&<>])""")
     private val REGEX_ESCAPES = Regex("${REGEX.pattern}|\\\\([${escapeAllowedString}])")
 
     fun replaceEntities(text: CharSequence, processEntities: Boolean, processEscapes: Boolean): String {
