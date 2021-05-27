@@ -6,7 +6,7 @@ import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 
 plugins {
-    kotlin("multiplatform") version "1.4.10"
+    kotlin("multiplatform") version "1.5.10"
     id("org.jetbrains.dokka") version "1.4.20"
     id("com.jfrog.bintray")
     `maven-publish`
