@@ -154,7 +154,7 @@ entities (i.e. nodes) is given. In order to work with the results effectively it
 the [AST].
 
 As a result, a root [AST node] corresponding to the parsed markdown document is returned. Each AST node has
-own type which is called [IElementType](src/org/intellij/markdown/IElementType.kt) as in IntelliJ Platform.
+own type which is called [IElementType](src/commonMain/kotlin/org/intellij/markdown/IElementType.kt) as in IntelliJ Platform.
 
 ### Generating HTML
 
@@ -168,7 +168,7 @@ Extending the parser
 Many routines in the above process can be extended or redefined by creating a different markdown flavours.
 The minimal default is [CommonMark] which is implemented in this project. 
 Github Flavoured Markdown (which is also implemented) is an example of extending CommonMark flavour. It can be
-used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavourDescriptor.kt) for implementing your own
+used as a [reference](src/commonMain/kotlin/org/intellij/markdown/flavours/gfm/GFMFlavourDescriptor.kt) for implementing your own
 markdown features.
 
 Below is a tree representing a big part of the API.
@@ -176,10 +176,10 @@ Below is a tree representing a big part of the API.
 API
 ---
 
-* [`MarkdownFlavourDescriptor`](src/org/intellij/markdown/flavours/MarkdownFlavourDescriptor.kt)
+* [`MarkdownFlavourDescriptor`](src/commonMain/kotlin/org/intellij/markdown/flavours/MarkdownFlavourDescriptor.kt)
     is a base class for extending markdown parser.
 
-    * [`markerProcessorFactory`](src/org/intellij/markdown/parser/MarkerProcessorFactory.kt)
+    * [`markerProcessorFactory`](src/commonMain/kotlin/org/intellij/markdown/parser/MarkerProcessorFactory.kt)
         is responsible for block structure customization.
 
         * `stateInfo` value allows to use a state during document parsing procedure.
@@ -189,16 +189,16 @@ API
         * `populateConstraintsTokens` is called to create nodes for block structure markers at the beginning
           of the lines (for example, `>` characters constituting blockquotes)
 
-        * [`getMarkerBlockProviders`](src/org/intellij/markdown/parser/markerblocks/MarkerBlockProvider.kt)
+        * [`getMarkerBlockProviders`](src/commonMain/kotlin/org/intellij/markdown/parser/markerblocks/MarkerBlockProvider.kt)
             is a place to (re)define types of block structures
 
-    * [`sequentialParserManager`](src/org/intellij/markdown/parser/sequentialparsers/SequentialParserManager.kt)
+    * [`sequentialParserManager`](src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParserManager.kt)
 
         `getParserSequence` defines inlines parsing procedure. The method must return a list of SequentialParsers
         where the earliest parsers have the biggest operation precedence. For example, to parse code spans and emph
         with correct priority, the list should be [CodeSpanParser, EmphParser] but not the opposite.
 
-        [`SequentialParser`](src/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt) has only one method:
+        [`SequentialParser`](src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt) has only one method:
 
         `parse(tokens: TokensCache, rangesToGlue: List<IntRange>): ParsingResult`
         * `tokens` is a special holder for the tokens returned by lexer
@@ -213,10 +213,10 @@ API
           Considering the same input for the code span parser the result would be `` `code * span` ``
           of the type "code span" and the delegate pieces would be [`A * emph `, ` b * c`].
 
-    * [`createInlinesLexer`](src/org/intellij/markdown/lexer/MarkdownLexer.kt) should return the lexer to split the text
+    * [`createInlinesLexer`](src/commonMain/kotlin/org/intellij/markdown/lexer/MarkdownLexer.kt) should return the lexer to split the text
       to the tokens before inline parsing procedure run.
 
-    * [`createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?)`](src/org/intellij/markdown/html/GeneratingProvider.kt)
+    * [`createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?)`](src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProvider.kt)
       is the place where generated HTML is customized. This method should return a map which defines how to handle
       the particular kinds of the nodes in the resulting tree.
 
@@ -230,7 +230,7 @@ API
       * `text` is the whole document being processed,
       * `node` is the node being given to the provider,
       * `visitor` is a special object responsible for the HTML generation.
-        See [`GeneratingProviders.kt`](src/org/intellij/markdown/html/GeneratingProviders.kt) for the samples.
+        See [`GeneratingProviders.kt`](src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProviders.kt) for the samples.
 
 [self]: https://github.com/valich/intellij-markdown
 [Kotlin]: https://github.com/JetBrains/kotlin
@@ -242,9 +242,9 @@ API
 [DFS]: https://en.wikipedia.org/wiki/Depth-first_search 'Wikipedia reference'
 [CommonMark]: http://commonmark.org
 
-[marker processor]: src/org/intellij/markdown/parser/MarkerProcessor.kt
-[marker block]: src/org/intellij/markdown/parser/markerblocks/MarkerBlock.kt
-[sequential parser]: src/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt
-[ast node]: src/org/intellij/markdown/ast/ASTNode.kt
-[generating provider]: src/org/intellij/markdown/html/GeneratingProvider.kt
-[lexer]: src/org/intellij/markdown/lexer/MarkdownLexer.kt
+[marker processor]: src/commonMain/kotlin/org/intellij/markdown/parser/MarkerProcessor.kt
+[marker block]: src/commonMain/kotlin/org/intellij/markdown/parser/markerblocks/MarkerBlock.kt
+[sequential parser]: src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt
+[ast node]: src/commonMain/kotlin/org/intellij/markdown/ast/ASTNode.kt
+[generating provider]: src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProvider.kt
+[lexer]: src/commonMain/kotlin/org/intellij/markdown/lexer/MarkdownLexer.kt
