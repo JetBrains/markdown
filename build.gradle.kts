@@ -1,12 +1,12 @@
-import java.io.ByteArrayOutputStream
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
+import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("multiplatform") version "1.5.0"
+    kotlin("multiplatform") version "1.5.31"
     id("org.jetbrains.dokka") version "1.4.32"
     `maven-publish`
     signing
@@ -50,6 +50,10 @@ kotlin {
     linuxX64()
     mingwX64()
     macosX64()
+    macosArm64()
+    iosSimulatorArm64()
+    watchosSimulatorArm64()
+    tvosSimulatorArm64()
     ios()
 
     sourceSets {
@@ -58,8 +62,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
         val fileBasedTest by creating {
@@ -70,51 +73,29 @@ kotlin {
         }
         val jvmTest by getting {
             dependsOn(fileBasedTest)
-
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
         }
         val jsMain by getting {
 
         }
         val jsTest by getting {
             dependsOn(fileBasedTest)
-
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
         }
         val nativeMain by creating {
             dependsOn(commonMain)
         }
-        val linuxX64Main by getting {
-            dependsOn(nativeMain)
-        }
-        val mingwX64Main by getting {
-            dependsOn(nativeMain)
-        }
-        val macosX64Main by getting {
-            dependsOn(nativeMain)
-        }
-        val iosMain by getting {
-            dependsOn(nativeMain)
+        listOf("linuxX64", "mingwX64", "macosX64", "macosArm64", "ios", "iosSimulatorArm64",
+            "watchosSimulatorArm64", "tvosSimulatorArm64").forEach { target ->
+            getByName("${target}Main").dependsOn(nativeMain)
         }
 
         val nativeTest by creating {
             dependsOn(commonTest)
         }
-        val linuxX64Test by getting {
-            dependsOn(nativeTest)
-            dependsOn(fileBasedTest)
-        }
-        val mingwX64Test by getting {
-            dependsOn(nativeTest)
-            dependsOn(fileBasedTest)
-        }
-        val macosX64Test by getting {
-            dependsOn(nativeTest)
-            dependsOn(fileBasedTest)
+
+        listOf("linuxX64", "mingwX64", "macosX64", "macosArm64").forEach { target ->
+            val sourceSet = getByName("${target}Test")
+            sourceSet.dependsOn(nativeTest)
+            sourceSet.dependsOn(fileBasedTest)
         }
         val iosTest by getting {
         }
