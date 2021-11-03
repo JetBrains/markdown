@@ -51,9 +51,8 @@ actual abstract class TestCase {
                     .map { it.split('.').last() }
                     .filter { it.startsWith("test") }
                     .map {
-                        // Kotlin-JS compiler might add _<number> to method names
-                        val trimMatch = it.match("^(\\S+)_\\d+$")
-                        trimMatch?.get(1) ?: it
+                        // Kotlin-JS compiler might add _<id> to method names
+                        it.split('_', limit = 2).first()
                     }
                     .first()
         }
