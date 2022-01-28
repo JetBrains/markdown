@@ -59,6 +59,8 @@ class RangesListBuilder {
         if (lastStart != -239) {
             list.add(lastStart..lastEnd)
         }
+        lastStart = -239
+        lastEnd = -239
         return list
     }
 
