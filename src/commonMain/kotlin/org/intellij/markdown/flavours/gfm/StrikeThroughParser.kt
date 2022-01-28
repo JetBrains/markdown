@@ -9,13 +9,14 @@ import org.intellij.markdown.parser.sequentialparsers.TokensCache
 class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
-        val delegateIndices = RangesListBuilder()
+        val outerDelegateIndices = RangesListBuilder()
+        var innerDelegateIndices: RangesListBuilder? = null
         var lastOpenedPos: Int? = null
         var iterator = tokens.RangesListIterator(rangesToGlue)
 
         while (iterator.type != null) {
             if (iterator.type != GFMTokenTypes.TILDE) {
-                delegateIndices.put(iterator.index)
+                (innerDelegateIndices ?: outerDelegateIndices).put(iterator.index)
                 iterator = iterator.advance()
                 continue
             }
@@ -25,29 +26,33 @@ class StrikeThroughParser : SequentialParser {
                     && iterator.rawLookup(1) == GFMTokenTypes.TILDE) {
                 iterator = iterator.advance()
                 result.withNode(SequentialParser.Node(lastOpenedPos..iterator.index + 1, GFMElementTypes.STRIKETHROUGH))
+                    .withFurtherProcessing(requireNotNull(innerDelegateIndices).get())
                 iterator = iterator.advance()
                 lastOpenedPos = null
+                innerDelegateIndices = null
+
                 continue
             }
             if (lastOpenedPos == null
                     && iterator.rawLookup(1) == GFMTokenTypes.TILDE
                     && isGoodType(iterator.rawLookup(2))) {
                 lastOpenedPos = iterator.index
+                innerDelegateIndices = RangesListBuilder()
                 iterator = iterator.advance().advance()
                 continue
             }
 
-            delegateIndices.put(iterator.index)
+            (innerDelegateIndices ?: outerDelegateIndices).put(iterator.index)
             iterator = iterator.advance()
         }
 
         if (lastOpenedPos != null) {
-            for (delta in 0..1) {
-                delegateIndices.put(lastOpenedPos + delta)
-            }
+            outerDelegateIndices.put(lastOpenedPos)
+            outerDelegateIndices.put(lastOpenedPos + 1)
+            outerDelegateIndices.put(requireNotNull(innerDelegateIndices))
         }
 
-        return result.withFurtherProcessing(delegateIndices.get())
+        return result.withFurtherProcessing(outerDelegateIndices.get())
     }
 
     private fun isGoodType(type: IElementType?): Boolean {

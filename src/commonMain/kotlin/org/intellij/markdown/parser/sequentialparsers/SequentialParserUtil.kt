@@ -48,20 +48,33 @@ class RangesListBuilder {
             lastEnd = index
             return
         }
-        if (lastStart != -239) {
-            list.add(lastStart..lastEnd)
+        flush(index)
+    }
+
+    fun put(other: RangesListBuilder) {
+        val otherRanges = other.get()
+        if (lastEnd + 1 == otherRanges.firstOrNull()?.first) {
+            lastEnd = otherRanges.first().last
+            flush(-239)
+            list.addAll(otherRanges.drop(1))
         }
-        lastStart = index
-        lastEnd = index
+        else {
+            flush(-239)
+            list.addAll(otherRanges)
+        }
     }
 
     fun get(): List<IntRange> {
+        flush(-239)
+        return list
+    }
+
+    private fun flush(newIndex: Int) {
         if (lastStart != -239) {
             list.add(lastStart..lastEnd)
         }
-        lastStart = -239
-        lastEnd = -239
-        return list
+        lastStart = newIndex
+        lastEnd = newIndex
     }
 
 }
