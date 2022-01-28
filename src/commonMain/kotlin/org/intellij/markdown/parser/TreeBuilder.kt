@@ -30,7 +30,9 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
                     ArrayList()
                 } else {
                     val eventAndChildren = markersStack.pop()
-                    assert(eventAndChildren.first.info == event.info)
+                    assert(eventAndChildren.first.info == event.info) {
+                        "Intersecting parsed nodes detected: ${eventAndChildren.first.info} vs ${event.info}"
+                    }
                     eventAndChildren.second
                 }
                 val isTopmostNode = markersStack.isEmpty()
