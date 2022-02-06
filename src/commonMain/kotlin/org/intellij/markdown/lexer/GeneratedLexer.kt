@@ -19,8 +19,4 @@ fun <E> ArrayList<E>.push(e: E) {
     add(e)
 }
 
-fun <E> ArrayList<E>.pop(): E {
-    val result = last()
-    dropLast(1)
-    return result;
-}
+fun <E> ArrayList<E>.pop(): E = removeLast()
