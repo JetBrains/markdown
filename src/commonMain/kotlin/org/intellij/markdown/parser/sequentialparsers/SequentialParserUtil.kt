@@ -34,8 +34,43 @@ class SequentialParserUtil {
             }
             return result
         }
-    }
 
+        /**
+         * Splits all [delegateRanges] into sub-ranges, according to [allowedRanges]
+         */
+        fun intersectRanges(allowedRanges: List<IntRange>, delegateRanges: Collection<List<IntRange>>): Collection<List<IntRange>> {
+            if (allowedRanges.size <= 1)
+                return delegateRanges
+
+            val result = MutableList(delegateRanges.size) { ArrayList<IntRange>() }
+            var allowedRangeIndex = 0
+
+
+            delegateRanges.flatMapIndexed { spaceIndex, ranges ->
+                ranges.map { it to spaceIndex }
+            }
+                .sortedBy { (range, _) -> range.first }
+                .forEach { (range, spaceIndex) ->
+                    while (allowedRanges[allowedRangeIndex].last < range.first)
+                        allowedRangeIndex++
+                    while (allowedRangeIndex < allowedRanges.size && allowedRanges[allowedRangeIndex].last <= range.last) {
+                        result[spaceIndex].add(
+                            maxOf(allowedRanges[allowedRangeIndex].first, range.first)..
+                                    minOf(allowedRanges[allowedRangeIndex].last, range.last)
+                        )
+                        allowedRangeIndex++
+                    }
+                    if (allowedRangeIndex < allowedRanges.size && allowedRanges[allowedRangeIndex].first <= range.last) {
+                        result[spaceIndex].add(
+                            maxOf(allowedRanges[allowedRangeIndex].first, range.first)..
+                                    minOf(allowedRanges[allowedRangeIndex].last, range.last)
+                        )
+                    }
+                }
+
+            return result
+        }
+    }
 }
 
 class RangesListBuilder {

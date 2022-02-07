@@ -2,6 +2,7 @@ package org.intellij.markdown.parser.sequentialparsers.impl
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.lexer.pop
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
@@ -14,6 +15,7 @@ class EmphStrongParser : SequentialParser {
         var iterator = tokens.RangesListIterator(rangesToGlue)
 
         val openingOnes = ArrayList<OpeningEmphInfo>()
+        val nodes = ArrayList<SequentialParser.Node>()
 
         while (iterator.type != null) {
             if (iterator.type != MarkdownTokenTypes.EMPH) {
@@ -37,7 +39,9 @@ class EmphStrongParser : SequentialParser {
                 val to = iterator.index + toMake - 1
 
                 val nodeType = if (toMake == 2) MarkdownElementTypes.STRONG else MarkdownElementTypes.EMPH
-                result.withNode(SequentialParser.Node(from..to + 1, nodeType))
+                val newNode = SequentialParser.Node(from..to + 1, nodeType)
+                result.withNode(newNode)
+                nodes.add(newNode)
                 openingOnes.subList(stackIndex, openingOnes.size).clear()
 
                 thisEmphWasEaten = true
@@ -61,7 +65,48 @@ class EmphStrongParser : SequentialParser {
             iterator = iterator.advance()
         }
 
+        val delegateRanges = calcDelegateRanges(rangesToGlue.first().first..rangesToGlue.last().last, nodes)
+        val allowedRanges = SequentialParserUtil.intersectRanges(rangesToGlue, delegateRanges)
+        allowedRanges.forEach {
+            result.withFurtherProcessing(it)
+        }
+
         return result
+    }
+
+    private fun calcDelegateRanges(allRange: IntRange, nodes: List<SequentialParser.Node>): Collection<List<IntRange>> {
+        val events = nodes.flatMap { node ->
+            listOf(node.range.first to node, node.range.last to node)
+        }.sortedBy { it.first }
+
+        val result = ArrayList<List<IntRange>>()
+        val rangesStack = ArrayList<MutableList<IntRange>>()
+        var currentOffset = allRange.first
+
+        fun flush(toOffset: Int) {
+            if (toOffset >= currentOffset) {
+                rangesStack.last().add(currentOffset..toOffset)
+                currentOffset = toOffset
+            }
+        }
+
+        rangesStack.add(ArrayList())
+        for ((offset, node) in events) {
+            if (node.range.first == offset) { // open
+                flush(node.range.first - 1)
+                currentOffset = node.range.first + (if (node.type == MarkdownElementTypes.STRONG) 2 else 1)
+                rangesStack.add(ArrayList())
+            }
+            else {
+                flush(node.range.last - (if (node.type == MarkdownElementTypes.STRONG) 2 else 1))
+                currentOffset = node.range.last + 1
+                result.add(rangesStack.pop())
+            }
+        }
+        check(rangesStack.size == 1)
+        flush(allRange.last)
+        result.add(rangesStack.pop())
+        return result.filter { it.isNotEmpty() }
     }
 
     private fun canStartNumber(iterator: TokensCache.Iterator): Int {

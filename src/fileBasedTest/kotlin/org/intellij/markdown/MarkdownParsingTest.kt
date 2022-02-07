@@ -98,6 +98,28 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
+    fun testBug98() {
+        assertEquals("""
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:STRIKETHROUGH
+        Markdown:~('~')
+        Markdown:~('~')
+        Markdown:TEXT('b')
+        Markdown:~('~')
+        Markdown:~('~')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:~('~')
+    Markdown:~('~')
+        """.trimIndent(),
+            getParsedTreeText("**~~b~~**~~", GFMFlavourDescriptor()))
+    }
+
+    @Test
     fun testLeadingAndTrailingWhitespaces() {
         defaultTest()
     }
@@ -274,7 +296,7 @@ class MarkdownParsingTest : TestCase() {
     fun testBug28() {
         defaultTest(GFMFlavourDescriptor())
     }
-    
+
     @Test
     fun testNewlinesAndAnyChars() {
         defaultTest(GFMFlavourDescriptor())

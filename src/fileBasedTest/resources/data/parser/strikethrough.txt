@@ -122,22 +122,23 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:~('~')
-    Markdown:~('~')
-    Markdown:TEXT('a')
-    Markdown:EMPH
-      Markdown:EMPH('*')
+    Markdown:STRIKETHROUGH
+      Markdown:~('~')
+      Markdown:~('~')
       Markdown:TEXT('a')
-      Markdown:EMPH('*')
-    Markdown:TEXT('a a')
-    Markdown:EMPH
-      Markdown:EMPH('*')
+      Markdown:EMPH
+        Markdown:EMPH('*')
+        Markdown:TEXT('a')
+        Markdown:EMPH('*')
+      Markdown:TEXT('a a')
+      Markdown:EMPH
+        Markdown:EMPH('*')
+        Markdown:TEXT('a')
+        Markdown:EMPH('*')
       Markdown:TEXT('a')
-      Markdown:EMPH('*')
-    Markdown:TEXT('a')
-    WHITE_SPACE(' ')
-    Markdown:~('~')
-    Markdown:~('~')
+      WHITE_SPACE(' ')
+      Markdown:~('~')
+      Markdown:~('~')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH

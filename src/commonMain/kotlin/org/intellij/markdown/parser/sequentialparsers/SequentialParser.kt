@@ -34,7 +34,9 @@ interface SequentialParser {
         }
 
         fun withFurtherProcessing(ranges: List<IntRange>): ParsingResultBuilder {
-            _rangesToProcessFurther.add(ranges)
+            if (ranges.isNotEmpty()) {
+                _rangesToProcessFurther.add(ranges)
+            }
             return this
         }
         
@@ -53,7 +55,7 @@ data class LocalParsingResult(val iteratorPosition: TokensCache.Iterator,
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>,
                 delegateRanges: List<IntRange>)
-    : this(iteratorPosition, parsedNodes, listOf(delegateRanges))
+    : this(iteratorPosition, parsedNodes, listOf(delegateRanges).filter { it.isNotEmpty() })
     
     constructor(iteratorPosition: TokensCache.Iterator,
                 parsedNodes: Collection<SequentialParser.Node>) 

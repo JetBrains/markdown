@@ -4,6 +4,9 @@ abstract class SequentialParserManager {
     abstract fun getParserSequence(): List<SequentialParser>
 
     fun runParsingSequence(tokensCache: TokensCache, rangesToParse: List<IntRange>): Collection<SequentialParser.Node> {
+        if (rangesToParse.isEmpty())
+            return emptyList()
+
         val result = ArrayList<SequentialParser.Node>()
 
         var parsingSpaces = ArrayList<List<IntRange>>()

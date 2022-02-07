@@ -31,8 +31,8 @@ open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLi
                     ImageParser(),
                     InlineLinkParser(),
                     ReferenceLinkParser(),
-                    StrikeThroughParser(),
-                    EmphStrongParser())
+                    EmphStrongParser(),
+                    StrikeThroughParser())
         }
     }
 
