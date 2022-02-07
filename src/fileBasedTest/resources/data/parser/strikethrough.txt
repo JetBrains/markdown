@@ -74,12 +74,11 @@ Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
     Markdown:TEXT('x')
     Markdown:~('~')
-    Markdown:STRIKETHROUGH
-      Markdown:~('~')
-      Markdown:~('~')
-      Markdown::(':')
-      Markdown:~('~')
-      Markdown:~('~')
+    Markdown:~('~')
+    Markdown:~('~')
+    Markdown::(':')
+    Markdown:~('~')
+    Markdown:~('~')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH

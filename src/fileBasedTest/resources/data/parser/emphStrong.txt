@@ -1,13 +1,13 @@
 Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
-    Markdown:STRONG
+    Markdown:EMPH
       Markdown:EMPH('*')
-      Markdown:EMPH('*')
-      Markdown:EMPH
+      Markdown:STRONG
+        Markdown:EMPH('*')
         Markdown:EMPH('*')
         Markdown:TEXT('strong emph')
         Markdown:EMPH('*')
-      Markdown:EMPH('*')
+        Markdown:EMPH('*')
       Markdown:EMPH('*')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -44,7 +44,6 @@ Markdown:MARKDOWN_FILE
       Markdown:EMPH('*')
       Markdown:TEXT('olo lo')
       Markdown:EMPH('*')
-    Markdown:EMPH
       Markdown:EMPH('*')
       Markdown:TEXT('ol olo')
       Markdown:EMPH('*')

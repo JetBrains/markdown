@@ -13,6 +13,7 @@ import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.lexer._MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
 import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.sequentialparsers.EmphasisLikeParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
@@ -41,7 +42,8 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
                     ImageParser(),
                     InlineLinkParser(),
                     ReferenceLinkParser(),
-                    EmphStrongParser())
+                    EmphasisLikeParser(EmphStrongDelimiterParser())
+            )
         }
     }
 

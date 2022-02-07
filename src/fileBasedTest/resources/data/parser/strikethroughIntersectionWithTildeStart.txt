@@ -1,0 +1,14 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:STRIKETHROUGH
+      Markdown:~('~')
+      Markdown:~('~')
+      Markdown:TEXT('prefix')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('text')
+      Markdown:~('~')
+      Markdown:~('~')
+    Markdown:TEXT('suffix')
+    Markdown:EMPH('*')
+    Markdown:EMPH('*')
