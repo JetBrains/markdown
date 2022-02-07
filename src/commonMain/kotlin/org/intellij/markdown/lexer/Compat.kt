@@ -19,8 +19,8 @@ object Compat {
             c.toChar().toString()
         }
         else {
-            val high = ((c ushr 10) + (MIN_HIGH_SURROGATE.toInt() - (MIN_SUPPLEMENTARY_CODE_POINT ushr 10))).toChar()
-            val low = ((c and 0x3ff) + MIN_LOW_SURROGATE.toInt()).toChar()
+            val high = ((c ushr 10) + (MIN_HIGH_SURROGATE.code - (MIN_SUPPLEMENTARY_CODE_POINT ushr 10))).toChar()
+            val low = ((c and 0x3ff) + MIN_LOW_SURROGATE.code).toChar()
             charArrayOf(high, low).concatToString()
         }
     }
@@ -72,7 +72,7 @@ object Compat {
                 return toCodePoint(c1, c2)
             }
         }
-        return c2.toInt()
+        return c2.code
     }
 
     fun charCount(char: Int): Int {
@@ -84,9 +84,9 @@ object Compat {
         // return ((high - MIN_HIGH_SURROGATE) << 10)
         //         + (low - MIN_LOW_SURROGATE)
         //         + MIN_SUPPLEMENTARY_CODE_POINT;
-        return (high.toInt() shl 10) + low.toInt() + (MIN_SUPPLEMENTARY_CODE_POINT
-                - (Char.MIN_HIGH_SURROGATE.toInt() shl 10)
-                - Char.MIN_LOW_SURROGATE.toInt())
+        return (high.code shl 10) + low.code + (MIN_SUPPLEMENTARY_CODE_POINT
+                - (Char.MIN_HIGH_SURROGATE.code shl 10)
+                - Char.MIN_LOW_SURROGATE.code)
     }
 
     fun codePointAt(seq: CharSequence, index: Int): Int {
@@ -98,7 +98,7 @@ object Compat {
                 return toCodePoint(c1, c2)
             }
         }
-        return c1.toInt()
+        return c1.code
     }
 
     inline fun assert(condition: Boolean, messageProducer: () -> String = { "" }) {
@@ -108,7 +108,7 @@ object Compat {
     }
 }
 
-class Stack<E> : MutableList<E> by ArrayList<E>() {
+class Stack<E> : MutableList<E> by ArrayList() {
     fun push(e: E) = add(e)
 
     fun pop(): E {
