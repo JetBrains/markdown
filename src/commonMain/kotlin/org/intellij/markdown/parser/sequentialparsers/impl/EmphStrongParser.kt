@@ -7,6 +7,16 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 import kotlin.math.min
 
+@Deprecated(
+    message = "Use EmphasisLikeParser with EmphStrongDelimiterParser instead",
+    replaceWith = ReplaceWith(
+        expression = "EmphasisLikeParser(EmphStrongDelimiterParser())",
+        imports = arrayOf(
+            "org.intellij.markdown.parser.sequentialparsers.EmphasisLikeParser",
+            "org.intellij.markdown.parser.sequentialparsers.impl.EmphStrongDelimiterParser"
+        )
+    )
+)
 class EmphStrongParser : SequentialParser {
 
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
