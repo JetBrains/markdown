@@ -2517,14 +2517,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample410() = doTest(
             markdown = "*foo**bar**baz*\n",
             html = "<p><em>foo<strong>bar</strong>baz</em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample411() = doTest(
             markdown = "*foo**bar*\n",
             html = "<p><em>foo**bar</em></p>\n"
@@ -2543,14 +2541,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample414() = doTest(
             markdown = "*foo**bar***\n",
             html = "<p><em>foo<strong>bar</strong></em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample415() = doTest(
             markdown = "foo***bar***baz\n",
             html = "<p>foo<em><strong>bar</strong></em>baz</p>\n"
@@ -2629,7 +2625,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample428() = doTest(
             markdown = "**foo*bar*baz**\n",
             html = "<p><strong>foo<em>bar</em>baz</strong></p>\n"
@@ -2862,14 +2857,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample466() = doTest(
             markdown = "***foo***\n",
             html = "<p><em><strong>foo</strong></em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample467() = doTest(
             markdown = "_____foo_____\n",
             html = "<p><em><strong><strong>foo</strong></strong></em></p>\n"

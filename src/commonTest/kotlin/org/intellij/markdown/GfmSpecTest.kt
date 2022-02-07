@@ -2568,14 +2568,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample420() = doTest(
             markdown = "*foo**bar**baz*\n",
             html = "<p><em>foo<strong>bar</strong>baz</em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample421() = doTest(
             markdown = "*foo**bar*\n",
             html = "<p><em>foo**bar</em></p>\n"
@@ -2594,14 +2592,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample424() = doTest(
             markdown = "*foo**bar***\n",
             html = "<p><em>foo<strong>bar</strong></em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample425() = doTest(
             markdown = "foo***bar***baz\n",
             html = "<p>foo<em><strong>bar</strong></em>baz</p>\n"
@@ -2680,7 +2676,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample438() = doTest(
             markdown = "**foo*bar*baz**\n",
             html = "<p><strong>foo<em>bar</em>baz</strong></p>\n"
@@ -2913,14 +2908,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample476() = doTest(
             markdown = "***foo***\n",
             html = "<p><em><strong>foo</strong></em></p>\n"
     )
 
     @Test
-    @Ignore
     fun testEmphasisAndStrongEmphasisExample477() = doTest(
             markdown = "_____foo_____\n",
             html = "<p><em><strong><strong>foo</strong></strong></em></p>\n"
@@ -3004,11 +2997,16 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
             html = "<p>__a<a href=\"http://foo.bar/?q=__\">http://foo.bar/?q=__</a></p>\n"
     )
 
+    //@Test
+    //fun testStrikethroughExample491() = doTest(
+    //        markdown = "~~Hi~~ Hello, world!\n",
+    //        html = "<p><del>Hi</del> Hello, world!</p>\n"
+    //)
+
     @Test
-    @Ignore
     fun testStrikethroughExample491() = doTest(
-            markdown = "~~Hi~~ Hello, world!\n",
-            html = "<p><del>Hi</del> Hello, world!</p>\n"
+        markdown = "~~Hi~~ Hello, world!\n",
+        html = "<p><span class=\"user-del\">Hi</span> Hello, world!</p>\n"
     )
 
     @Test
