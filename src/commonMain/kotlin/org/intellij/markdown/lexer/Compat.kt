@@ -1,5 +1,7 @@
 package org.intellij.markdown.lexer
 
+import org.intellij.markdown.MarkdownParsingException
+
 object Compat {
     private const val MIN_SUPPLEMENTARY_CODE_POINT = 0x010000
     private const val MIN_HIGH_SURROGATE = '\uD800'
@@ -103,7 +105,7 @@ object Compat {
 
     inline fun assert(condition: Boolean, messageProducer: () -> String = { "" }) {
         if (!condition) {
-            throw AssertionError(messageProducer())
+            throw MarkdownParsingException(messageProducer())
         }
     }
 }

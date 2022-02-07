@@ -5,7 +5,7 @@ import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
-class MyBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
+class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
 
     private var currentTokenPosition = -1
 

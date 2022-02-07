@@ -5,7 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 
-class MyRawBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
+class TopLevelBuilder(nodeBuilder: ASTNodeBuilder) : TreeBuilder(nodeBuilder) {
 
     override fun flushEverythingBeforeEvent(event: TreeBuilder.MyEvent, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?) {
     }

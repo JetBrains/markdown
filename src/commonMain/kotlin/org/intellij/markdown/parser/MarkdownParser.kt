@@ -1,10 +1,10 @@
 package org.intellij.markdown.parser
 
-import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.*
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
+import org.intellij.markdown.ast.CompositeASTNode
+import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
@@ -12,12 +12,39 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
 class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
+    companion object {
+        var assertionsEnabled: Boolean = true
+    }
 
     fun buildMarkdownTreeFromString(text: String): ASTNode {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
     }
 
     fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+        return try {
+            doParse(root, text, parseInlines)
+        }
+        catch (e: MarkdownParsingException) {
+            if (assertionsEnabled)
+                throw e
+            else
+                topLevelFallback(root, text)
+        }
+    }
+
+    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+        return try {
+            doParseInline(root, text, textStart, textEnd)
+        }
+        catch (e: MarkdownParsingException) {
+            if (assertionsEnabled)
+                throw e
+            else
+                inlineFallback(root, textStart, textEnd)
+        }
+    }
+
+    private fun doParse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
         val productionHolder = ProductionHolder()
         val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
 
@@ -35,19 +62,18 @@ class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
 
         rootMarker.done(root)
 
-        val nodeBuilder: ASTNodeBuilder
-        nodeBuilder = if (parseInlines) {
+        val nodeBuilder = if (parseInlines) {
             InlineExpandingASTNodeBuilder(text)
         } else {
             ASTNodeBuilder(text)
         }
 
-        val builder = MyRawBuilder(nodeBuilder)
+        val builder = TopLevelBuilder(nodeBuilder)
 
         return builder.buildTree(productionHolder.production)
     }
 
-    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+    private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
         val lexer = flavour.createInlinesLexer()
         lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)
@@ -56,8 +82,21 @@ class MarkdownParser(private val flavour: MarkdownFlavourDescriptor) {
         val nodes = flavour.sequentialParserManager.runParsingSequence(tokensCache,
                 SequentialParserUtil.filterBlockquotes(tokensCache, wholeRange))
 
-        return MyBuilder(ASTNodeBuilder(text), tokensCache).
+        return InlineBuilder(ASTNodeBuilder(text), tokensCache).
                 buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
+    }
+
+    private fun topLevelFallback(root: IElementType, text: String): ASTNode {
+        return CompositeASTNode(
+            root, listOf(inlineFallback(MarkdownElementTypes.PARAGRAPH, 0, text.length))
+        )
+    }
+
+    private fun inlineFallback(root: IElementType, textStart: Int, textEnd: Int): ASTNode {
+        return CompositeASTNode(
+            root,
+            listOf(LeafASTNode(MarkdownTokenTypes.TEXT, textStart, textEnd))
+        )
     }
 
     private inner class InlineExpandingASTNodeBuilder(text: CharSequence) : ASTNodeBuilder(text) {
