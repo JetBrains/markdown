@@ -283,12 +283,42 @@ class MarkdownParsingTest : TestCase() {
 
     @Test
     fun testStrikethroughIntersectionWithBoldStart() {
-        defaultTest(GFMFlavourDescriptor())
+        assertEquals("""
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('prefix')
+      Markdown:~('~')
+      Markdown:~('~')
+      Markdown:TEXT('text')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:TEXT('suffix')
+    Markdown:~('~')
+    Markdown:~('~')
+        """.trimIndent(), getParsedTreeText("**prefix~~text**suffix~~", GFMFlavourDescriptor()))
     }
 
     @Test
     fun testStrikethroughIntersectionWithTildeStart() {
-        defaultTest(GFMFlavourDescriptor())
+        assertEquals("""
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:STRIKETHROUGH
+      Markdown:~('~')
+      Markdown:~('~')
+      Markdown:TEXT('prefix')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('text')
+      Markdown:~('~')
+      Markdown:~('~')
+    Markdown:TEXT('suffix')
+    Markdown:EMPH('*')
+    Markdown:EMPH('*')
+        """.trimIndent(), getParsedTreeText("~~prefix**text~~suffix**", GFMFlavourDescriptor()))
     }
 
     @Test
