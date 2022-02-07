@@ -6,6 +6,16 @@ import org.intellij.markdown.parser.sequentialparsers.RangesListBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
+@Deprecated(
+    message = "Use EmphasisLikeParser with StrikeThroughDelimiterParser instead",
+    replaceWith = ReplaceWith(
+        expression = "EmphasisLikeParser(StrikeThroughDelimiterParser())",
+        imports = arrayOf(
+            "org.intellij.markdown.parser.sequentialparsers.EmphasisLikeParser",
+            "org.intellij.markdown.flavours.gfm.StrikeThroughDelimiterParser"
+        )
+    )
+)
 class StrikeThroughParser : SequentialParser {
     override fun parse(tokens: TokensCache, rangesToGlue: List<IntRange>): SequentialParser.ParsingResult {
         val result = SequentialParser.ParsingResultBuilder()
