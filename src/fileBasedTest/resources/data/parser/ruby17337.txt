@@ -14,10 +14,10 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:STRONG
+    Markdown:EMPH
       Markdown:EMPH('*')
-      Markdown:EMPH('*')
-      Markdown:EMPH
+      Markdown:STRONG
+        Markdown:EMPH('*')
         Markdown:EMPH('*')
         Markdown:TEXT('A')
         WHITE_SPACE(' ')
@@ -39,7 +39,7 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
         Markdown:TEXT('adding io.js support')
         Markdown:EMPH('*')
-      Markdown:EMPH('*')
+        Markdown:EMPH('*')
       Markdown:EMPH('*')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

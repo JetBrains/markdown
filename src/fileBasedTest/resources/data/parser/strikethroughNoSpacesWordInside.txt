@@ -1,0 +1,9 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:TEXT('prefix')
+    Markdown:STRIKETHROUGH
+      Markdown:~('~')
+      Markdown:~('~')
+      Markdown:TEXT('some')
+      Markdown:~('~')
+      Markdown:~('~')

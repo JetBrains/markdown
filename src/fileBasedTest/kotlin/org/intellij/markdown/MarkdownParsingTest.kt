@@ -7,7 +7,8 @@ import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class MarkdownParsingTest : TestCase() {
 
@@ -277,6 +278,26 @@ class MarkdownParsingTest : TestCase() {
     
     @Test
     fun testNewlinesAndAnyChars() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testStrikethroughIntersectionWithBoldStart() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testStrikethroughIntersectionWithTildeStart() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testStrikethroughNoSpacesWordInside() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testStrikethroughNoSpacesPunctuationInside() {
         defaultTest(GFMFlavourDescriptor())
     }
 

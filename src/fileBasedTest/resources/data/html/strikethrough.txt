@@ -16,9 +16,7 @@ asbd</p>
 <p>
 <span class="user-del">:</span>
 ~</p>
-<p>
-x~<span class="user-del">:</span>
-</p>
+<p>x~~~:~~</p>
 <p>
 <span class="user-del">baba</span>
 <span class="user-del">abab</span>
