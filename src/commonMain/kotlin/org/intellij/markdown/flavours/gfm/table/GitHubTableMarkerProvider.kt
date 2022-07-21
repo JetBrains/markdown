@@ -71,7 +71,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
                     dashes++
                 }
 
-                if (dashes < 3) {
+                if (dashes < 1) {
                     return 0
                 }
                 result++
