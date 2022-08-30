@@ -1,0 +1,42 @@
+Markdown:MARKDOWN_FILE
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:TEXT('f\|oo')
+        WHITE_SPACE('  ')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('| ------ |')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('b')
+        WHITE_SPACE(' ')
+        Markdown:CODE_SPAN
+          Markdown:BACKTICK('`')
+          Markdown:TEXT('\|')
+          Markdown:BACKTICK('`')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('az')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('b')
+        WHITE_SPACE(' ')
+        Markdown:STRONG
+          Markdown:EMPH('*')
+          Markdown:EMPH('*')
+          Markdown:TEXT('\|')
+          Markdown:EMPH('*')
+          Markdown:EMPH('*')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('im')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')

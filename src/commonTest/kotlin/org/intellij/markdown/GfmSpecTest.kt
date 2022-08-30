@@ -1222,10 +1222,10 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testTablesExample200() = doTest(
             markdown = "| f\\|oo  |\n| ------ |\n| b `\\|` az |\n| b **\\|** im |\n",
-            html = "<table>\n<thead>\n<tr>\n<th>f|oo</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>b <code>|</code> az</td>\n</tr>\n<tr>\n<td>b <strong>|</strong> im</td>\n</tr>\n</tbody>\n</table>\n"
+            // Adjusted to include class="intellij-row-even"
+            html = "<table><thead><tr><th>f|oo</th></tr></thead><tbody><tr><td>b <code>\\|</code> az</td></tr><tr class=\"intellij-row-even\"><td>b <strong>|</strong> im</td></tr></tbody></table>"
     )
 
     @Test

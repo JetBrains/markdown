@@ -36,7 +36,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         }
 
         val line = pos.currentLine
-        if (!isTableLine(line)) {
+        if (!isProbablyTableLine(line)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
         val cellsAndSeps = fillCells(pos)
@@ -94,12 +94,11 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         return result
     }
 
-    private fun isTableLine(line: CharSequence): Boolean {
+    private fun isProbablyTableLine(line: CharSequence): Boolean {
         return line.contains('|')
     }
 
     companion object {
-        val SPLIT_REGEX = Regex("\\|")
+        val SPLIT_REGEX = Regex("(?<!\\\\)\\|")
     }
-
 }
