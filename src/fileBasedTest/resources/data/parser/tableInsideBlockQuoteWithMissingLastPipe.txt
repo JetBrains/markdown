@@ -1,0 +1,63 @@
+Markdown:MARKDOWN_FILE
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:TABLE
+      Markdown:HEADER
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('Table')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('Frezze')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('Bug')
+          WHITE_SPACE('  ')
+        Markdown:TABLE_SEPARATOR('|')
+      Markdown:EOL('\n')
+      Markdown:TABLE_SEPARATOR('> | ---   | ------ | ---- |')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:ROW
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('foo')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('some')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('fix')
+          WHITE_SPACE('  ')
+        Markdown:TABLE_SEPARATOR('|')
+      Markdown:EOL('\n')
+      WHITE_SPACE('> ')
+      Markdown:ROW
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('bar')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('item')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('plz')
+          WHITE_SPACE('  ')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('|')
