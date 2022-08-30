@@ -243,17 +243,17 @@ class MarkdownParsingTest : TestCase() {
     fun testGfmTable() {
         defaultTest(GFMFlavourDescriptor())
     }
-    
+
     @Test
     fun testRuby17337() {
         defaultTest(GFMFlavourDescriptor())
     }
-    
+
     @Test
     fun testEa79689() {
         defaultTest()
     }
-    
+
     @Test
     fun testRuby18237() {
         defaultTest(GFMFlavourDescriptor())
@@ -275,7 +275,7 @@ class MarkdownParsingTest : TestCase() {
     fun testBug28() {
         defaultTest(GFMFlavourDescriptor())
     }
-    
+
     @Test
     fun testNewlinesAndAnyChars() {
         defaultTest(GFMFlavourDescriptor())
@@ -328,6 +328,12 @@ Markdown:MARKDOWN_FILE
 
     @Test
     fun testStrikethroughNoSpacesPunctuationInside() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    // https://github.github.com/gfm/#example-200
+    @Test
+    fun testEscapedPipeInsideTableCell() {
         defaultTest(GFMFlavourDescriptor())
     }
 

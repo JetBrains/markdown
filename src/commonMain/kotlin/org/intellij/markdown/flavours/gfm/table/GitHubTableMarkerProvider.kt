@@ -21,7 +21,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return emptyList()
         }
 
-        val split = SPLIT_REGEX.split(currentLineFromPosition)
+        val split = GitHubTableMarkerBlock.SPLIT_REGEX.split(currentLineFromPosition)
         val numberOfHeaderCells = split
                 .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
                 .count { it }
@@ -48,8 +48,6 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     }
 
     companion object {
-        val SPLIT_REGEX = Regex("\\|")
-
         /**
          * @return number of cells in the separator line
          */
