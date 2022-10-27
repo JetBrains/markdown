@@ -63,7 +63,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE('  ')
         Markdown:CODE_FENCE_CONTENT('  is not loose at all')
         Markdown:EOL('\n')
-        Markdown:CODE_FENCE_END('  ```')
+        WHITE_SPACE('  ')
+        Markdown:CODE_FENCE_END('```')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('- ')
@@ -187,7 +188,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE('  ')
         Markdown:CODE_FENCE_CONTENT('something second')
         Markdown:EOL('\n')
-        Markdown:CODE_FENCE_END('  ```')
+        WHITE_SPACE('  ')
+        Markdown:CODE_FENCE_END('```')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('- ')
