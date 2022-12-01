@@ -12,6 +12,8 @@ jobs:
   linux-tests:
     runs-on: ubuntu-latest
     steps:
+      - name: Install libncurses5 for Kotlin compiler
+        run: sudo apt-get install -y libncurses5
       - uses: actions/checkout@v2
       - uses: eskatos/gradle-command-action@v1
         with:
