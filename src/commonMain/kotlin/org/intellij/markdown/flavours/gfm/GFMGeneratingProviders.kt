@@ -90,17 +90,26 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
  * Special version of [org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor.CodeSpanGeneratingProvider],
  * that will correctly escape table pipes if the code span is inside a table cell.
  */
-class TableAwareCodeSpanGeneratingProvider: GeneratingProvider {
+open class TableAwareCodeSpanGeneratingProvider: GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-        val isInsideTable = node.getParentOfType(GFMTokenTypes.CELL) != null
-        val nodes = node.children.subList(1, node.children.size - 1)
+        val isInsideTable = isInsideTable(node)
+        val nodes = collectContentNodes(node)
         val output = nodes.joinToString(separator = "") { processChild(it, text, isInsideTable) }.trim()
         visitor.consumeTagOpen(node, "code")
         visitor.consumeHtml(output)
         visitor.consumeTagClose("code")
     }
 
-    private fun processChild(node: ASTNode, text: String, isInsideTable: Boolean): CharSequence {
+    protected fun isInsideTable(node: ASTNode): Boolean {
+        return node.getParentOfType(GFMTokenTypes.CELL) != null
+    }
+
+    protected fun collectContentNodes(node: ASTNode): List<ASTNode> {
+        check(node.children.size >= 2)
+        return node.children.subList(1, node.children.size - 1)
+    }
+
+    protected fun processChild(node: ASTNode, text: String, isInsideTable: Boolean): CharSequence {
         if (!isInsideTable) {
             return HtmlGenerator.leafText(text, node, replaceEscapesAndEntities = false)
         }
