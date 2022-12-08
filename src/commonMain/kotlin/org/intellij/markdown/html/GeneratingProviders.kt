@@ -65,8 +65,16 @@ open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0,
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
         return node.children.subList(renderFrom, node.children.size + renderTo)
     }
+}
 
-
+class CodeSpanGeneratingProvider: GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        val nodes = node.children.subList(1, node.children.size - 1)
+        val output = nodes.joinToString(separator = "") { HtmlGenerator.leafText(text, it, false) }.trim()
+        visitor.consumeTagOpen(node, "code")
+        visitor.consumeHtml(output)
+        visitor.consumeTagClose("code")
+    }
 }
 
 open class TransparentInlineHolderProvider(renderFrom: Int = 0, renderTo: Int = 0)

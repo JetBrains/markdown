@@ -49,6 +49,7 @@ open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLi
                 GFMElementTypes.TABLE to TablesGeneratingProvider(),
 
                 GFMTokenTypes.CELL to TrimmingInlineHolderProvider(),
+                MarkdownElementTypes.CODE_SPAN to TableAwareCodeSpanGeneratingProvider(),
 
                 GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
                     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {

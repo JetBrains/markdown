@@ -133,7 +133,7 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
                 override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                     visitor.consumeHtml("<pre>")
                     visitor.consumeTagOpen(node, "code")
-                    
+
                     for (child in node.children) {
                         if (child.type == MarkdownTokenTypes.CODE_LINE) {
                             visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), 4))
@@ -141,7 +141,7 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
                             visitor.consumeHtml("\n")
                         }
                     }
-                    
+
                     visitor.consumeHtml("\n")
                     visitor.consumeTagClose("code")
                     visitor.consumeHtml("</pre>")
@@ -171,17 +171,6 @@ open class CommonMarkFlavourDescriptor(protected val useSafeLinks: Boolean = tru
             },
             MarkdownElementTypes.EMPH to SimpleInlineTagProvider("em", 1, -1),
             MarkdownElementTypes.STRONG to SimpleInlineTagProvider("strong", 2, -2),
-            MarkdownElementTypes.CODE_SPAN to object : GeneratingProvider {
-                override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
-                    val output = node.children.subList(1, node.children.size - 1).map { node ->
-                        HtmlGenerator.leafText(text, node, false)
-                    }.joinToString("").trim()
-                    visitor.consumeTagOpen(node, "code")
-                    visitor.consumeHtml(output)
-                    visitor.consumeTagClose("code")
-                }
-            }
-
+            MarkdownElementTypes.CODE_SPAN to CodeSpanGeneratingProvider()
     )
-
 }

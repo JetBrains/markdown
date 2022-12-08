@@ -8,6 +8,7 @@ import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.html.InlineHolderGeneratingProvider
 import org.intellij.markdown.html.SimpleTagProvider
+import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
 import kotlin.text.Regex
 
@@ -82,6 +83,30 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
                 visitor.consumeTagClose("p")
             }
         }
+    }
+}
+
+/**
+ * Special version of [org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor.CodeSpanGeneratingProvider],
+ * that will correctly escape table pipes if the code span is inside a table cell.
+ */
+class TableAwareCodeSpanGeneratingProvider: GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        val isInsideTable = node.getParentOfType(GFMTokenTypes.CELL) != null
+        val nodes = node.children.subList(1, node.children.size - 1)
+        val output = nodes.joinToString(separator = "") { processChild(it, text, isInsideTable) }.trim()
+        visitor.consumeTagOpen(node, "code")
+        visitor.consumeHtml(output)
+        visitor.consumeTagClose("code")
+    }
+
+    private fun processChild(node: ASTNode, text: String, isInsideTable: Boolean): CharSequence {
+        if (!isInsideTable) {
+            return HtmlGenerator.leafText(text, node, replaceEscapesAndEntities = false)
+        }
+        val nodeText = node.getTextInNode(text).toString()
+        val escaped = nodeText.replace("\\|", "|")
+        return EntityConverter.replaceEntities(escaped, processEntities = false, processEscapes = false)
     }
 }
 
