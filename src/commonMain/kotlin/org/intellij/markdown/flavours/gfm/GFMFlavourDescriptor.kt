@@ -18,8 +18,22 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
 import org.intellij.markdown.parser.sequentialparsers.impl.*
 
-open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLinks: Boolean = false)
-    : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
+/**
+ * GitHub Markdown spec based flavour, to be used as a base for other flavours.
+ *
+ * @param useSafeLinks `true` if all rendered links should be checked for XSS and `false` otherwise.
+ * See [makeXssSafeDestination]
+ *
+ * @param absolutizeAnchorLinks `true` if anchor links (e.g. `#foo`) should be resolved against `baseURI` and
+ * `false` otherwise
+ *
+ * @param makeHttpsAutoLinks enables use of HTTPS schema for auto links.
+ */
+open class GFMFlavourDescriptor(
+        useSafeLinks: Boolean = true,
+        absolutizeAnchorLinks: Boolean = false,
+        private val makeHttpsAutoLinks: Boolean = false
+) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
     override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -40,7 +54,7 @@ open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLi
     override fun createHtmlGeneratingProviders(linkMap: LinkMap,
                                                baseURI: URI?): Map<IElementType, GeneratingProvider> {
         return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
-                GFMElementTypes.STRIKETHROUGH to object: SimpleInlineTagProvider("span", 2, -2) {
+                GFMElementTypes.STRIKETHROUGH to object : SimpleInlineTagProvider("span", 2, -2) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")
                     }
@@ -64,7 +78,13 @@ open class GFMFlavourDescriptor(useSafeLinks: Boolean = true, absolutizeAnchorLi
                         }
 
                         // according to GFM_AUTOLINK rule in lexer, link either starts with scheme or with 'www.'
-                        val absoluteLink = if (hasSchema(linkText)) linkText else "http://$linkText"
+                        val absoluteLink = if (hasSchema(linkText)) linkText else {
+                            if (makeHttpsAutoLinks) {
+                                "https://$linkText"
+                            } else {
+                                "http://$linkText"
+                            }
+                        }
 
                         val link = EntityConverter.replaceEntities(linkText, true, false)
                         val normalizedDestination = LinkMap.normalizeDestination(absoluteLink, false).let {

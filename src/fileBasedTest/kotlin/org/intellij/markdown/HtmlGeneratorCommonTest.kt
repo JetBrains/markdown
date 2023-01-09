@@ -118,6 +118,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     }
 
     @Test
+    fun testGfmAutolinkWithHttps() {
+        defaultTest(GFMFlavourDescriptor(makeHttpsAutoLinks = true))
+    }
+
+    @Test
     fun testSfmAutolink() {
         defaultTest(SFMFlavourDescriptor(false))
     }
