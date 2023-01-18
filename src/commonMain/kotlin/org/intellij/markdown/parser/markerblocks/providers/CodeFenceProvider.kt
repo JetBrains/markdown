@@ -15,25 +15,34 @@ class CodeFenceProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position,
                                    productionHolder: ProductionHolder,
                                    stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
-        val fenceAndInfo = getFenceStartAndInfo(pos, stateInfo.currentConstraints)
-        if (fenceAndInfo != null) {
-            createNodesForFenceStart(pos, fenceAndInfo, productionHolder)
-            return listOf(CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder, fenceAndInfo.first))
-        } else {
-            return emptyList()
-        }
+        val fenceAndInfo = getFenceStartAndInfo(pos, stateInfo.currentConstraints) ?: return emptyList()
+        val indent = createNodesForFenceStart(pos, fenceAndInfo, productionHolder) ?: return emptyList()
+        return listOf(CodeFenceMarkerBlock(stateInfo.currentConstraints, productionHolder, fenceAndInfo.first, indent))
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
         return getFenceStartAndInfo(pos, constraints) != null
     }
 
-    private fun createNodesForFenceStart(pos: LookaheadText.Position, fenceAndInfo: Pair<String, String>, productionHolder: ProductionHolder) {
+    private fun createNodesForFenceStart(
+        pos: LookaheadText.Position,
+        fenceAndInfo: Pair<String, String>,
+        productionHolder: ProductionHolder
+    ): Int? {
         val infoStartPosition = pos.nextLineOrEofOffset - fenceAndInfo.second.length
+        // Count the number of spaces before start element, so we can exclude them from resulting tree element
+        val indent = pos.charsToNonWhitespace() ?: 0
+        // If the current fence is indented with more than 3 spaces, it becomes a code block
+        if (indent > 3) {
+            return null
+        }
+        @Suppress("NAME_SHADOWING")
+        val pos = pos.nextPosition(indent) ?: return null
         productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset..infoStartPosition, MarkdownTokenTypes.CODE_FENCE_START)))
-        if (fenceAndInfo.second.length > 0) {
+        if (fenceAndInfo.second.isNotEmpty()) {
             productionHolder.addProduction(listOf(SequentialParser.Node(infoStartPosition..pos.nextLineOrEofOffset, MarkdownTokenTypes.FENCE_LANG)))
         }
+        return indent
     }
 
     private fun getFenceStartAndInfo(pos: LookaheadText.Position, constraints: MarkdownConstraints): Pair<String, String>? {

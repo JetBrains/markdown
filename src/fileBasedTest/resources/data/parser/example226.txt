@@ -17,7 +17,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE('  ')
         Markdown:CODE_FENCE_CONTENT('bar')
         Markdown:EOL('\n')
-        Markdown:CODE_FENCE_END('  ```')
+        WHITE_SPACE('  ')
+        Markdown:CODE_FENCE_END('```')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('-')

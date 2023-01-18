@@ -10,12 +10,14 @@ import org.intellij.markdown.parser.constraints.*
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import kotlin.math.min
 import kotlin.text.Regex
 
-class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
-                           private val productionHolder: ProductionHolder,
-                           private val fenceStart: String) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
+class CodeFenceMarkerBlock(
+    myConstraints: MarkdownConstraints,
+    private val productionHolder: ProductionHolder,
+    private val fenceStart: String,
+    private val fenceIndent: Int
+) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
     override fun allowsSubBlocks(): Boolean = false
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true //pos.offsetInCurrentLine == -1
@@ -54,15 +56,25 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
         realInterestingOffset = nextLineOffset
 
         val currentLine = nextLineConstraints.eatItselfFromString(pos.currentLine)
+        // Skip characters from current constraints and advance position
+        val charactersToSkip = 1 + constraints.getCharsEaten(pos.currentLine)
+        val advancedPosition = pos.nextPosition(charactersToSkip) ?: return MarkerBlock.ProcessingResult.CANCEL
+        // Calculate actual fence indent (it can not exceed the fenceIndent)
+        val indent = advancedPosition.charsToNonWhitespace()?.coerceAtMost(fenceIndent) ?: 0
+        val startOffset = advancedPosition.offset + indent
+        val contentRange = startOffset.coerceAtMost(nextLineOffset)..nextLineOffset
         if (endsThisFence(currentLine)) {
-            productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset + 1..pos.nextLineOrEofOffset,
-                    MarkdownTokenTypes.CODE_FENCE_END)))
+            productionHolder.addProduction(listOf(SequentialParser.Node(
+                startOffset..nextLineOffset,
+                MarkdownTokenTypes.CODE_FENCE_END
+            )))
             scheduleProcessingResult(nextLineOffset, MarkerBlock.ProcessingResult.DEFAULT)
         } else {
-            val contentRange = min(pos.offset + 1 + constraints.getCharsEaten(pos.currentLine), nextLineOffset)..nextLineOffset
             if (contentRange.first < contentRange.last) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
-                        contentRange, MarkdownTokenTypes.CODE_FENCE_CONTENT)))
+                    contentRange,
+                    MarkdownTokenTypes.CODE_FENCE_CONTENT
+                )))
             }
         }
 
