@@ -11,7 +11,11 @@ import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
-class MarkdownParser(private val flavour: MarkdownFlavourDescriptor, private val assertionsEnabled: Boolean = true) {
+class MarkdownParser(
+    private val flavour: MarkdownFlavourDescriptor,
+    private val assertionsEnabled: Boolean = true
+) {
+    constructor(flavour: MarkdownFlavourDescriptor): this(flavour, true)
 
     fun buildMarkdownTreeFromString(text: String): ASTNode {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
