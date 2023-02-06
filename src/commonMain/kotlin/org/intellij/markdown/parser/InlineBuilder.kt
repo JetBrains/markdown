@@ -39,7 +39,9 @@ class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tokens
         val childrenWithWhitespaces = ArrayList<ASTNode>(currentNodeChildren.size)
 
         if (isTopmostNode) {
-            addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, +1)
+            // Set exitOffset to an unreachable offset pointing to the left.
+            // This way we ensure that all raw tokens before are included into the current node.
+            addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, -1)
         }
         for (i in 1..currentNodeChildren.size - 1) {
             val prev = currentNodeChildren.get(i - 1)

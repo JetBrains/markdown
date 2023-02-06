@@ -3,6 +3,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HEADER
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
+        WHITE_SPACE(' ')
         Markdown:TEXT('f\|oo')
         WHITE_SPACE('  ')
       Markdown:TABLE_SEPARATOR('|')
