@@ -6,10 +6,9 @@ import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
 class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
-
     private var currentTokenPosition = -1
 
-    override fun flushEverythingBeforeEvent(event: TreeBuilder.MyEvent, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?) {
+    override fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?) {
         if (currentTokenPosition == -1) {
             currentTokenPosition = event.position
         }
@@ -20,19 +19,19 @@ class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tokens
         }
     }
 
-    private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<TreeBuilder.MyASTNodeWrapper>?, currentTokenPosition: Int) {
+    private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<MyASTNodeWrapper>?, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
         val nodes = nodeBuilder.createLeafNodes(iterator.type!!, iterator.start, iterator.end)
         for (node in nodes) {
-            currentNodeChildren?.add(TreeBuilder.MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
+            currentNodeChildren?.add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
         }
     }
 
-    override fun createASTNodeOnClosingEvent(event: TreeBuilder.MyEvent, currentNodeChildren: List<TreeBuilder.MyASTNodeWrapper>, isTopmostNode: Boolean): TreeBuilder.MyASTNodeWrapper {
+    override fun createASTNodeOnClosingEvent(event: MyEvent, currentNodeChildren: List<MyASTNodeWrapper>, isTopmostNode: Boolean): MyASTNodeWrapper {
         val newNode: ASTNode
 
-        val type = event.info.`type`
+        val type = event.info.type
         val startTokenId = event.info.range.first
         val endTokenId = event.info.range.last
 
@@ -43,15 +42,15 @@ class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tokens
             // This way we ensure that all raw tokens before are included into the current node.
             addRawTokens(tokensCache, childrenWithWhitespaces, startTokenId, -1, -1)
         }
-        for (i in 1..currentNodeChildren.size - 1) {
-            val prev = currentNodeChildren.get(i - 1)
-            val next = currentNodeChildren.get(i)
+        for (index in 1 until currentNodeChildren.size) {
+            val prev = currentNodeChildren[index - 1]
+            val next = currentNodeChildren[index]
 
             childrenWithWhitespaces.add(prev.astNode)
 
             addRawTokens(tokensCache, childrenWithWhitespaces, prev.endTokenIndex - 1, +1, tokensCache.Iterator(next.startTokenIndex).start)
         }
-        if (!currentNodeChildren.isEmpty()) {
+        if (currentNodeChildren.isNotEmpty()) {
             childrenWithWhitespaces.add(currentNodeChildren.last().astNode)
         }
         if (isTopmostNode) {
@@ -59,7 +58,7 @@ class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tokens
         }
 
         newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
-        return TreeBuilder.MyASTNodeWrapper(newNode, startTokenId, endTokenId)
+        return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 
     private fun addRawTokens(tokensCache: TokensCache, childrenWithWhitespaces: MutableList<ASTNode>, from: Int, dx: Int, exitOffset: Int) {
@@ -74,5 +73,4 @@ class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: Tokens
             rawIdx -= dx
         }
     }
-
 }
