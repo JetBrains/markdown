@@ -70,7 +70,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
 
         val line = constraints.eatItselfFromString(pos.currentLine)
 
-        val cells = SPLIT_REGEX.split(line)
+        val cells = splitByPipes(line)
         var cellNodesAdded = 0
         for (i in cells.indices) {
             val cell = cells[i]
@@ -99,6 +99,24 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
     }
 
     companion object {
-        val SPLIT_REGEX = Regex("(?<!\\\\)\\|")
+        fun splitByPipes(text: CharSequence): List<String> {
+            val result = arrayListOf<String>()
+            var startIndex = 0
+            for (index in text.indices) {
+                val char = text[index]
+                if (char != '|') {
+                    continue
+                }
+                val charBefore = text[(index - 1).coerceAtLeast(0)]
+                if (charBefore == '\\') {
+                    continue
+                }
+                val substring = text.substring(startIndex, index)
+                result.add(substring)
+                startIndex = index + 1
+            }
+            result.add(text.substring(startIndex))
+            return result
+        }
     }
 }

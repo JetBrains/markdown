@@ -21,7 +21,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return emptyList()
         }
 
-        val split = GitHubTableMarkerBlock.SPLIT_REGEX.split(currentLineFromPosition)
+        val split = GitHubTableMarkerBlock.splitByPipes(currentLineFromPosition)
         val numberOfHeaderCells = split
                 .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
                 .count { it }
