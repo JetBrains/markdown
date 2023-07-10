@@ -31,7 +31,7 @@ kotlin {
     jvm {
         compilations {
             all {
-                kotlinOptions.jvmTarget = "1.6"
+                kotlinOptions.jvmTarget = "1.8"
             }
             val main by getting
 
