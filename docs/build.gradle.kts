@@ -6,7 +6,7 @@ import org.jetbrains.dokka.Platform
  */
 
 plugins {
-    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka") apply true
 }
 
 repositories {
