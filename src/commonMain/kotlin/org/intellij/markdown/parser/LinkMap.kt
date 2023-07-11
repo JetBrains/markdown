@@ -18,7 +18,7 @@ class LinkMap(private val map: Map<CharSequence, LinkInfo>) {
 
     companion object Builder {
         fun normalizeLabel(label: CharSequence): CharSequence {
-            return SPACES_REGEX.replace(label, " ").toLowerCase()
+            return SPACES_REGEX.replace(label, " ").lowercase()
         }
 
         fun buildLinkMap(root: ASTNode, text: CharSequence): LinkMap {

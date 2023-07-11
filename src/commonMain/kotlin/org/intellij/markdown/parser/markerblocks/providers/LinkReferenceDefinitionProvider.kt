@@ -53,15 +53,15 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         fun isEndOfLine(pos: LookaheadText.Position): Boolean {
             return pos.offsetInCurrentLine == -1 || pos.charsToNonWhitespace() == null
         }
-        
+
         fun matchLinkDefinition(text: CharSequence, startOffset: Int): List<IntRange>? {
             var offset = MarkerBlockProvider.passSmallIndent(text, startOffset)
             val linkLabel = matchLinkLabel(text, offset) ?: return null
             offset = linkLabel.last + 1
-            if (offset >= text.length || text[offset] != ':') 
+            if (offset >= text.length || text[offset] != ':')
                 return null
             offset++
-            
+
             offset = passOneNewline(text, offset)
 
             val destination = matchLinkDestination(text, offset) ?: return null
@@ -81,7 +81,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                     result.add(title)
                 }
             }
-            
+
             return result
         }
 
@@ -109,7 +109,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                 var hasParens = false
                 while (offset < text.length) {
                     val c = text[offset]
-                    if (isSpaceOrNewline(c) || c.toInt() <= 27)
+                    if (isSpaceOrNewline(c) || c.code <= 27)
                         break
                     if (c == '(') {
                         if (hasParens)
@@ -177,9 +177,9 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                 return null
             }
             offset++
-            
+
             var seenNonWhitespace = false
-            
+
             for (i in 1..999) {
                 if (offset >= text.length)
                     return null
@@ -190,7 +190,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                     offset++
                     if (offset >= text.length)
                         return null
-                    c = text[offset] 
+                    c = text[offset]
                 }
                 if (!c.isWhitespace()) {
                     seenNonWhitespace = true
@@ -202,7 +202,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             }
             return start..offset
         }
-        
+
         private fun passOneNewline(text: CharSequence, start: Int): Int {
             var offset = start
             while (offset < text.length && isSpace(text[offset]))

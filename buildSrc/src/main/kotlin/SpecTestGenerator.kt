@@ -28,7 +28,7 @@ fun generateSpecTest(testDump: String, className: String, flavor: String) {
             val name = spec.section.split(" ")
                     .filter { it != "(extension)" }
                     .joinToString("", prefix = "test", postfix = "Example${spec.example}") {
-                        it.first().toUpperCase() + it.drop(1)
+                        it.first().uppercaseChar() + it.drop(1)
                     }
             append("    @Test\n")
             append("    fun ").append(name).append("() = doTest(\n")

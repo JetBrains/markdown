@@ -20,5 +20,5 @@ val TestCase.testName: String
     get() {
         val name = getName()
         assert(name.startsWith("test"))
-        return name.substring("test".length).decapitalize()
+        return name.substring("test".length).replaceFirstChar { it.lowercase() }
     }

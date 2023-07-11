@@ -196,23 +196,23 @@ tasks.register<Jar>("javadocJar") {
 }
 
 val publicationsToArtifacts = mapOf(
-        "kotlinMultiplatform" to "markdown",
-        "jvm" to "markdown-jvm",
-        "js" to "markdown-js",
-        "linuxX64" to "markdown-linuxx64",
-        "mingwX64" to "markdown-mingwx64",
-        "macosX64" to "markdown-macosx64",
-        "macosArm64" to "markdown-macosarm64",
-        "iosX64" to "markdown-iosx64",
-        "iosArm64" to "markdown-iosarm64",
-        "iosSimulatorArm64" to "markdown-iossimulatorarm64",
-        "watchosSimulatorArm64" to "markdown-watchossimulatorarm64",
-        "tvosSimulatorArm64" to "markdown-tvossimulatorarm64",
-        "metadata" to "markdown-metadata"
+    "kotlinMultiplatform" to "markdown",
+    "jvm" to "markdown-jvm",
+    "js" to "markdown-js",
+    "linuxX64" to "markdown-linuxx64",
+    "mingwX64" to "markdown-mingwx64",
+    "macosX64" to "markdown-macosx64",
+    "macosArm64" to "markdown-macosarm64",
+    "iosX64" to "markdown-iosx64",
+    "iosArm64" to "markdown-iosarm64",
+    "iosSimulatorArm64" to "markdown-iossimulatorarm64",
+    "watchosSimulatorArm64" to "markdown-watchossimulatorarm64",
+    "tvosSimulatorArm64" to "markdown-tvossimulatorarm64",
+    "metadata" to "markdown-metadata"
 )
 
-publicationsToArtifacts.forEach { publicationName, artifactId ->
-    registerPublicationFromKotlinPlugin(publicationName, artifactId)
+for ((publication, artifact) in publicationsToArtifacts) {
+    registerPublicationFromKotlinPlugin(publication, artifact)
 }
 signPublicationsIfNecessary(*publicationsToArtifacts.keys.toTypedArray())
 configureSonatypePublicationIfNecessary()

@@ -84,7 +84,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
         when (state) {
             STATE_START -> {
                 state = if (c != null && c.isLetter()) {
-                    buffer.append(c.toLowerCase())
+                    buffer.append(c.lowercaseChar())
                     STATE_SCHEME
                 } else {
                     pointer -= 1
@@ -93,7 +93,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
             }
             STATE_SCHEME -> {
                 if (c != null && (c.isLetterOrDigit() || c in "+-/")) {
-                    buffer.append(c.toLowerCase())
+                    buffer.append(c.lowercaseChar())
                 } else if (c == ':') {
                     scheme = buffer.toString()
                     buffer.clear()
@@ -510,13 +510,13 @@ private fun startsWithWindowsDriveLetter(input: String): Boolean {
 
 // https://url.spec.whatwg.org/#single-dot-path-segment
 private fun isSingleDotPathSegment(input: String): Boolean {
-    val it = input.toLowerCase()
+    val it = input.lowercase()
     return it == ".." || it == ".%2e"
 }
 
 // https://url.spec.whatwg.org/#double-dot-path-segment
 private fun isDoubleDotPathSegment(input: String): Boolean {
-    val it = input.toLowerCase()
+    val it = input.lowercase()
     return it == ".." || it == ".%2e" || it == "%2e." || it == "%2e%2e"
 }
 
@@ -545,7 +545,7 @@ internal fun percentEncode(input: String, encodeSet: String): String = buildStri
         val isomorph = unsigned.toChar()
         if (b <= 0x1f || b > 0x7e || isomorph in encodeSet) {
             append('%')
-            append(unsigned.toString(16).toUpperCase())
+            append(unsigned.toString(16).uppercase())
         } else {
             append(isomorph)
         }

@@ -1,14 +1,13 @@
+@file:OptIn(ExperimentalForeignApi::class)
 package org.intellij.markdown
 
-import kotlinx.cinterop.ByteVar
-import kotlinx.cinterop.allocArray
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.toKString
+import kotlinx.cinterop.*
 import platform.posix.*
 import kotlin.test.assertEquals
 
 actual fun readFromFile(path: String): String {
     val file = requireNotNull(fopen(path, "r")) { "Invalid path $path" }
+    file.usePinned {  }
     val bytes = mutableListOf<Byte>()
     try {
         while (true) {
