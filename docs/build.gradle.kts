@@ -1,4 +1,5 @@
 import org.jetbrains.dokka.Platform
+import org.jetbrains.dokka.gradle.DokkaTask
 
 /**
  * This is a subproject due to a Gradle bug that substitutes Dokka's dependency on `org.jetbrains:markdown`
@@ -13,25 +14,21 @@ repositories {
     mavenCentral()
 }
 
-tasks {
-    dokkaHtml {
-        dokkaSourceSets {
-            val common by registering {
-                sourceRoot("../src/commonMain")
-                platform.set(Platform.common)
-            }
-
-            register("jvm") {
-                sourceRoot("../src/jvmMain")
-                dependsOn(common)
-                platform.set(Platform.jvm)
-            }
-
-            register("js") {
-                sourceRoot("../src/jsMain")
-                dependsOn(common)
-                platform.set(Platform.js)
-            }
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        val common by registering {
+            sourceRoot("../src/commonMain")
+            platform.set(Platform.common)
+        }
+        register("jvm") {
+            sourceRoot("../src/jvmMain")
+            dependsOn(common.name)
+            platform.set(Platform.jvm)
+        }
+        register("js") {
+            sourceRoot("../src/jsMain")
+            dependsOn(common.name)
+            platform.set(Platform.js)
         }
     }
 }
