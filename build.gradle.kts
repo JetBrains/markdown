@@ -1,6 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
@@ -44,7 +45,7 @@ kotlin {
             }
         }
     }
-    js(BOTH) {
+    js(IR) {
         nodejs {}
     }
     linuxX64()
@@ -184,7 +185,7 @@ tasks {
 val dokkaOutputDir = project.buildDir.resolve("dokkaHtml")
 
 subprojects {
-    tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
+    tasks.withType<DokkaTask> {
         outputDirectory.set(dokkaOutputDir)
     }
 }
