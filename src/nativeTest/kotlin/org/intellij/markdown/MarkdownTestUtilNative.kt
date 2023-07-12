@@ -1,10 +1,10 @@
-@file:OptIn(ExperimentalForeignApi::class)
 package org.intellij.markdown
 
 import kotlinx.cinterop.*
 import platform.posix.*
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalForeignApi::class)
 actual fun readFromFile(path: String): String {
     val file = requireNotNull(fopen(path, "r")) { "Invalid path $path" }
     file.usePinned {  }
@@ -26,34 +26,39 @@ actual fun assertSameLinesWithFile(path: String, result: String) {
     assertEquals(fileText, result)
 }
 
-private val intellijMarkdownHome: Lazy<String> = lazy {
-    memScoped {
+@OptIn(ExperimentalForeignApi::class)
+private fun obtainCurrentDirectory(): String? {
+    return memScoped {
         val buffer = allocArray<ByteVar>(PATH_MAX)
-        var dir = getcwd(buffer, PATH_MAX)?.toKString()?.replace("\\", "/") ?: error("could not get cwd")
-        while (access(dir, F_OK) == -1) {
-            dir = dir.substringBeforeLast("/")
-            if (dir.isEmpty()) {
-                error("could not find repo root. cwd=${buffer.toKString()}")
-            }
-        }
-        dir
+        val directory = getcwd(buffer, PATH_MAX.convert())?.toKString()
+        return@memScoped directory?.replace("\\", "/")
     }
 }
 
+private fun obtainProjectHome(): String {
+    val currentDirectory = obtainCurrentDirectory() ?: error("Failed to obtain current directory")
+    var root = currentDirectory
+    while (access(root, F_OK) == -1) {
+        root = root.substringBeforeLast("/")
+        check(root.isNotEmpty()) { "could not find repo root. cwd=$currentDirectory" }
+    }
+    return root
+}
+
+private val intellijMarkdownHome by lazy { obtainProjectHome() }
+
 actual fun getIntellijMarkdownHome(): String {
-    return intellijMarkdownHome.value
+    return intellijMarkdownHome
 }
 
 actual abstract class TestCase {
     actual fun getName(): String {
         try {
             throw Exception()
-        } catch (e: Exception) {
-            val stack = e.getStackTrace()
-            val re = Regex("""(?:kfun:)?org\.intellij\.markdown\.\w+Test#(test\w+)\(""")
-            return stack
-                    .mapNotNull { re.find(it)?.groupValues?.get(1) }
-                    .first()
+        } catch (exception: Exception) {
+            val stack = exception.getStackTrace()
+            val pattern = Regex("""(?:kfun:)?org\.intellij\.markdown\.\w+Test#(test\w+)\(""")
+            return stack.firstNotNullOf { pattern.find(it)?.groupValues?.get(1) }
         }
     }
 }

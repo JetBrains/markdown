@@ -90,7 +90,7 @@ kotlin {
         }
 
         val nativeTest by creating {
-            dependsOn(commonTest)
+            dependsOn(fileBasedTest)
         }
 
         listOf("linuxX64", "mingwX64", "macosX64", "macosArm64").forEach { target ->
