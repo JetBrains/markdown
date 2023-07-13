@@ -2,6 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
@@ -31,6 +32,14 @@ repositories {
 }
 
 kotlin {
+    targets.all {
+        compilations.all {
+            compilerOptions.configure {
+                languageVersion.set(KotlinVersion.KOTLIN_1_7)
+                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+            }
+        }
+    }
     jvm {
         compilations {
             all {

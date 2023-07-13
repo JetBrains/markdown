@@ -207,7 +207,7 @@ internal class TablesGeneratingProvider : GeneratingProvider {
     }
 
     companion object {
-        val DEFAULT_ALIGNMENT = Alignment.entries.find { it.isDefault }
+        val DEFAULT_ALIGNMENT = Alignment.values().find { it.isDefault }
             ?: throw IllegalStateException("Must be default alignment")
 
         val SPLIT_REGEX = Regex("\\|")
