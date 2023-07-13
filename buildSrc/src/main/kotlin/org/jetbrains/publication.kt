@@ -67,7 +67,6 @@ fun Project.configureSonatypePublicationIfNecessary() {
     }
 }
 
-@Suppress("UnstableApiUsage")
 private fun Project.signPublicationsIfKeyPresent(vararg publications: String) {
     val signingKeyId = System.getenv("SIGN_KEY_ID")
     val signingKey = System.getenv("SIGN_KEY")

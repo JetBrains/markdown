@@ -13,16 +13,18 @@ plugins {
     signing
 }
 
-group = "org.jetbrains"
-val baseVersion = project.property("version").toString()
-version = if (project.property("snapshot")?.toString()?.toBoolean() != false) {
-    baseVersion.substringBefore("-").split('.').let { (major, minor, patch) ->
-        "$major.$minor.${patch.toInt() + 1}-SNAPSHOT"
+fun Project.obtainProjectVersion(): String {
+    val baseVersion = property("version").toString()
+    val isSnapshot = property("snapshot")?.toString()?.toBoolean() != false
+    if (!isSnapshot) {
+        return baseVersion
     }
-} else {
-    baseVersion
+    val (major, minor, patch) = baseVersion.substringBefore("-").split('.')
+    return "$major.$minor.${patch.toInt() + 1}-SNAPSHOT"
 }
 
+group = "org.jetbrains"
+version = obtainProjectVersion()
 
 repositories {
     mavenCentral()
@@ -34,9 +36,6 @@ kotlin {
             all {
                 kotlinOptions.jvmTarget = "1.8"
             }
-            val main by getting
-
-            val test by getting
         }
 
         testRuns["test"].executionTask.configure {
@@ -46,7 +45,7 @@ kotlin {
         }
     }
     js(IR) {
-        nodejs {}
+        nodejs()
     }
     linuxX64()
     mingwX64()
@@ -58,9 +57,7 @@ kotlin {
     ios()
 
     sourceSets {
-        val commonMain by getting {
-
-        }
+        val commonMain by getting
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -69,14 +66,8 @@ kotlin {
         val fileBasedTest by creating {
             dependsOn(commonTest)
         }
-        val jvmMain by getting {
-
-        }
         val jvmTest by getting {
             dependsOn(fileBasedTest)
-        }
-        val jsMain by getting {
-
         }
         val jsTest by getting {
             dependsOn(fileBasedTest)
@@ -84,21 +75,35 @@ kotlin {
         val nativeMain by creating {
             dependsOn(commonMain)
         }
-        listOf("linuxX64", "mingwX64", "macosX64", "macosArm64", "ios", "iosSimulatorArm64",
-            "watchosSimulatorArm64", "tvosSimulatorArm64").forEach { target ->
-            getByName("${target}Main").dependsOn(nativeMain)
-        }
-
         val nativeTest by creating {
             dependsOn(fileBasedTest)
         }
-
-        listOf("linuxX64", "mingwX64", "macosX64", "macosArm64").forEach { target ->
-            val sourceSet = getByName("${target}Test")
-            sourceSet.dependsOn(nativeTest)
-            sourceSet.dependsOn(fileBasedTest)
+        val nativeSourceSets = listOf(
+            "linuxX64",
+            "mingwX64",
+            "macosX64",
+            "macosArm64",
+            "ios",
+            "iosSimulatorArm64",
+            "watchosSimulatorArm64",
+            "tvosSimulatorArm64"
+        ).map { "${it}Main" }
+        for (set in nativeSourceSets) {
+            named(set) {
+                dependsOn(nativeMain)
+            }
         }
-        val iosTest by getting {
+        val nativeTestSourceSets = listOf(
+            "linuxX64",
+            "mingwX64",
+            "macosX64",
+            "macosArm64"
+        ).map { "${it}Test" }
+        for (set in nativeTestSourceSets) {
+            named(set) {
+                dependsOn(nativeTest)
+                dependsOn(fileBasedTest)
+            }
         }
     }
 }
@@ -107,7 +112,6 @@ kotlin {
 tasks {
     register<Test>("performanceTest") {
         val testCompilation = kotlin.jvm().compilations["test"]
-
         group = "verification"
         testClassesDirs = testCompilation.output.classesDirs
         classpath = testCompilation.runtimeDependencyFiles
@@ -120,27 +124,24 @@ tasks {
         }
     }
 
-
-    task("downloadCommonmark", type = Exec::class) {
+    val downloadCommonmark by registering(Exec::class) {
         group = "Code Generation"
         description = "Clone the CommonMark repo locally"
         onlyIf { !File("commonmark-spec").exists() }
         executable("git")
         args("clone", "https://github.com/commonmark/commonmark-spec")
     }
-
-    task("downloadGfm", type = Exec::class) {
+    val downloadGfm by registering(Exec::class) {
         group = "Code Generation"
         description = "Clone the GFM repo locally"
         onlyIf { !File("cmark-gfm").exists() }
         executable("git")
         args("clone", "https://github.com/github/cmark-gfm")
     }
-
-    task("generateCommonMarkTest", type = Exec::class) {
+    val generateCommonMarkTest by registering(Exec::class) {
         group = "Code Generation"
         description = "Generate unit tests for the CommonMark spec"
-        dependsOn("downloadCommonmark")
+        dependsOn(downloadCommonmark)
         executable("python")
         workingDir("commonmark-spec")
         args("test/spec_tests.py", "--dump-tests")
@@ -149,17 +150,16 @@ tasks {
         doLast {
             val tests = String(output.toByteArray())
             generateSpecTest(
-                    tests,
-                    "CommonMarkSpecTest",
-                    "org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor"
+                tests,
+                "CommonMarkSpecTest",
+                "org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor"
             )
         }
     }
-
-    task("generateGfmTest", type = Exec::class) {
+    val generateGfmTest by registering(Exec::class) {
         group = "Code Generation"
         description = "Generate unit tests for the GFM spec"
-        dependsOn("downloadGfm")
+        dependsOn(downloadGfm)
         executable("python")
         workingDir("cmark-gfm/test")
         args("spec_tests.py", "--dump-tests")
@@ -168,21 +168,21 @@ tasks {
         doLast {
             val tests = String(output.toByteArray())
             generateSpecTest(
-                    tests,
-                    "GfmSpecTest",
-                    "org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor"
+                tests,
+                "GfmSpecTest",
+                "org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor"
             )
         }
     }
-
-    task("generateAllTests") {
+    val generateAllTests by registering {
         group = "Code Generation"
         description = "Generate unit tests for the all markdown specs"
-        dependsOn("generateCommonMarkTest", "generateGfmTest")
+        dependsOn(generateCommonMarkTest, generateGfmTest)
     }
 }
 
-val dokkaOutputDir = project.buildDir.resolve("dokkaHtml")
+val dokkaOutputDir: File
+    get() = project.buildDir.resolve("dokkaHtml")
 
 subprojects {
     tasks.withType<DokkaTask> {
