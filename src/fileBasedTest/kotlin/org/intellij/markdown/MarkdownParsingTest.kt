@@ -342,6 +342,11 @@ Markdown:MARKDOWN_FILE
         defaultTest(GFMFlavourDescriptor())
     }
 
+    @Test
+    fun testBrokenTable() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     private fun getTestDataPath(): String {
         return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/parser"
     }

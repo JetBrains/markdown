@@ -25,6 +25,9 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         val numberOfHeaderCells = split
                 .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
                 .count { it }
+        if (numberOfHeaderCells == 0) {
+            return emptyList()
+        }
         if (getNextLineFromConstraints(pos, currentConstraints)
                 ?.let { countSecondLineCells(it) == numberOfHeaderCells } == true) {
             return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
