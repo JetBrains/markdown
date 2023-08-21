@@ -28,12 +28,11 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         if (numberOfHeaderCells == 0) {
             return emptyList()
         }
-        if (getNextLineFromConstraints(pos, currentConstraints)
-                ?.let { countSecondLineCells(it) == numberOfHeaderCells } == true) {
+        val nextLine = getNextLineFromConstraints(pos, currentConstraints) ?: return emptyList()
+        if (countSecondLineCells(nextLine) == numberOfHeaderCells) {
             return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
-        } else {
-            return emptyList()
         }
+        return emptyList()
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
