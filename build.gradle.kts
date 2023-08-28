@@ -35,8 +35,8 @@ kotlin {
     targets.all {
         compilations.all {
             compilerOptions.configure {
-                languageVersion.set(KotlinVersion.KOTLIN_1_7)
-                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+                languageVersion = KotlinVersion.KOTLIN_1_7
+                apiVersion  = KotlinVersion.KOTLIN_1_7
             }
         }
     }
@@ -195,13 +195,13 @@ val dokkaOutputDir: File
 
 subprojects {
     tasks.withType<DokkaTask> {
-        outputDirectory.set(dokkaOutputDir)
+        outputDirectory = dokkaOutputDir
     }
 }
 
 tasks.register<Jar>("javadocJar") {
     dependsOn(":docs:dokkaHtml")
-    archiveClassifier.set("javadoc")
+    archiveClassifier = "javadoc"
     from(dokkaOutputDir)
 }
 

@@ -18,17 +18,17 @@ tasks.withType<DokkaTask>().configureEach {
     dokkaSourceSets {
         val common by registering {
             sourceRoot("../src/commonMain")
-            platform.set(Platform.common)
+            platform = Platform.common
         }
         register("jvm") {
             sourceRoot("../src/jvmMain")
             dependsOn(common.name)
-            platform.set(Platform.jvm)
+            platform = Platform.jvm
         }
         register("js") {
             sourceRoot("../src/jsMain")
             dependsOn(common.name)
-            platform.set(Platform.js)
+            platform = Platform.js
         }
     }
 }
