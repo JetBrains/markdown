@@ -194,7 +194,7 @@ val dokkaOutputDir: File
     get() = project.buildDir.resolve("dokkaHtml")
 
 subprojects {
-    tasks.withType<DokkaTask> {
+    tasks.withType<DokkaTask>().configureEach {
         outputDirectory = dokkaOutputDir
     }
 }
