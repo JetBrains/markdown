@@ -8,8 +8,8 @@ import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("multiplatform") apply true
-    id("org.jetbrains.dokka") apply true
+    kotlin("multiplatform") version "1.9.0"
+    id("org.jetbrains.dokka") version "1.8.20"
     `maven-publish`
     signing
 }
