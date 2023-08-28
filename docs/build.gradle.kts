@@ -10,10 +10,6 @@ plugins {
     id("org.jetbrains.dokka") apply true
 }
 
-repositories {
-    mavenCentral()
-}
-
 tasks.withType<DokkaTask>().configureEach {
     dokkaSourceSets {
         val common by registering {

@@ -27,10 +27,6 @@ fun Project.obtainProjectVersion(): String {
 group = "org.jetbrains"
 version = obtainProjectVersion()
 
-repositories {
-    mavenCentral()
-}
-
 kotlin {
     targets.all {
         compilations.all {
