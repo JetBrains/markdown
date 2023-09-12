@@ -2,6 +2,9 @@ package org.intellij.markdown.html
 
 import org.w3c.dom.url.URL
 
+
+actual typealias BitSet = BooleanArray
+
 actual class URI actual constructor(str: String) {
     private val base = if (isGoodURL(str)) {
         str

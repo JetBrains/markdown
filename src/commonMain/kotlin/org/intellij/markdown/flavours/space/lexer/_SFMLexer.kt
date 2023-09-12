@@ -6,6 +6,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.IElementType
 import kotlin.Throws
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.html.BitSet
 import org.intellij.markdown.lexer.Compat
 import org.intellij.markdown.lexer.Stack
 
@@ -52,7 +53,7 @@ class _SFMLexer : GeneratedLexer {
     private val zzEOFDone = false
 
     /** For the backwards DFA of general lookahead statements  */
-    private var zzFin = BooleanArray(ZZ_BUFFERSIZE + 1)
+    private var zzFin: BitSet? = null
 
     /* user code: */
     private class Token : MarkdownTokenTypes()
@@ -520,25 +521,25 @@ class _SFMLexer : GeneratedLexer {
                         run {
                             var zzFState = 4
                             var zzFPos = this.tokenStart
-                            if (zzFin.size <= zzBufferL.length) {
-                                zzFin = BooleanArray(zzBufferL.length + 1)
+                            if (zzFin == null || zzFin!!.size <= zzBufferL.length) {
+                                zzFin = BitSet(zzBufferL.length + 1)
                             }
-                            val zzFinL = zzFin
+                            val zzFinL = zzFin!!
                             while (zzFState != -1 && zzFPos < zzMarkedPos) {
-                                zzFinL[zzFPos] = zzAttrL[zzFState] and 1 == 1
+                                zzFinL.set(zzFPos, zzAttrL[zzFState] and 1 == 1)
                                 zzInput = Compat.codePointAt(zzBufferL, zzFPos /*, zzMarkedPos*/)
                                 zzFPos += Compat.charCount(zzInput)
                                 zzFState = zzTransL[zzRowMapL[zzFState] + ZZ_CMAP(zzInput)]
                             }
                             if (zzFState != -1) {
-                                zzFinL[zzFPos++] = zzAttrL[zzFState] and 1 == 1
+                                zzFinL.set(zzFPos++, zzAttrL[zzFState] and 1 == 1)
                             }
                             while (zzFPos <= zzMarkedPos) {
-                                zzFinL[zzFPos++] = false
+                                zzFinL.set(zzFPos++, false)
                             }
                             zzFState = 5
                             zzFPos = zzMarkedPos
-                            while (!zzFinL[zzFPos] || zzAttrL[zzFState] and 1 != 1) {
+                            while (!zzFinL.get(zzFPos) || zzAttrL[zzFState] and 1 != 1) {
                                 zzInput = Compat.codePointBefore(zzBufferL, zzFPos /*, zzStartRead*/)
                                 zzFPos -= Compat.charCount(zzInput)
                                 zzFState = zzTransL[zzRowMapL[zzFState] + ZZ_CMAP(zzInput)]
