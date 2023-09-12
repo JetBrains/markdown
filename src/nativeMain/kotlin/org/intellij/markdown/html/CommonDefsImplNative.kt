@@ -1,5 +1,6 @@
 package org.intellij.markdown.html
 
+actual typealias BitSet = BooleanArray
 
 actual class URI actual constructor(str: String) {
     private val base = str
