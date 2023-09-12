@@ -110,8 +110,10 @@ object Compat {
     }
 }
 
-class Stack<E> : MutableList<E> by ArrayList() {
-    fun push(e: E) = add(e)
+open class Stack<E> : MutableList<E> by ArrayList() {
+    fun push(e: E) {
+        add(e)
+    }
 
     fun pop(): E {
         val result = last()
