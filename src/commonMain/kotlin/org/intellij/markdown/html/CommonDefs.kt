@@ -19,6 +19,9 @@ expect class BitSet(size: Int){
     fun set(index: Int, value: Boolean)
 }
 
+inline fun BitSet.clear(index: Int) =
+    set(index, false)
+
 expect class IntStack() {
     fun push(e: Int)
     fun pop(): Int
