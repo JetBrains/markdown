@@ -60,7 +60,7 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
         try {
             return baseLexer.advance()
         } catch (e: Exception) {
-            throw AssertionError("This could not be!")
+            throw AssertionError("This could not be!", e)
         }
     }
 
