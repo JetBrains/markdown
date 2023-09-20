@@ -11,7 +11,6 @@ import org.intellij.markdown.html.InlineHolderGeneratingProvider
 import org.intellij.markdown.html.SimpleTagProvider
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
-import kotlin.text.Regex
 
 internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
@@ -149,6 +148,16 @@ open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
         val nodeText = node.getTextInNode(text).toString()
         val escaped = nodeText.replace("\\|", "|")
         return EntityConverter.replaceEntities(escaped, processEntities = false, processEscapes = false)
+    }
+}
+
+internal class MathGeneratingProvider(private val inline: Boolean = false): GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        val nodes = node.children.subList(1, node.children.size - 1)
+        val output = nodes.joinToString(separator = "") { HtmlGenerator.leafText(text, it, false) }.trim()
+        visitor.consumeTagOpen(node, "span", "class=\"math\"", "inline = \"$inline\"")
+        visitor.consumeHtml(output)
+        visitor.consumeTagClose("span")
     }
 }
 
