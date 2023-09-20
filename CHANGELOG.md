@@ -1,0 +1,27 @@
+# intellij-markdown Changelog
+
+## [Unreleased]
+
+## 0.5.0
+- Updated Kotlin version to `1.9.0` and set the project language level to `1.7`
+- [#121] Fixed legacy mode warnings from JS artifacts
+
+## 0.4.1
+- [#117] Fixed exceptions caused by the table pipes regex in Safari
+
+## 0.4.0
+- Added the ability to provide a custom way of obtaining opening info for code fence delimiters
+
+## 0.3.6
+- [#114] Added support for HTTPS urls in GFM auto links without explicitly defined schema
+- Fixed binary compatibility issues caused by `MarkdownParser(MarkdownFlavourDescriptor)` constructor
+
+## 0.3.5
+- [#48] Updated table parsing constraints to allow creating tables with less than 3 dashes in delimiter row
+
+## 0.3.4
+- [[IDEA-283181](https://youtrack.jetbrains.com/issue/IDEA-283181)] Fixed incorrect handling of escaped pipes in code spans inside table cells
+
+## 0.3.3
+- [#108] Fixed incorrect handling of escaped pipes inside tables
+- [#111] Fixed public type of `GFMFlavourDescriptor.markerProcessorFactory`
