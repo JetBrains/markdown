@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## 0.5.1
 - [#127] Migrated lexer to the optional BitSet
 - [#129] Fixed parsing of auto-link lexing to stop at opening angle bracket
 
