@@ -19,6 +19,9 @@ object GFMTokenTypes {
 
     @JvmField
     val CELL: IElementType = MarkdownElementType("CELL", true)
+
+    @JvmField
+    val DOLLAR: IElementType = MarkdownElementType("DOLLAR", true)
 }
 
 object  GFMElementTypes {
@@ -33,4 +36,10 @@ object  GFMElementTypes {
 
     @JvmField
     val ROW: IElementType = MarkdownElementType("ROW")
+
+    @JvmField
+    val INLINE_MATH: IElementType = MarkdownElementType("INLINE_MATH")
+
+    @JvmField
+    val BLOCK_MATH: IElementType = MarkdownElementType("BLOCK_MATH")
 }
