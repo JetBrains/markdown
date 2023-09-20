@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#127] Migrated lexer to the optional BitSet
+- [#129] Fixed parsing of auto-link lexing to stop at opening angle bracket
 
 ## 0.5.0
 - Updated Kotlin version to `1.9.0` and set the project language level to `1.7`
