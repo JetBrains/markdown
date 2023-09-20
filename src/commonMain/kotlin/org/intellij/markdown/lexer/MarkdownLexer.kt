@@ -57,11 +57,7 @@ open class MarkdownLexer(private val baseLexer: GeneratedLexer) {
     }
 
     private fun advanceBase(): IElementType? {
-        try {
-            return baseLexer.advance()
-        } catch (e: Exception) {
-            throw AssertionError("This could not be!", e)
-        }
+        return baseLexer.advance()
     }
 
     fun reset(buffer: CharSequence, start: Int, end: Int, initialState: Int) {
