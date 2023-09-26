@@ -11,6 +11,9 @@ import org.intellij.markdown.lexer.GeneratedLexer
 
 /* Auto generated File */
 class _GFMLexer : GeneratedLexer {
+    // Workaround for Kotlin/Native bug/oddity
+    init { Companion }
+
     /** the current state of the DFA  */
     private var zzState = 0
 

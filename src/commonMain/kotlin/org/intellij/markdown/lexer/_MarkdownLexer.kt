@@ -10,6 +10,9 @@ import org.intellij.markdown.MarkdownTokenTypes
  * from the specification file <tt>markdown.flex</tt>
  */
 class _MarkdownLexer : GeneratedLexer {
+    // Workaround for Kotlin/Native bug/oddity
+    init { Companion }
+
     /** the current state of the DFA  */
     private var zzState = 0
 

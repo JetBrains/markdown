@@ -16,6 +16,9 @@ import org.intellij.markdown.lexer.Compat
  * from the specification file <tt>sfm.flex</tt>
  */
 class _SFMLexer : GeneratedLexer {
+    // Workaround for Kotlin/Native bug/oddity
+    init { Companion }
+
     /** the current state of the DFA  */
     private var zzState = 0
 
