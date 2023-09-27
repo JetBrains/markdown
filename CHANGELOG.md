@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## 0.5.2
 - [#130] Fixed segfault caused by lexer companion object initialization on native targets
 
 ## 0.5.1
