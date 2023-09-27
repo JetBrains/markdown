@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#130] Fixed segfault caused by lexer companion object initialization on native targets
 
 ## 0.5.1
 - [#127] Migrated lexer to the optional BitSet
