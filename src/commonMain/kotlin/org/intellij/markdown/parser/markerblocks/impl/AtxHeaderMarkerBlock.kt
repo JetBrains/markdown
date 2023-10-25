@@ -20,13 +20,28 @@ class AtxHeaderMarkerBlock(myConstraints: MarkdownConstraints,
 
     init {
         val curPos = productionHolder.currentPosition
-        productionHolder.addProduction(listOf(SequentialParser.Node(
-                curPos + headerRange.first..curPos + headerRange.last + 1, MarkdownTokenTypes.ATX_HEADER
-        ), SequentialParser.Node(
-                curPos + headerRange.last + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
-        ), SequentialParser.Node(
-                tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
-        )))
+        val nodes = buildList {
+            add(
+                SequentialParser.Node(
+                    curPos + headerRange.first..curPos + headerRange.last + 1, MarkdownTokenTypes.ATX_HEADER
+                )
+            )
+            if (curPos + headerRange.last + 1 != tailStartPos) {
+                add(
+                    SequentialParser.Node(
+                        curPos + headerRange.last + 1..tailStartPos, MarkdownTokenTypes.ATX_CONTENT
+                    )
+                )
+            }
+            if (tailStartPos != endOfLinePos) {
+                add(
+                    SequentialParser.Node(
+                        tailStartPos..endOfLinePos, MarkdownTokenTypes.ATX_HEADER
+                    )
+                )
+            }
+        }
+        productionHolder.addProduction(nodes)
     }
 
     override fun isInterestingOffset(pos: LookaheadText.Position): Boolean = true
