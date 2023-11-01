@@ -91,7 +91,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
             if (isStart() == other.isStart()) {
                 val positionDiff = info.range.first + info.range.last - (other.info.range.first + other.info.range.last)
                 if (positionDiff != 0) {
-                    if (isEmpty()) {
+                    if (isEmpty() || other.isEmpty()) {
                         return positionDiff
                     }
                     return -positionDiff
