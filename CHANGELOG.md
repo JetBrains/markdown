@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## 0.6.0
 - [#135] Fixed node creation for zero-length table cells
 
 ## 0.5.2
