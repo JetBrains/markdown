@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#135] Fixed node creation for zero-length table cells
 
 ## 0.5.2
 - [#130] Fixed segfault caused by lexer companion object initialization on native targets
