@@ -1,15 +1,32 @@
 package org.intellij.markdown.parser.sequentialparsers
 
+import org.intellij.markdown.ExperimentalApi
+import org.intellij.markdown.parser.CancellationToken
+
 abstract class SequentialParserManager {
     abstract fun getParserSequence(): List<SequentialParser>
 
-    fun runParsingSequence(tokensCache: TokensCache, rangesToParse: List<IntRange>): Collection<SequentialParser.Node> {
+    @OptIn(ExperimentalApi::class)
+    fun runParsingSequence(
+        tokensCache: TokensCache,
+        rangesToParse: List<IntRange>,
+    ): Collection<SequentialParser.Node> {
+        return runParsingSequence(tokensCache, rangesToParse, CancellationToken.NonCancellable)
+    }
+
+    @ExperimentalApi
+    fun runParsingSequence(
+        tokensCache: TokensCache,
+        rangesToParse: List<IntRange>,
+        cancellationToken: CancellationToken
+    ): Collection<SequentialParser.Node> {
         val result = ArrayList<SequentialParser.Node>()
 
         var parsingSpaces = ArrayList<List<IntRange>>()
         parsingSpaces.add(rangesToParse)
 
         for (sequentialParser in getParserSequence()) {
+            cancellationToken.checkCancelled()
             val nextLevelSpaces = ArrayList<List<IntRange>>()
 
             for (parsingSpace in parsingSpaces) {

@@ -1,11 +1,20 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
-class InlineBuilder(nodeBuilder: ASTNodeBuilder, private val tokensCache: TokensCache) : TreeBuilder(nodeBuilder) {
+@OptIn(ExperimentalApi::class)
+class InlineBuilder @ExperimentalApi constructor(
+    nodeBuilder: ASTNodeBuilder,
+    private val tokensCache: TokensCache,
+    cancellationToken: CancellationToken
+): TreeBuilder(nodeBuilder, cancellationToken) {
+    @OptIn(ExperimentalApi::class)
+    constructor(nodeBuilder: ASTNodeBuilder, tokensCache: TokensCache): this(nodeBuilder, tokensCache, CancellationToken.NonCancellable)
+
     private var currentTokenPosition = -1
 
     override fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?) {

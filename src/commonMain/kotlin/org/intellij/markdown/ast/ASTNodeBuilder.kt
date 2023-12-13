@@ -1,17 +1,31 @@
 package org.intellij.markdown.ast
 
+import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
+import org.intellij.markdown.parser.CancellationToken
 
-open class ASTNodeBuilder(protected val text: CharSequence) {
+open class ASTNodeBuilder @ExperimentalApi constructor(
+    protected val text: CharSequence,
+    protected val cancellationToken: CancellationToken
+) {
+    /**
+     * For compatibility only.
+     */
+    @OptIn(ExperimentalApi::class)
+    constructor(text: CharSequence): this(text, CancellationToken.NonCancellable)
+
+    @OptIn(ExperimentalApi::class)
     open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
         if (type == MarkdownTokenTypes.WHITE_SPACE) {
             val result = ArrayList<ASTNode>()
             var lastEol = startOffset
             while (lastEol < endOffset) {
+                cancellationToken.checkCancelled()
+
                 val nextEol = indexOfSubSeq(text, lastEol, endOffset, '\n')
                 if (nextEol == -1) {
                     break
@@ -32,7 +46,9 @@ open class ASTNodeBuilder(protected val text: CharSequence) {
         return listOf(LeafASTNode(type, startOffset, endOffset))
     }
 
+    @OptIn(ExperimentalApi::class)
     open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
+        cancellationToken.checkCancelled()
         when (type) {
             MarkdownElementTypes.UNORDERED_LIST,
             MarkdownElementTypes.ORDERED_LIST -> {

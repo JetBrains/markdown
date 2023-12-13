@@ -1,13 +1,20 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.lexer.Stack
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
+abstract class TreeBuilder @ExperimentalApi constructor(
+    protected val nodeBuilder: ASTNodeBuilder,
+    protected val cancellationToken: CancellationToken
+) {
+    @OptIn(ExperimentalApi::class)
+    constructor(nodeBuilder: ASTNodeBuilder): this(nodeBuilder, CancellationToken.NonCancellable)
 
+    @OptIn(ExperimentalApi::class)
     fun buildTree(production: List<SequentialParser.Node>): ASTNode {
         val events = constructEvents(production)
         val markersStack = Stack<Pair<MyEvent, MutableList<MyASTNodeWrapper>>>()
@@ -18,6 +25,7 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
         }
 
         for (i in events.indices) {
+            cancellationToken.checkCancelled()
             val event = events[i]
 
             flushEverythingBeforeEvent(event, if (markersStack.isEmpty()) null else markersStack.peek().second)
@@ -55,9 +63,11 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
 
     protected abstract fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?)
 
+    @OptIn(ExperimentalApi::class)
     private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
         val events = ArrayList<MyEvent>()
         for (index in production.indices) {
+            cancellationToken.checkCancelled()
             val result = production[index]
             val startTokenId = result.range.first
             val endTokenId = result.range.last
@@ -113,5 +123,4 @@ abstract class TreeBuilder(protected val nodeBuilder: ASTNodeBuilder) {
     }
 
     protected class MyASTNodeWrapper(val astNode: ASTNode, val startTokenIndex: Int, val endTokenIndex: Int)
-
 }

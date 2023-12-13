@@ -11,11 +11,18 @@ import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
-class MarkdownParser(
+class MarkdownParser @ExperimentalApi constructor(
     private val flavour: MarkdownFlavourDescriptor,
-    private val assertionsEnabled: Boolean = true
+    private val assertionsEnabled: Boolean = true,
+    private val cancellationToken: CancellationToken = CancellationToken.NonCancellable
 ) {
     constructor(flavour: MarkdownFlavourDescriptor): this(flavour, true)
+
+    @OptIn(ExperimentalApi::class)
+    constructor(
+        flavour: MarkdownFlavourDescriptor,
+        assertionsEnabled: Boolean
+    ): this(flavour, assertionsEnabled, CancellationToken.NonCancellable)
 
     fun buildMarkdownTreeFromString(text: String): ASTNode {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
@@ -45,6 +52,7 @@ class MarkdownParser(
         }
     }
 
+    @OptIn(ExperimentalApi::class)
     private fun doParse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
         val productionHolder = ProductionHolder()
         val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
@@ -54,6 +62,7 @@ class MarkdownParser(
         val textHolder = LookaheadText(text)
         var pos: LookaheadText.Position? = textHolder.startPosition
         while (pos != null) {
+            cancellationToken.checkCancelled()
             productionHolder.updatePosition(pos.offset)
             pos = markerProcessor.processPosition(pos)
         }
@@ -74,17 +83,21 @@ class MarkdownParser(
         return builder.buildTree(productionHolder.production)
     }
 
+    @OptIn(ExperimentalApi::class)
     private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
         val lexer = flavour.createInlinesLexer()
         lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)
 
         val wholeRange = 0..tokensCache.filteredTokens.size
-        val nodes = flavour.sequentialParserManager.runParsingSequence(tokensCache,
-                SequentialParserUtil.filterBlockquotes(tokensCache, wholeRange))
+        val nodes = flavour.sequentialParserManager.runParsingSequence(
+            tokensCache = tokensCache,
+            rangesToParse = SequentialParserUtil.filterBlockquotes(tokensCache, wholeRange),
+            cancellationToken = cancellationToken
+        )
 
-        return InlineBuilder(ASTNodeBuilder(text), tokensCache).
-                buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
+        val builder = InlineBuilder(ASTNodeBuilder(text, cancellationToken), tokensCache, cancellationToken)
+        return builder.buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
     }
 
     private fun topLevelFallback(root: IElementType, text: String): ASTNode {
@@ -113,5 +126,4 @@ class MarkdownParser(
             }
         }
     }
-
 }
