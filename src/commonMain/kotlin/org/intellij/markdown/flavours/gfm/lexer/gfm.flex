@@ -286,6 +286,14 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
     return parseDelimited.returnType;
   }
 
+  // Math
+  "$"+ {
+    if (canInline()) {
+      return GFMTokenTypes.DOLLAR;
+    }
+    return parseDelimited.returnType;
+  }
+
   // Emphasis
   {WHITE_SPACE}+ ("*" | "_") {WHITE_SPACE}+ {
     return getReturnGeneralized(MarkdownTokenTypes.TEXT);

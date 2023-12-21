@@ -343,6 +343,11 @@ Markdown:MARKDOWN_FILE
     }
 
     @Test
+    fun testMath() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testBrokenTable() {
         defaultTest(GFMFlavourDescriptor())
     }
