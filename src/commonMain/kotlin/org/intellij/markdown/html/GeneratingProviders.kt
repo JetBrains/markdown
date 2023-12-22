@@ -2,13 +2,14 @@ package org.intellij.markdown.html
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.MarkdownTokenTypes.Companion.ATX_CONTENT
+import org.intellij.markdown.MarkdownTokenTypes.Companion.SETEXT_CONTENT
 import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LinkMap
-import kotlin.text.Regex
 
 abstract class OpenCloseGeneratingProvider : GeneratingProvider {
     abstract fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode)
@@ -48,6 +49,54 @@ open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider(
 
     override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         visitor.consumeTagClose(tagName)
+    }
+
+}
+
+open class SimpleTagWithLinkProvider(val tagName: String) : OpenCloseGeneratingProvider() {
+
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagOpen(
+                node,
+                tagName,
+                getPureIdString(node,text)
+        )
+    }
+
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagClose(tagName)
+    }
+
+    private fun getPureIdString(
+            node: ASTNode,
+            text: String
+    ) : String {
+        val stringBuilder = StringBuilder()
+        getPureIdStringDfs(
+                node,
+                text,
+                stringBuilder
+        )
+        val idValue : CharSequence = LinkMap.normalizeDestination(stringBuilder.toString().trim(), true)
+        return "id = \"$idValue\""
+    }
+
+    private fun getPureIdStringDfs(
+            node: ASTNode,
+            text: String,
+            stringBuilder: StringBuilder
+    ) {
+        if (node.type in listOf(SETEXT_CONTENT, ATX_CONTENT)) {
+            stringBuilder.append(text.substring(node.startOffset, node.endOffset))
+        } else {
+            for(children in node.children){
+                getPureIdStringDfs(
+                        children,
+                        text,
+                        stringBuilder
+                )
+            }
+        }
     }
 
 }
