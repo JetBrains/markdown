@@ -60,7 +60,9 @@ kotlin {
         nodejs()
     }
     @OptIn(ExperimentalWasmDsl::class)
-    wasm { nodejs() }
+    wasm {
+        nodejs()
+    }
     linuxX64()
     linuxArm64()
     mingwX64()
@@ -92,6 +94,9 @@ kotlin {
         val jsTest by getting {
             dependsOn(fileBasedTest)
         }
+        val wasmTest by getting {
+            dependsOn(fileBasedTest)
+        }
         val nativeMain by creating {
             dependsOn(commonMain)
         }
@@ -112,8 +117,7 @@ kotlin {
             "ios",
             "iosSimulatorArm64",
             "watchosSimulatorArm64",
-            "tvosSimulatorArm64",
-            "wasm",
+            "tvosSimulatorArm64"
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             named(set) {
@@ -125,7 +129,7 @@ kotlin {
             "linuxArm64",
             "mingwX64",
             "macosX64",
-            "macosArm64",
+            "macosArm64"
         ).map { "${it}Test" }
         for (set in nativeTestSourceSets) {
             named(set) {
@@ -139,8 +143,7 @@ kotlin {
 // Need to compile using a canary version of Node due to
 // https://youtrack.jetbrains.com/issue/KT-63014
 rootProject.the<NodeJsRootExtension>().apply {
-    nodeVersion = "21.0.0-v8-canary2023091837d0630120"
-    nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
+    nodeVersion = "21.7.0"
 }
 
 tasks.withType<KotlinNpmInstallTask>().configureEach {
