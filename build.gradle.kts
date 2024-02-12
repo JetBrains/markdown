@@ -57,6 +57,7 @@ kotlin {
         nodejs()
     }
     linuxX64()
+    linuxArm64()
     mingwX64()
     macosX64()
     macosArm64()
@@ -94,6 +95,7 @@ kotlin {
         }
         val nativeSourceSets = listOf(
             "linuxX64",
+            "linuxArm64",
             "mingwX64",
             "macosX64",
             "macosArm64",
@@ -109,6 +111,7 @@ kotlin {
         }
         val nativeTestSourceSets = listOf(
             "linuxX64",
+            "linuxArm64",
             "mingwX64",
             "macosX64",
             "macosArm64"
@@ -215,6 +218,7 @@ val publicationsToArtifacts = mapOf(
     "jvm" to "markdown-jvm",
     "js" to "markdown-js",
     "linuxX64" to "markdown-linuxx64",
+    "linuxArm64" to "markdown-linuxarm64",
     "mingwX64" to "markdown-mingwx64",
     "macosX64" to "markdown-macosx64",
     "macosArm64" to "markdown-macosarm64",
