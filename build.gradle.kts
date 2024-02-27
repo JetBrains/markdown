@@ -3,6 +3,9 @@ import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
@@ -56,6 +59,8 @@ kotlin {
     js(IR) {
         nodejs()
     }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs { nodejs() }
     linuxX64()
     mingwX64()
     macosX64()
@@ -66,6 +71,11 @@ kotlin {
     ios()
 
     sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlin.experimental.ExperimentalNativeApi")
+            }
+        }
         val commonMain by getting
         val commonTest by getting {
             dependencies {
@@ -100,7 +110,8 @@ kotlin {
             "ios",
             "iosSimulatorArm64",
             "watchosSimulatorArm64",
-            "tvosSimulatorArm64"
+            "tvosSimulatorArm64",
+            "wasmJs",
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             named(set) {
@@ -111,7 +122,7 @@ kotlin {
             "linuxX64",
             "mingwX64",
             "macosX64",
-            "macosArm64"
+            "macosArm64",
         ).map { "${it}Test" }
         for (set in nativeTestSourceSets) {
             named(set) {
@@ -122,6 +133,15 @@ kotlin {
     }
 }
 
+// Need to compile using a canary version of Node due to
+// https://youtrack.jetbrains.com/issue/KT-63014
+rootProject.the<NodeJsRootExtension>().apply {
+    nodeVersion = "21.0.0-v8-canary2023091837d0630120"
+    nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
+}
+tasks.withType<KotlinNpmInstallTask>().configureEach {
+    args.add("--ignore-engines")
+}
 
 tasks {
     register<Test>("performanceTest") {
@@ -214,6 +234,7 @@ val publicationsToArtifacts = mapOf(
     "kotlinMultiplatform" to "markdown",
     "jvm" to "markdown-jvm",
     "js" to "markdown-js",
+    "wasmJs" to "markdown-wasm-js",
     "linuxX64" to "markdown-linuxx64",
     "mingwX64" to "markdown-mingwx64",
     "macosX64" to "markdown-macosx64",
