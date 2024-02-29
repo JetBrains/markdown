@@ -1,6 +1,7 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes.Companion.ESCAPED_BACKTICKS
 import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
@@ -45,8 +46,7 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
             }
             if (!flushedInput) {
                 if (child.type == MarkdownElementTypes.PARAGRAPH) {
-                    SubParagraphGeneratingProvider(isLoose, inputHtml).
-                            processNode(visitor, text, child)
+                    SubParagraphGeneratingProvider(isLoose, inputHtml).processNode(visitor, text, child)
                 } else {
                     visitor.consumeHtml(inputHtml)
                     child.accept(visitor)
@@ -69,8 +69,8 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
         return checkedString
     }
 
-    private class SubParagraphGeneratingProvider(val wrapInParagraph: Boolean, val inputHtml: String)
-    : InlineHolderGeneratingProvider() {
+    private class SubParagraphGeneratingProvider(val wrapInParagraph: Boolean, val inputHtml: String) :
+        InlineHolderGeneratingProvider() {
         override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
             if (wrapInParagraph) {
                 visitor.consumeTagOpen(node, "p")
@@ -90,15 +90,40 @@ internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
  * Special version of [org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor.CodeSpanGeneratingProvider],
  * that will correctly escape table pipes if the code span is inside a table cell.
  */
-open class TableAwareCodeSpanGeneratingProvider: GeneratingProvider {
+open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val isInsideTable = isInsideTable(node)
         val nodes = collectContentNodes(node)
-        val output = nodes.joinToString(separator = "") { processChild(it, text, isInsideTable) }.trim()
+        val output = nodes.withIndex().joinToString(separator = "") { (i, it) ->
+            if (i == nodes.lastIndex && it.type == ESCAPED_BACKTICKS) {
+                // Backslash escapes do not work in code spans.
+                // Yet, a code span like `this\` is recognized as "BACKTICK", "TEXT", "ESCAPED_BACKTICKS"
+                // So if the last node is ESCAPED_BACKTICKS, we need to manually render it as "\"
+                return@joinToString "\\"
+            }
+
+            processChild(it, text, isInsideTable).replaceNewLines()
+        }.trimForCodeSpan()
         visitor.consumeTagOpen(node, "code")
         visitor.consumeHtml(output)
         visitor.consumeTagClose("code")
     }
+
+    /** From GFM spec: First, line endings are converted to spaces.*/
+    protected fun CharSequence.replaceNewLines(): CharSequence =
+        replace("\\r\\n?|\\n".toRegex(), " ")
+
+    /**
+     * From GFM spec:
+     * If the resulting string both begins and ends with a space character,
+     * but does not consist entirely of space characters,
+     * a single space character is removed from the front and back.
+     * This allows you to include code that begins or ends with backtick characters,
+     * which must be separated by whitespace from the opening or closing backtick strings.
+     */
+    protected fun CharSequence.trimForCodeSpan(): CharSequence =
+        if (isBlank()) this
+        else removeSurrounding(" ", " ")
 
     protected fun isInsideTable(node: ASTNode): Boolean {
         return node.getParentOfType(GFMTokenTypes.CELL) != null
@@ -106,6 +131,14 @@ open class TableAwareCodeSpanGeneratingProvider: GeneratingProvider {
 
     protected fun collectContentNodes(node: ASTNode): List<ASTNode> {
         check(node.children.size >= 2)
+
+        // Backslash escapes do not work in code spans.
+        // Yet, a code span like `this\` is recognized as "BACKTICK", "TEXT", "ESCAPED_BACKTICKS"
+        // Let's keep the last ESCAPED_BACKTICKS and manually render it as "\"
+        if (node.children.last().type == ESCAPED_BACKTICKS) {
+            return node.children.drop(1)
+        }
+
         return node.children.subList(1, node.children.size - 1)
     }
 
@@ -146,11 +179,13 @@ internal class TablesGeneratingProvider : GeneratingProvider {
         visitor.consumeTagClose("table")
     }
 
-    private fun populateRow(visitor: HtmlGenerator.HtmlGeneratingVisitor,
-                            node: ASTNode,
-                            cellName: String,
-                            alignmentInfo: List<Alignment>,
-                            rowNumber: Int) {
+    private fun populateRow(
+        visitor: HtmlGenerator.HtmlGeneratingVisitor,
+        node: ASTNode,
+        cellName: String,
+        alignmentInfo: List<Alignment>,
+        rowNumber: Int,
+    ) {
         val parityAttribute = if (rowNumber > 0 && rowNumber % 2 == 0) "class=\"intellij-row-even\"" else null
 
         visitor.consumeTagOpen(node, "tr", parityAttribute)
@@ -175,7 +210,7 @@ internal class TablesGeneratingProvider : GeneratingProvider {
 
     private fun getAlignmentInfo(text: String, node: ASTNode): List<Alignment> {
         val separatorRow = node.findChildOfType(GFMTokenTypes.TABLE_SEPARATOR)
-                ?: throw IllegalStateException("Could not find table separator")
+            ?: throw IllegalStateException("Could not find table separator")
 
         val result = ArrayList<Alignment>()
 
@@ -186,15 +221,17 @@ internal class TablesGeneratingProvider : GeneratingProvider {
                 val trimmed = cell.trim()
                 val starts = trimmed.startsWith(':')
                 val ends = trimmed.endsWith(':')
-                result.add(if (starts && ends) {
-                    Alignment.CENTER
-                } else if (starts) {
-                    Alignment.LEFT
-                } else if (ends) {
-                    Alignment.RIGHT
-                } else {
-                    DEFAULT_ALIGNMENT
-                })
+                result.add(
+                    if (starts && ends) {
+                        Alignment.CENTER
+                    } else if (starts) {
+                        Alignment.LEFT
+                    } else if (ends) {
+                        Alignment.RIGHT
+                    } else {
+                        DEFAULT_ALIGNMENT
+                    }
+                )
             }
         }
         return result
