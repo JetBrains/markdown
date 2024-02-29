@@ -40,10 +40,8 @@ private const val STATE_CANNOT_BE_BASE_URL_PATH = 18
 private const val STATE_QUERY = 19
 private const val STATE_FRAGMENT = 20
 
-@SharedImmutable
 private val SPECIAL_SCHEMES = arrayOf("ftp", "file", "http", "https", "ws", "wss")
 
-@SharedImmutable
 private val DEFAULT_PORTS = mapOf(
         "ftp" to 21,
         "file" to null,
