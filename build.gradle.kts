@@ -139,6 +139,7 @@ rootProject.the<NodeJsRootExtension>().apply {
     nodeVersion = "21.0.0-v8-canary2023091837d0630120"
     nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
 }
+
 tasks.withType<KotlinNpmInstallTask>().configureEach {
     args.add("--ignore-engines")
 }
