@@ -2089,14 +2089,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample341() = doTest(
             markdown = "`  ``  `\n",
             html = "<p><code> `` </code></p>\n"
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample342() = doTest(
             markdown = "` a`\n",
             html = "<p><code> a</code></p>\n"
@@ -2110,35 +2108,30 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample344() = doTest(
             markdown = "` `\n`  `\n",
             html = "<p><code> </code>\n<code>  </code></p>\n"
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample345() = doTest(
             markdown = "``\nfoo\nbar  \nbaz\n``\n",
             html = "<p><code>foo bar   baz</code></p>\n"
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample346() = doTest(
             markdown = "``\nfoo \n``\n",
             html = "<p><code>foo </code></p>\n"
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample347() = doTest(
             markdown = "`foo   bar \nbaz`\n",
             html = "<p><code>foo   bar  baz</code></p>\n"
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample348() = doTest(
             markdown = "`foo\\`bar`\n",
             html = "<p><code>foo\\</code>bar`</p>\n"
