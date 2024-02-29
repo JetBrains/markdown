@@ -318,15 +318,15 @@ Enter key password for [tomcat]<br />
 <code>&lt;Connector port=&quot;8443&quot; protocol=&quot;org.apache.coyote.http11.Http11Protocol&quot;</code>
 <br />
 
-    <code>maxThreads=&quot;150&quot; SSLEnabled=&quot;true&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</code>
+    <code>    maxThreads=&quot;150&quot; SSLEnabled=&quot;true&quot; scheme=&quot;https&quot; secure=&quot;true&quot;</code>
 <br />
 
-    <code>clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</code>
+    <code>    clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot;</code>
 <br />
 
-    <code>keystoreFile=&quot;/opt/certs/tomcatSSLKeystore&quot;</code>
+    <code>    keystoreFile=&quot;/opt/certs/tomcatSSLKeystore&quot;</code>
 
-    <code>keystorePass=&quot;changeit&quot; /&gt;</code>
+    <code>    keystorePass=&quot;changeit&quot; /&gt;</code>
 </p>
 </li>
 <li>
@@ -843,7 +843,7 @@ Upload Solr configuration to Zookeeper<ol>
 <code>cd /opt/solr-5.3.1/server/scripts/cloud-scripts</code>
 </li>
 <li>
-<code>./zkcli.sh -cmd upconfig -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot -confname kla_config -solrhome /opt/solr-5.3.1/server/solr -confdir /opt/solr-5.3.1/server/solr/configsets/data_driven_schema_configs/conf</code>
+<code> ./zkcli.sh -cmd upconfig -zkhost [zk1-host]:2181,[zk2-host]:2181,[zk3-host]:2181/kla_chroot -confname kla_config -solrhome /opt/solr-5.3.1/server/solr -confdir /opt/solr-5.3.1/server/solr/configsets/data_driven_schema_configs/conf</code>
 </li>
 </ol>
 </li>
