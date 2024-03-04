@@ -18,6 +18,8 @@ private val intellijMarkdownHome: Lazy<String> = lazy {
     dir
 }
 
+actual val isWasmOrJs = true
+
 actual fun readFromFile(path: String): String {
     return js("require('fs').readFileSync")(path, "utf-8") as String
 }

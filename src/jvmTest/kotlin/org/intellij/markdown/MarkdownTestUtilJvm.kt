@@ -4,6 +4,8 @@ import junit.framework.AssertionFailedError
 import java.io.File
 import kotlin.test.assertEquals
 
+actual val isWasmOrJs = false
+
 actual fun readFromFile(path: String): String {
     return File(path).readText()
 }

@@ -4,6 +4,8 @@ import org.intellij.markdown.html.URI
 import org.intellij.markdown.html.resolveToStringSafe
 import kotlin.test.*
 
+expect val isWasmOrJs: Boolean
+
 class URITest {
     @Test
     fun testEmptyURI() {
@@ -128,6 +130,9 @@ class URITest {
 
     @Test
     fun testStrangeURIs() {
+        // TODO: Remove this line after those commits  will be backported in a new version of Node.js (https://github.com/nodejs/node/compare/ce5688782e277459681538ce1658e8b0ee4189af...7a1267c1055cc6bd7036fd1157e9d24b1b2b967b)
+        if (isWasmOrJs) return
+
         val uri = "http://0.0.0.0x100/"
         assertEquals(uri, URI(uri).toString())
 

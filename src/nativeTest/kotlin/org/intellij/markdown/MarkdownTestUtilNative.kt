@@ -47,6 +47,8 @@ private fun obtainProjectHome(): String {
 
 private val intellijMarkdownHome by lazy { obtainProjectHome() }
 
+actual val isWasmOrJs = false
+
 actual fun getIntellijMarkdownHome(): String {
     return intellijMarkdownHome
 }
