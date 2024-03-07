@@ -249,7 +249,7 @@ tasks.withType<AbstractPublishToMaven>().configureEach {
 
 // To support Wasm tests run
 rootProject.the<NodeJsRootExtension>().apply {
-    nodeVersion = "20.3.0"
+    nodeVersion = "21.7.0"
 }
 
 tasks.withType<KotlinNpmInstallTask>().configureEach {
