@@ -3,6 +3,8 @@ import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
@@ -56,6 +58,9 @@ kotlin {
     js(IR) {
         nodejs()
     }
+    wasm {
+        nodejs()
+    }
     linuxX64()
     mingwX64()
     macosX64()
@@ -79,6 +84,9 @@ kotlin {
             dependsOn(fileBasedTest)
         }
         val jsTest by getting {
+            dependsOn(fileBasedTest)
+        }
+        val wasmTest by getting {
             dependsOn(fileBasedTest)
         }
         val nativeMain by creating {
@@ -236,4 +244,14 @@ configureBintrayPublicationIfNecessary()
 tasks.withType<AbstractPublishToMaven>().configureEach {
     val signingTasks = tasks.withType<Sign>()
     mustRunAfter(signingTasks)
+}
+
+
+// To support Wasm tests run
+rootProject.the<NodeJsRootExtension>().apply {
+    nodeVersion = "21.7.0"
+}
+
+tasks.withType<KotlinNpmInstallTask>().configureEach {
+    args.add("--ignore-engines")
 }
