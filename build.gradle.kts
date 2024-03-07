@@ -4,6 +4,7 @@ import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
@@ -57,7 +58,7 @@ kotlin {
     js(IR) {
         nodejs()
     }
-    wasmJs {
+    wasm {
         nodejs()
     }
     linuxX64()
@@ -85,7 +86,7 @@ kotlin {
         val jsTest by getting {
             dependsOn(fileBasedTest)
         }
-        val wasmJsTest by getting {
+        val wasmTest by getting {
             dependsOn(fileBasedTest)
         }
         val nativeMain by creating {
@@ -248,10 +249,9 @@ tasks.withType<AbstractPublishToMaven>().configureEach {
 
 // To support Wasm tests run
 rootProject.the<NodeJsRootExtension>().apply {
-    nodeVersion = "21.0.0-v8-canary202309143a48826a08"
-    nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
+    nodeVersion = "20.3.0"
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask>().configureEach {
+tasks.withType<KotlinNpmInstallTask>().configureEach {
     args.add("--ignore-engines")
 }
