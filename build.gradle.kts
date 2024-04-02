@@ -60,7 +60,7 @@ kotlin {
         nodejs()
     }
     @OptIn(ExperimentalWasmDsl::class)
-    wasmJs { nodejs() }
+    wasm { nodejs() }
     linuxX64()
     linuxArm64()
     mingwX64()
@@ -113,7 +113,7 @@ kotlin {
             "iosSimulatorArm64",
             "watchosSimulatorArm64",
             "tvosSimulatorArm64",
-            "wasmJs",
+            "wasm",
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             named(set) {
@@ -238,7 +238,7 @@ val publicationsToArtifacts = mapOf(
     "kotlinMultiplatform" to "markdown",
     "jvm" to "markdown-jvm",
     "js" to "markdown-js",
-    "wasmJs" to "markdown-wasm-js",
+    "wasm" to "markdown-wasm-js",
     "linuxX64" to "markdown-linuxx64",
     "linuxArm64" to "markdown-linuxarm64",
     "mingwX64" to "markdown-mingwx64",
