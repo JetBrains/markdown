@@ -11,8 +11,8 @@ import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("multiplatform") apply true
-    id("org.jetbrains.dokka") apply true
+    kotlin("multiplatform") version "1.9.0"
+    id("org.jetbrains.dokka") version "1.8.20"
     `maven-publish`
     signing
 }
@@ -30,16 +30,12 @@ fun Project.obtainProjectVersion(): String {
 group = "org.jetbrains"
 version = obtainProjectVersion()
 
-repositories {
-    mavenCentral()
-}
-
 kotlin {
     targets.all {
         compilations.all {
             compilerOptions.configure {
-                languageVersion.set(KotlinVersion.KOTLIN_1_7)
-                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+                languageVersion = KotlinVersion.KOTLIN_1_7
+                apiVersion  = KotlinVersion.KOTLIN_1_7
             }
         }
     }
@@ -223,17 +219,17 @@ tasks {
 }
 
 val dokkaOutputDir: File
-    get() = project.buildDir.resolve("dokkaHtml")
+    get() = project.layout.buildDirectory.file("dokkaHtml").get().asFile
 
 subprojects {
-    tasks.withType<DokkaTask> {
-        outputDirectory.set(dokkaOutputDir)
+    tasks.withType<DokkaTask>().configureEach {
+        outputDirectory = dokkaOutputDir
     }
 }
 
 tasks.register<Jar>("javadocJar") {
     dependsOn(":docs:dokkaHtml")
-    archiveClassifier.set("javadoc")
+    archiveClassifier = "javadoc"
     from(dokkaOutputDir)
 }
 
