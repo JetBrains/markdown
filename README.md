@@ -30,7 +30,7 @@ If you have Gradle `>= 5.4`, you can just add the main artifact as a dependency:
 
 ```kts
 dependencies {
-  implementation("org.jetbrains:markdown:0.5.0")
+  implementation("org.jetbrains:markdown:0.6.1")
 }
 ```
 
@@ -41,14 +41,14 @@ For the multiplatform projects you can the single dependency to the `commonMain`
 ```groovy
 commonMain {
   dependencies {
-    implementation("org.jetbrains:markdown:0.5.0")
+    implementation("org.jetbrains:markdown:0.6.1")
   }
 }
 ```
 
 If you are using Maven or older Gradle, you need to specify the correct artifact for your platform, e.g.:
-* `org.jetbrains:markdown-jvm:0.5.0` for the JVM version
-* `org.jetbrains:markdown-js:0.5.0` for the JS version
+* `org.jetbrains:markdown-jvm:0.6.1` for the JVM version
+* `org.jetbrains:markdown-js:0.6.1` for the JS version
 
 ### Using `intellij-markdown` for parsing and generating HTML
 
@@ -138,7 +138,7 @@ In order to work with the results effectively, it ought to be converted to
 the [AST].
 
 As a result, a root [ast-node] corresponding to the parsed Markdown document is returned. 
-Each AST node has its own type which is called [`IElementType`](src/org/intellij/markdown/IElementType.kt) as in the IntelliJ Platform.
+Each AST node has its own type which is called [`IElementType`](src/commonMain/kotlin/org/intellij/markdown/IElementType.kt) as in the IntelliJ Platform.
 
 ### Generating HTML
 
@@ -151,13 +151,13 @@ Many routines in the above process can be extended or redefined by creating a di
 The minimal default flavour is [CommonMark] which is implemented in this project. 
 
 [GitHub Flavoured Markdown][GFM] is an example of extending CommonMark flavour implementation. 
-It can be used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavourDescriptor.kt) for implementing your own Markdown features.
+It can be used as a [reference](src/commonMain/kotlin/org/intellij/markdown/flavours/gfm/GFMFlavourDescriptor.kt) for implementing your own Markdown features.
 
 ## API
 
-* [`MarkdownFlavourDescriptor`](src/org/intellij/markdown/flavours/MarkdownFlavourDescriptor.kt) is a base class for extending the Markdown parser.
+* [`MarkdownFlavourDescriptor`](src/commonMain/kotlin/org/intellij/markdown/flavours/MarkdownFlavourDescriptor.kt) is a base class for extending the Markdown parser.
 
-    * [`markerProcessorFactory`](src/org/intellij/markdown/parser/MarkerProcessorFactory.kt)
+    * [`markerProcessorFactory`](src/commonMain/kotlin/org/intellij/markdown/parser/MarkerProcessorFactory.kt)
         is responsible for block structure customization.
 
         * `stateInfo` value allows to use a state during document parsing procedure.
@@ -167,15 +167,15 @@ It can be used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavou
         * `populateConstraintsTokens` is called to create nodes for block structure markers at the beginning
           of the lines (for example, `>` characters constituting blockquotes)
 
-        * [`getMarkerBlockProviders`](src/org/intellij/markdown/parser/markerblocks/MarkerBlockProvider.kt)
+        * [`getMarkerBlockProviders`](src/commonMain/kotlin/org/intellij/markdown/parser/markerblocks/MarkerBlockProvider.kt)
             is a place to (re)define types of block structures
 
-    * [`sequentialParserManager`](src/org/intellij/markdown/parser/sequentialparsers/SequentialParserManager.kt)
+    * [`sequentialParserManager`](src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParserManager.kt)
 
         `getParserSequence` defines inlines parsing procedure. The method must return a list of SequentialParsers
         where the earliest parsers have the biggest operation precedence. For example, to parse code spans and emphasis elements with the correct priority, the list should be `[CodeSpanParser, EmphParser]` but not the opposite.
 
-        [`SequentialParser`](src/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt) has only one method:
+        [`SequentialParser`](src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt) has only one method:
 
         `parse(tokens: TokensCache, rangesToGlue: List<IntRange>): ParsingResult`
         * `tokens` is a special holder for the tokens returned by lexer
@@ -190,10 +190,10 @@ It can be used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavou
           Considering the same input for the code span parser the result would be `` `code * span` ``
           of the type "code span" and the delegate pieces would be [`A * emph `, ` b * c`].
 
-    * [`createInlinesLexer`](src/org/intellij/markdown/lexer/MarkdownLexer.kt) should return the lexer to split the text
+    * [`createInlinesLexer`](src/commonMain/kotlin/org/intellij/markdown/lexer/MarkdownLexer.kt) should return the lexer to split the text
       to the tokens before inline parsing procedure run.
 
-    * [`createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?)`](src/org/intellij/markdown/html/GeneratingProvider.kt)
+    * [`createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?)`](src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProvider.kt)
       is the place where generated HTML is customized. This method should return a map which defines how to handle
       the particular kinds of the nodes in the resulting tree.
 
@@ -207,7 +207,7 @@ It can be used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavou
       * `text` is the whole document being processed,
       * `node` is the node being given to the provider,
       * `visitor` is a special object responsible for the HTML generation.
-        See [`GeneratingProviders.kt`](src/org/intellij/markdown/html/GeneratingProviders.kt) for the samples.
+        See [`GeneratingProviders.kt`](src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProviders.kt) for the samples.
 
 [self]: https://github.com/valich/intellij-markdown
 [Kotlin]: https://github.com/JetBrains/kotlin
@@ -221,9 +221,9 @@ It can be used as a [reference](src/org/intellij/markdown/flavours/gfm/GFMFlavou
 [CommonMark]: http://commonmark.org
 [GFM]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 
-[marker-processor]: src/org/intellij/markdown/parser/MarkerProcessor.kt
-[marker-block]: src/org/intellij/markdown/parser/markerblocks/MarkerBlock.kt
-[sequential-parser]: src/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt
-[ast-node]: src/org/intellij/markdown/ast/ASTNode.kt
-[generating-provider]: src/org/intellij/markdown/html/GeneratingProvider.kt
-[lexer]: src/org/intellij/markdown/lexer/MarkdownLexer.kt
+[marker-processor]: src/commonMain/kotlin/org/intellij/markdown/parser/MarkerProcessor.kt
+[marker-block]: src/commonMain/kotlin/org/intellij/markdown/parser/markerblocks/MarkerBlock.kt
+[sequential-parser]: src/commonMain/kotlin/org/intellij/markdown/parser/sequentialparsers/SequentialParser.kt
+[ast-node]: src/commonMain/kotlin/org/intellij/markdown/ast/ASTNode.kt
+[generating-provider]: src/commonMain/kotlin/org/intellij/markdown/html/GeneratingProvider.kt
+[lexer]: src/commonMain/kotlin/org/intellij/markdown/lexer/MarkdownLexer.kt
