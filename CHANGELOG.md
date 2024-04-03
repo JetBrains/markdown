@@ -1,6 +1,10 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#133] Added support for mathematical expressions in GFM
+- [#140] Added wasmJs target
+- [#146] Added linuxArm64 target
+- [#149] Fixed parsing of code spans with backslashes and spaces
 
 ## 0.6.1
 - [#141] Added support for cancellation of the parsing process
