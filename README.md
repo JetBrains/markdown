@@ -30,7 +30,7 @@ If you have Gradle `>= 5.4`, you can just add the main artifact as a dependency:
 
 ```kts
 dependencies {
-  implementation("org.jetbrains:markdown:0.5.0")
+  implementation("org.jetbrains:markdown:<version>")
 }
 ```
 
@@ -41,14 +41,14 @@ For the multiplatform projects you can the single dependency to the `commonMain`
 ```groovy
 commonMain {
   dependencies {
-    implementation("org.jetbrains:markdown:0.5.0")
+    implementation("org.jetbrains:markdown:<version>")
   }
 }
 ```
 
 If you are using Maven or older Gradle, you need to specify the correct artifact for your platform, e.g.:
-* `org.jetbrains:markdown-jvm:0.5.0` for the JVM version
-* `org.jetbrains:markdown-js:0.5.0` for the JS version
+* `org.jetbrains:markdown-jvm:<version>` for the JVM version
+* `org.jetbrains:markdown-js:<version>` for the JS version
 
 ### Using `intellij-markdown` for parsing and generating HTML
 
