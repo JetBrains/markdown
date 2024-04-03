@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ## 0.6.1
-- [#141] Add support for cancellation of the parsing process
+- [#141] Added support for cancellation of the parsing process
 
 ## 0.6.0
 - [#135] Fixed node creation for zero-length table cells
