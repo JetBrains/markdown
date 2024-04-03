@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.0]
 - [#133] Added support for mathematical expressions in GFM
 - [#140] Added wasmJs target
 - [#146] Added linuxArm64 target
