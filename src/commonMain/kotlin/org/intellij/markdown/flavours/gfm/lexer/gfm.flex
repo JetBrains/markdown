@@ -24,6 +24,8 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 
   private boolean isHeader = false;
 
+  private int codeSpanBacktickslength = 0;
+
   private ParseDelimited parseDelimited = new ParseDelimited();
 
   private static class ParseDelimited {
@@ -79,8 +81,8 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 
     parseDelimited.exitChar = last;
     parseDelimited.returnType = contentsType;
-//    parseDelimited.inlinesAllowed = allowInlines;
-    parseDelimited.inlinesAllowed = true;
+    parseDelimited.inlinesAllowed = allowInlines;
+//    parseDelimited.inlinesAllowed = true;
 
     yybegin(PARSE_DELIMITED);
 
@@ -133,7 +135,7 @@ import org.intellij.markdown.lexer.GeneratedLexer;
   }
 
   private boolean canInline() {
-    return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed;
+    return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed || yystate() == CODE_SPAN && parseDelimited.inlinesAllowed;
   }
 
   private IElementType getReturnGeneralized(IElementType defaultType) {
@@ -244,7 +246,7 @@ PATH=({PATH_PART}+ | ("(" {PATH_PART}* ")"? {PATH_PART}*)) ("(" {PATH_PART}* ")"
 // See pushbackAutolink method
 GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/" {PATH})? "/"?
 
-%state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
+%state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE_SPAN
 
 %%
 
@@ -266,13 +268,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
   }
 }
 
-
 <AFTER_LINE_START, PARSE_DELIMITED> {
-  // The special case of a backtick
-  \\"`"+ {
-    return getReturnGeneralized(MarkdownTokenTypes.ESCAPED_BACKTICKS);
-  }
-
   // Escaping
   \\[\\\"'`*_{}\[\]()#+.,!:@#$%&~<>/-] {
     return getReturnGeneralized(MarkdownTokenTypes.TEXT);
@@ -281,6 +277,9 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
   // Backticks (code span)
   "`"+ {
     if (canInline()) {
+      codeSpanBacktickslength = yylength();
+      stateStack.push(yystate());
+      yybegin(CODE_SPAN);
       return MarkdownTokenTypes.BACKTICK;
     }
     return parseDelimited.returnType;
@@ -293,6 +292,19 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
     }
     return parseDelimited.returnType;
   }
+}
+
+<CODE_SPAN> {
+  "`"+ {
+    if (yylength() == codeSpanBacktickslength) {
+      codeSpanBacktickslength = 0;
+      popState();
+    }
+    return MarkdownTokenTypes.BACKTICK;
+  }
+}
+
+<AFTER_LINE_START, PARSE_DELIMITED, CODE_SPAN> {
 
   // Emphasis
   {WHITE_SPACE}+ ("*" | "_") {WHITE_SPACE}+ {
@@ -314,7 +326,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
 
 }
 
-<AFTER_LINE_START> {
+<AFTER_LINE_START, CODE_SPAN> {
 
   {WHITE_SPACE}+ {
     return MarkdownTokenTypes.WHITE_SPACE;
@@ -341,6 +353,9 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
       return MarkdownTokenTypes.WHITE_SPACE;
     }
 
+    if (yystate() == CODE_SPAN) {
+      popState();
+    }
     processEol();
     return MarkdownTokenTypes.EOL;
   }
@@ -363,11 +378,14 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {
 
 }
 
-<PARSE_DELIMITED> {
+<PARSE_DELIMITED, CODE_SPAN> {
   {EOL} { resetState(); }
 
   {EOL} | {ANY_CHAR} {
     if (yycharat(0) == parseDelimited.exitChar) {
+      if (yystate() == CODE_SPAN) {
+        stateStack.pop();
+      }
       yybegin(stateStack.pop());
       return getDelimiterTokenType(yycharat(0));
     }

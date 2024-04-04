@@ -1,7 +1,6 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes.Companion.ESCAPED_BACKTICKS
 import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
@@ -93,16 +92,7 @@ open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val isInsideTable = isInsideTable(node)
         val nodes = collectContentNodes(node)
-        val output = nodes.withIndex().joinToString(separator = "") { (i, it) ->
-            if (i == nodes.lastIndex && it.type == ESCAPED_BACKTICKS) {
-                // Backslash escapes do not work in code spans.
-                // Yet, a code span like `this\` is recognized as "BACKTICK", "TEXT", "ESCAPED_BACKTICKS"
-                // So if the last node is ESCAPED_BACKTICKS, we need to manually render it as "\"
-                return@joinToString "\\"
-            }
-
-            processChild(it, text, isInsideTable).replaceNewLines()
-        }.trimForCodeSpan()
+        val output = nodes.joinToString(separator = "") { processChild(it, text, isInsideTable).replaceNewLines() }.trimForCodeSpan()
         visitor.consumeTagOpen(node, "code")
         visitor.consumeHtml(output)
         visitor.consumeTagClose("code")
@@ -130,14 +120,6 @@ open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
 
     protected fun collectContentNodes(node: ASTNode): List<ASTNode> {
         check(node.children.size >= 2)
-
-        // Backslash escapes do not work in code spans.
-        // Yet, a code span like `this\` is recognized as "BACKTICK", "TEXT", "ESCAPED_BACKTICKS"
-        // Let's keep the last ESCAPED_BACKTICKS and manually render it as "\"
-        if (node.children.last().type == ESCAPED_BACKTICKS) {
-            return node.children.drop(1)
-        }
-
         return node.children.subList(1, node.children.size - 1)
     }
 

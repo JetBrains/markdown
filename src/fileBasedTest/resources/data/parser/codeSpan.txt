@@ -24,8 +24,8 @@ Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
     Markdown:CODE_SPAN
       Markdown:BACKTICK('`')
-      Markdown:TEXT('foo')
-      Markdown:ESCAPED_BACKTICKS('\`')
+      Markdown:TEXT('foo\')
+      Markdown:BACKTICK('`')
     Markdown:TEXT('bar')
     Markdown:CODE_SPAN
       Markdown:BACKTICK('`')
@@ -50,9 +50,7 @@ Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
     Markdown:AUTOLINK
       Markdown:<('<')
-      Markdown:AUTOLINK('http://foo.bar.')
-      Markdown:BACKTICK('`')
-      Markdown:AUTOLINK('baz')
+      Markdown:AUTOLINK('http://foo.bar.`baz')
       Markdown:>('>')
     Markdown:BACKTICK('`')
   Markdown:EOL('\n')
