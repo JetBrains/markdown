@@ -146,11 +146,12 @@ class MarkdownParsingTest : TestCase() {
     @Test
     fun testCodeFence() {
         defaultTest()
+        defaultTest(GFMFlavourDescriptor())
     }
 
     @Test
     fun testCodeSpan() {
-        defaultTest()
+        defaultTest(GFMFlavourDescriptor())
     }
 
     @Test

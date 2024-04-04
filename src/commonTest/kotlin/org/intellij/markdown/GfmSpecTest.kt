@@ -2101,7 +2101,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample343() = doTest(
             markdown = "` b `\n",
             html = "<p><code> b </code></p>\n"
