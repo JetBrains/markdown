@@ -1,7 +1,7 @@
 package org.intellij.markdown
 
-import org.intellij.markdown.nodejs.Path
 import org.intellij.markdown.nodejs.FileSystem
+import org.intellij.markdown.nodejs.Path
 import org.intellij.markdown.nodejs.process
 import kotlin.test.assertTrue
 

@@ -60,7 +60,7 @@ kotlin {
         nodejs()
     }
     @OptIn(ExperimentalWasmDsl::class)
-    wasm {
+    wasmJs {
         nodejs()
     }
     linuxX64()
@@ -94,7 +94,7 @@ kotlin {
         val jsTest by getting {
             dependsOn(fileBasedTest)
         }
-        val wasmTest by getting {
+        val wasmJsTest by getting {
             dependsOn(fileBasedTest)
         }
         val nativeMain by creating {
@@ -143,7 +143,8 @@ kotlin {
 // Need to compile using a canary version of Node due to
 // https://youtrack.jetbrains.com/issue/KT-63014
 rootProject.the<NodeJsRootExtension>().apply {
-    nodeVersion = "21.7.0"
+    nodeVersion = "22.0.0-nightly202404032241e8c5b3"
+    nodeDownloadBaseUrl = "https://nodejs.org/download/nightly"
 }
 
 tasks.withType<KotlinNpmInstallTask>().configureEach {
@@ -241,7 +242,7 @@ val publicationsToArtifacts = mapOf(
     "kotlinMultiplatform" to "markdown",
     "jvm" to "markdown-jvm",
     "js" to "markdown-js",
-    "wasm" to "markdown-wasm-js",
+    "wasmJs" to "markdown-wasm-js",
     "linuxX64" to "markdown-linuxx64",
     "linuxArm64" to "markdown-linuxarm64",
     "mingwX64" to "markdown-mingwx64",
