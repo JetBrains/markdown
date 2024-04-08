@@ -103,11 +103,6 @@ kotlin {
         val nativeTest by creating {
             dependsOn(fileBasedTest)
         }
-        val jvmMain by getting {
-            dependencies {
-                api("it.unimi.dsi:fastutil-core:8.5.12")
-            }
-        }
         val nativeSourceSets = listOf(
             "linuxX64",
             "linuxArm64",
