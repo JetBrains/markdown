@@ -38,8 +38,8 @@ kotlin {
     targets.all {
         compilations.all {
             compilerOptions.configure {
-                languageVersion.set(KotlinVersion.KOTLIN_1_7)
-                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+                languageVersion.set(KotlinVersion.KOTLIN_2_0)
+                apiVersion.set(KotlinVersion.KOTLIN_2_0)
             }
         }
     }
