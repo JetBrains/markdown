@@ -154,10 +154,18 @@ open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
 internal class MathGeneratingProvider(private val inline: Boolean = false): GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val nodes = node.children.subList(1, node.children.size - 1)
-        val output = nodes.joinToString(separator = "") { HtmlGenerator.leafText(text, it, false) }.trim()
+        val output = nodes.joinToString(separator = "") { HtmlGenerator.leafText(text, it, false) }.trimSurroundingBackticksAndWhitespaces()
         visitor.consumeTagOpen(node, "span", "class=\"math\"", "inline = \"$inline\"")
         visitor.consumeHtml(output)
         visitor.consumeTagClose("span")
+    }
+
+    private fun String.trimSurroundingBackticksAndWhitespaces(): String {
+        var i = 0
+        while (length - i > 2 && this[i] == '`' && this[length - 1 - i] == '`') {
+            i++
+        }
+        return substring(i, length - i).trim()
     }
 }
 
