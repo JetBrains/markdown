@@ -43,8 +43,8 @@ open class GFMFlavourDescriptor(
     override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
             return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
-                    MathParser(),
                     BacktickParser(),
+                    MathParser(),
                     ImageParser(),
                     InlineLinkParser(),
                     ReferenceLinkParser(),
