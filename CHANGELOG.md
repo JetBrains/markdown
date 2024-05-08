@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.1]
 - Fixed parsing of code spans with backslashes and spaces
 - Updated mathematical expressions in GFM to trim surrounding backticks and whitespaces
 
