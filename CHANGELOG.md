@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.2]
 - Fixed handling of html entities inside mathematical expressions 
 
 ## [0.7.1]
