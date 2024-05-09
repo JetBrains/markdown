@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Fixed handling of html entities inside mathematical expressions 
 
 ## [0.7.1]
 - Fixed parsing of code spans with backslashes and spaces
