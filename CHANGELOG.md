@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.3]
 - Removed fastutil dependency
 - Updated Kotlin version to `2.0.0`
 
