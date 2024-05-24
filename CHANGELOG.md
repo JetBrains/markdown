@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Removed fastutil dependency
+- Updated Kotlin version to `2.0.0`
 
 ## [0.7.2]
 - Fixed handling of html entities inside mathematical expressions 
