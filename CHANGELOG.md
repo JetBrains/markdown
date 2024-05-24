@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.3]
 - Removed fastutil dependency
 
 ## [0.7.2]
