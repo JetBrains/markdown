@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Removed fastutil dependency
 
 ## [0.7.2]
 - Fixed handling of html entities inside mathematical expressions 
