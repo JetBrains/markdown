@@ -22,12 +22,6 @@ expect class BitSet(size: Int){
 inline fun BitSet.clear(index: Int) =
     set(index, false)
 
-expect class IntStack() {
-    fun push(e: Int)
-    fun pop(): Int
-    fun isEmpty(): Boolean
-}
-
 expect fun isWhitespace(char: Char): Boolean
 
 expect fun isPunctuation(char: Char): Boolean

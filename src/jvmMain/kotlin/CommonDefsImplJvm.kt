@@ -7,8 +7,6 @@ actual class BitSet actual constructor(size: Int): java.util.BitSet(size){
     actual val size = size()
 }
 
-actual class IntStack: Stack<Int>()
-
 private const val PUNCTUATION_MASK: Int = (1 shl Character.DASH_PUNCTUATION.toInt()) or
         (1 shl Character.START_PUNCTUATION.toInt())     or
         (1 shl Character.END_PUNCTUATION.toInt())       or
