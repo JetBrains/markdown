@@ -1,7 +1,4 @@
 package org.intellij.markdown.html
-import org.intellij.markdown.lexer.Stack
-
-actual class IntStack: Stack<Int>()
 
 actual typealias BitSet = BooleanArray
 

@@ -1,9 +1,6 @@
 package org.intellij.markdown.html
 
-import org.intellij.markdown.lexer.Stack
 import org.w3c.dom.url.URL
-
-actual class IntStack: Stack<Int>()
 
 actual typealias BitSet = BooleanArray
 

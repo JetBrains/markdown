@@ -8,6 +8,7 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.html.*
 import org.intellij.markdown.lexer.Compat
 import org.intellij.markdown.lexer.GeneratedLexer
+import org.intellij.markdown.lexer.Stack
 
 /* Auto generated File */
 class _GFMLexer : GeneratedLexer {
@@ -56,7 +57,7 @@ class _GFMLexer : GeneratedLexer {
     /* user code: */
     private class Token : MarkdownTokenTypes()
 
-    private val stateStack: IntStack = IntStack()
+    private val stateStack: Stack<Int> = Stack()
     private var isHeader = false
     private var codeSpanBacktickslength = 0
     private val parseDelimited = ParseDelimited()
