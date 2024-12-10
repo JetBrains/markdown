@@ -1,6 +1,8 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.4]
 - [#165] Added support for GFM strikethrough inlines with a single tilde
 
 ## [0.7.3]
