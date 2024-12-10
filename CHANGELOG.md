@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#165] Added support for GFM strikethrough inlines with a single tilde
 
 ## [0.7.3]
 - Removed fastutil dependency
