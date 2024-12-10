@@ -1,5 +1,6 @@
 package org.intellij.markdown.html
 
+import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.*
@@ -8,7 +9,6 @@ import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.LinkMap
-import kotlin.text.Regex
 
 abstract class OpenCloseGeneratingProvider : GeneratingProvider {
     abstract fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode)
@@ -53,7 +53,7 @@ open class SimpleTagProvider(val tagName: String) : OpenCloseGeneratingProvider(
 }
 
 open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0, val renderTo: Int = 0)
-: InlineHolderGeneratingProvider() {
+    : InlineHolderGeneratingProvider() {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         visitor.consumeTagOpen(node, tagName)
     }
@@ -64,6 +64,40 @@ open class SimpleInlineTagProvider(val tagName: String, val renderFrom: Int = 0,
 
     override fun childrenToRender(node: ASTNode): List<ASTNode> {
         return node.children.subList(renderFrom, node.children.size + renderTo)
+    }
+}
+
+/**
+ * Trims an equal number of delimiters from the start and end off the children.
+ * Meant to be used to trim surrounding tildes ('~') for strikethroughs.
+ */
+open class EqualDelimiterTrimmingInlineTagProvider(val tagName: String, val delimiterType: IElementType)
+    : InlineHolderGeneratingProvider() {
+    override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagOpen(node, tagName)
+    }
+
+    override fun closeTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeTagClose(tagName)
+    }
+
+    override fun childrenToRender(node: ASTNode): List<ASTNode> {
+        if (node.children.isEmpty()) return node.children
+
+        var left = 0
+        var right = node.children.size - 1
+
+        while (
+            node.children[left].type == delimiterType &&
+            node.children[right].type == delimiterType
+        ) {
+            left += 1
+            right -= 1
+
+            if (left >= right) break
+        }
+
+        return node.children.subList(left, right + 1)
     }
 }
 

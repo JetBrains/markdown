@@ -3001,16 +3001,34 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     //        html = "<p><del>Hi</del> Hello, world!</p>\n"
     //)
 
+    //@Test
+    //fun testStrikethroughExample491() = doTest(
+    //    markdown = "~~Hi~~ Hello, world!\n",
+    //    html = "<p><span class=\"user-del\">Hi</span> Hello, world!</p>\n"
+    //)
+
     @Test
     fun testStrikethroughExample491() = doTest(
-        markdown = "~~Hi~~ Hello, world!\n",
-        html = "<p><span class=\"user-del\">Hi</span> Hello, world!</p>\n"
+        markdown = "~~Hi~~ Hello, ~there~ world!\n",
+        html = "<p><span class=\"user-del\">Hi</span> Hello, <span class=\"user-del\">there</span> world!</p>\n"
     )
 
     @Test
     fun testStrikethroughExample492() = doTest(
-            markdown = "This ~~has a\n\nnew paragraph~~.\n",
-            html = "<p>This ~~has a</p>\n<p>new paragraph~~.</p>\n"
+        markdown = "This ~~has a\n\nnew paragraph~~.\n",
+        html = "<p>This ~~has a</p>\n<p>new paragraph~~.</p>\n"
+    )
+
+    @Test
+    fun testStrikethroughExample493() = doTest(
+        markdown = "This will ~~~not~~~ strike.\n",
+        html = "<p>This will ~~~not~~~ strike.</p>\n"
+    )
+
+    @Test
+    fun testStrikethroughManyWords() = doTest(
+        markdown = "~~Two (so many) words~~\n",
+        html = "<p><span class=\"user-del\">Two (so many) words</span></p>\n"
     )
 
     @Test
@@ -4151,5 +4169,4 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
             markdown = "Multiple     spaces\n",
             html = "<p>Multiple     spaces</p>\n"
     )
-
 }
