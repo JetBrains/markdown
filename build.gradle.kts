@@ -68,10 +68,17 @@ kotlin {
     mingwX64()
     macosX64()
     macosArm64()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosDeviceArm64()
+    watchosX64()
     watchosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
     tvosSimulatorArm64()
-    ios()
 
     sourceSets {
         all {
@@ -109,10 +116,17 @@ kotlin {
             "mingwX64",
             "macosX64",
             "macosArm64",
-            "ios",
+            "iosX64",
+            "iosArm64",
             "iosSimulatorArm64",
+            "watchosArm32",
+            "watchosArm64",
+            "watchosDeviceArm64",
+            "watchosX64",
             "watchosSimulatorArm64",
-            "tvosSimulatorArm64"
+            "tvosX64",
+            "tvosArm64",
+            "tvosSimulatorArm64",
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             named(set) {
