@@ -2,6 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
@@ -37,16 +38,22 @@ repositories {
 kotlin {
     targets.all {
         compilations.all {
-            compilerOptions.configure {
-                languageVersion.set(KotlinVersion.KOTLIN_1_7)
-                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+            compileTaskProvider.configure {
+                compilerOptions {
+                    languageVersion.set(KotlinVersion.KOTLIN_2_0)
+                    apiVersion.set(KotlinVersion.KOTLIN_2_0)
+                }
             }
         }
     }
     jvm {
         compilations {
             all {
-                kotlinOptions.jvmTarget = "1.8"
+                compileTaskProvider.configure {
+                    compilerOptions {
+                        jvmTarget.set(JvmTarget.JVM_1_8)
+                    }
+                }
             }
         }
 
@@ -138,8 +145,8 @@ kotlin {
 // Need to compile using a canary version of Node due to
 // https://youtrack.jetbrains.com/issue/KT-63014
 rootProject.the<NodeJsRootExtension>().apply {
-    nodeVersion = "22.0.0-nightly202404032241e8c5b3"
-    nodeDownloadBaseUrl = "https://nodejs.org/download/nightly"
+    version = "22.0.0-nightly202404032241e8c5b3"
+    downloadBaseUrl = "https://nodejs.org/download/nightly"
 }
 
 tasks.withType<KotlinNpmInstallTask>().configureEach {
