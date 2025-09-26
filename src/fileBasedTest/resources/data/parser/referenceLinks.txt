@@ -132,9 +132,19 @@ Markdown:MARKDOWN_FILE
         Markdown:[('[')
         Markdown:TEXT('foo')
         Markdown:](']')
-      Markdown:EOL('\n')
-      Markdown:[('[')
-      Markdown:](']')
+    Markdown:EOL('\n')
+    Markdown:[('[')
+    Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown:EOL('\n')
+    Markdown:TEXT('text')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
@@ -163,3 +173,64 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('bar')
         Markdown:](']')
     Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('bar')
+      Markdown:BACKTICK('`')
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('baz')
+        Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('bar')
+      Markdown:BACKTICK('`')
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('baz')
+        Markdown:](']')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:TEXT('qux')
+      Markdown:BACKTICK('`')
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('quux')
+        Markdown:](']')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:SHORT_REFERENCE_LINK
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+    WHITE_SPACE(' ')
+    Markdown:FULL_REFERENCE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:TEXT('bar')
+        Markdown:](']')
+      Markdown:LINK_LABEL
+        Markdown:[('[')
+        Markdown:TEXT('baz')
+        Markdown:](']')
