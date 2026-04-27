@@ -1,7 +1,11 @@
 package org.intellij.markdown.flavours.gfm.table
 
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.lexer.MarkdownLexer
+import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
+import org.intellij.markdown.parser.sequentialparsers.impl.BacktickParser
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -14,7 +18,8 @@ import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
                              private val productionHolder: ProductionHolder,
-                             private val tableColumnsNumber: Int)
+                             private val tableColumnsNumber: Int,
+                             private val lexerFactory: () -> MarkdownLexer)
 : MarkerBlockImpl(constraints, productionHolder.mark()) {
 
     var currentLine = 0
@@ -69,7 +74,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
 
         val line = constraints.eatItselfFromString(pos.currentLine)
 
-        val cells = splitByPipes(line)
+        val cells = splitByPipes(line, lexerFactory)
         var cellNodesAdded = 0
         for (i in cells.indices) {
             val cell = cells[i]
@@ -98,46 +103,39 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
     }
 
     companion object {
-        fun splitByPipes(text: CharSequence): List<String> {
+        fun splitByPipes(text: CharSequence, lexerFactory: () -> MarkdownLexer): List<String> {
+            val codeSpanRanges = findCodeSpanRanges(text, lexerFactory)
             val result = arrayListOf<String>()
             var startIndex = 0
             var index = 0
+            var rangeIdx = 0
             while (index < text.length) {
-                when (text[index]) {
-                    '`' -> index = skipCodeSpan(text, index)
-                    '|' -> {
-                        if (index == 0 || text[index - 1] != '\\') {
-                            result.add(text.substring(startIndex, index))
-                            startIndex = index + 1
-                        }
-                        index++
+                if (rangeIdx < codeSpanRanges.size && index == codeSpanRanges[rangeIdx].first) {
+                    index = codeSpanRanges[rangeIdx].last + 1
+                    rangeIdx++
+                } else {
+                    if (text[index] == '|' && (index == 0 || text[index - 1] != '\\')) {
+                        result.add(text.substring(startIndex, index))
+                        startIndex = index + 1
                     }
-                    else -> index++
+                    index++
                 }
             }
             result.add(text.substring(startIndex))
             return result
         }
 
-        private fun countBackticks(text: CharSequence, start: Int): Int {
-            var count = 0
-            while (start + count < text.length && text[start + count] == '`') count++
-            return count
-        }
-
-        private fun skipCodeSpan(text: CharSequence, start: Int): Int {
-            val runLength = countBackticks(text, start)
-            var i = start + runLength
-            while (i < text.length) {
-                if (text[i] == '`') {
-                    val closeLength = countBackticks(text, i)
-                    if (closeLength == runLength) return i + closeLength
-                    i += closeLength
-                } else {
-                    i++
+        private fun findCodeSpanRanges(text: CharSequence, lexerFactory: () -> MarkdownLexer): List<IntRange> {
+            val lexer = lexerFactory()
+            lexer.start(text)
+            val cache = LexerBasedTokensCache(lexer)
+            val allTokenRanges = listOf(cache.filteredTokens.indices)
+            return BacktickParser().parse(cache, allTokenRanges).parsedNodes
+                .filter { it.type == MarkdownElementTypes.CODE_SPAN }
+                .map { node ->
+                    cache.filteredTokens[node.range.first].tokenStart until
+                    cache.filteredTokens[node.range.last - 1].tokenEnd
                 }
-            }
-            return start + runLength
         }
     }
 }
