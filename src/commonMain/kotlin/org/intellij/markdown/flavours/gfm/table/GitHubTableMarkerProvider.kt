@@ -1,5 +1,6 @@
 package org.intellij.markdown.flavours.gfm.table
 
+import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
@@ -9,7 +10,7 @@ import org.intellij.markdown.parser.constraints.extendsPrev
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 
-class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
+class GitHubTableMarkerProvider(private val lexerFactory: () -> MarkdownLexer) : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val currentConstraints = stateInfo.currentConstraints
         if (stateInfo.nextConstraints != currentConstraints) {
@@ -21,7 +22,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
             return emptyList()
         }
 
-        val split = GitHubTableMarkerBlock.splitByPipes(currentLineFromPosition)
+        val split = GitHubTableMarkerBlock.splitByPipes(currentLineFromPosition, lexerFactory)
         val numberOfHeaderCells = split
                 .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
                 .count { it }
@@ -30,7 +31,7 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         }
         val nextLine = getNextLineFromConstraints(pos, currentConstraints) ?: return emptyList()
         if (countSecondLineCells(nextLine) == numberOfHeaderCells) {
-            return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
+            return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells, lexerFactory))
         }
         return emptyList()
     }

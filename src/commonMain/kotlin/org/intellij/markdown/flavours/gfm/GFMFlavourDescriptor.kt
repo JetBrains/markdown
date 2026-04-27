@@ -12,7 +12,9 @@ import org.intellij.markdown.html.*
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LinkMap
+import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.sequentialparsers.EmphasisLikeParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserManager
@@ -34,7 +36,10 @@ open class GFMFlavourDescriptor(
         absolutizeAnchorLinks: Boolean = false,
         private val makeHttpsAutoLinks: Boolean = false
 ) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
-    override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
+    override val markerProcessorFactory: MarkerProcessorFactory = object : MarkerProcessorFactory {
+        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> =
+            GFMMarkerProcessor(productionHolder, GFMConstraints.BASE, ::createInlinesLexer)
+    }
 
     override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_GFMLexer())
