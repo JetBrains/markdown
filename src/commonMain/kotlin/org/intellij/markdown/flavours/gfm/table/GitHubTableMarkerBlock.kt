@@ -10,7 +10,6 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import kotlin.text.Regex
 
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
@@ -102,21 +101,43 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         fun splitByPipes(text: CharSequence): List<String> {
             val result = arrayListOf<String>()
             var startIndex = 0
-            for (index in text.indices) {
-                val char = text[index]
-                if (char != '|') {
-                    continue
+            var index = 0
+            while (index < text.length) {
+                when (text[index]) {
+                    '`' -> index = skipCodeSpan(text, index)
+                    '|' -> {
+                        if (index == 0 || text[index - 1] != '\\') {
+                            result.add(text.substring(startIndex, index))
+                            startIndex = index + 1
+                        }
+                        index++
+                    }
+                    else -> index++
                 }
-                val charBefore = text[(index - 1).coerceAtLeast(0)]
-                if (charBefore == '\\') {
-                    continue
-                }
-                val substring = text.substring(startIndex, index)
-                result.add(substring)
-                startIndex = index + 1
             }
             result.add(text.substring(startIndex))
             return result
+        }
+
+        private fun countBackticks(text: CharSequence, start: Int): Int {
+            var count = 0
+            while (start + count < text.length && text[start + count] == '`') count++
+            return count
+        }
+
+        private fun skipCodeSpan(text: CharSequence, start: Int): Int {
+            val runLength = countBackticks(text, start)
+            var i = start + runLength
+            while (i < text.length) {
+                if (text[i] == '`') {
+                    val closeLength = countBackticks(text, i)
+                    if (closeLength == runLength) return i + closeLength
+                    i += closeLength
+                } else {
+                    i++
+                }
+            }
+            return start + runLength
         }
     }
 }
