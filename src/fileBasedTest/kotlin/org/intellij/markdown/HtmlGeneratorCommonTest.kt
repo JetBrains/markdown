@@ -199,11 +199,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     fun testHtmlBlockZeroLengthNodeAtEof() {
         val md = "-         <tag>\n" +
                  " "  // single trailing space, no newline
-        try {
-            generateHtmlFromString(md)
-        } catch (t: Throwable) {
-            fail("Expected to parse without exception, got: $t")
-        }
+        val expectedHtml = """
+             <body><ul><li><pre><code>    &lt;tag&gt;
+             </code></pre></li></ul></body>
+         """.trimIndent()
+        assertEqualsIgnoreLines(expectedHtml, generateHtmlFromString(md))
     }
 
     @Test
