@@ -12,8 +12,8 @@ jobs:
   linux-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Install libncurses5 for Kotlin compiler
-        run: sudo apt-get install -y libncurses5
+      - name: Install libncurses for Kotlin compiler
+        run: sudo apt-get install -y libncurses6
 
       - name: Perform checkout
         uses: actions/checkout@v3
