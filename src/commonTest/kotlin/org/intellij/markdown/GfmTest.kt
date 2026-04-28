@@ -11,8 +11,8 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
 
     @Test
     fun testEscapedBackticksInTableCell() = doTest(
-        markdown = "| code | description |\n|------|-------------|\n| \\`code\\` | Escaped backticks |",
-        html = "<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td>`code`</td><td>Escaped backticks</td></tr></tbody></table>"
+        markdown = "| code | description |\n|------|-------------|\n| `something \\` still code | continuation |",
+        html = "<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td><code>something \\</code> still code</td><td>continuation</td></tr></tbody></table>"
     )
 
     @Test

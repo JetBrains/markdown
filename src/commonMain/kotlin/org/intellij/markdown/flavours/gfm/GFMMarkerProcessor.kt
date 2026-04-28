@@ -5,8 +5,6 @@ import org.intellij.markdown.flavours.commonmark.CommonMarkMarkerProcessor
 import org.intellij.markdown.flavours.gfm.table.GitHubTableMarkerProvider
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.LookaheadText
-import org.intellij.markdown.parser.MarkerProcessor
-import org.intellij.markdown.parser.MarkerProcessorFactory
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -64,9 +62,5 @@ class GFMMarkerProcessor(
         ))
     }
 
-    class Factory(private val lexerFactory: () -> MarkdownLexer) : MarkerProcessorFactory {
-        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
-            return GFMMarkerProcessor(productionHolder, GFMConstraints.BASE, lexerFactory)
-        }
-    }
+
 }

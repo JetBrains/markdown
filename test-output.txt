@@ -1,0 +1,24 @@
+
+=== Test 1: Code span ===
+Split result: [,  `a || b` ,  Either a or b , ]
+Generated HTML:
+<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td><code>a || b</code></td><td>Either a or b</td></tr></tbody></table>
+Expected HTML:
+<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td><code>a || b</code></td><td>Either a or b</td></tr></tbody></table>
+Match: true
+
+=== Test 2: Escaped backticks ===
+Split result: [,  \`code\` ,  Escaped backticks , ]
+Generated HTML:
+<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td>`code`</td><td>Escaped backticks</td></tr></tbody></table>
+Expected HTML:
+<table><thead><tr><th>code</th><th>description</th></tr></thead><tbody><tr><td>`code`</td><td>Escaped backticks</td></tr></tbody></table>
+Match: true
+
+=== Test 3: Link with pipe ===
+Split result: [,  [example](https://example.com?a=1\|2) ,  Link with pipe , ]
+Generated HTML:
+<table><thead><tr><th>link</th><th>description</th></tr></thead><tbody><tr><td><a href="https://example.com?a=1%7C2">example</a></td><td>Link with pipe</td></tr></tbody></table>
+Expected HTML:
+<table><thead><tr><th>link</th><th>description</th></tr></thead><tbody><tr><td><a href="https://example.com?a=1|2">example</a></td><td>Link with pipe</td></tr></tbody></table>
+Match: false
