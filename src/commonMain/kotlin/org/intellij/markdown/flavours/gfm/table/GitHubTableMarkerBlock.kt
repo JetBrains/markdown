@@ -1,11 +1,7 @@
 package org.intellij.markdown.flavours.gfm.table
 
-import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
-import org.intellij.markdown.lexer.MarkdownLexer
-import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
-import org.intellij.markdown.parser.sequentialparsers.impl.BacktickParser
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -14,12 +10,12 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import kotlin.text.Regex
 
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
                              private val productionHolder: ProductionHolder,
-                             private val tableColumnsNumber: Int,
-                             private val lexerFactory: () -> MarkdownLexer)
+                             private val tableColumnsNumber: Int)
 : MarkerBlockImpl(constraints, productionHolder.mark()) {
 
     var currentLine = 0
@@ -74,7 +70,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
 
         val line = constraints.eatItselfFromString(pos.currentLine)
 
-        val cells = splitByPipes(line, lexerFactory)
+        val cells = splitByPipes(line)
         var cellNodesAdded = 0
         for (i in cells.indices) {
             val cell = cells[i]
@@ -103,39 +99,24 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
     }
 
     companion object {
-        fun splitByPipes(text: CharSequence, lexerFactory: () -> MarkdownLexer): List<String> {
-            val codeSpanRanges = findCodeSpanRanges(text, lexerFactory)
+        fun splitByPipes(text: CharSequence): List<String> {
             val result = arrayListOf<String>()
             var startIndex = 0
-            var index = 0
-            var rangeIdx = 0
-            while (index < text.length) {
-                if (rangeIdx < codeSpanRanges.size && index == codeSpanRanges[rangeIdx].first) {
-                    index = codeSpanRanges[rangeIdx].last + 1
-                    rangeIdx++
-                } else {
-                    if (text[index] == '|' && (index == 0 || text[index - 1] != '\\')) {
-                        result.add(text.substring(startIndex, index))
-                        startIndex = index + 1
-                    }
-                    index++
+            for (index in text.indices) {
+                val char = text[index]
+                if (char != '|') {
+                    continue
                 }
+                val charBefore = text[(index - 1).coerceAtLeast(0)]
+                if (charBefore == '\\') {
+                    continue
+                }
+                val substring = text.substring(startIndex, index)
+                result.add(substring)
+                startIndex = index + 1
             }
             result.add(text.substring(startIndex))
             return result
-        }
-
-        private fun findCodeSpanRanges(text: CharSequence, lexerFactory: () -> MarkdownLexer): List<IntRange> {
-            val lexer = lexerFactory()
-            lexer.start(text)
-            val cache = LexerBasedTokensCache(lexer)
-            val allTokenRanges = listOf(cache.filteredTokens.indices)
-            return BacktickParser().parse(cache, allTokenRanges).parsedNodes
-                .filter { it.type == MarkdownElementTypes.CODE_SPAN }
-                .map { node ->
-                    cache.filteredTokens[node.range.first].tokenStart until
-                    cache.filteredTokens[node.range.last - 1].tokenEnd
-                }
         }
     }
 }
