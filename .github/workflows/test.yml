@@ -25,10 +25,10 @@ jobs:
           distribution: 'corretto'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Build and run tests with Gradle
-        uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+        uses: gradle/actions/setup-gradle@v4
         with:
           arguments: check --stacktrace
 
@@ -56,16 +56,16 @@ jobs:
           distribution: 'corretto'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Build and run tests with Gradle
-        uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+        uses: gradle/actions/setup-gradle@v4
         with:
           arguments: macosX64Test iosX64Test --stacktrace
 
       - name: Bundle the build report
         if: failure()
-        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
+        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip || true
 
       - name: Upload the build report
         if: failure()
@@ -87,16 +87,16 @@ jobs:
           distribution: 'corretto'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Build and run tests with Gradle
-        uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+        uses: gradle/actions/setup-gradle@v4
         with:
           arguments: mingwX64Test --stacktrace
 
       - name: Bundle the build report
         if: failure()
-        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
+        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip || true
 
       - name: Upload the build report
         if: failure()
