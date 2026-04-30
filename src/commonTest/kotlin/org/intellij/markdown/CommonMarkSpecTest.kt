@@ -3322,14 +3322,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testLinksExample541() = doTest(
             markdown = "[foo] [bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo] <a href=\"/url\" title=\"title\">bar</a></p>\n"
     )
 
     @Test
-    @Ignore
     fun testLinksExample542() = doTest(
             markdown = "[foo]\n[bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo]\n<a href=\"/url\" title=\"title\">bar</a></p>\n"

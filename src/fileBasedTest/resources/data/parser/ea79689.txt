@@ -25,7 +25,6 @@ Markdown:MARKDOWN_FILE
           Markdown:EMPH('*')
         Markdown:](']')
         Markdown:](']')
-      Markdown:EOL('\n')
       Markdown:LINK_LABEL
         Markdown:[('[')
         Markdown:STRONG
