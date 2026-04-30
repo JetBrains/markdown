@@ -23,7 +23,7 @@ object MarkdownParserUtil {
 
         while (isClearLine(currentPos)) {
             currentPos = currentPos.nextLinePosition()
-                    ?: break//return 5
+                    ?: return result + 1 // EOF after a blank line counts as another blank
 
             result++
             if (result > 4) {

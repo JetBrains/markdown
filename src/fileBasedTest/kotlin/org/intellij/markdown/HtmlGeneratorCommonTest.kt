@@ -196,6 +196,17 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     }
 
     @Test
+    fun testHtmlBlockZeroLengthNodeAtEof() {
+        val md = "-         <tag>\n" +
+                 " "  // single trailing space, no newline
+        val expectedHtml = """
+             <body><ul><li><pre><code>    &lt;tag&gt;
+             </code></pre></li></ul></body>
+         """.trimIndent()
+        assertEqualsIgnoreLines(expectedHtml, generateHtmlFromString(md))
+    }
+
+    @Test
     fun testXssProtection() {
         val disallowedLinkMd1 = "[Click me](javascript:alert(document.domain))"
         val disallowedLinkMd2 = "[Click me](file:///123)"
