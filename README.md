@@ -76,7 +76,7 @@ val html = HtmlGenerator(src, parsedTree, flavour).generateHtml()
 ```java
 final String src = "Some *Markdown*";
 final MarkdownFlavourDescriptor flavour = new GFMFlavourDescriptor();
-final ASTNode parsedTree = new MarkdownParser(flavour).buildMarkdownTreeFromString(text);
+final ASTNode parsedTree = new MarkdownParser(flavour).buildMarkdownTreeFromString(src);
 final String html = new HtmlGenerator(src, parsedTree, flavour, false).generateHtml();
 ```
 
