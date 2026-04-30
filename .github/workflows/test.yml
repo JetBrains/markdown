@@ -61,7 +61,7 @@ jobs:
       - name: Build and run tests with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
-          arguments: macosX64Test iosX64Test --stacktrace
+          arguments: macosArm64Test macosX64Test iosSimulatorArm64Test iosX64Test tvosSimulatorArm64Test tvosX64Test watchosSimulatorArm64Test watchosX64Test --stacktrace
 
       - name: Bundle the build report
         if: failure()
