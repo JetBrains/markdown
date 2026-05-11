@@ -17,6 +17,15 @@ open class MarkdownTokenTypes {
         val HTML_BLOCK_CONTENT: IElementType = MarkdownElementType("HTML_BLOCK_CONTENT", true)
 
         @JvmField
+        val HTML_COMMENT_START: IElementType = MarkdownElementType("HTML_COMMENT_START", true)
+
+        @JvmField
+        val HTML_COMMENT_CONTENT: IElementType = MarkdownElementType("HTML_COMMENT_CONTENT", true)
+
+        @JvmField
+        val HTML_COMMENT_END: IElementType = MarkdownElementType("HTML_COMMENT_END", true)
+
+        @JvmField
         val SINGLE_QUOTE: IElementType = MarkdownElementType("'", true)
 
         @JvmField
