@@ -175,7 +175,9 @@ internal class ListItemGeneratingProvider : SimpleTagProvider("li") {
 internal class HtmlBlockGeneratingProvider : GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         for (child in node.children) {
-            if (child.type in listOf(MarkdownTokenTypes.EOL, MarkdownTokenTypes.HTML_BLOCK_CONTENT)) {
+            if (child.type in listOf(MarkdownTokenTypes.EOL, MarkdownTokenTypes.HTML_BLOCK_CONTENT,
+                    MarkdownTokenTypes.HTML_COMMENT_START, MarkdownTokenTypes.HTML_COMMENT_CONTENT,
+                    MarkdownTokenTypes.HTML_COMMENT_END)) {
                 visitor.consumeHtml(child.getTextInNode(text))
             }
         }

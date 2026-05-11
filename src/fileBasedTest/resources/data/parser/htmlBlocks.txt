@@ -53,11 +53,13 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:HTML_BLOCK
-    Markdown:HTML_BLOCK_CONTENT('<!-- Foo')
+    Markdown:HTML_COMMENT_START('<!--')
+    Markdown:HTML_COMMENT_CONTENT(' Foo')
     Markdown:EOL('\n')
-    Markdown:HTML_BLOCK_CONTENT('bar')
+    Markdown:HTML_COMMENT_CONTENT('bar')
     Markdown:EOL('\n')
-    Markdown:HTML_BLOCK_CONTENT('   baz -->')
+    Markdown:HTML_COMMENT_CONTENT('   baz ')
+    Markdown:HTML_COMMENT_END('-->')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:HTML_BLOCK
@@ -97,7 +99,10 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:HTML_BLOCK
-    Markdown:HTML_BLOCK_CONTENT('  <!-- foo -->')
+    Markdown:HTML_BLOCK_CONTENT('  ')
+    Markdown:HTML_COMMENT_START('<!--')
+    Markdown:HTML_COMMENT_CONTENT(' foo ')
+    Markdown:HTML_COMMENT_END('-->')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:CODE_BLOCK
