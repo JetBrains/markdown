@@ -88,6 +88,39 @@ class StreamingMarkdownFileTest {
     }
 
     @Test
+    fun longFormattedParagraphStaysAsSingleUnstableParagraph() {
+        val file = EmptyStreamingMarkdownFile()
+
+        file.append("This is a long paragraph with **strong text**, ")
+        file.append("_emphasis_, `inline code`, and [a link](https://example.com)")
+
+        assertTopLevelTypes(file.stableChildren)
+        assertTopLevelTypes(file.unstableTail, MarkdownElementTypes.PARAGRAPH)
+        assertTrue(file.unstableTail.single().containsNodeOfType(MarkdownElementTypes.STRONG))
+        assertTrue(file.unstableTail.single().containsNodeOfType(MarkdownElementTypes.EMPH))
+        assertTrue(file.unstableTail.single().containsNodeOfType(MarkdownElementTypes.CODE_SPAN))
+        assertTrue(file.unstableTail.single().containsNodeOfType(MarkdownElementTypes.INLINE_LINK))
+        assertChildrenAreStablePrefixPlusUnstableTail(file)
+    }
+
+    @Test
+    fun longFormattedParagraphIsPromotedAfterBlankLine() {
+        val file = EmptyStreamingMarkdownFile()
+
+        file.append("This is a long paragraph with **strong text**, ")
+        file.append("_emphasis_, `inline code`, and [a link](https://example.com)")
+        file.append("\n\n")
+
+        val paragraph = file.stableChildren.single { it.type == MarkdownElementTypes.PARAGRAPH }
+        assertTrue(paragraph.containsNodeOfType(MarkdownElementTypes.STRONG))
+        assertTrue(paragraph.containsNodeOfType(MarkdownElementTypes.EMPH))
+        assertTrue(paragraph.containsNodeOfType(MarkdownElementTypes.CODE_SPAN))
+        assertTrue(paragraph.containsNodeOfType(MarkdownElementTypes.INLINE_LINK))
+        assertTrue(file.unstableTail.isEmpty())
+        assertChildrenAreStablePrefixPlusUnstableTail(file)
+    }
+
+    @Test
     fun stablePrefixIsPromotedAfterAppend() {
         val file = EmptyStreamingMarkdownFile()
 
@@ -115,5 +148,9 @@ class StreamingMarkdownFileTest {
 
     private fun assertChildrenAreStablePrefixPlusUnstableTail(file: StreamingMarkdownFile) {
         assertEquals(file.stableChildren + file.unstableTail, file.children)
+    }
+
+    private fun ASTNode.containsNodeOfType(type: IElementType): Boolean {
+        return this.type == type || children.any { it.containsNodeOfType(type) }
     }
 }
