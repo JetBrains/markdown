@@ -14,6 +14,9 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
 
     protected val markersStack: MutableList<MarkerBlock> = ArrayList()
 
+    internal val markersStackSnapshot: List<MarkerBlock>
+        get() = markersStack.toList()
+
     protected var topBlockConstraints: MarkdownConstraints = startConstraints
 
     protected abstract val stateInfo: T
