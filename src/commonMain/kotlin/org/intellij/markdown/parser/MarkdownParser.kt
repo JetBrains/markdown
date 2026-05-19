@@ -7,6 +7,7 @@ import org.intellij.markdown.ast.CompositeASTNode
 import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
@@ -58,7 +59,32 @@ class MarkdownParser @ExperimentalApi constructor(
             if (assertionsEnabled)
                 throw e
             else
-                inlineFallback(root, textStart, textEnd)
+                inlineFallback(root, textStart, textEnd, baseOffset)
+        }
+    }
+
+    // To keep the ABI compatibility.
+    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+        return parseInline(root, text, textStart, textEnd, 0)
+    }
+
+    internal fun parseStreaming(root: IElementType, text: String, parseInlines: Boolean, baseOffset: Int): StreamingMarkdownParseResult {
+        return try {
+            val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
+            StreamingMarkdownParseResult(
+                tree = tree,
+                unstableStartOffset = findUnstableStartOffset(openMarkers, text, baseOffset)
+            )
+        }
+        catch (e: MarkdownParsingException) {
+            if (assertionsEnabled) {
+                throw e
+            } else {
+                StreamingMarkdownParseResult(
+                    tree = topLevelFallback(root, text, baseOffset),
+                    unstableStartOffset = baseOffset
+                )
+            }
         }
     }
 
@@ -82,6 +108,9 @@ class MarkdownParser @ExperimentalApi constructor(
             pos = markerProcessor.processPosition(pos)
         }
 
+        // Take a snapshot before flush
+        val openMarkers = markerProcessor.markersStackSnapshot
+
         productionHolder.updatePosition(text.length)
         markerProcessor.flushMarkers()
 
@@ -95,7 +124,24 @@ class MarkdownParser @ExperimentalApi constructor(
 
         val builder = TopLevelBuilder(nodeBuilder)
 
-        return builder.buildTree(productionHolder.production)
+        return MarkdownParseResult(
+            tree = builder.buildTree(productionHolder.production),
+            openMarkers = openMarkers
+        )
+    }
+
+    private fun findUnstableStartOffset(
+        openMarkers: List<MarkerBlock>,
+        text: String,
+        baseOffset: Int
+    ): Int {
+        var unstableStartOffset = text.length
+        @OptIn(ExperimentalApi::class)
+        val firstOpenMarkerOffset = openMarkers.minOfOrNull { it.startOffset }
+        firstOpenMarkerOffset?.let { unstableStartOffset = minOf(it, unstableStartOffset) }
+        val lastLineStartOffset = text.lastIndexOf('\n') + 1
+        unstableStartOffset = minOf(lastLineStartOffset, unstableStartOffset)
+        return unstableStartOffset + baseOffset
     }
 
     @OptIn(ExperimentalApi::class)
@@ -139,10 +185,20 @@ class MarkdownParser @ExperimentalApi constructor(
                 MarkdownTokenTypes.ATX_CONTENT,
                 MarkdownTokenTypes.SETEXT_CONTENT,
                 GFMTokenTypes.CELL ->
-                    listOf(parseInline(type, text, startOffset, endOffset))
+                    listOf(parseInline(type, text, startOffset, endOffset, baseOffset))
                 else ->
                     super.createLeafNodes(type, startOffset, endOffset)
             }
         }
     }
 }
+
+internal data class MarkdownParseResult(
+    val tree: ASTNode,
+    val openMarkers: List<MarkerBlock>
+)
+
+internal data class StreamingMarkdownParseResult(
+    val tree: ASTNode,
+    val unstableStartOffset: Int
+)
