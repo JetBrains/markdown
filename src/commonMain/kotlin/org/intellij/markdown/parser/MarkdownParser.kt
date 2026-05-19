@@ -24,25 +24,35 @@ class MarkdownParser @ExperimentalApi constructor(
         assertionsEnabled: Boolean
     ): this(flavour, assertionsEnabled, CancellationToken.NonCancellable)
 
-    fun buildMarkdownTreeFromString(text: String): ASTNode {
-        return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true)
+    fun buildMarkdownTreeFromString(text: String, baseOffset: Int): ASTNode {
+        return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true, baseOffset)
     }
 
-    fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+    // To keep the ABI compatibility.
+    fun buildMarkdownTreeFromString(text: String): ASTNode {
+        return buildMarkdownTreeFromString(text, 0)
+    }
+
+    fun parse(root: IElementType, text: String, parseInlines: Boolean, baseOffset: Int): ASTNode {
         return try {
-            doParse(root, text, parseInlines)
+            doParse(root, text, parseInlines, baseOffset).tree
         }
         catch (e: MarkdownParsingException) {
             if (assertionsEnabled)
                 throw e
             else
-                topLevelFallback(root, text)
+                topLevelFallback(root, text, baseOffset)
         }
     }
 
-    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+    // To keep the ABI compatibility.
+    fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+        return parse(root, text, parseInlines, 0)
+    }
+
+    fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int): ASTNode {
         return try {
-            doParseInline(root, text, textStart, textEnd)
+            doParseInline(root, text, textStart, textEnd, baseOffset)
         }
         catch (e: MarkdownParsingException) {
             if (assertionsEnabled)
@@ -53,7 +63,12 @@ class MarkdownParser @ExperimentalApi constructor(
     }
 
     @OptIn(ExperimentalApi::class)
-    private fun doParse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+    private fun doParse(
+        root: IElementType,
+        text: String,
+        parseInlines: Boolean = true,
+        baseOffset: Int = 0
+    ): MarkdownParseResult {
         val productionHolder = ProductionHolder()
         val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
 
@@ -73,9 +88,9 @@ class MarkdownParser @ExperimentalApi constructor(
         rootMarker.done(root)
 
         val nodeBuilder = if (parseInlines) {
-            InlineExpandingASTNodeBuilder(text)
+            InlineExpandingASTNodeBuilder(text, baseOffset)
         } else {
-            ASTNodeBuilder(text)
+            ASTNodeBuilder(text, cancellationToken, baseOffset)
         }
 
         val builder = TopLevelBuilder(nodeBuilder)
@@ -84,7 +99,7 @@ class MarkdownParser @ExperimentalApi constructor(
     }
 
     @OptIn(ExperimentalApi::class)
-    private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int): ASTNode {
+    private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int = 0): ASTNode {
         val lexer = flavour.createInlinesLexer()
         lexer.start(text, textStart, textEnd)
         val tokensCache = LexerBasedTokensCache(lexer)
@@ -96,24 +111,28 @@ class MarkdownParser @ExperimentalApi constructor(
             cancellationToken = cancellationToken
         )
 
-        val builder = InlineBuilder(ASTNodeBuilder(text, cancellationToken), tokensCache, cancellationToken)
+        val builder = InlineBuilder(ASTNodeBuilder(text, cancellationToken, baseOffset), tokensCache, cancellationToken)
         return builder.buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
     }
 
-    private fun topLevelFallback(root: IElementType, text: String): ASTNode {
+    private fun topLevelFallback(root: IElementType, text: String, baseOffset: Int): ASTNode {
         return CompositeASTNode(
-            root, listOf(inlineFallback(MarkdownElementTypes.PARAGRAPH, 0, text.length))
+            root, listOf(inlineFallback(MarkdownElementTypes.PARAGRAPH, 0, text.length, baseOffset))
         )
     }
 
-    private fun inlineFallback(root: IElementType, textStart: Int, textEnd: Int): ASTNode {
+    private fun inlineFallback(root: IElementType, textStart: Int, textEnd: Int, baseOffset: Int): ASTNode {
         return CompositeASTNode(
             root,
-            listOf(LeafASTNode(MarkdownTokenTypes.TEXT, textStart, textEnd))
+            listOf(LeafASTNode(MarkdownTokenTypes.TEXT, textStart + baseOffset, textEnd + baseOffset))
         )
     }
 
-    private inner class InlineExpandingASTNodeBuilder(text: CharSequence) : ASTNodeBuilder(text) {
+    @OptIn(ExperimentalApi::class)
+    private inner class InlineExpandingASTNodeBuilder(
+        text: CharSequence,
+        private val baseOffset: Int
+    ) : ASTNodeBuilder(text, cancellationToken, baseOffset) {
         override fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
             return when (type) {
                 MarkdownElementTypes.PARAGRAPH,

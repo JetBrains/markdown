@@ -10,13 +10,20 @@ import org.intellij.markdown.parser.CancellationToken
 
 open class ASTNodeBuilder @ExperimentalApi constructor(
     protected val text: CharSequence,
-    protected val cancellationToken: CancellationToken
+    protected val cancellationToken: CancellationToken,
+    private val baseOffset: Int
 ) {
     /**
      * For compatibility only.
      */
     @OptIn(ExperimentalApi::class)
     constructor(text: CharSequence): this(text, CancellationToken.NonCancellable)
+
+    /**
+     * For ABI compatibility.
+     */
+    @OptIn(ExperimentalApi::class)
+    constructor(text: CharSequence, cancellationToken: CancellationToken): this(text, cancellationToken, 0)
 
     @OptIn(ExperimentalApi::class)
     open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
@@ -32,18 +39,18 @@ open class ASTNodeBuilder @ExperimentalApi constructor(
                 }
 
                 if (nextEol > lastEol) {
-                    result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol, nextEol))
+                    result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol + baseOffset, nextEol + baseOffset))
                 }
-                result.add(LeafASTNode(MarkdownTokenTypes.EOL, nextEol, nextEol + 1))
+                result.add(LeafASTNode(MarkdownTokenTypes.EOL, nextEol + baseOffset, nextEol + 1 + baseOffset))
                 lastEol = nextEol + 1
             }
             if (endOffset > lastEol) {
-                result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol, endOffset))
+                result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol + baseOffset, endOffset + baseOffset))
             }
 
             return result
         }
-        return listOf(LeafASTNode(type, startOffset, endOffset))
+        return listOf(LeafASTNode(type, startOffset + baseOffset, endOffset + baseOffset))
     }
 
     @OptIn(ExperimentalApi::class)
