@@ -130,6 +130,12 @@ class MarkdownParser @ExperimentalApi constructor(
         )
     }
 
+    /**
+     * This handles 2 cases:
+     *
+     * For code blocks/HTML blocks, the internal [MarkerBlock]s are snapshoted before [MarkerProcessor.flushMarkers] to find the unenclosed block and decide the unstable boundary.
+     * For other cases, the last blank line is used to decide the unstable boundary.
+     */
     private fun findUnstableStartOffset(
         openMarkers: List<MarkerBlock>,
         text: String,
@@ -139,9 +145,20 @@ class MarkdownParser @ExperimentalApi constructor(
         @OptIn(ExperimentalApi::class)
         val firstOpenMarkerOffset = openMarkers.minOfOrNull { it.startOffset }
         firstOpenMarkerOffset?.let { unstableStartOffset = minOf(it, unstableStartOffset) }
-        val lastLineStartOffset = text.lastIndexOf('\n') + 1
-        unstableStartOffset = minOf(lastLineStartOffset, unstableStartOffset)
+        val lastBlankLineEnd = text.lastBlankLineEndOrNull() ?: 0
+        unstableStartOffset = minOf(lastBlankLineEnd, unstableStartOffset)
         return unstableStartOffset + baseOffset
+    }
+
+    /**
+     * Return the exclusive end of the last blank line in the string.
+     * This guarantees O(1) memory usage and O(n) worst-case time complexity.
+     */
+    private tailrec fun String.lastBlankLineEndOrNull(lineEnd: Int = lastIndexOf('\n')): Int? {
+        val lastLineEnd = lastIndexOf('\n', lineEnd - 1)
+        if (lastLineEnd == -1) return null
+        if ((lastLineEnd..lineEnd).all { this[it].isWhitespace() }) return lineEnd + 1
+        return lastBlankLineEndOrNull(lastLineEnd)
     }
 
     @OptIn(ExperimentalApi::class)
