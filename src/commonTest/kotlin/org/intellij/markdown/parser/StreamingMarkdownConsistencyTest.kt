@@ -153,11 +153,18 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun htmlBlockArrivesLineByLine() {
+    fun htmlBlocksArriveLineByLine() {
         val text = """
             <div>
             text in html block
             </div>
+
+            <!-- html comment block
+            with another line -->
+
+            <table>
+            <tr><td>cell</td></tr>
+            </table>
 
             paragraph after html
         """.trimIndent()
@@ -189,6 +196,18 @@ class StreamingMarkdownConsistencyTest {
         assertStreamingMatchesFullParse(
             text = text,
             chunkSizes = listOf(4, 7, 2, 11, 5, 13)
+        )
+    }
+
+    @Test
+    fun inlineHtmlArrivesInSmallChunks() {
+        val text = """
+            This paragraph has <span class="note">inline <strong>HTML</strong></span>,
+            a self closing <br /> tag, and **markdown** around it.
+        """.trimIndent()
+        assertStreamingMatchesFullParse(
+            text = text,
+            chunkSizes = listOf(3, 5, 2, 7, 11)
         )
     }
 
@@ -268,7 +287,8 @@ class StreamingMarkdownConsistencyTest {
 
             This is a long paragraph with **strong text**, _emphasis_, `inline code`,
             [an inline link](https://example.com), and enough words to cross many chunk
-            boundaries while still being a single paragraph in Markdown.
+            boundaries while still being a single paragraph in Markdown. It also has
+            <span data-kind="inline">inline HTML</span>.
 
             ## Lists and quotes
 
@@ -289,6 +309,10 @@ class StreamingMarkdownConsistencyTest {
             | ---- | ----- |
             | one  | **1** |
             | two  | `2`   |
+
+            <section>
+            Raw HTML block content with <em>inline tag</em>.
+            </section>
 
             A final paragraph without a trailing blank line, so the last append still has an unstable tail
         """.trimIndent()
