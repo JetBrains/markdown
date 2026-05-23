@@ -1,11 +1,15 @@
 package org.intellij.markdown.parser.markerblocks
 
+import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 interface MarkerBlock {
+
+    @ExperimentalApi
+    val startOffset: Int
 
     fun getNextInterestingOffset(pos: LookaheadText.Position): Int
 

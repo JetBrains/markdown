@@ -1,5 +1,6 @@
 package org.intellij.markdown.parser.markerblocks
 
+import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
@@ -8,6 +9,10 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 
 abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
                                protected val marker: ProductionHolder.Marker) : MarkerBlock {
+
+    @ExperimentalApi
+    override val startOffset: Int
+        get() = marker.startPos
 
     private var lastInterestingOffset: Int = -2
 
