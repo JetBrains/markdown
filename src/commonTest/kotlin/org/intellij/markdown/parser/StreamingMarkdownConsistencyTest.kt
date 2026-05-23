@@ -2,6 +2,7 @@ package org.intellij.markdown.parser
 
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -215,12 +216,11 @@ class StreamingMarkdownConsistencyTest {
     }
 
     private fun pseudoRandomChunkSizes(length: Int): List<Int> {
-        var state = 17L
+        val random = Random(17)
         var remaining = length
         val result = mutableListOf<Int>()
         while (remaining > 0) {
-            state = state * 1103515245 + 12345
-            val size = (kotlin.math.abs(state) % 37 + 1).toInt()
+            val size = random.nextInt(from = 1, until = 38)
             result.add(minOf(size, remaining))
             remaining -= size
         }
