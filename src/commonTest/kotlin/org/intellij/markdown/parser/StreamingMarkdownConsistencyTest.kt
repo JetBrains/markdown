@@ -11,7 +11,6 @@ class StreamingMarkdownConsistencyTest {
     @Test
     fun fixedChunks() {
         assertStreamingMatchesFullParse(
-            name = "large document with fixed chunks",
             text = LARGE_MARKDOWN_TEXT,
             chunkSizes = listOf(1, 2, 3, 5, 8, 13, 21, 34)
         )
@@ -20,7 +19,6 @@ class StreamingMarkdownConsistencyTest {
     @Test
     fun deterministicPseudoRandomChunks() {
         assertStreamingMatchesFullParse(
-            name = "large document with deterministic pseudo-random chunks",
             text = LARGE_MARKDOWN_TEXT,
             chunkSizes = pseudoRandomChunkSizes(LARGE_MARKDOWN_TEXT.length)
         )
@@ -35,7 +33,6 @@ class StreamingMarkdownConsistencyTest {
             A paragraph after the heading.
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "setext heading line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -50,7 +47,6 @@ class StreamingMarkdownConsistencyTest {
             | two  | `2`   |
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "table line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -65,7 +61,6 @@ class StreamingMarkdownConsistencyTest {
             - third item
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "nested list line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -79,7 +74,6 @@ class StreamingMarkdownConsistencyTest {
             3. third item
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "ordered list line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -93,7 +87,6 @@ class StreamingMarkdownConsistencyTest {
             - second item
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "list item continuation line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -108,7 +101,6 @@ class StreamingMarkdownConsistencyTest {
             paragraph after quote
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "block quote line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -123,7 +115,6 @@ class StreamingMarkdownConsistencyTest {
             paragraph after quote
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "lazy block quote continuation line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -141,7 +132,6 @@ class StreamingMarkdownConsistencyTest {
             after fence
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "code fence line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -156,7 +146,6 @@ class StreamingMarkdownConsistencyTest {
             paragraph after indented code
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "indented code block line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -172,7 +161,6 @@ class StreamingMarkdownConsistencyTest {
             paragraph after html
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "html block line by line",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -186,7 +174,6 @@ class StreamingMarkdownConsistencyTest {
             [jb]: https://www.jetbrains.com
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "reference definition after reference link",
             text = text,
             chunkSizes = text.lineChunkSizes()
         )
@@ -199,13 +186,12 @@ class StreamingMarkdownConsistencyTest {
             and enough words to be split across several chunks without ending the paragraph too early.
         """.trimIndent()
         assertStreamingMatchesFullParse(
-            name = "formatted paragraph in small chunks",
             text = text,
             chunkSizes = listOf(4, 7, 2, 11, 5, 13)
         )
     }
 
-    private fun assertStreamingMatchesFullParse(name: String, text: String, chunkSizes: List<Int>) {
+    private fun assertStreamingMatchesFullParse(text: String, chunkSizes: List<Int>) {
         val file = EmptyStreamingMarkdownFile()
         val consumedText = StringBuilder()
         var offset = 0
@@ -220,7 +206,7 @@ class StreamingMarkdownConsistencyTest {
             assertEquals(
                 expectedTree.children.toComparableTree(),
                 file.children.toComparableTree(),
-                "Streaming parse should match full parse for $name after consuming ${offset + chunkSize} chars with chunk '$chunk'"
+                "Streaming parse should match full parse after consuming ${offset + chunkSize} chars with chunk '$chunk'"
             )
 
             offset += chunkSize
