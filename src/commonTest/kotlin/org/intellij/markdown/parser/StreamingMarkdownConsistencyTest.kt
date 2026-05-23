@@ -9,7 +9,7 @@ class StreamingMarkdownConsistencyTest {
     private val parser = MarkdownParser(GFMFlavourDescriptor())
 
     @Test
-    fun streamingParseMatchesFullParseWithFixedChunks() {
+    fun fixedChunks() {
         assertStreamingMatchesFullParse(
             name = "large document with fixed chunks",
             text = LARGE_MARKDOWN_TEXT,
@@ -18,7 +18,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWithDeterministicPseudoRandomChunks() {
+    fun deterministicPseudoRandomChunks() {
         assertStreamingMatchesFullParse(
             name = "large document with deterministic pseudo-random chunks",
             text = LARGE_MARKDOWN_TEXT,
@@ -27,7 +27,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenSetextHeadingArrivesLineByLine() {
+    fun setextHeadingArrivesLineByLine() {
         val text = """
             A heading
             ---------
@@ -42,7 +42,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenTableArrivesLineByLine() {
+    fun tableArrivesLineByLine() {
         val text = """
             | Name | Value |
             | ---- | ----- |
@@ -57,7 +57,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenNestedListArrivesLineByLine() {
+    fun nestedListArrivesLineByLine() {
         val text = """
             - first item
             - second item
@@ -72,7 +72,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenOrderedListArrivesLineByLine() {
+    fun orderedListArrivesLineByLine() {
         val text = """
             1. first item
             2. second item
@@ -86,7 +86,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenListItemContinuationArrivesLineByLine() {
+    fun listItemContinuationArrivesLineByLine() {
         val text = """
             - first item
               continuation of first item
@@ -100,7 +100,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenBlockQuoteArrivesLineByLine() {
+    fun blockQuoteArrivesLineByLine() {
         val text = """
             > first quote line
             > second quote line with *emphasis*
@@ -115,7 +115,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenLazyBlockQuoteContinuationArrivesLineByLine() {
+    fun lazyBlockQuoteContinuationArrivesLineByLine() {
         val text = """
             > first quote line
             lazy continuation line
@@ -130,7 +130,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenCodeFenceArrivesLineByLine() {
+    fun codeFenceArrivesLineByLine() {
         val text = """
             ```kotlin
             fun answer(): Int {
@@ -148,7 +148,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenIndentedCodeBlockArrivesLineByLine() {
+    fun indentedCodeBlockArrivesLineByLine() {
         val text = """
                 first code line
                 second code line
@@ -163,7 +163,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenHtmlBlockArrivesLineByLine() {
+    fun htmlBlockArrivesLineByLine() {
         val text = """
             <div>
             text in html block
@@ -179,7 +179,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenReferenceDefinitionArrivesAfterReferenceLink() {
+    fun referenceDefinitionArrivesAfterReferenceLink() {
         val text = """
             [JetBrains][jb]
 
@@ -193,7 +193,7 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
-    fun streamingParseMatchesFullParseWhenFormattedParagraphArrivesInSmallChunks() {
+    fun formattedParagraphArrivesInSmallChunks() {
         val text = """
             This paragraph has **strong text**, _emphasis_, `inline code`, [a link](https://example.com),
             and enough words to be split across several chunks without ending the paragraph too early.
