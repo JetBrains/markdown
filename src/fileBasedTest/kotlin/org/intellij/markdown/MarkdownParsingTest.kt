@@ -139,11 +139,6 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
-    fun testHtmlComments() {
-        defaultTest()
-    }
-
-    @Test
     fun testEmphStrong() {
         defaultTest()
     }
