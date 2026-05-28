@@ -19,33 +19,30 @@ class LinkParserUtil {
                 it = it.advance()
             }
 
-            var hasOpenedParentheses = false
+            var openParenthesesDepth = 0
             while (it.type != null) {
                 if (withBraces && it.type == MarkdownTokenTypes.GT) {
                     break
                 } else if (!withBraces) {
                     if (it.type == MarkdownTokenTypes.LPAREN) {
-                        if (hasOpenedParentheses) {
-                            break
-                        }
-                        hasOpenedParentheses = true
+                        openParenthesesDepth++
                     }
 
                     val next = it.rawLookup(1)
                     if (SequentialParserUtil.isWhitespace(it, 1) || next == null) {
                         break
                     } else if (next == MarkdownTokenTypes.RPAREN) {
-                        if (!hasOpenedParentheses) {
+                        if (openParenthesesDepth == 0) {
                             break
                         }
-                        hasOpenedParentheses = false
+                        openParenthesesDepth--
                     }
                 }
 
                 it = it.advance()
             }
 
-            if (it.type != null && !hasOpenedParentheses) {
+            if (it.type != null && openParenthesesDepth == 0) {
                 return LocalParsingResult(it, 
                         listOf(SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.LINK_DESTINATION)))
             }

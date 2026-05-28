@@ -3034,7 +3034,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testLinksExample495() = doTest(
             markdown = "[link](foo(and(bar)))\n",
             html = "<p><a href=\"foo(and(bar))\">link</a></p>\n"

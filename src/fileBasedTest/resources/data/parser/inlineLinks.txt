@@ -70,20 +70,21 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:SHORT_REFERENCE_LINK
-      Markdown:LINK_LABEL
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
         Markdown:[('[')
         Markdown:TEXT('link')
         Markdown:](']')
-    Markdown:(('(')
-    Markdown:TEXT('foo')
-    Markdown:(('(')
-    Markdown:TEXT('and')
-    Markdown:(('(')
-    Markdown:TEXT('bar')
-    Markdown:)(')')
-    Markdown:)(')')
-    Markdown:)(')')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:TEXT('foo')
+        Markdown:(('(')
+        Markdown:TEXT('and')
+        Markdown:(('(')
+        Markdown:TEXT('bar')
+        Markdown:)(')')
+        Markdown:)(')')
+      Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
