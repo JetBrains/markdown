@@ -3107,7 +3107,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testLinksExample505() = doTest(
             markdown = "[link](foo(and(bar)))\n",
             html = "<p><a href=\"foo(and(bar))\">link</a></p>\n"

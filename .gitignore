@@ -21,3 +21,6 @@ jflex*.jar
 # cloned repos for test generation
 commonmark-spec/
 cmark-gfm/
+
+# kotlin generated folder
+.kotlin/metadata
