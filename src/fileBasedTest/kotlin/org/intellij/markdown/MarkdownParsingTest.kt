@@ -246,6 +246,11 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
+    fun testGfmAlerts() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testRuby17337() {
         defaultTest(GFMFlavourDescriptor())
     }
