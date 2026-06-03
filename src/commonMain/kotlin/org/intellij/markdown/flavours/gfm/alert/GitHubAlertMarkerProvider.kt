@@ -25,19 +25,21 @@ class GitHubAlertMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
 
         val markerContent =
             pos.currentLine.subSequence(nextConstraints.getCharsEaten(pos.currentLine), pos.currentLine.length)
-        if (!ALERT_MARKER_REGEX.matches(markerContent)) {
+        if (!isAlertMarker(markerContent)) {
             return emptyList()
         }
 
         return listOf(GitHubAlertMarkerBlock(pos, nextConstraints, productionHolder))
     }
 
-    override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
-        return false
+    override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean = false
+
+    private fun isAlertMarker(content: CharSequence): Boolean {
+        val marker = content.trimEnd()
+        return ALERT_TYPES.any { it.contentEquals(marker, ignoreCase = true) }
     }
 
     companion object {
-        private val ALERT_MARKER_REGEX =
-            Regex("""\[!(?:NOTE|TIP|IMPORTANT|WARNING|CAUTION)]\s*""", RegexOption.IGNORE_CASE)
+        private val ALERT_TYPES = listOf("[!NOTE]", "[!TIP]", "[!IMPORTANT]", "[!WARNING]", "[!CAUTION]")
     }
 }
