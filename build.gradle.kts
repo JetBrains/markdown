@@ -13,7 +13,16 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.jetbrains.configureSonatypePublicationIfNecessary
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import java.io.File
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
 
 buildscript {
     repositories {
@@ -278,6 +287,143 @@ tasks.withType<AbstractPublishToMaven>().configureEach {
     mustRunAfter(signingTasks)
 }
 
+// --- Sonatype Central Portal publishing (see https://central.sonatype.org/publish/publish-portal-api/) ---
+
+fun base64Auth(userName: String, accessToken: String): String =
+    Base64.getEncoder().encode("$userName:$accessToken".toByteArray()).toString(Charsets.UTF_8)
+
+fun deployToCentralPortal(
+    bundleFile: File,
+    uriBase: String,
+    isUserManaged: Boolean,
+    deploymentName: String,
+    userName: String,
+    accessToken: String
+): String {
+    val publishingType = if (isUserManaged) "USER_MANAGED" else "AUTOMATIC"
+    val uri = uriBase.trimEnd('/') + "/api/v1/publisher/upload?name=$deploymentName&publishingType=$publishingType"
+    val base64Auth = base64Auth(userName, accessToken)
+
+    println("Sending request to $uri...")
+
+    val client = OkHttpClient()
+    val request = Request.Builder()
+        .url(uri)
+        .header("Authorization", "Bearer $base64Auth")
+        .post(
+            MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("bundle", bundleFile.name, bundleFile.asRequestBody())
+                .build()
+        )
+        .build()
+    val response = client.newCall(request).execute()
+
+    val statusCode = response.code
+    println("Upload status code: $statusCode")
+    val uploadResult = response.body!!.string()
+    println("Upload result: $uploadResult")
+    if (statusCode == 201) {
+        return uploadResult
+    } else {
+        error("Upload error to Central repository. Status code $statusCode.")
+    }
+}
+
+fun waitForUploadToSucceed(
+    uriBase: String,
+    deploymentId: String,
+    isUserManaged: Boolean,
+    userName: String,
+    accessToken: String,
+    maxTimeout: Duration,
+    minTimeBetweenAttempts: Duration
+) {
+    val uri = uriBase.trimEnd('/') + "/api/v1/publisher/status?id=$deploymentId"
+    val base64Auth = base64Auth(userName, accessToken)
+
+    var timeSpent = Duration.ZERO
+    var attemptNumber = 1
+    var terminatingState = false
+
+    println("Polling for deployment status for $maxTimeout: $uri")
+
+    while (timeSpent < maxTimeout) {
+        val remainingTime = maxTimeout - timeSpent
+        println("Polling attempt ${attemptNumber++}, remaining time $remainingTime.")
+
+        val client = OkHttpClient().newBuilder()
+            .callTimeout(remainingTime.toJavaDuration())
+            .build()
+
+        val beforeMs = System.currentTimeMillis()
+        try {
+            val request = Request.Builder()
+                .url(uri)
+                .header("Authorization", "Bearer $base64Auth")
+                .post("".toRequestBody())
+                .build()
+            val response = client.newCall(request).execute()
+            val code = response.code
+            if (code != 200) {
+                error("Response code $code: ${response.body?.string()}")
+            }
+
+            val jsonResult = JsonSlurper().parse(response.body?.bytes() ?: error("Empty response body.")) as Map<*, *>
+            val state = jsonResult["deploymentState"]
+            println("Current state: $state.")
+
+            when (state) {
+                "PENDING", "VALIDATING", "PUBLISHING" -> {}
+                "VALIDATED" -> {
+                    terminatingState = true
+
+                    if (isUserManaged) {
+                        println("Validated successfully.")
+                        return
+                    }
+
+                    error("State error: deployment is not user managed, but signals it requires a UI interaction.")
+                }
+                "PUBLISHED" -> {
+                    terminatingState = true
+
+                    if (!isUserManaged) {
+                        println("Published successfully.")
+                        return
+                    }
+
+                    error("State error: deployment is user managed, but signals it has been published.")
+                }
+                "FAILED" -> {
+                    terminatingState = true
+
+                    val errors = jsonResult["errors"]
+                    val errorsAsString = JsonBuilder(errors).toPrettyString()
+                    error("Deployment failed. Errors: $errorsAsString")
+                }
+                else -> logger.warn("Unknown deployment state: $state")
+            }
+        } catch (e: Exception) {
+            if (terminatingState) {
+                throw e
+            }
+
+            logger.warn("Error during HTTP request: ${e.message}")
+        } finally {
+            val afterMs = System.currentTimeMillis()
+            var attemptTime = (afterMs - beforeMs).coerceAtLeast(0L).milliseconds
+            if (attemptTime < minTimeBetweenAttempts) {
+                val sleepTime = minTimeBetweenAttempts - attemptTime
+                Thread.sleep(sleepTime.inWholeMilliseconds)
+                attemptTime = minTimeBetweenAttempts
+            }
+
+            timeSpent += attemptTime
+        }
+    }
+}
+
 val packSonatypeCentralBundle by tasks.registering(Zip::class) {
     group = "publishing"
     dependsOn("publishAllPublicationsToArtifactsRepository")
@@ -290,29 +436,27 @@ tasks.register("publishMavenToCentralPortal") {
     group = "publishing"
     dependsOn(packSonatypeCentralBundle)
     doLast {
-        val uri = "https://central.sonatype.com/api/v1/publisher/upload" +
-            "?name=markdown-$version&publishingType=USER_MANAGED"
-        val user = System.getenv("SONATYPE_USER") ?: error("SONATYPE_USER is not set")
-        val token = System.getenv("SONATYPE_PASSWORD") ?: error("SONATYPE_PASSWORD is not set")
-        val auth = Base64.getEncoder().encodeToString("$user:$token".toByteArray())
-        val bundle = packSonatypeCentralBundle.get().archiveFile.get().asFile
+        val uriBase = "https://central.sonatype.com"
+        val userName = System.getenv("SONATYPE_USER") ?: error("SONATYPE_USER is not set")
+        val accessToken = System.getenv("SONATYPE_PASSWORD") ?: error("SONATYPE_PASSWORD is not set")
+        val isUserManaged = true
 
-        val request = Request.Builder()
-            .url(uri)
-            .header("Authorization", "Bearer $auth")
-            .post(
-                MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("bundle", bundle.name, bundle.asRequestBody())
-                    .build()
-            )
-            .build()
-        OkHttpClient().newCall(request).execute().use { response ->
-            println("Central Portal upload: HTTP ${response.code}")
-            println(response.body?.string())
-            if (response.code != 201) {
-                error("Central Portal upload failed: HTTP ${response.code}")
-            }
-        }
+        val deploymentId = deployToCentralPortal(
+            bundleFile = packSonatypeCentralBundle.get().archiveFile.get().asFile,
+            uriBase = uriBase,
+            isUserManaged = isUserManaged,
+            deploymentName = "markdown-$version",
+            userName = userName,
+            accessToken = accessToken
+        )
+        waitForUploadToSucceed(
+            uriBase = uriBase,
+            deploymentId = deploymentId,
+            isUserManaged = isUserManaged,
+            userName = userName,
+            accessToken = accessToken,
+            maxTimeout = 60.minutes,
+            minTimeBetweenAttempts = 5.seconds
+        )
     }
 }
