@@ -53,9 +53,9 @@ fun Project.configureSonatypePublicationIfNecessary() {
             repositories {
                 maven {
                     if (MavenCentral in publicationChannels) {
-                        url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        url = URI("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
                     } else if (MavenCentralSnapshot in publicationChannels) {
-                        url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
+                        url = URI("https://central.sonatype.com/repository/maven-snapshots/")
                     }
                     credentials {
                         username = System.getenv("SONATYPE_USER")
