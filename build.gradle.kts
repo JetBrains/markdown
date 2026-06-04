@@ -1,6 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
-import org.jetbrains.configureSonatypePublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
@@ -9,6 +8,21 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.registerPublicationFromKotlinPlugin
 import org.jetbrains.signPublicationsIfNecessary
 import java.io.ByteArrayOutputStream
+import java.util.Base64
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
+import org.jetbrains.configureSonatypePublicationIfNecessary
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.squareup.okhttp3:okhttp:4.12.0")
+    }
+}
 
 plugins {
     kotlin("multiplatform") apply true
@@ -262,4 +276,43 @@ configureBintrayPublicationIfNecessary()
 tasks.withType<AbstractPublishToMaven>().configureEach {
     val signingTasks = tasks.withType<Sign>()
     mustRunAfter(signingTasks)
+}
+
+val packSonatypeCentralBundle by tasks.registering(Zip::class) {
+    group = "publishing"
+    dependsOn("publishAllPublicationsToArtifactsRepository")
+    from(layout.buildDirectory.dir("artifacts/maven"))
+    archiveFileName.set("bundle.zip")
+    destinationDirectory.set(layout.buildDirectory)
+}
+
+tasks.register("publishMavenToCentralPortal") {
+    group = "publishing"
+    dependsOn(packSonatypeCentralBundle)
+    doLast {
+        val uri = "https://central.sonatype.com/api/v1/publisher/upload" +
+            "?name=markdown-$version&publishingType=USER_MANAGED"
+        val user = System.getenv("SONATYPE_USER") ?: error("SONATYPE_USER is not set")
+        val token = System.getenv("SONATYPE_PASSWORD") ?: error("SONATYPE_PASSWORD is not set")
+        val auth = Base64.getEncoder().encodeToString("$user:$token".toByteArray())
+        val bundle = packSonatypeCentralBundle.get().archiveFile.get().asFile
+
+        val request = Request.Builder()
+            .url(uri)
+            .header("Authorization", "Bearer $auth")
+            .post(
+                MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("bundle", bundle.name, bundle.asRequestBody())
+                    .build()
+            )
+            .build()
+        OkHttpClient().newCall(request).execute().use { response ->
+            println("Central Portal upload: HTTP ${response.code}")
+            println(response.body?.string())
+            if (response.code != 201) {
+                error("Central Portal upload failed: HTTP ${response.code}")
+            }
+        }
+    }
 }

@@ -7,9 +7,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.get
 import org.gradle.plugins.signing.SigningExtension
-import org.jetbrains.PublicationChannel.MavenCentral
-import org.jetbrains.PublicationChannel.MavenCentralSnapshot
-import java.net.URI
 
 fun Project.registerPublicationFromKotlinPlugin(publicationName: String, artifactId: String) {
     configure<PublishingExtension> {
@@ -48,20 +45,15 @@ fun Project.signPublicationsIfNecessary(vararg publications: String) {
 }
 
 fun Project.configureSonatypePublicationIfNecessary() {
-    if (publicationChannels.any { it.isMavenRepository }) {
-        configure<PublishingExtension> {
-            repositories {
-                maven {
-                    if (MavenCentral in publicationChannels) {
-                        url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-                    } else if (MavenCentralSnapshot in publicationChannels) {
-                        url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
-                    }
-                    credentials {
-                        username = System.getenv("SONATYPE_USER")
-                        password = System.getenv("SONATYPE_PASSWORD")
-                    }
-                }
+    // Release flow: publish all publications into a local directory, which is then
+    // zipped (packSonatypeCentralBundle) and uploaded to the Central Portal
+    // (publishMavenToCentralPortal). No remote Maven repository is used.
+    val artifactsDir = layout.buildDirectory.dir("artifacts/maven").get().asFile.toURI()
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "artifacts"
+                url = artifactsDir
             }
         }
     }

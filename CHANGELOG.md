@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.7.5]
+- Added support for GitHub alert syntax
+- [#185] Added a streaming markdown parser
+- [#182] Fixed HTML block parsing at the end of a file after a trailing blank line
+- Fixed parsing of hyperlinks with double round brackets
+
 ## [0.7.4]
 - [#165] Added support for GFM strikethrough inlines with a single tilde
 
