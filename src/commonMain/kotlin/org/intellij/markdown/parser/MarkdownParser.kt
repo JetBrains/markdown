@@ -12,14 +12,15 @@ import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 
-class MarkdownParser @ExperimentalApi constructor(
+class MarkdownParser(
     private val flavour: MarkdownFlavourDescriptor,
     private val assertionsEnabled: Boolean = true,
     private val cancellationToken: CancellationToken = CancellationToken.NonCancellable
 ) {
+    @Deprecated("Use constructor with CancellationToken")
     constructor(flavour: MarkdownFlavourDescriptor): this(flavour, true)
 
-    @OptIn(ExperimentalApi::class)
+    @Deprecated("Use constructor with CancellationToken")
     constructor(
         flavour: MarkdownFlavourDescriptor,
         assertionsEnabled: Boolean
@@ -161,7 +162,6 @@ class MarkdownParser @ExperimentalApi constructor(
         return lastBlankLineEndOrNull(lastLineEnd)
     }
 
-    @OptIn(ExperimentalApi::class)
     private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int = 0): ASTNode {
         val lexer = flavour.createInlinesLexer()
         lexer.start(text, textStart, textEnd)

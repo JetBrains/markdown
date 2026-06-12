@@ -1,6 +1,5 @@
 package org.intellij.markdown.ast
 
-import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
@@ -8,7 +7,7 @@ import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
 import org.intellij.markdown.parser.CancellationToken
 
-open class ASTNodeBuilder @ExperimentalApi constructor(
+open class ASTNodeBuilder(
     protected val text: CharSequence,
     protected val cancellationToken: CancellationToken,
     private val baseOffset: Int
@@ -16,16 +15,14 @@ open class ASTNodeBuilder @ExperimentalApi constructor(
     /**
      * For compatibility only.
      */
-    @OptIn(ExperimentalApi::class)
+    @Deprecated("Use constructor with CancellationToken")
     constructor(text: CharSequence): this(text, CancellationToken.NonCancellable)
 
     /**
      * For ABI compatibility.
      */
-    @OptIn(ExperimentalApi::class)
     constructor(text: CharSequence, cancellationToken: CancellationToken): this(text, cancellationToken, 0)
 
-    @OptIn(ExperimentalApi::class)
     open fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
         if (type == MarkdownTokenTypes.WHITE_SPACE) {
             val result = ArrayList<ASTNode>()
@@ -53,7 +50,6 @@ open class ASTNodeBuilder @ExperimentalApi constructor(
         return listOf(LeafASTNode(type, startOffset + baseOffset, endOffset + baseOffset))
     }
 
-    @OptIn(ExperimentalApi::class)
     open fun createCompositeNode(type: IElementType, children: List<ASTNode>): CompositeASTNode {
         cancellationToken.checkCancelled()
         when (type) {
