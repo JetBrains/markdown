@@ -1,12 +1,17 @@
 package org.intellij.markdown.parser.sequentialparsers
 
-import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.parser.CancellationToken
 
 abstract class SequentialParserManager {
     abstract fun getParserSequence(): List<SequentialParser>
 
-    @OptIn(ExperimentalApi::class)
+    @Deprecated(
+        "Use runParsingSequence with CancellationToken",
+        ReplaceWith(
+            "runParsingSequence(tokensCache, rangesToParse, CancellationToken.NonCancellable)",
+            "org.intellij.markdown.parser.CancellationToken"
+        )
+    )
     fun runParsingSequence(
         tokensCache: TokensCache,
         rangesToParse: List<IntRange>,
@@ -14,7 +19,6 @@ abstract class SequentialParserManager {
         return runParsingSequence(tokensCache, rangesToParse, CancellationToken.NonCancellable)
     }
 
-    @ExperimentalApi
     fun runParsingSequence(
         tokensCache: TokensCache,
         rangesToParse: List<IntRange>,

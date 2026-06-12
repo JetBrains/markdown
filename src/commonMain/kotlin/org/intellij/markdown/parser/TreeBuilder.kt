@@ -1,22 +1,20 @@
 package org.intellij.markdown.parser
 
-import org.intellij.markdown.ExperimentalApi
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.lexer.Stack
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
-abstract class TreeBuilder @ExperimentalApi constructor(
+abstract class TreeBuilder(
     protected val nodeBuilder: ASTNodeBuilder,
     protected val cancellationToken: CancellationToken
 ) {
-    @OptIn(ExperimentalApi::class)
+    @Deprecated("Use constructor with CancellationToken")
     constructor(nodeBuilder: ASTNodeBuilder): this(nodeBuilder, CancellationToken.NonCancellable)
 
-    @OptIn(ExperimentalApi::class)
     fun buildTree(production: List<SequentialParser.Node>): ASTNode {
-        val events = constructEvents(production)
+        val events = constructEvents(production, cancellationToken)
         val markersStack = Stack<Pair<MyEvent, MutableList<MyASTNodeWrapper>>>()
 
         assert(events.isNotEmpty()) { "nonsense" }
@@ -63,8 +61,7 @@ abstract class TreeBuilder @ExperimentalApi constructor(
 
     protected abstract fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?)
 
-    @OptIn(ExperimentalApi::class)
-    private fun constructEvents(production: List<SequentialParser.Node>): List<MyEvent> {
+    private fun constructEvents(production: List<SequentialParser.Node>, cancellationToken: CancellationToken): List<MyEvent> {
         val events = ArrayList<MyEvent>()
         for (index in production.indices) {
             cancellationToken.checkCancelled()
@@ -77,7 +74,10 @@ abstract class TreeBuilder @ExperimentalApi constructor(
                 events.add(MyEvent(endTokenId, index, result))
             }
         }
-        events.sort()
+        events.sortWith { a, b ->
+            cancellationToken.checkCancelled()
+            a.compareTo(b)
+        }
         return events
     }
 
