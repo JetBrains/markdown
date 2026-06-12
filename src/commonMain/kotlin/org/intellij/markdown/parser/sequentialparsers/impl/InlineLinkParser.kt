@@ -13,9 +13,13 @@ class InlineLinkParser : SequentialParser {
         val delegateIndices = RangesListBuilder()
         var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
+        val linkStarts = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue) {
+            it.rawLookup(1) == MarkdownTokenTypes.LPAREN
+        }
+
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.LBRACKET) {
-                val inlineLink = parseInlineLink(iterator)
+                val inlineLink = parseInlineLink(iterator, linkStarts)
                 if (inlineLink != null) {
                     iterator = inlineLink.iteratorPosition.advance()
                     result = result.withOtherParsingResult(inlineLink)
@@ -31,7 +35,11 @@ class InlineLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseInlineLink(iterator: TokensCache.Iterator): LocalParsingResult? {
+        fun parseInlineLink(iterator: TokensCache.Iterator, linkStarts: Set<Int>? = null): LocalParsingResult? {
+            if (linkStarts != null && iterator.index !in linkStarts) {
+                return null
+            }
+
             val startIndex = iterator.index
             var it = iterator
 
@@ -71,5 +79,7 @@ class InlineLinkParser : SequentialParser {
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.INLINE_LINK),
                     linkText.rangesToProcessFurther)
         }
+
+
     }
 }

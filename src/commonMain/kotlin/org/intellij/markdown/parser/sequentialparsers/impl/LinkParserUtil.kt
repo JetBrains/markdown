@@ -117,6 +117,27 @@ class LinkParserUtil {
             return null
         }
 
+        fun buildBracketStarts(
+            tokens: TokensCache,
+            rangesToGlue: List<IntRange>,
+            closeFilter: (TokensCache.Iterator) -> Boolean = { true }
+        ): Set<Int> {
+            val result = HashSet<Int>()
+            val stack = ArrayDeque<Int>()
+            var it = tokens.RangesListIterator(rangesToGlue)
+            while (it.type != null) {
+                when (it.type) {
+                    MarkdownTokenTypes.LBRACKET -> stack.addLast(it.index)
+                    MarkdownTokenTypes.RBRACKET -> if (stack.isNotEmpty()) {
+                        val openIdx = stack.removeLast()
+                        if (closeFilter(it)) result.add(openIdx)
+                    }
+                }
+                it = it.advance()
+            }
+            return result
+        }
+
         fun parseLinkTitle(iterator: TokensCache.Iterator): LocalParsingResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL) {

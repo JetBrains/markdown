@@ -12,19 +12,10 @@ import kotlin.test.*
         return File(getIntellijMarkdownHome() + "/src/jvmTest/resources/data/performance").absolutePath
     }
 
-    private fun defaultTest(fullParse: Boolean) {
-        val fileName = testName.let {
-            if (it.endsWith("Full")) {
-                it.substring(0, it.length - 4)
-            } else {
-                it
-            }
-        }
-        val src = File(getTestDataPath() + "/" + fileName + ".md").readText()
-
+    private fun defaultTest(content: String, fullParse: Boolean, expectedTimeMs: Int? = null) {
         val runnable = { i: Int ->
             val root = MarkdownParser(CommonMarkFlavourDescriptor()).
-                    parse(MarkdownElementTypes.MARKDOWN_FILE, src, fullParse)
+            parse(MarkdownElementTypes.MARKDOWN_FILE, content, fullParse)
             assert(root.children.size > 0)
         }
 
@@ -34,7 +25,23 @@ import kotlin.test.*
         repeat(TEST_NUM, runnable)
         val testTime = System.nanoTime() - startTime
 
-        println("$fileName: ${(testTime / TEST_NUM / 1e6)}ms")
+        val timeMs = testTime / TEST_NUM / 1e6
+        println("$testName: ${timeMs}ms")
+        if (expectedTimeMs != null) {
+            assertTrue(timeMs <= expectedTimeMs)
+        }
+    }
+
+    private fun defaultTest(fullParse: Boolean) {
+        val fileName = testName.let {
+            if (it.endsWith("Full")) {
+                it.substring(0, it.length - 4)
+            } else {
+                it
+            }
+        }
+        val content = File(getTestDataPath() + "/" + fileName + ".md").readText()
+        defaultTest(content, fullParse)
     }
 
     @Test
@@ -60,6 +67,11 @@ import kotlin.test.*
     @Test
     fun testFogChangelog() {
         defaultTest(false)
+    }
+
+    @Test
+    fun testUnmatchedBrackets() {
+        defaultTest("[".repeat(10000), true, 250)
     }
 
     companion object {

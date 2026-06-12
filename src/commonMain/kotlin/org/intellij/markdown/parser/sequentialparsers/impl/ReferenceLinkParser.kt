@@ -13,8 +13,10 @@ class ReferenceLinkParser : SequentialParser {
         val delegateIndices = RangesListBuilder()
         var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
+        val matchedBrackets = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue)
+
         while (iterator.type != null) {
-            if (iterator.type == MarkdownTokenTypes.LBRACKET) {
+            if (iterator.type == MarkdownTokenTypes.LBRACKET && iterator.index in matchedBrackets) {
                 val referenceLink = parseReferenceLink(iterator)
                 if (referenceLink != null) {
                     iterator = referenceLink.iteratorPosition.advance()
@@ -82,6 +84,7 @@ class ReferenceLinkParser : SequentialParser {
                             + SequentialParser.Node(startIndex..it.index + 1, MarkdownElementTypes.SHORT_REFERENCE_LINK),
                     linkLabel.rangesToProcessFurther)
         }
+
 
     }
 
