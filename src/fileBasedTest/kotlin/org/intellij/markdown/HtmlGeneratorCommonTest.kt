@@ -133,6 +133,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     }
 
     @Test
+    fun testTableInsideBlockQuoteWithMissingLastPipe() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testCheckedLists() {
         defaultTest(GFMFlavourDescriptor())
     }

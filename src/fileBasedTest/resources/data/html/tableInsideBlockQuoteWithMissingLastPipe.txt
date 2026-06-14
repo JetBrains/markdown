@@ -1,0 +1,26 @@
+<body>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Frezze</th>
+<th>Bug</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>foo</td>
+<td>some</td>
+<td>fix</td>
+</tr>
+<tr class="intellij-row-even">
+<td>bar</td>
+<td>item</td>
+<td>plz</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>|</p>
+</body>

@@ -216,7 +216,7 @@ internal class TablesGeneratingProvider : GeneratingProvider {
         val cells = SPLIT_REGEX.split(separatorRow.getTextInNode(text))
         for (i in cells.indices) {
             val cell = cells[i]
-            if (!cell.isBlank() || i in 1..cells.lastIndex - 1) {
+            if (i in 1..cells.lastIndex - 1 || cell.contains('-')) {
                 val trimmed = cell.trim()
                 val starts = trimmed.startsWith(':')
                 val ends = trimmed.endsWith(':')
