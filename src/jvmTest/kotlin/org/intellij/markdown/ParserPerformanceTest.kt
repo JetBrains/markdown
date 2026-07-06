@@ -12,7 +12,7 @@ import kotlin.test.*
         return File(getIntellijMarkdownHome() + "/src/jvmTest/resources/data/performance").absolutePath
     }
 
-    private fun defaultTest(content: String, fullParse: Boolean, expectedTimeMs: Int? = null) {
+    private fun assertFast(content: String, fullParse: Boolean, expectedTimeMs: Int? = 1000) {
         val runnable = { i: Int ->
             val root = MarkdownParser(CommonMarkFlavourDescriptor()).
             parse(MarkdownElementTypes.MARKDOWN_FILE, content, fullParse)
@@ -28,7 +28,7 @@ import kotlin.test.*
         val timeMs = testTime / TEST_NUM / 1e6
         println("$testName: ${timeMs}ms")
         if (expectedTimeMs != null) {
-            assertTrue(timeMs <= expectedTimeMs)
+            assertTrue(timeMs <= expectedTimeMs, "Expected $expectedTimeMs ms, got $timeMs")
         }
     }
 
@@ -41,7 +41,7 @@ import kotlin.test.*
             }
         }
         val content = File(getTestDataPath() + "/" + fileName + ".md").readText()
-        defaultTest(content, fullParse)
+        assertFast(content, fullParse, null)
     }
 
     @Test
@@ -71,7 +71,13 @@ import kotlin.test.*
 
     @Test
     fun testUnmatchedBrackets() {
-        defaultTest("[".repeat(10000), true, 250)
+        assertFast("[".repeat(10000), true, 250)
+    }
+
+    @Test
+    fun testHugeUnterminatedLinkTitle() {
+        assertFast("[a]: x (" + "y".repeat(20_000_000), false)
+        assertFast("[a]: <" + "y".repeat(20_000_000), false)
     }
 
     companion object {

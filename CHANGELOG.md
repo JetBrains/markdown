@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Fixed link-related parser freezes
 
 ## [0.7.5]
 - Added support for GitHub alert syntax
