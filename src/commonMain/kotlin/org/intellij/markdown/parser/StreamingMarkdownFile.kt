@@ -91,7 +91,7 @@ private class StreamingMarkdownFileImpl(
 
         val (unstableTree, unstableStartOffset) = parser.parseStreaming(
             MARKDOWN_FILE,
-            unstableText.toString(),
+            unstableText,
             parseInlines = true,
             baseOffset = stableTextLength
         )

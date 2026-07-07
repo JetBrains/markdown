@@ -1,3 +1,5 @@
+@file:Suppress("DeprecatedCallableAddReplaceWith")
+
 package org.intellij.markdown.parser
 
 import org.intellij.markdown.*
@@ -26,16 +28,27 @@ class MarkdownParser(
         assertionsEnabled: Boolean
     ): this(flavour, assertionsEnabled, CancellationToken.NonCancellable)
 
-    fun buildMarkdownTreeFromString(text: String, baseOffset: Int): ASTNode {
+    fun buildMarkdownTreeFromString(text: CharSequence, baseOffset: Int): ASTNode {
         return parse(MarkdownElementTypes.MARKDOWN_FILE, text, true, baseOffset)
     }
 
+    @Deprecated("Use the CharSequence overload")
+    fun buildMarkdownTreeFromString(text: String, baseOffset: Int): ASTNode {
+        return buildMarkdownTreeFromString(text as CharSequence, baseOffset)
+    }
+
     // To keep the ABI compatibility.
-    fun buildMarkdownTreeFromString(text: String): ASTNode {
+    fun buildMarkdownTreeFromString(text: CharSequence): ASTNode {
         return buildMarkdownTreeFromString(text, 0)
     }
 
-    fun parse(root: IElementType, text: String, parseInlines: Boolean, baseOffset: Int): ASTNode {
+    // To keep the ABI compatibility.
+    @Deprecated("Use the CharSequence overload")
+    fun buildMarkdownTreeFromString(text: String): ASTNode {
+        return buildMarkdownTreeFromString(text as CharSequence)
+    }
+
+    fun parse(root: IElementType, text: CharSequence, parseInlines: Boolean, baseOffset: Int): ASTNode {
         return try {
             doParse(root, text, parseInlines, baseOffset).tree
         }
@@ -47,9 +60,19 @@ class MarkdownParser(
         }
     }
 
-    // To keep the ABI compatibility.
-    fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+    @Deprecated("Use the CharSequence overload")
+    fun parse(root: IElementType, text: String, parseInlines: Boolean, baseOffset: Int): ASTNode {
+        return parse(root, text as CharSequence, parseInlines, baseOffset)
+    }
+
+    fun parse(root: IElementType, text: CharSequence, parseInlines: Boolean = true): ASTNode {
         return parse(root, text, parseInlines, 0)
+    }
+
+    // To keep the ABI compatibility.
+    @Deprecated("Use the CharSequence overload")
+    fun parse(root: IElementType, text: String, parseInlines: Boolean = true): ASTNode {
+        return parse(root, text as CharSequence, parseInlines)
     }
 
     fun parseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int): ASTNode {
@@ -69,7 +92,7 @@ class MarkdownParser(
         return parseInline(root, text, textStart, textEnd, 0)
     }
 
-    internal fun parseStreaming(root: IElementType, text: String, parseInlines: Boolean, baseOffset: Int): StreamingMarkdownParseResult {
+    internal fun parseStreaming(root: IElementType, text: CharSequence, parseInlines: Boolean, baseOffset: Int): StreamingMarkdownParseResult {
         return try {
             val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
             StreamingMarkdownParseResult(
@@ -89,10 +112,9 @@ class MarkdownParser(
         }
     }
 
-    @OptIn(ExperimentalApi::class)
     private fun doParse(
         root: IElementType,
-        text: String,
+        text: CharSequence,
         parseInlines: Boolean = true,
         baseOffset: Int = 0
     ): MarkdownParseResult {
@@ -139,7 +161,7 @@ class MarkdownParser(
      */
     private fun findUnstableStartOffset(
         openMarkers: List<MarkerBlock>,
-        text: String,
+        text: CharSequence,
         baseOffset: Int
     ): Int {
         var unstableStartOffset = text.length
@@ -155,7 +177,7 @@ class MarkdownParser(
      * Return the exclusive end of the last blank line in the string.
      * This guarantees O(1) memory usage and O(n) worst-case time complexity.
      */
-    private tailrec fun String.lastBlankLineEndOrNull(lineEnd: Int = lastIndexOf('\n')): Int? {
+    private tailrec fun CharSequence.lastBlankLineEndOrNull(lineEnd: Int = lastIndexOf('\n')): Int? {
         val lastLineEnd = lastIndexOf('\n', lineEnd - 1)
         if (lastLineEnd == -1) return null
         if ((lastLineEnd..lineEnd).all { this[it].isWhitespace() }) return lineEnd + 1
@@ -178,7 +200,7 @@ class MarkdownParser(
         return builder.buildTree(nodes + listOf(SequentialParser.Node(wholeRange, root)))
     }
 
-    private fun topLevelFallback(root: IElementType, text: String, baseOffset: Int): ASTNode {
+    private fun topLevelFallback(root: IElementType, text: CharSequence, baseOffset: Int): ASTNode {
         return CompositeASTNode(
             root, listOf(inlineFallback(MarkdownElementTypes.PARAGRAPH, 0, text.length, baseOffset))
         )
@@ -191,7 +213,6 @@ class MarkdownParser(
         )
     }
 
-    @OptIn(ExperimentalApi::class)
     private inner class InlineExpandingASTNodeBuilder(
         text: CharSequence,
         private val baseOffset: Int
