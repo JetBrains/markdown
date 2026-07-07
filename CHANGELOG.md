@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Use `CharSequence` where possible instead of `String`
 - Fixed link-related parser freezes
 
 ## [0.7.5]

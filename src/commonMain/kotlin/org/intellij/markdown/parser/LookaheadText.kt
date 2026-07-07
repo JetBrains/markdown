@@ -3,8 +3,24 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.lexer.Compat.assert
 import kotlin.math.max
 
+// CharSequence.split() always copies each piece into a new String (substring() = subSequence().toString()).
+// This keeps pieces as CharSequence views via subSequence(), so a bombed/cancellable CharSequence isn't flattened.
+private fun CharSequence.splitLinesToCharSequences(): List<CharSequence> {
+    val result = ArrayList<CharSequence>()
+    var start = 0
+    while (true) {
+        val index = indexOf('\n', start)
+        if (index == -1) {
+            result.add(subSequence(start, length))
+            return result
+        }
+        result.add(subSequence(start, index))
+        start = index + 1
+    }
+}
+
 class LookaheadText(private val text: CharSequence) {
-    private val lines: List<String> = text.split('\n')
+    private val lines: List<CharSequence> = text.splitLinesToCharSequences()
 
     val startPosition: Position? = if (text.isNotEmpty())
         Position(0, -1, -1).nextPosition()
@@ -54,16 +70,16 @@ class LookaheadText(private val text: CharSequence) {
             get() = text.subSequence(globalPos, text.length)
 
         val currentLineFromPosition: CharSequence
-            get() = currentLine.substring(offsetInCurrentLine)
+            get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
 
-        val nextLine: String?
+        val nextLine: CharSequence?
             get() = if (lineN + 1 < lines.size) {
                 lines[lineN + 1]
             } else {
                 null
             }
 
-        val prevLine: String?
+        val prevLine: CharSequence?
             get() = if (lineN > 0) {
                 lines[lineN - 1]
             } else {
