@@ -1,0 +1,26 @@
+<body>
+<p>
+Table cells hold inline content only, so a leading <code>&gt;</code>
+ is literal text rather than a block quote.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>terraform</td>
+<td>&gt;= 1.3.0</td>
+</tr>
+<tr class="intellij-row-even">
+<td>answer</td>
+<td>&gt;0</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>A real block quote is still rendered as a quote.</p>
+</blockquote>
+</body>

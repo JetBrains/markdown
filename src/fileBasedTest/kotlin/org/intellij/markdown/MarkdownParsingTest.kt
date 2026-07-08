@@ -246,6 +246,11 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
+    fun testGfmTableWithBlockQuote() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testGfmAlerts() {
         defaultTest(GFMFlavourDescriptor())
     }

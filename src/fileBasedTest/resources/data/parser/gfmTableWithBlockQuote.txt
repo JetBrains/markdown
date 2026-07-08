@@ -1,0 +1,64 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Table cells hold inline content only,')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('so a leading')
+    WHITE_SPACE(' ')
+    Markdown:CODE_SPAN
+      Markdown:BACKTICK('`')
+      Markdown:>('>')
+      Markdown:BACKTICK('`')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('is literal text rather than a block quote.')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:TABLE
+    Markdown:HEADER
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Name')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('Version')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:TABLE_SEPARATOR('|------|---------|')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('terraform')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:BLOCK_QUOTE(' >')
+        Markdown:TEXT('=')
+        WHITE_SPACE(' ')
+        Markdown:TEXT('1.3.0')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+    Markdown:EOL('\n')
+    Markdown:ROW
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        WHITE_SPACE(' ')
+        Markdown:TEXT('answer')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+      Markdown:CELL
+        Markdown:BLOCK_QUOTE(' >')
+        Markdown:TEXT('0')
+        WHITE_SPACE(' ')
+      Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('A real block quote is still rendered as a quote.')
+  Markdown:EOL('\n')

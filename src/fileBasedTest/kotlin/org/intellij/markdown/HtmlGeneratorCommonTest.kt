@@ -4,8 +4,11 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
-import org.intellij.markdown.html.*
-import kotlin.test.*
+import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.html.URI
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.fail
 
 class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     override fun getTestDataPath(): String {
@@ -129,6 +132,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
 
     @Test
     fun testGfmTable() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testGfmTableWithBlockQuote() {
         defaultTest(GFMFlavourDescriptor())
     }
 
