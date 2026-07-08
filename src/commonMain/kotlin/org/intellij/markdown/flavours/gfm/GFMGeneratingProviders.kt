@@ -133,6 +133,22 @@ open class TableAwareCodeSpanGeneratingProvider : GeneratingProvider {
     }
 }
 
+/**
+ * A `>` at the start of a GFM table cell is lexed as a [MarkdownTokenTypes.BLOCK_QUOTE] marker token, but block
+ * quotes are not allowed inside table cells. [HtmlGenerator.leafText] blanks out block-quote marker tokens, so
+ * without special handling the `>` would disappear from the rendered cell. Inside a table cell we render the marker
+ * as literal text; anywhere else we keep the default behaviour of dropping the marker.
+ */
+open class TableAwareBlockQuoteMarkerProvider : GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        if (node.getParentOfType(GFMTokenTypes.CELL) == null) {
+            return
+        }
+        val markerText = node.getTextInNode(text).trimStart()
+        visitor.consumeHtml(EntityConverter.replaceEntities(markerText, processEntities = false, processEscapes = false))
+    }
+}
+
 internal class MathGeneratingProvider(private val inline: Boolean = false): GeneratingProvider {
     override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
         val nodes = node.children.subList(1, node.children.size - 1)

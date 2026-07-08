@@ -64,6 +64,7 @@ open class GFMFlavourDescriptor(
                 GFMElementTypes.TABLE to TablesGeneratingProvider(),
 
                 GFMTokenTypes.CELL to TrimmingInlineHolderProvider(),
+                MarkdownTokenTypes.BLOCK_QUOTE to TableAwareBlockQuoteMarkerProvider(),
                 MarkdownElementTypes.CODE_SPAN to TableAwareCodeSpanGeneratingProvider(),
 
                 GFMTokenTypes.GFM_AUTOLINK to object : GeneratingProvider {
