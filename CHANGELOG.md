@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## [0.7.7]
+- [#201] Support rendering > as literal text inside GFM table cells
+
 ## [0.7.6]
 - Use `CharSequence` where possible instead of `String`
 - Fixed link-related parser freezes
