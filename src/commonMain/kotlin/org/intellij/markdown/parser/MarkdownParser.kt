@@ -145,7 +145,7 @@ class MarkdownParser(
             ASTNodeBuilder(text, cancellationToken, baseOffset)
         }
 
-        val builder = TopLevelBuilder(nodeBuilder)
+        val builder = TopLevelBuilder(nodeBuilder, cancellationToken)
 
         return MarkdownParseResult(
             tree = builder.buildTree(productionHolder.production),

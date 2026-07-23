@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Pass `CancellationToken` to `TopLevelBuilder`
 
 ## [0.7.7]
 - [#201] Support rendering > as literal text inside GFM table cells

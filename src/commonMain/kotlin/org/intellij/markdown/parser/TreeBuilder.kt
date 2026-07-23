@@ -62,7 +62,7 @@ abstract class TreeBuilder(
     protected abstract fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?)
 
     private fun constructEvents(production: List<SequentialParser.Node>, cancellationToken: CancellationToken): List<MyEvent> {
-        val events = ArrayList<MyEvent>()
+        val events = ArrayList<MyEvent>(production.size * 2)
         for (index in production.indices) {
             cancellationToken.checkCancelled()
             val result = production[index]
