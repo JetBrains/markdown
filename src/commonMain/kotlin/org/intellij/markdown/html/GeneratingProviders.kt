@@ -316,11 +316,29 @@ open class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGenera
     }
 
     private fun getPlainTextFrom(node: ASTNode, text: String): CharSequence {
-        return REGEX.replace(node.getTextInNode(text), "")
+        return when {
+            node.type == MarkdownElementTypes.LINK_DESTINATION -> REGEX.replace(node.getTextInNode(text), "")
+            node is LeafASTNode -> {
+                if (isMarkupToken(node.type)) "" else HtmlGenerator.leafText(text, node)
+            }
+            else -> node.children.joinToString(separator = "") {
+                getPlainTextFrom(it, text)
+            }
+        }
+    }
+
+    private fun isMarkupToken(type: IElementType): Boolean {
+        return type == MarkdownTokenTypes.EMPH ||
+                type == MarkdownTokenTypes.BACKTICK ||
+                type == MarkdownTokenTypes.ESCAPED_BACKTICKS ||
+                type == MarkdownTokenTypes.EXCLAMATION_MARK ||
+                type == MarkdownTokenTypes.LBRACKET ||
+                type == MarkdownTokenTypes.RBRACKET ||
+                type == MarkdownTokenTypes.LPAREN ||
+                type == MarkdownTokenTypes.RPAREN
     }
 
     companion object {
         val REGEX = Regex("[^a-zA-Z0-9 ]")
     }
 }
-
