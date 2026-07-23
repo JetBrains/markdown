@@ -3,6 +3,7 @@
 ## [Unreleased]
 - Pass `CancellationToken` to `TopLevelBuilder`
 - Render nested code fences correctly
+- Recognize ‘username@host’ as part of url
 
 ## [0.7.7]
 - [#201] Support rendering > as literal text inside GFM table cells

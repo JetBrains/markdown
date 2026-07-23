@@ -1,0 +1,4 @@
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://orgname@dev.azure.com/myorg/project/_git/repo')
+  Markdown:EOL('\n')

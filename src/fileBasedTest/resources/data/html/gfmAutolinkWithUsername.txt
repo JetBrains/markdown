@@ -1,0 +1,5 @@
+<body>
+<p>
+<a href="https://orgname@dev.azure.com/myorg/project/_git/repo">https://orgname@dev.azure.com/myorg/project/_git/repo</a>
+</p>
+</body>

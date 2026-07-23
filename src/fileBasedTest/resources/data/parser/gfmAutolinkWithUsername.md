@@ -1,0 +1,1 @@
+https://orgname@dev.azure.com/myorg/project/_git/repo
