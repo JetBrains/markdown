@@ -2,8 +2,7 @@
 
 [*foo\!*][bar]
 
-> [foo]
-[bar]
+> [foo][bar]
 
 [link [foo [bar]]][ref]
 
@@ -17,9 +16,14 @@
 
 [*foo* bar][]
 
-[foo]
-[]
+[foo][]
 
 [*foo* bar]
 
 [[*foo* bar]]
+
+[foo]`bar`[baz]
+
+[foo]`bar`[baz]`qux`[quux]
+
+[foo] [bar][baz]
