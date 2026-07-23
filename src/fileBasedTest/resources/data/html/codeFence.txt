@@ -38,6 +38,12 @@ aaa</p>
   return 3
 end
 </code></pre>
+<pre><code class="language-kotlin">/**
+ * ```kotlin
+ * // Code example goes here
+ * ```
+*/
+</code></pre>
 <pre><code class="language-ruby">def foo(x)
   return 3
 end
