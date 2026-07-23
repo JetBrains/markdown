@@ -45,7 +45,7 @@ class CodeFenceMarkerBlock(myConstraints: MarkdownConstraints,
 
         assert(pos.offsetInCurrentLine == -1)
 
-        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
+        val nextLineConstraints = constraints.applyToNextLine(pos)
         if (!nextLineConstraints.extendsPrev(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
