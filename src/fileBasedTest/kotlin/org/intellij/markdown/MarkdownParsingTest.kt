@@ -231,7 +231,17 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
+    fun testGfmAutolinkWithUsername() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testSfmAutolink() {
+        defaultTest(SFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testSfmAutolinkWithUsername() {
         defaultTest(SFMFlavourDescriptor())
     }
 
