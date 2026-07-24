@@ -1,5 +1,11 @@
 Markdown:MARKDOWN_FILE
   Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[credentials]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('https://username:password@example.com')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:LINK_DEFINITION
     Markdown:LINK_LABEL('[foo]')
     WHITE_SPACE(': ')
     Markdown:LINK_DESTINATION('/url')

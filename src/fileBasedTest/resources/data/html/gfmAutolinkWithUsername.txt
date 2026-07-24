@@ -2,4 +2,10 @@
 <p>
 <a href="https://orgname@dev.azure.com/myorg/project/_git/repo">https://orgname@dev.azure.com/myorg/project/_git/repo</a>
 </p>
+<p>
+<a href="https://orgname:password@dev.azure.com/myorg/project/_git/repo">https://orgname:password@dev.azure.com/myorg/project/_git/repo</a>
+</p>
+<p>
+<a href="https://username:password@example.com">https://username:password@example.com</a>
+</p>
 </body>

@@ -1,3 +1,5 @@
+[credentials]: https://username:password@example.com
+
 [foo]: /url
 "title" ok
 

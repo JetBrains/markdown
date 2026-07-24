@@ -254,6 +254,7 @@ TAG_END = "</" {TAG_NAME} {WHITE_SPACE}* ">"
 SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
 USER_INFO_CHAR = [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]
+URL_USER_INFO_CHAR = [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~:-]
 EMAIL_AUTOLINK = "<" {USER_INFO_CHAR}+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
 HOST_PART={ALPHANUM}([a-zA-Z0-9_-]*{ALPHANUM})?
@@ -261,7 +262,7 @@ PATH_PART=[\S&&[^\]()]]|\][^\[(]
 PATH=({PATH_PART}+ | ("(" {PATH_PART}* ")"? {PATH_PART}*)) ("(" {PATH_PART}* ")"? {PATH_PART}*)*
 // See pushbackAutolink method
 //GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") {HOST_PART} ("." {HOST_PART})* (":" [0-9]+)? ("/"{PATH_PART}+)* "/"?
-SFM_AUTOLINK = (({SCHEME}"://") ({USER_INFO_CHAR}+ "@")? {HOST_PART} ("." {HOST_PART})* | ({HOST_PART} ".")+ {TLD} ) (":" [0-9]+)? ("/" {PATH})? "/"?
+SFM_AUTOLINK = (({SCHEME}"://") ({URL_USER_INFO_CHAR}+ "@")? {HOST_PART} ("." {HOST_PART})* | ({HOST_PART} ".")+ {TLD} ) (":" [0-9]+)? ("/" {PATH})? "/"?
 
 %state TAG_START, AFTER_LINE_START, PARSE_DELIMITED, CODE
 

@@ -1,3 +1,14 @@
 Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
     Markdown:GFM_AUTOLINK('https://orgname@dev.azure.com/myorg/project/_git/repo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:GFM_AUTOLINK('https://orgname:password@dev.azure.com/myorg/project/_git/repo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:AUTOLINK
+      Markdown:<('<')
+      Markdown:AUTOLINK('https://username:password@example.com')
+      Markdown:>('>')
