@@ -238,7 +238,7 @@ TAG_END = "</" {TAG_NAME} {WHITE_SPACE}* ">"
 
 SCHEME = [a-zA-Z]+
 AUTOLINK = "<" {SCHEME} ":" [^ \t\f\n<>]+ ">"
-USER_INFO_CHAR = [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]
+USER_INFO_CHAR =     [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]
 URL_USER_INFO_CHAR = [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~:-]
 EMAIL_AUTOLINK = "<" {USER_INFO_CHAR}+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
