@@ -1,9 +1,12 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.8]
 - Pass `CancellationToken` to `TopLevelBuilder`
 - Render nested code fences correctly
 - Recognize ‘username@host’ as part of url
+- Require link label to immediately follow link text
 
 ## [0.7.7]
 - [#201] Support rendering > as literal text inside GFM table cells
