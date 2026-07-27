@@ -1,31 +1,30 @@
 Markdown:MARKDOWN_FILE
   Markdown:PARAGRAPH
-    Markdown:FULL_REFERENCE_LINK
-      Markdown:LINK_TEXT
-        Markdown:[('[')
-        Markdown:STRONG
-          Markdown:EMPH('*')
-          Markdown:EMPH('*')
-          Markdown:TEXT('-f')
-          Markdown:EMPH('*')
-          Markdown:EMPH('*')
-        Markdown:TEXT('|')
-        Markdown:STRONG
-          Markdown:EMPH('*')
-          Markdown:EMPH('*')
-          Markdown:TEXT('--filter')
-          Markdown:EMPH('*')
-          Markdown:EMPH('*')
-        Markdown:[('[')
-        Markdown:TEXT('=')
-        Markdown:EMPH
-          Markdown:EMPH('*')
-          Markdown:[('[')
-          Markdown:](']')
-          Markdown:EMPH('*')
-        Markdown:](']')
-        Markdown:](']')
-      Markdown:EOL('\n')
+    Markdown:[('[')
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('-f')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:TEXT('|')
+    Markdown:STRONG
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+      Markdown:TEXT('--filter')
+      Markdown:EMPH('*')
+      Markdown:EMPH('*')
+    Markdown:[('[')
+    Markdown:TEXT('=')
+    Markdown:EMPH
+      Markdown:EMPH('*')
+      Markdown:[('[')
+      Markdown:](']')
+      Markdown:EMPH('*')
+    Markdown:](']')
+    Markdown:](']')
+    Markdown:EOL('\n')
+    Markdown:SHORT_REFERENCE_LINK
       Markdown:LINK_LABEL
         Markdown:[('[')
         Markdown:STRONG

@@ -3387,14 +3387,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testLinksExample550() = doTest(
             markdown = "[foo] [bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo] <a href=\"/url\" title=\"title\">bar</a></p>\n"
     )
 
     @Test
-    @Ignore
     fun testLinksExample551() = doTest(
             markdown = "[foo]\n[bar]\n\n[bar]: /url \"title\"\n",
             html = "<p>[foo]\n<a href=\"/url\" title=\"title\">bar</a></p>\n"

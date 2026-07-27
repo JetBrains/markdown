@@ -42,10 +42,11 @@ class ReferenceLinkParser : SequentialParser {
 
             val linkText = LinkParserUtil.parseLinkText(iterator)
                     ?: return null
+            val linkTextEnd = linkText.iteratorPosition.end
             var it = linkText.iteratorPosition.advance()
 
-            if (it.type == MarkdownTokenTypes.EOL) {
-                it = it.advance()
+            if (it.start != linkTextEnd) {
+                return null
             }
 
             val linkLabel = LinkParserUtil.parseLinkLabel(it)
