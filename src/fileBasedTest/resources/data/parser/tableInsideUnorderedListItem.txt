@@ -1,0 +1,39 @@
+Markdown:MARKDOWN_FILE
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('* ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Intro')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:TABLE
+        Markdown:HEADER
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('Left')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('Right')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:TABLE_SEPARATOR('| :--- | ---: |')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:ROW
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('a')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('b')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')

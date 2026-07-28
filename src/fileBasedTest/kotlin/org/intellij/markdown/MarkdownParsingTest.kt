@@ -364,6 +364,31 @@ Markdown:MARKDOWN_FILE
     }
 
     @Test
+    fun testTableInsideOrderedListItem() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testTableInsideUnorderedListItem() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testTableInsideNestedListItem() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testTableInsideBlockQuoteInListItem() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testIndentedCodeBlockInsideListItem() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testMath() {
         defaultTest(GFMFlavourDescriptor())
     }

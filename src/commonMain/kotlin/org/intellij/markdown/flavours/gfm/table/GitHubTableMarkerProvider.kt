@@ -15,28 +15,26 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
         if (stateInfo.nextConstraints != currentConstraints) {
             return emptyList()
         }
-
-        val currentLineFromPosition = pos.currentLineFromPosition
-        if (!currentLineFromPosition.contains('|')) {
-            return emptyList()
-        }
-
-        val split = GitHubTableMarkerBlock.splitByPipes(currentLineFromPosition)
-        val numberOfHeaderCells = split
-                .mapIndexed { i, s -> (i > 0 && i < split.lastIndex) || s.isNotBlank() }
-                .count { it }
-        if (numberOfHeaderCells == 0) {
-            return emptyList()
-        }
-        val nextLine = getNextLineFromConstraints(pos, currentConstraints) ?: return emptyList()
-        if (countSecondLineCells(nextLine) == numberOfHeaderCells) {
-            return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
-        }
-        return emptyList()
+        val numberOfHeaderCells = getTableColumns(pos, currentConstraints) ?: return emptyList()
+        return listOf(GitHubTableMarkerBlock(pos, currentConstraints, productionHolder, numberOfHeaderCells))
     }
 
     override fun interruptsParagraph(pos: LookaheadText.Position, constraints: MarkdownConstraints): Boolean {
-        return false
+        return getTableColumns(pos, constraints) != null
+    }
+
+    private fun getTableColumns(pos: LookaheadText.Position, constraints: MarkdownConstraints): Int? {
+        val currentLineFromPosition = pos.currentLineFromPosition
+        if (!currentLineFromPosition.contains('|')) {
+            return null
+        }
+
+        val numberOfHeaderCells = countHeaderCells(currentLineFromPosition)
+        if (numberOfHeaderCells == 0) {
+            return null
+        }
+        val nextLine = getNextLineFromConstraints(pos, constraints) ?: return null
+        return numberOfHeaderCells.takeIf { countSecondLineCells(nextLine) == it }
     }
 
     private fun getNextLineFromConstraints(pos: LookaheadText.Position, constraints: MarkdownConstraints): CharSequence? {
@@ -50,6 +48,35 @@ class GitHubTableMarkerProvider : MarkerBlockProvider<MarkerProcessor.StateInfo>
     }
 
     companion object {
+        private fun countHeaderCells(line: CharSequence): Int {
+            var result = 0
+            var cellStart = 0
+            var cellIndex = 0
+            for (index in line.indices) {
+                if (line[index] != '|' || index > 0 && line[index - 1] == '\\') {
+                    continue
+                }
+                if (cellIndex > 0 || line.hasNonWhitespace(cellStart, index)) {
+                    result++
+                }
+                cellStart = index + 1
+                cellIndex++
+            }
+            if (line.hasNonWhitespace(cellStart, line.length)) {
+                result++
+            }
+            return result
+        }
+
+        private fun CharSequence.hasNonWhitespace(start: Int, end: Int): Boolean {
+            for (index in start until end) {
+                if (!this[index].isWhitespace()) {
+                    return true
+                }
+            }
+            return false
+        }
+
         /**
          * @return number of cells in the separator line
          */

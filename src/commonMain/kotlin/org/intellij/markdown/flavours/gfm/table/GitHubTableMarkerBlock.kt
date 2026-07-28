@@ -10,7 +10,6 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import kotlin.text.Regex
 
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
@@ -30,7 +29,8 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         currentLine++
         // That means it's table header separator line
         if (currentLine == 1) {
-            productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset + 1..pos.nextLineOrEofOffset,
+            val separatorStart = pos.offset + 1 + constraints.getCharsEaten(pos.currentLine)
+            productionHolder.addProduction(listOf(SequentialParser.Node(separatorStart..pos.nextLineOrEofOffset,
                     GFMTokenTypes.TABLE_SEPARATOR)))
             return MarkerBlock.ProcessingResult.CANCEL
         }

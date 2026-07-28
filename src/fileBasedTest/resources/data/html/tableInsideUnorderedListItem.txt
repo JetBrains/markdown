@@ -1,0 +1,20 @@
+<body>
+<ul>
+<li>
+Intro<table>
+<thead>
+<tr>
+<th>Left</th>
+<th align="right">Right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td align="right">b</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</body>

@@ -1,0 +1,18 @@
+<body>
+<ol>
+<li>
+Valid separator<table>
+<thead>
+<tr>
+<th>Header</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</body>

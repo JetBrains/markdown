@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Support tables inside list items
 
 ## [0.7.8]
 - Pass `CancellationToken` to `TopLevelBuilder`

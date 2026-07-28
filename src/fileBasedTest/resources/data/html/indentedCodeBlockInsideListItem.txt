@@ -1,0 +1,10 @@
+<body>
+<ol>
+<li>
+Code block<pre><code>| Header |
+| --- |
+| code, not a table |
+</code></pre>
+</li>
+</ol>
+</body>
