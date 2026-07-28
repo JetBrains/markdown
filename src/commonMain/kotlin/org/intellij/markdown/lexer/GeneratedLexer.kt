@@ -19,4 +19,4 @@ fun <E> ArrayList<E>.push(e: E) {
     add(e)
 }
 
-fun <E> ArrayList<E>.pop(): E = removeLast()
+fun <E> ArrayList<E>.pop(): E = removeAt(lastIndex)

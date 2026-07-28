@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 - Support tables inside list items
+- Android compatibility issues
 
 ## [0.7.8]
 - Pass `CancellationToken` to `TopLevelBuilder`
