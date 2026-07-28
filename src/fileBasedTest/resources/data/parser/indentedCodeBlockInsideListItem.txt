@@ -1,0 +1,17 @@
+Markdown:MARKDOWN_FILE
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Code block')
+      Markdown:EOL('\n')
+      WHITE_SPACE('   ')
+      Markdown:CODE_BLOCK
+        Markdown:CODE_LINE('    | Header |')
+        Markdown:EOL('\n')
+        WHITE_SPACE('   ')
+        Markdown:CODE_LINE('    | --- |')
+        Markdown:EOL('\n')
+        WHITE_SPACE('   ')
+        Markdown:CODE_LINE('    | code, not a table |')
+  Markdown:EOL('\n')

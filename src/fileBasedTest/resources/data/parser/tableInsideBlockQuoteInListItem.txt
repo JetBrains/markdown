@@ -1,0 +1,35 @@
+Markdown:MARKDOWN_FILE
+  Markdown:ORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_NUMBER('1. ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('Intro')
+      Markdown:EOL('\n')
+      WHITE_SPACE('   ')
+      Markdown:BLOCK_QUOTE
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('Quote')
+        Markdown:EOL('\n')
+        WHITE_SPACE('   > ')
+        Markdown:TABLE
+          Markdown:HEADER
+            Markdown:TABLE_SEPARATOR('|')
+            Markdown:CELL
+              WHITE_SPACE(' ')
+              Markdown:TEXT('Header')
+              WHITE_SPACE(' ')
+            Markdown:TABLE_SEPARATOR('|')
+          Markdown:EOL('\n')
+          WHITE_SPACE('   > ')
+          Markdown:TABLE_SEPARATOR('| --- |')
+          Markdown:EOL('\n')
+          WHITE_SPACE('   > ')
+          Markdown:ROW
+            Markdown:TABLE_SEPARATOR('|')
+            Markdown:CELL
+              WHITE_SPACE(' ')
+              Markdown:TEXT('value')
+              WHITE_SPACE(' ')
+            Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')

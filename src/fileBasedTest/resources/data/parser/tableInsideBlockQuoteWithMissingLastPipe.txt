@@ -20,7 +20,8 @@ Markdown:MARKDOWN_FILE
           WHITE_SPACE('  ')
         Markdown:TABLE_SEPARATOR('|')
       Markdown:EOL('\n')
-      Markdown:TABLE_SEPARATOR('> | ---   | ------ | ---- |')
+      WHITE_SPACE('> ')
+      Markdown:TABLE_SEPARATOR('| ---   | ------ | ---- |')
       Markdown:EOL('\n')
       WHITE_SPACE('> ')
       Markdown:ROW
