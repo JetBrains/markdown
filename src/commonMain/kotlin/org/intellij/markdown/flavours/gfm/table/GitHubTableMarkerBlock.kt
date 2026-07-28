@@ -6,6 +6,7 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.constraints.eatItselfFromString
+import org.intellij.markdown.parser.constraints.extendsPrev
 import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
@@ -27,9 +28,13 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
 
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         currentLine++
+        val lineConstraints = constraints.applyToNextLine(pos)
+        if (!lineConstraints.extendsPrev(constraints)) {
+            return MarkerBlock.ProcessingResult.DEFAULT
+        }
         // That means it's table header separator line
         if (currentLine == 1) {
-            val separatorStart = pos.offset + 1 + constraints.getCharsEaten(pos.currentLine)
+            val separatorStart = pos.offset + 1 + lineConstraints.getCharsEaten(pos.currentLine)
             productionHolder.addProduction(listOf(SequentialParser.Node(separatorStart..pos.nextLineOrEofOffset,
                     GFMTokenTypes.TABLE_SEPARATOR)))
             return MarkerBlock.ProcessingResult.CANCEL
@@ -39,7 +44,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         if (!isProbablyTableLine(line)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
-        val cellsAndSeps = fillCells(pos)
+        val cellsAndSeps = fillCells(pos, lineConstraints)
         if (cellsAndSeps.isEmpty()) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
@@ -60,15 +65,16 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
 
     override fun allowsSubBlocks() = false
 
-    private fun fillCells(pos: LookaheadText.Position): List<SequentialParser.Node> {
+    private fun fillCells(pos: LookaheadText.Position,
+                          lineConstraints: MarkdownConstraints = constraints): List<SequentialParser.Node> {
         val result = ArrayList<SequentialParser.Node>()
 
         var offset = pos.offset
         if (pos.offsetInCurrentLine == -1) {
-            offset += 1 + constraints.getCharsEaten(pos.currentLine)
+            offset += 1 + lineConstraints.getCharsEaten(pos.currentLine)
         }
 
-        val line = constraints.eatItselfFromString(pos.currentLine)
+        val line = lineConstraints.eatItselfFromString(pos.currentLine)
 
         val cells = splitByPipes(line)
         var cellNodesAdded = 0
