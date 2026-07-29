@@ -18,24 +18,26 @@ package org.intellij.markdown.html.entities
   * Generated with gen_entities.rb
    */
 
-public object Entities {
-    public val map: Map<String, Int> = hashMapOf(
-                
+object Entities {
 EOF
 
 json = JSON.parse(File.read("entities.json"))
-is_first = true
-json.each do |key, value|
-  puts ',' unless is_first
-  is_first = false
+entries = json.map { |key, value| [key, value['codepoints'][0]] }
+chunks = entries.each_slice(256).to_a
 
-  print "\"#{key}\" to #{value['codepoints'][0]}"
+puts "    val map: Map<String, Int> = #{(0...chunks.length).map { |i| "map#{i}()" }.join(' + ')}"
+
+chunks.each_with_index do |chunk, index|
+  puts
+  puts "    private fun map#{index}(): Map<String, Int> = hashMapOf("
+  chunk.each_with_index do |(key, codepoint), entry_index|
+    puts ',' unless entry_index.zero?
+    print "\"#{key}\" to #{codepoint}"
+  end
+  puts ")"
 end
 
-puts <<EOF
-)
-}
-EOF
+puts "}"
 
 `rm entities.json`
 $stderr.puts "Done"
