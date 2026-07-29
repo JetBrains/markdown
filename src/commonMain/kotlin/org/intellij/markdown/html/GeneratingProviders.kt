@@ -197,18 +197,37 @@ internal class CodeFenceGeneratingProvider : GeneratingProvider {
         }
 
         var lastChildWasContent = false
+        var isDiff = false
 
         val attributes = ArrayList<String>()
         for (child in childrenToConsider) {
             if (state == 1 && child.type in listOf(MarkdownTokenTypes.CODE_FENCE_CONTENT,
                     MarkdownTokenTypes.EOL)) {
-                visitor.consumeHtml(HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), indentBefore))
+                val content = HtmlGenerator.trimIndents(HtmlGenerator.leafText(text, child, false), indentBefore)
+                if (isDiff && child.type == MarkdownTokenTypes.CODE_FENCE_CONTENT) {
+                    val lineClass = when {
+                        content.startsWith("+") -> "line-added"
+                        content.startsWith("-") -> "line-deleted"
+                        else -> null
+                    }
+                    if (lineClass != null) {
+                        visitor.consumeTagOpen(child, "span", "class=\"code-line $lineClass\"")
+                        visitor.consumeHtml(content)
+                        visitor.consumeTagClose("span")
+                    } else {
+                        visitor.consumeHtml(content)
+                    }
+                } else {
+                    visitor.consumeHtml(content)
+                }
                 lastChildWasContent = child.type == MarkdownTokenTypes.CODE_FENCE_CONTENT
             }
             if (state == 0 && child.type == MarkdownTokenTypes.FENCE_LANG) {
-                attributes.add("class=\"language-${
-                HtmlGenerator.leafText(text, child).toString().trim().split(' ')[0]
-                }\"")
+                val info = HtmlGenerator.leafText(text, child).toString().trim()
+                val whitespaceIndex = info.indexOfFirst { it.isWhitespace() }
+                val language = if (whitespaceIndex == -1) info else info.substring(0, whitespaceIndex)
+                isDiff = language == "diff" || language == "patch"
+                attributes.add("class=\"language-$language\"")
             }
             if (state == 0 && child.type == MarkdownTokenTypes.EOL) {
                 visitor.consumeTagOpen(node, "code", *attributes.toTypedArray())
@@ -323,4 +342,3 @@ open class ImageGeneratingProvider(linkMap: LinkMap, baseURI: URI?) : LinkGenera
         val REGEX = Regex("[^a-zA-Z0-9 ]")
     }
 }
-

@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- Generate HTML with `code-line line-added`/`line-deleted` classes for added/deleted lines in `diff` / `patch` blocks
 - Support tables inside list items
 - Android compatibility issues
 
