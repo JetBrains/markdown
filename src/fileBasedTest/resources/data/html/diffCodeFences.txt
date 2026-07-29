@@ -1,0 +1,44 @@
+<body>
+<pre><code class="language-diff">
+<span class="code-line line-added">+added line 1</span>
+
+<span class="code-line line-added">+added line 2</span>
+
+<span class="code-line line-added">+added line 3</span>
+
+</code></pre>
+<pre><code class="language-diff">
+<span class="code-line line-added">+tab-separated info string</span>
+
+</code></pre>
+<pre><code class="language-diff">
+<span class="code-line line-deleted">-removed line 1</span>
+
+<span class="code-line line-deleted">-removed line 2</span>
+
+<span class="code-line line-deleted">-removed line 3</span>
+
+</code></pre>
+<pre><code class="language-diff">
+ context line
+<span class="code-line line-added">+added line 1</span>
+
+<span class="code-line line-added">+added line 2</span>
+
+<span class="code-line line-deleted">-removed line 1</span>
+
+<span class="code-line line-deleted">-removed line 2</span>
+
+ context line
+</code></pre>
+<pre><code class="language-diff">
+<span class="code-line line-added">+ &lt;tag&gt;&amp;</span>
+
+<span class="code-line line-deleted">-</span>
+
+<span class="code-line line-added">+</span>
+
+ plain line
+
+</code></pre>
+</body>

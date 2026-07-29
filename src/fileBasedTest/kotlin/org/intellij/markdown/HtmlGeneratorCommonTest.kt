@@ -51,6 +51,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     }
 
     @Test
+    fun testDiffCodeFences() {
+        defaultTest()
+    }
+
+    @Test
     fun testEscaping() {
         defaultTest()
     }
