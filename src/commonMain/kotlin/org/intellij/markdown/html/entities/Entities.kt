@@ -6,8 +6,9 @@ package org.intellij.markdown.html.entities
    */
 
 object Entities {
-    val map: Map<String, Int> = hashMapOf(
-                
+    val map: Map<String, Int> = map0() + map1() + map2() + map3() + map4() + map5() + map6() + map7() + map8()
+
+    private fun map0(): Map<String, Int> = hashMapOf(
 "&Aacute;" to 193,
 "&Aacute" to 193,
 "&aacute;" to 225,
@@ -263,7 +264,9 @@ object Entities {
 "&cedil;" to 184,
 "&cedil" to 184,
 "&Cedilla;" to 184,
-"&cemptyv;" to 10674,
+"&cemptyv;" to 10674)
+
+    private fun map1(): Map<String, Int> = hashMapOf(
 "&cent;" to 162,
 "&cent" to 162,
 "&centerdot;" to 183,
@@ -519,7 +522,9 @@ object Entities {
 "&egsdot;" to 10904,
 "&el;" to 10905,
 "&Element;" to 8712,
-"&elinters;" to 9191,
+"&elinters;" to 9191)
+
+    private fun map2(): Map<String, Int> = hashMapOf(
 "&ell;" to 8467,
 "&els;" to 10901,
 "&elsdot;" to 10903,
@@ -775,7 +780,9 @@ object Entities {
 "&Igrave;" to 204,
 "&Igrave" to 204,
 "&igrave;" to 236,
-"&igrave" to 236,
+"&igrave" to 236)
+
+    private fun map3(): Map<String, Int> = hashMapOf(
 "&ii;" to 8520,
 "&iiiint;" to 10764,
 "&iiint;" to 8749,
@@ -1031,7 +1038,9 @@ object Entities {
 "&LongRightArrow;" to 10230,
 "&Longrightarrow;" to 10233,
 "&looparrowleft;" to 8619,
-"&looparrowright;" to 8620,
+"&looparrowright;" to 8620)
+
+    private fun map4(): Map<String, Int> = hashMapOf(
 "&lopar;" to 10629,
 "&Lopf;" to 120131,
 "&lopf;" to 120157,
@@ -1287,7 +1296,9 @@ object Entities {
 "&NotSucceedsTilde;" to 8831,
 "&NotSuperset;" to 8835,
 "&NotSupersetEqual;" to 8841,
-"&NotTilde;" to 8769,
+"&NotTilde;" to 8769)
+
+    private fun map5(): Map<String, Int> = hashMapOf(
 "&NotTildeEqual;" to 8772,
 "&NotTildeFullEqual;" to 8775,
 "&NotTildeTilde;" to 8777,
@@ -1543,7 +1554,9 @@ object Entities {
 "&profsurf;" to 8979,
 "&prop;" to 8733,
 "&Proportional;" to 8733,
-"&Proportion;" to 8759,
+"&Proportion;" to 8759)
+
+    private fun map6(): Map<String, Int> = hashMapOf(
 "&propto;" to 8733,
 "&prsim;" to 8830,
 "&prurel;" to 8880,
@@ -1799,7 +1812,9 @@ object Entities {
 "&solbar;" to 9023,
 "&solb;" to 10692,
 "&sol;" to 47,
-"&Sopf;" to 120138,
+"&Sopf;" to 120138)
+
+    private fun map7(): Map<String, Int> = hashMapOf(
 "&sopf;" to 120164,
 "&spades;" to 9824,
 "&spadesuit;" to 9824,
@@ -2055,7 +2070,9 @@ object Entities {
 "&updownarrow;" to 8597,
 "&UpDownArrow;" to 8597,
 "&Updownarrow;" to 8661,
-"&UpEquilibrium;" to 10606,
+"&UpEquilibrium;" to 10606)
+
+    private fun map8(): Map<String, Int> = hashMapOf(
 "&upharpoonleft;" to 8639,
 "&upharpoonright;" to 8638,
 "&uplus;" to 8846,
