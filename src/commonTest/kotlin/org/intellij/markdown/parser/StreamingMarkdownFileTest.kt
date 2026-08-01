@@ -3,8 +3,10 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
@@ -141,6 +143,38 @@ class StreamingMarkdownFileTest {
         assertEquals(7, file.unstableTail.single().startOffset)
         assertEquals(12, file.unstableTail.single().endOffset)
     }
+
+    @Test
+    fun appendChecksCancellationWhileUnstableTailGrows() {
+        var checkCount = 0
+        val file = EmptyStreamingMarkdownFile(
+            GFMFlavourDescriptor(),
+            CancellationToken { checkCount++ },
+        )
+
+        // An unterminated fence keeps the whole document unstable, so each append reparses all of it.
+        file.append("```\n")
+        val checksAfterFirstAppend = checkCount
+        file.append("still inside the fence\n")
+
+        assertTrue(file.stableChildren.isEmpty())
+        assertTrue(file.unstableTail.isNotEmpty())
+        assertTrue(checkCount > checksAfterFirstAppend)
+    }
+
+    @Test
+    fun appendPropagatesCancellation() {
+        val file = EmptyStreamingMarkdownFile(
+            GFMFlavourDescriptor(),
+            CancellationToken { throw TestCancellationException() },
+        )
+
+        assertFailsWith<TestCancellationException> {
+            file.append("# heading\n\nparagraph\n\n- item\n")
+        }
+    }
+
+    private class TestCancellationException : RuntimeException()
 
     private fun assertTopLevelTypes(nodes: List<ASTNode>, vararg types: IElementType) {
         assertEquals(types.toList(), nodes.map { it.type })

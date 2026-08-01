@@ -61,7 +61,20 @@ interface StreamingMarkdownFile: ASTNode {
 @Suppress("FunctionName")
 fun EmptyStreamingMarkdownFile(
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-): StreamingMarkdownFile = StreamingMarkdownFileImpl(MarkdownParser(flavour))
+): StreamingMarkdownFile = EmptyStreamingMarkdownFile(flavour, CancellationToken.NonCancellable)
+
+/**
+ * Creates a [StreamingMarkdownFile] whose [StreamingMarkdownFile.append] checks [cancellationToken]
+ * while parsing, so an append can be aborted. This matters most when the
+ * [StreamingMarkdownFile.unstableTail] is large, since the whole of it is reparsed on every append.
+ */
+@Suppress("FunctionName")
+fun EmptyStreamingMarkdownFile(
+    flavour: MarkdownFlavourDescriptor,
+    cancellationToken: CancellationToken,
+): StreamingMarkdownFile = StreamingMarkdownFileImpl(
+    MarkdownParser(flavour, cancellationToken = cancellationToken)
+)
 
 private class StreamingMarkdownFileImpl(
     private val parser: MarkdownParser,

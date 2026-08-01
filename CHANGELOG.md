@@ -1,6 +1,7 @@
 # intellij-markdown Changelog
 
 ## [Unreleased]
+- [#210] Accept a `CancellationToken` in `EmptyStreamingMarkdownFile`
 - [#178] Fixed GraalVM Native 17 compilation issues caused by the large HTML entity map
 - [#167] Generate HTML with `code-line line-added`/`line-deleted` classes for added/deleted lines in `diff` / `patch` blocks
 - Support tables inside list items
