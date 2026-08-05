@@ -858,19 +858,19 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     @Test
     fun testHTMLBlocksExample140() = doTest(
             markdown = "<script type=\"text/javascript\">\n// JavaScript example\n\ndocument.getElementById(\"demo\").innerHTML = \"Hello JavaScript!\";\n</script>\nokay\n",
-            html = "<script type=\"text/javascript\">\n// JavaScript example\n\ndocument.getElementById(\"demo\").innerHTML = \"Hello JavaScript!\";\n</script>\n<p>okay</p>\n"
+            html = "&lt;script type=\"text/javascript\">\n// JavaScript example\n\ndocument.getElementById(\"demo\").innerHTML = \"Hello JavaScript!\";\n&lt;/script>\n<p>okay</p>\n"
     )
 
     @Test
     fun testHTMLBlocksExample141() = doTest(
             markdown = "<style\n  type=\"text/css\">\nh1 {color:red;}\n\np {color:blue;}\n</style>\nokay\n",
-            html = "<style\n  type=\"text/css\">\nh1 {color:red;}\n\np {color:blue;}\n</style>\n<p>okay</p>\n"
+            html = "&lt;style\n  type=\"text/css\">\nh1 {color:red;}\n\np {color:blue;}\n&lt;/style>\n<p>okay</p>\n"
     )
 
     @Test
     fun testHTMLBlocksExample142() = doTest(
             markdown = "<style\n  type=\"text/css\">\n\nfoo\n",
-            html = "<style\n  type=\"text/css\">\n\nfoo\n"
+            html = "&lt;style\n  type=\"text/css\">\n\nfoo\n"
     )
 
     @Test
@@ -888,7 +888,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     @Test
     fun testHTMLBlocksExample145() = doTest(
             markdown = "<style>p{color:red;}</style>\n*foo*\n",
-            html = "<style>p{color:red;}</style>\n<p><em>foo</em></p>\n"
+            html = "&lt;style>p{color:red;}&lt;/style>\n<p><em>foo</em></p>\n"
     )
 
     @Test
@@ -900,7 +900,7 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     @Test
     fun testHTMLBlocksExample147() = doTest(
             markdown = "<script>\nfoo\n</script>1. *bar*\n",
-            html = "<script>\nfoo\n</script>1. *bar*\n"
+            html = "&lt;script>\nfoo\n&lt;/script>1. *bar*\n"
     )
 
     @Test
@@ -4034,7 +4034,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testDisallowedRawHTMLExample653() = doTest(
             markdown = "<strong> <title> <style> <em>\n\n<blockquote>\n  <xmp> is disallowed.  <XMP> is also disallowed.\n</blockquote>\n",
             html = "<p><strong> &lt;title> &lt;style> <em></p>\n<blockquote>\n  &lt;xmp> is disallowed.  &lt;XMP> is also disallowed.\n</blockquote>\n"

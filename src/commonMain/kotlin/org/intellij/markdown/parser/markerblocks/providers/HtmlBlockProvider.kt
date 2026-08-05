@@ -80,7 +80,7 @@ class HtmlBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
                 Pair(Regex("<![A-Z]"), Regex(">")),
                 Pair(Regex("<!\\[CDATA\\["), Regex("\\]\\]>")),
                 Pair(Regex("</?(?:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)", RegexOption.IGNORE_CASE), null),
-                Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})(?: |$)"), null)
+                Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})\\s*$"), null)
         )
 
         val FIND_START_REGEX = Regex(
