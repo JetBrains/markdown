@@ -55,6 +55,9 @@ open class GFMFlavourDescriptor(
     override fun createHtmlGeneratingProviders(linkMap: LinkMap,
                                                baseURI: URI?): Map<IElementType, GeneratingProvider> {
         return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
+                MarkdownElementTypes.HTML_BLOCK to GFMHtmlBlockGeneratingProvider,
+                MarkdownTokenTypes.HTML_TAG to GFMInlineHtmlGeneratingProvider,
+
                 GFMElementTypes.STRIKETHROUGH to object : EqualDelimiterTrimmingInlineTagProvider("span", GFMTokenTypes.TILDE) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")

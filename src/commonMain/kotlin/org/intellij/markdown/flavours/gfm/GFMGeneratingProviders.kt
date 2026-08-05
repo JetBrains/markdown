@@ -1,6 +1,7 @@
 package org.intellij.markdown.flavours.gfm
 
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.*
 import org.intellij.markdown.ast.impl.ListCompositeNode
 import org.intellij.markdown.ast.impl.ListItemCompositeNode
@@ -10,6 +11,31 @@ import org.intellij.markdown.html.InlineHolderGeneratingProvider
 import org.intellij.markdown.html.SimpleTagProvider
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.Compat.assert
+
+private val DISALLOWED_RAW_HTML_TAG = Regex(
+    "</?(?:title|textarea|style|xmp|iframe|noembed|noframes|script|plaintext)(?=\\s|/?>|$)",
+    RegexOption.IGNORE_CASE
+)
+
+internal fun filterDisallowedRawHtml(html: CharSequence): CharSequence =
+    DISALLOWED_RAW_HTML_TAG.replace(html) { "&lt;${it.value.substring(1)}" }
+
+internal object GFMInlineHtmlGeneratingProvider : GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        visitor.consumeHtml(filterDisallowedRawHtml(node.getTextInNode(text)))
+    }
+}
+
+internal object GFMHtmlBlockGeneratingProvider : GeneratingProvider {
+    override fun processNode(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
+        for (child in node.children) {
+            if (child.type in listOf(MarkdownTokenTypes.EOL, MarkdownTokenTypes.HTML_BLOCK_CONTENT)) {
+                visitor.consumeHtml(filterDisallowedRawHtml(child.getTextInNode(text)))
+            }
+        }
+        visitor.consumeHtml("\n")
+    }
+}
 
 internal class CheckedListItemGeneratingProvider : SimpleTagProvider("li") {
     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
