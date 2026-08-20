@@ -1,7 +1,9 @@
-# intellij-markdown Changelog
+<!--suppress MarkdownUnresolvedLinkLabel -->
+# IntelliJ Markdown Changelog
 
 ## [Unreleased]
 - [#211] Add support for the GFM tagfilter extension
+- treat emphasize inside link destination as text
 
 ## [0.7.9]
 - [#210] Accept a `CancellationToken` in `EmptyStreamingMarkdownFile`

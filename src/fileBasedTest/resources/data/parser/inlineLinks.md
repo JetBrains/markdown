@@ -19,6 +19,12 @@ bar)
 [link](/url 'title')
 [link](/url (title))
 
+[url](text_/text)
+[url](text*/text)
+[url](<text_*/text>)
+[url](foo(_)/bar)
+[link *label*](text_*)
+
 [foo <bar attr="](baz)">
 
 > [link](/url

@@ -49,3 +49,9 @@ with blank line'
 
 [Link Normalization AND order]: https://vk.com "first alt"
 [link normalization and order]: http://google.com "second alt"
+
+[url](text_/text)
+[url](text*/text)
+[url](<text_*/text>)
+[url](foo(_)/bar)
+[link *label*](text_*)

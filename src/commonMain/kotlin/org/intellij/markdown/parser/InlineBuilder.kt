@@ -1,7 +1,10 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
+import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
@@ -64,7 +67,19 @@ class InlineBuilder(
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
-        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
+        val children = if (type == MarkdownElementTypes.LINK_DESTINATION) {
+            childrenWithWhitespaces.map { child ->
+                if (child is LeafASTNode && child.type == MarkdownTokenTypes.EMPH) {
+                    LeafASTNode(MarkdownTokenTypes.TEXT, child.startOffset, child.endOffset)
+                } else {
+                    child
+                }
+            }
+        } else {
+            childrenWithWhitespaces
+        }
+
+        newNode = nodeBuilder.createCompositeNode(type, children)
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 

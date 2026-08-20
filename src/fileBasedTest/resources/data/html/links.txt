@@ -61,4 +61,17 @@ foo <a href="/uri">bar</a>
 <p>
 <a href="https://vk.com" title="first alt">Link nOrmalization and order</a>
 </p>
+<p>
+<a href="text_/text">url</a>
+
+<a href="text*/text">url</a>
+
+<a href="text_*/text">url</a>
+
+<a href="foo(_)/bar">url</a>
+
+<a href="text_*">
+link <em>label</em>
+</a>
+</p>
 </body>

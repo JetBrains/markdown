@@ -5547,7 +5547,7 @@ Markdown:MARKDOWN_FILE
         Markdown:TEXT('http')
         Markdown::(':')
         Markdown:TEXT('//www.modrails.com/documentation/Users%20guide%20Apache.html#')
-        Markdown:EMPH('_')
+        Markdown:TEXT('_')
         Markdown:TEXT('railsbaseuri_and_rackbaseuri')
       Markdown:)(')')
     WHITE_SPACE(' ')

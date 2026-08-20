@@ -8,6 +8,8 @@
 
 ![](/url)
 
+![url](text_*)
+
 \!\[foo]
 
 \![foo]

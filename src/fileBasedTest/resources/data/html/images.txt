@@ -7,6 +7,8 @@
 <img src="/url2" alt="foo barurl" style="max-width: 100%" /></p>
 <p>
 <img src="/url" alt="" style="max-width: 100%" /></p>
+<p>
+<img src="text_*" alt="url" style="max-width: 100%" /></p>
 <p>![foo]</p>
 <p>
 !<a href="/url" title="title">foo</a>
