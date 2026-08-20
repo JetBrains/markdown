@@ -1,20 +1,28 @@
 package org.intellij.markdown
 
 import junit.framework.TestCase
+import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 import org.junit.experimental.categories.Category
 import java.io.File
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 @Category(ParserPerformanceTest::class) class ParserPerformanceTest : TestCase() {
     protected fun getTestDataPath(): String {
         return File(getIntellijMarkdownHome() + "/src/jvmTest/resources/data/performance").absolutePath
     }
 
-    private fun assertFast(content: String, fullParse: Boolean, expectedTimeMs: Int? = 1000) {
+    private fun assertFast(
+        content: String,
+        fullParse: Boolean,
+        expectedTimeMs: Int? = 1000,
+        flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
+    ) {
         val runnable = { i: Int ->
-            val root = MarkdownParser(CommonMarkFlavourDescriptor()).
+            val root = MarkdownParser(flavour).
             parse(MarkdownElementTypes.MARKDOWN_FILE, content, fullParse)
             assert(root.children.size > 0)
         }
@@ -78,6 +86,20 @@ import kotlin.test.*
     fun testHugeUnterminatedLinkTitle() {
         assertFast("[a]: x (" + "y".repeat(20_000_000), false)
         assertFast("[a]: <" + "y".repeat(20_000_000), false)
+    }
+
+    @Test
+    fun testRejectedMathClosersAreLinear() {
+        val input = (1..20_000).joinToString(" ") { "\$x\$1" }
+        assertFast(input, false, flavour = GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testMathLinkRangeLookupIsLinear() {
+        val input = (1..10_000).joinToString(" ") { i ->
+            "[link$i](url$i) \$x\$"
+        }
+        assertFast(input, false, flavour = GFMFlavourDescriptor())
     }
 
     companion object {

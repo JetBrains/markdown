@@ -4,6 +4,7 @@
 ## [Unreleased]
 - [#211] Add support for the GFM tagfilter extension
 - treat emphasize inside link destination as text
+- [#196] Fix GFM dollar math delimiter parsing
 
 ## [0.7.9]
 - [#210] Accept a `CancellationToken` in `EmptyStreamingMarkdownFile`
