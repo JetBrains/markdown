@@ -4,7 +4,6 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
-import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
@@ -17,22 +16,34 @@ class InlineBuilder(
     constructor(nodeBuilder: ASTNodeBuilder, tokensCache: TokensCache): this(nodeBuilder, tokensCache, CancellationToken.NonCancellable)
 
     private var currentTokenPosition = -1
+    private val linkDestinationRanges = ArrayList<IntRange>()
 
     override fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?) {
         if (currentTokenPosition == -1) {
             currentTokenPosition = event.position
         }
 
+        if (event.isStart() && event.info.type == MarkdownElementTypes.LINK_DESTINATION) {
+            linkDestinationRanges.add(event.info.range)
+        }
+
         while (currentTokenPosition < event.position) {
             flushOneTokenToTree(tokensCache, currentNodeChildren, currentTokenPosition)
             currentTokenPosition++
         }
+
+        linkDestinationRanges.removeAll { it.last <= currentTokenPosition }
     }
 
     private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<MyASTNodeWrapper>?, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val nodes = nodeBuilder.createLeafNodes(iterator.type!!, iterator.start, iterator.end)
+        val type = if (isLinkDestinationToken(currentTokenPosition) && iterator.type == MarkdownTokenTypes.EMPH) {
+            MarkdownTokenTypes.TEXT
+        } else {
+            iterator.type!!
+        }
+        val nodes = nodeBuilder.createLeafNodes(type, iterator.start, iterator.end)
         for (node in nodes) {
             currentNodeChildren?.add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
         }
@@ -67,20 +78,12 @@ class InlineBuilder(
             addRawTokens(tokensCache, childrenWithWhitespaces, endTokenId - 1, +1, tokensCache.Iterator(endTokenId).start)
         }
 
-        val children = if (type == MarkdownElementTypes.LINK_DESTINATION) {
-            childrenWithWhitespaces.map { child ->
-                if (child is LeafASTNode && child.type == MarkdownTokenTypes.EMPH) {
-                    LeafASTNode(MarkdownTokenTypes.TEXT, child.startOffset, child.endOffset)
-                } else {
-                    child
-                }
-            }
-        } else {
-            childrenWithWhitespaces
-        }
-
-        newNode = nodeBuilder.createCompositeNode(type, children)
+        newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
+    }
+
+    private fun isLinkDestinationToken(tokenPosition: Int): Boolean {
+        return linkDestinationRanges.any { tokenPosition >= it.first && tokenPosition < it.last }
     }
 
     private fun addRawTokens(tokensCache: TokensCache, childrenWithWhitespaces: MutableList<ASTNode>, from: Int, dx: Int, exitOffset: Int) {
