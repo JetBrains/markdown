@@ -16,15 +16,11 @@ class InlineBuilder(
     constructor(nodeBuilder: ASTNodeBuilder, tokensCache: TokensCache): this(nodeBuilder, tokensCache, CancellationToken.NonCancellable)
 
     private var currentTokenPosition = -1
-    private val linkDestinationRanges = ArrayList<IntRange>()
+    private var linkDestinationDepth = 0
 
     override fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?) {
         if (currentTokenPosition == -1) {
             currentTokenPosition = event.position
-        }
-
-        if (event.isStart() && event.info.type == MarkdownElementTypes.LINK_DESTINATION) {
-            linkDestinationRanges.add(event.info.range)
         }
 
         while (currentTokenPosition < event.position) {
@@ -32,13 +28,19 @@ class InlineBuilder(
             currentTokenPosition++
         }
 
-        linkDestinationRanges.removeAll { it.last <= currentTokenPosition }
+        if (event.info.type == MarkdownElementTypes.LINK_DESTINATION) {
+            if (event.isStart()) {
+                linkDestinationDepth++
+            } else if (!event.isEmpty()) {
+                linkDestinationDepth--
+            }
+        }
     }
 
     private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<MyASTNodeWrapper>?, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val type = if (isLinkDestinationToken(currentTokenPosition) && iterator.type == MarkdownTokenTypes.EMPH) {
+        val type = if (isLinkDestinationToken() && iterator.type == MarkdownTokenTypes.EMPH) {
             MarkdownTokenTypes.TEXT
         } else {
             iterator.type!!
@@ -82,8 +84,8 @@ class InlineBuilder(
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
     }
 
-    private fun isLinkDestinationToken(tokenPosition: Int): Boolean {
-        return linkDestinationRanges.any { tokenPosition >= it.first && tokenPosition < it.last }
+    private fun isLinkDestinationToken(): Boolean {
+        return linkDestinationDepth > 0
     }
 
     private fun addRawTokens(tokensCache: TokensCache, childrenWithWhitespaces: MutableList<ASTNode>, from: Int, dx: Int, exitOffset: Int) {
