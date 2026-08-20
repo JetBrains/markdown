@@ -1,5 +1,7 @@
 package org.intellij.markdown.parser
 
+import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.lexer.Compat.assert
@@ -14,6 +16,7 @@ class InlineBuilder(
     constructor(nodeBuilder: ASTNodeBuilder, tokensCache: TokensCache): this(nodeBuilder, tokensCache, CancellationToken.NonCancellable)
 
     private var currentTokenPosition = -1
+    private var linkDestinationDepth = 0
 
     override fun flushEverythingBeforeEvent(event: MyEvent, currentNodeChildren: MutableList<MyASTNodeWrapper>?) {
         if (currentTokenPosition == -1) {
@@ -24,12 +27,25 @@ class InlineBuilder(
             flushOneTokenToTree(tokensCache, currentNodeChildren, currentTokenPosition)
             currentTokenPosition++
         }
+
+        if (event.info.type == MarkdownElementTypes.LINK_DESTINATION) {
+            if (event.isStart()) {
+                linkDestinationDepth++
+            } else if (!event.isEmpty()) {
+                linkDestinationDepth--
+            }
+        }
     }
 
     private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<MyASTNodeWrapper>?, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val nodes = nodeBuilder.createLeafNodes(iterator.type!!, iterator.start, iterator.end)
+        val type = if (isLinkDestinationToken() && iterator.type == MarkdownTokenTypes.EMPH) {
+            MarkdownTokenTypes.TEXT
+        } else {
+            iterator.type!!
+        }
+        val nodes = nodeBuilder.createLeafNodes(type, iterator.start, iterator.end)
         for (node in nodes) {
             currentNodeChildren?.add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
         }
@@ -66,6 +82,10 @@ class InlineBuilder(
 
         newNode = nodeBuilder.createCompositeNode(type, childrenWithWhitespaces)
         return MyASTNodeWrapper(newNode, startTokenId, endTokenId)
+    }
+
+    private fun isLinkDestinationToken(): Boolean {
+        return linkDestinationDepth > 0
     }
 
     private fun addRawTokens(tokensCache: TokensCache, childrenWithWhitespaces: MutableList<ASTNode>, from: Int, dx: Int, exitOffset: Int) {

@@ -80,6 +80,22 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:INLINE_LINK
+        Markdown:LINK_TEXT
+          Markdown:[('[')
+          Markdown:TEXT('url')
+          Markdown:](']')
+        Markdown:(('(')
+        Markdown:LINK_DESTINATION
+          Markdown:TEXT('text')
+          Markdown:TEXT('_')
+          Markdown:TEXT('*')
+        Markdown:)(')')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
     Markdown:TEXT('\!\[foo')
     Markdown:](']')
   Markdown:EOL('\n')
