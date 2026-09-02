@@ -7,6 +7,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
 import org.intellij.markdown.ast.CompositeASTNode
 import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.ast.LazyASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
@@ -49,8 +50,18 @@ class MarkdownParser(
     }
 
     fun parse(root: IElementType, text: CharSequence, parseInlines: Boolean, baseOffset: Int): ASTNode {
+        val mode = if (parseInlines) ParseMode.EAGER else ParseMode.BLOCK_ONLY
+        return parseWithMode(root, text, mode, baseOffset)
+    }
+
+    @ExperimentalApi
+    fun parseWithLazyInlines(root: IElementType, text: CharSequence, baseOffset: Int = 0): ASTNode {
+        return parseWithMode(root, text, ParseMode.LAZY, baseOffset)
+    }
+
+    private fun parseWithMode(root: IElementType, text: CharSequence, mode: ParseMode, baseOffset: Int): ASTNode {
         return try {
-            doParse(root, text, parseInlines, baseOffset).tree
+            doParse(root, text, mode, baseOffset).tree
         }
         catch (e: MarkdownParsingException) {
             if (assertionsEnabled)
@@ -94,7 +105,8 @@ class MarkdownParser(
 
     internal fun parseStreaming(root: IElementType, text: CharSequence, parseInlines: Boolean, baseOffset: Int): StreamingMarkdownParseResult {
         return try {
-            val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
+            val mode = if (parseInlines) ParseMode.EAGER else ParseMode.BLOCK_ONLY
+            val (tree, openMarkers) = doParse(root, text, mode, baseOffset)
             StreamingMarkdownParseResult(
                 tree = tree,
                 unstableStartOffset = findUnstableStartOffset(openMarkers, text, baseOffset)
@@ -115,7 +127,7 @@ class MarkdownParser(
     private fun doParse(
         root: IElementType,
         text: CharSequence,
-        parseInlines: Boolean = true,
+        mode: ParseMode,
         baseOffset: Int = 0
     ): MarkdownParseResult {
         val productionHolder = ProductionHolder()
@@ -139,10 +151,10 @@ class MarkdownParser(
 
         rootMarker.done(root)
 
-        val nodeBuilder = if (parseInlines) {
-            InlineExpandingASTNodeBuilder(text, baseOffset)
-        } else {
-            ASTNodeBuilder(text, cancellationToken, baseOffset)
+        val nodeBuilder = when (mode) {
+            ParseMode.EAGER -> InlineExpandingASTNodeBuilder(text, baseOffset)
+            ParseMode.BLOCK_ONLY -> ASTNodeBuilder(text, cancellationToken, baseOffset)
+            ParseMode.LAZY -> LazyInlineASTNodeBuilder(text, baseOffset)
         }
 
         val builder = TopLevelBuilder(nodeBuilder, cancellationToken)
@@ -228,6 +240,35 @@ class MarkdownParser(
                     super.createLeafNodes(type, startOffset, endOffset)
             }
         }
+    }
+
+    @OptIn(ExperimentalApi::class)
+    private inner class LazyInlineASTNodeBuilder(
+        text: CharSequence,
+        private val baseOffset: Int
+    ) : ASTNodeBuilder(text, cancellationToken, baseOffset) {
+        override fun createLeafNodes(type: IElementType, startOffset: Int, endOffset: Int): List<ASTNode> {
+            return when (type) {
+                MarkdownElementTypes.PARAGRAPH,
+                MarkdownTokenTypes.ATX_CONTENT,
+                MarkdownTokenTypes.SETEXT_CONTENT,
+                GFMTokenTypes.CELL ->
+                    listOf(
+                        LazyASTNode(type, startOffset + baseOffset, endOffset + baseOffset) {
+                            cancellationToken.checkCancelled()
+                            parseInline(type, text, startOffset, endOffset, baseOffset).children
+                        }
+                    )
+                else ->
+                    super.createLeafNodes(type, startOffset, endOffset)
+            }
+        }
+    }
+
+    private enum class ParseMode {
+        EAGER,
+        BLOCK_ONLY,
+        LAZY
     }
 }
 
