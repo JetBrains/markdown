@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.10]
 - [#211] Add support for the GFM tagfilter extension
 - Treat emphasize inside link destination as text
 - [#196] Fix GFM dollar math delimiter parsing
