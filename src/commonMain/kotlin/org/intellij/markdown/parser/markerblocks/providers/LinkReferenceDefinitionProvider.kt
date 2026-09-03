@@ -20,6 +20,13 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         }
 
         val matchResult = matchLinkDefinition(pos.originalText, pos.offset) ?: return emptyList()
+        val matchLength = matchResult.last().last - pos.offset + 1
+        val endPosition = pos.nextPosition(matchLength)
+
+        if (endPosition != null && !isEndOfLine(endPosition)) {
+            return emptyList()
+        }
+
         for ((i, range) in matchResult.withIndex()) {
             productionHolder.addProduction(listOf(SequentialParser.Node(
                     addToRangeAndWiden(range, 0), when (i) {
@@ -30,12 +37,6 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             })))
         }
 
-        val matchLength = matchResult.last().last - pos.offset + 1
-        val endPosition = pos.nextPosition(matchLength)
-
-        if (endPosition != null && !isEndOfLine(endPosition)) {
-            return emptyList()
-        }
         return listOf(LinkReferenceDefinitionMarkerBlock(stateInfo.currentConstraints, productionHolder.mark(),
                 pos.offset + matchLength))
     }
