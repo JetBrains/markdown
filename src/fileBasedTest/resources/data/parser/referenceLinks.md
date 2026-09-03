@@ -20,6 +20,15 @@
 [foo]
 []
 
+[foo]
+text
+
 [*foo* bar]
 
 [[*foo* bar]]
+
+[foo]`bar`[baz]
+
+[foo]`bar`[baz]`qux`[quux]
+
+[foo] [bar][baz]
