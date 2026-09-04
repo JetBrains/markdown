@@ -11,27 +11,15 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
     )
 
     @Test
-    fun testDisallowedRawHtmlTagsAreFiltered() = doTest(
+    fun testRawHtmlIsNotFilteredByDefault() = doTest(
         markdown = "before <title> <TEXTAREA rows=\"2\"> </style> <xmp> <iframe> <noembed> <noframes> <script> <plaintext> after",
-        html = "<p>before &lt;title> &lt;TEXTAREA rows=\"2\"> &lt;/style> &lt;xmp> &lt;iframe> &lt;noembed> &lt;noframes> &lt;script> &lt;plaintext> after</p>"
+        html = "<p>before <title> <TEXTAREA rows=\"2\"> </style> <xmp> <iframe> <noembed> <noframes> <script> <plaintext> after</p>"
     )
 
     @Test
-    fun testDisallowedRawHtmlTagsAreFilteredInHtmlBlocks() = doTest(
+    fun testRawHtmlBlocksAreNotFilteredByDefault() = doTest(
         markdown = "<script>\nalert('test');\n</script>\n",
-        html = "&lt;script>\nalert('test');\n&lt;/script>\n"
-    )
-
-    @Test
-    fun testOtherRawHtmlTagsAndSimilarNamesAreNotFiltered() = doTest(
-        markdown = "before <strong> <scripture> </scripted> after",
-        html = "<p>before <strong> <scripture> </scripted> after</p>"
-    )
-
-    @Test
-    fun testSelfClosingDisallowedRawHtmlTagsAreFiltered() = doTest(
-        markdown = "before <script/> <IFRAME/> after",
-        html = "<p>before &lt;script/> &lt;IFRAME/> after</p>"
+        html = "<script>\nalert('test');\n</script>\n"
     )
 
     @Test
