@@ -3,6 +3,8 @@
 
 ## [Unreleased]
 - Prevent intersecting nodes for broken links
+- Don't include [] in a link label if on new line
+- Remove lazy parsing experimental API
 
 ## [0.7.10]
 - [#211] Add support for the GFM tagfilter extension
