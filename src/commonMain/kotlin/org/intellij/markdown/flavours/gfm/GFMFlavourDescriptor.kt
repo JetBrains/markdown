@@ -44,9 +44,9 @@ open class GFMFlavourDescriptor(
      * For ABI compatibility.
      */
     constructor(
-            useSafeLinks: Boolean,
-            absolutizeAnchorLinks: Boolean,
-            makeHttpsAutoLinks: Boolean
+            useSafeLinks: Boolean = true,
+            absolutizeAnchorLinks: Boolean = false,
+            makeHttpsAutoLinks: Boolean = false
     ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter = false)
 
     override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory

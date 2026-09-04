@@ -20,7 +20,7 @@ open class SFMFlavourDescriptor(
     /**
      * For ABI compatibility.
      */
-    constructor(useSafeLinks: Boolean) : this(useSafeLinks, useTagFilter = false)
+    constructor(useSafeLinks: Boolean = true) : this(useSafeLinks, useTagFilter = false)
 
     override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_SFMLexer())
