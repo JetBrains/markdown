@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.11]
 - Prevent intersecting nodes for broken links
 - Don't include [] in a link label if on new line
 - Remove lazy parsing experimental API
