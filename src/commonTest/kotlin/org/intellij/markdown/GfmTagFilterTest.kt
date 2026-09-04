@@ -1,6 +1,7 @@
 package org.intellij.markdown
 
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import kotlin.test.Test
 
 class GfmTagFilterTest : SpecTest(GFMFlavourDescriptor(useTagFilter = true)) {
@@ -33,4 +34,12 @@ class GfmTagFilterTest : SpecTest(GFMFlavourDescriptor(useTagFilter = true)) {
         markdown = "before <script/> <IFRAME/> after",
         html = "<p>before &lt;script/> &lt;IFRAME/> after</p>"
     )
+
+    @Test
+    fun testSfmDisallowedRawHtmlTagsAreFiltered() {
+        object : SpecTest(SFMFlavourDescriptor(useTagFilter = true)) {}.doTest(
+            markdown = "before <title> <script> after\n\n<script>\nalert('test');\n</script>\n",
+            html = "<p>before &lt;title> &lt;script> after</p>\n&lt;script>\nalert('test');\n&lt;/script>\n"
+        )
+    }
 }

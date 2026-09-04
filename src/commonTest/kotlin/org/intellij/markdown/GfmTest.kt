@@ -1,6 +1,7 @@
 package org.intellij.markdown
 
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import kotlin.test.Test
 
 class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor()) {
@@ -27,6 +28,14 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
         object : SpecTest(CommonMarkFlavourDescriptor()) {}.doTest(
             markdown = "before <title> <script> after",
             html = "<p>before <title> <script> after</p>"
+        )
+    }
+
+    @Test
+    fun testSfmRawHtmlIsNotFilteredByDefault() {
+        object : SpecTest(SFMFlavourDescriptor()) {}.doTest(
+            markdown = "before <title> <script> after\n\n<script>\nalert('test');\n</script>\n",
+            html = "<p>before <title> <script> after</p>\n<script>\nalert('test');\n</script>\n"
         )
     }
 

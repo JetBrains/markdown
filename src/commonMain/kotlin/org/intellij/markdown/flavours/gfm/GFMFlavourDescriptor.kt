@@ -40,6 +40,15 @@ open class GFMFlavourDescriptor(
         private val makeHttpsAutoLinks: Boolean = false,
         private val useTagFilter: Boolean = false
 ) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
+    /**
+     * For ABI compatibility.
+     */
+    constructor(
+            useSafeLinks: Boolean,
+            absolutizeAnchorLinks: Boolean,
+            makeHttpsAutoLinks: Boolean
+    ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter = false)
+
     override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
