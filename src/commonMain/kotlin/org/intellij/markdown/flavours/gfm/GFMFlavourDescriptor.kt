@@ -28,12 +28,27 @@ import org.intellij.markdown.parser.sequentialparsers.impl.*
  * `false` otherwise
  *
  * @param makeHttpsAutoLinks enables use of HTTPS schema for auto links.
+ *
+ * @param useTagFilter `true` if the GFM tagfilter extension should be applied when rendering raw HTML and `false`
+ * otherwise. When enabled, the leading `<` of the disallowed raw HTML tags (`title`, `textarea`, `style`, `xmp`,
+ * `iframe`, `noembed`, `noframes`, `script`, `plaintext`) is replaced with `&lt;`.
+ * See [Disallowed Raw HTML (extension)](https://github.github.com/gfm/#disallowed-raw-html-extension-)
  */
 open class GFMFlavourDescriptor(
         useSafeLinks: Boolean = true,
         absolutizeAnchorLinks: Boolean = false,
-        private val makeHttpsAutoLinks: Boolean = false
+        private val makeHttpsAutoLinks: Boolean = false,
+        private val useTagFilter: Boolean = false
 ) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
+    /**
+     * For ABI compatibility.
+     */
+    constructor(
+            useSafeLinks: Boolean = true,
+            absolutizeAnchorLinks: Boolean = false,
+            makeHttpsAutoLinks: Boolean = false
+    ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter = false)
+
     override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
 
     override fun createInlinesLexer(): MarkdownLexer {
@@ -54,10 +69,16 @@ open class GFMFlavourDescriptor(
 
     override fun createHtmlGeneratingProviders(linkMap: LinkMap,
                                                baseURI: URI?): Map<IElementType, GeneratingProvider> {
-        return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
-                MarkdownElementTypes.HTML_BLOCK to GFMHtmlBlockGeneratingProvider,
-                MarkdownTokenTypes.HTML_TAG to GFMInlineHtmlGeneratingProvider,
+        val tagFilterProviders: Map<IElementType, GeneratingProvider> = if (useTagFilter) {
+            hashMapOf(
+                    MarkdownElementTypes.HTML_BLOCK to GFMHtmlBlockGeneratingProvider,
+                    MarkdownTokenTypes.HTML_TAG to GFMInlineHtmlGeneratingProvider
+            )
+        } else {
+            emptyMap()
+        }
 
+        return super.createHtmlGeneratingProviders(linkMap, baseURI) + tagFilterProviders + hashMapOf(
                 GFMElementTypes.STRIKETHROUGH to object : EqualDelimiterTrimmingInlineTagProvider("span", GFMTokenTypes.TILDE) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")
