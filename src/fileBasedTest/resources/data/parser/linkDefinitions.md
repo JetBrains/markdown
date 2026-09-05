@@ -70,3 +70,15 @@ Foo
 
 [foo]: <bar
 baz>
+
+[foo
+
+bar]: /url
+
+> [foo
+
+bar]: /url
+
+- [foo
+
+bar]: /url

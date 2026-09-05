@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- End a link label at a blank line, also when the line ends with a carriage return
 
 ## [0.7.11]
 - Prevent intersecting nodes for broken links

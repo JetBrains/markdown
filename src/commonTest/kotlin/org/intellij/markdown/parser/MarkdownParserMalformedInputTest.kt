@@ -11,4 +11,25 @@ class MarkdownParserMalformedInputTest {
 
         MarkdownParser(GFMFlavourDescriptor()).parse(MarkdownElementTypes.MARKDOWN_FILE, text)
     }
+
+    @Test
+    fun linkLabelWithBlankLineDoesNotBreakParsing() {
+        val text = "> [foo\n\nbar]: /url"
+
+        MarkdownParser(GFMFlavourDescriptor()).parse(MarkdownElementTypes.MARKDOWN_FILE, text)
+    }
+
+    @Test
+    fun linkLabelWithCrLfBlankLineDoesNotBreakParsing() {
+        val text = "> [foo\r\n\r\nbar]: /url"
+
+        MarkdownParser(GFMFlavourDescriptor()).parse(MarkdownElementTypes.MARKDOWN_FILE, text)
+    }
+
+    @Test
+    fun linkLabelWithBareCrBlankLineDoesNotBreakParsing() {
+        val text = "> [foo\r\rbar]: /url"
+
+        MarkdownParser(GFMFlavourDescriptor()).parse(MarkdownElementTypes.MARKDOWN_FILE, text)
+    }
 }
