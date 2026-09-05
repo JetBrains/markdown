@@ -203,6 +203,9 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                         return null
                     c = text[offset]
                 }
+                // A link label stays in one paragraph, so a blank line ends it.
+                if (isEndOfLine(text, offset, c) && isBlankLine(text, offset + 1, MAX_LINK_PART_LENGTH - i))
+                    return null
                 if (!c.isWhitespace()) {
                     seenNonWhitespace = true
                 }
@@ -224,6 +227,26 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                     offset++
             }
             return offset
+        }
+
+        private fun isEndOfLine(text: CharSequence, offset: Int, c: Char): Boolean {
+            if (c == '\n')
+                return true
+            return c == '\r' && (offset + 1 >= text.length || text[offset + 1] != '\n')
+        }
+
+        private fun isBlankLine(text: CharSequence, start: Int, maxLength: Int): Boolean {
+            val end = minOf(text.length, start + maxLength)
+            var offset = start
+            while (offset < end) {
+                val c = text[offset]
+                if (c == '\n' || c == '\r')
+                    return true
+                if (!isSpace(c))
+                    return false
+                offset++
+            }
+            return end == text.length
         }
 
         private inline fun isSpace(c: Char) = c == ' ' || c == '\t'

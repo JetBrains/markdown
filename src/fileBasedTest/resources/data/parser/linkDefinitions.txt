@@ -274,3 +274,47 @@ Markdown:MARKDOWN_FILE
     Markdown:TEXT('baz')
     Markdown:>('>')
   Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:[('[')
+    Markdown:TEXT('foo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('bar')
+    Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('/url')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:[('[')
+      Markdown:TEXT('foo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('bar')
+    Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('/url')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:PARAGRAPH
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('bar')
+    Markdown:](']')
+    Markdown::(':')
+    WHITE_SPACE(' ')
+    Markdown:TEXT('/url')
+  Markdown:EOL('\n')
