@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 
 ## 0.7.12
 - End a link label at a blank line, also when the line ends with a carriage return

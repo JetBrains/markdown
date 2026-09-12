@@ -97,7 +97,7 @@ class MarkdownParser(
             val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
             StreamingMarkdownParseResult(
                 tree = tree,
-                unstableStartOffset = findUnstableStartOffset(openMarkers, text, baseOffset)
+                unstableStartOffset = keepNodesWhole(tree, findUnstableStartOffset(openMarkers, text, baseOffset))
             )
         }
         catch (e: MarkdownParsingException) {
@@ -160,6 +160,14 @@ class MarkdownParser(
         unstableStartOffset = minOf(lastBlankLineEnd, unstableStartOffset)
         return unstableStartOffset + baseOffset
     }
+
+    /**
+     * [StreamingMarkdownFile] splits the children of [tree] at [offset], so a child spanning it would end up on
+     * neither side. A closed block that contains a blank line, such as a fenced code block, can span the offset
+     * found by [findUnstableStartOffset]; move the offset back to where that block starts.
+     */
+    private fun keepNodesWhole(tree: ASTNode, offset: Int): Int =
+        tree.children.firstOrNull { it.startOffset < offset && offset < it.endOffset }?.startOffset ?: offset
 
     /**
      * Return the exclusive end of the last blank line in the string.

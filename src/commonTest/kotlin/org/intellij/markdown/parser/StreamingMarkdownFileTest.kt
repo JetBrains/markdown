@@ -174,6 +174,36 @@ class StreamingMarkdownFileTest {
         }
     }
 
+    @Test
+    fun codeFenceSpanningTheLastBlankLineIsNotSplit() {
+        // Appending one character at a time makes the blank line inside the fence the last blank line at some point.
+        val text: CharSequence = "```\ncode\n\nmore code\n```\n\nfollowing text\n"
+        val file = EmptyStreamingMarkdownFile()
+        text.forEach { file.append(it.toString()) }
+
+        val expected = MarkdownParser(GFMFlavourDescriptor(), cancellationToken = CancellationToken.NonCancellable)
+            .buildMarkdownTreeFromString(text)
+            .children
+
+        assertEquals(
+            expected.map { Triple(it.type, it.startOffset, it.endOffset) },
+            file.children.map { Triple(it.type, it.startOffset, it.endOffset) }
+        )
+    }
+
+    @Test
+    fun childrenAlwaysCoverTheWholeText() {
+        val file = EmptyStreamingMarkdownFile()
+
+        "# heading\n\nparagraph\n\n```\ncode\n\nmore\n```\n\n> quote\n\ntext\n".forEach {
+            file.append(it.toString())
+            assertEquals(
+                listOf(0) + file.children.map { it.endOffset },
+                file.children.map { it.startOffset } + file.endOffset
+            )
+        }
+    }
+
     private class TestCancellationException : RuntimeException()
 
     private fun assertTopLevelTypes(nodes: List<ASTNode>, vararg types: IElementType) {
