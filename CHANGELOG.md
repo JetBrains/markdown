@@ -3,6 +3,7 @@
 
 ## [Unreleased]
 - Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
+- Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 
 ## 0.7.14
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
