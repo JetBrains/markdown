@@ -97,7 +97,7 @@ class MarkdownParser(
             val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
             StreamingMarkdownParseResult(
                 tree = tree,
-                unstableStartOffset = findUnstableStartOffset(openMarkers, text, baseOffset)
+                unstableStartOffset = keepTrailingListOpen(tree, findUnstableStartOffset(openMarkers, text, baseOffset))
             )
         }
         catch (e: MarkdownParsingException) {
@@ -159,6 +159,21 @@ class MarkdownParser(
         val lastBlankLineEnd = text.lastBlankLineEndOrNull() ?: 0
         unstableStartOffset = minOf(lastBlankLineEnd, unstableStartOffset)
         return unstableStartOffset + baseOffset
+    }
+
+    /**
+     * A list at the end of the text is closed only because the text ends, and the block after it can still change
+     * (`2` is a paragraph until `2. ` arrives). Keep the boundary before the last list until that block has settled.
+     */
+    private fun keepTrailingListOpen(tree: ASTNode, offset: Int): Int {
+        val blocks = tree.children.filter {
+            it.type != MarkdownTokenTypes.EOL && it.type != MarkdownTokenTypes.WHITE_SPACE
+        }
+        val lastList = blocks.lastOrNull {
+            it.type == MarkdownElementTypes.ORDERED_LIST || it.type == MarkdownElementTypes.UNORDERED_LIST
+        } ?: return offset
+        val following = blocks.firstOrNull { it.startOffset >= lastList.endOffset }
+        return if (following != null && offset > following.endOffset) offset else minOf(offset, lastList.startOffset)
     }
 
     /**

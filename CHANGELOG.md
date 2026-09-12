@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 
 ## 0.7.12
 - End a link label at a blank line, also when the line ends with a carriage return
