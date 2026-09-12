@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 
 ## 0.7.14
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
