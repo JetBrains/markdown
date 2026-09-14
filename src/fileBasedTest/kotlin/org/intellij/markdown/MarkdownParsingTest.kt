@@ -398,43 +398,12 @@ Markdown:MARKDOWN_FILE
         defaultTest(GFMFlavourDescriptor())
     }
 
-    // IJPL-172056: a destination with an emphasis-like char should stay a single TEXT token,
-    // just like a destination without one
+    // IJPL-172056: a character without a special meaning inside a destination
+    // should not split the destination into several TEXT tokens
     @Test
-    fun testLinkDestinationWithUnderscoreDirectory() {
-        val expected = """
-Markdown:MARKDOWN_FILE
-  Markdown:PARAGRAPH
-    Markdown:INLINE_LINK
-      Markdown:LINK_TEXT
-        Markdown:[('[')
-        Markdown:TEXT('foo')
-        Markdown:](']')
-      Markdown:(('(')
-      Markdown:LINK_DESTINATION
-        Markdown:TEXT('images_/picture.png')
-      Markdown:)(')')
-        """.trimIndent()
-        assertEquals(expected, getParsedTreeText("[foo](images_/picture.png)"))
-        assertEquals(expected, getParsedTreeText("[foo](images_/picture.png)", GFMFlavourDescriptor()))
-    }
-
-    @Test
-    fun testImageDestinationWithUnderscoreDirectory() {
-        assertEquals("""
-Markdown:MARKDOWN_FILE
-  Markdown:PARAGRAPH
-    Markdown:IMAGE
-      Markdown:!('!')
-      Markdown:INLINE_LINK
-        Markdown:LINK_TEXT
-          Markdown:[('[')
-          Markdown:](']')
-        Markdown:(('(')
-        Markdown:LINK_DESTINATION
-          Markdown:TEXT('images_/picture.png')
-        Markdown:)(')')
-        """.trimIndent(), getParsedTreeText("![](images_/picture.png)", GFMFlavourDescriptor()))
+    fun testLinkDestinationWithSpecialCharacters() {
+        defaultTest()
+        defaultTest(GFMFlavourDescriptor())
     }
 
     private fun getTestDataPath(): String {

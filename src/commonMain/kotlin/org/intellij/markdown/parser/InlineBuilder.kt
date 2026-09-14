@@ -4,6 +4,7 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.ASTNodeBuilder
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.lexer.Compat.assert
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
@@ -40,14 +41,15 @@ class InlineBuilder(
     private fun flushOneTokenToTree(tokensCache: TokensCache, currentNodeChildren: MutableList<MyASTNodeWrapper>?, currentTokenPosition: Int) {
         val iterator = tokensCache.Iterator(currentTokenPosition)
         assert(iterator.type != null)
-        val type = if (isLinkDestinationToken() && iterator.type == MarkdownTokenTypes.EMPH) {
+        val tokenType = iterator.type!!
+        val type = if (isLinkDestinationToken() && tokenType in DESTINATION_TEXT_TOKENS) {
             MarkdownTokenTypes.TEXT
         } else {
-            iterator.type!!
+            tokenType
         }
         if (isLinkDestinationToken() && type == MarkdownTokenTypes.TEXT && currentNodeChildren != null) {
             val last = currentNodeChildren.lastOrNull()
-            // A destination is plain text, so remapped EMPH tokens should not break it into
+            // A destination is plain text, so remapped tokens should not break it into
             // several TEXT leaves: merge them with the adjacent TEXT tokens (see IJPL-172056)
             if (last != null &&
                 last.astNode.type == MarkdownTokenTypes.TEXT &&
@@ -114,5 +116,16 @@ class InlineBuilder(
             childrenWithWhitespaces.addAll(nodeBuilder.createLeafNodes(rawType, iterator.rawStart(rawIdx), iterator.rawStart(rawIdx + 1)))
             rawIdx -= dx
         }
+    }
+
+    companion object {
+        // These tokens carry no markup inside a link destination, since it is plain text there.
+        // They are remapped to TEXT and glued to the surrounding text
+        private val DESTINATION_TEXT_TOKENS = setOf(
+            MarkdownTokenTypes.EMPH,
+            MarkdownTokenTypes.BACKTICK,
+            GFMTokenTypes.TILDE,
+            GFMTokenTypes.DOLLAR
+        )
     }
 }
