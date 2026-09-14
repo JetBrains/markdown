@@ -398,6 +398,45 @@ Markdown:MARKDOWN_FILE
         defaultTest(GFMFlavourDescriptor())
     }
 
+    // IJPL-172056: a destination with an emphasis-like char should stay a single TEXT token,
+    // just like a destination without one
+    @Test
+    fun testLinkDestinationWithUnderscoreDirectory() {
+        val expected = """
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:INLINE_LINK
+      Markdown:LINK_TEXT
+        Markdown:[('[')
+        Markdown:TEXT('foo')
+        Markdown:](']')
+      Markdown:(('(')
+      Markdown:LINK_DESTINATION
+        Markdown:TEXT('images_/picture.png')
+      Markdown:)(')')
+        """.trimIndent()
+        assertEquals(expected, getParsedTreeText("[foo](images_/picture.png)"))
+        assertEquals(expected, getParsedTreeText("[foo](images_/picture.png)", GFMFlavourDescriptor()))
+    }
+
+    @Test
+    fun testImageDestinationWithUnderscoreDirectory() {
+        assertEquals("""
+Markdown:MARKDOWN_FILE
+  Markdown:PARAGRAPH
+    Markdown:IMAGE
+      Markdown:!('!')
+      Markdown:INLINE_LINK
+        Markdown:LINK_TEXT
+          Markdown:[('[')
+          Markdown:](']')
+        Markdown:(('(')
+        Markdown:LINK_DESTINATION
+          Markdown:TEXT('images_/picture.png')
+        Markdown:)(')')
+        """.trimIndent(), getParsedTreeText("![](images_/picture.png)", GFMFlavourDescriptor()))
+    }
+
     private fun getTestDataPath(): String {
         return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/parser"
     }

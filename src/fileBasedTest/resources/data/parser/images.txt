@@ -89,9 +89,7 @@ Markdown:MARKDOWN_FILE
           Markdown:](']')
         Markdown:(('(')
         Markdown:LINK_DESTINATION
-          Markdown:TEXT('text')
-          Markdown:TEXT('_')
-          Markdown:TEXT('*')
+          Markdown:TEXT('text_*')
         Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

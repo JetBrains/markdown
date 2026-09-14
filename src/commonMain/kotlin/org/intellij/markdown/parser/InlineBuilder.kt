@@ -45,6 +45,21 @@ class InlineBuilder(
         } else {
             iterator.type!!
         }
+        if (isLinkDestinationToken() && type == MarkdownTokenTypes.TEXT && currentNodeChildren != null) {
+            val last = currentNodeChildren.lastOrNull()
+            // A destination is plain text, so remapped EMPH tokens should not break it into
+            // several TEXT leaves: merge them with the adjacent TEXT tokens (see IJPL-172056)
+            if (last != null &&
+                last.astNode.type == MarkdownTokenTypes.TEXT &&
+                last.endTokenIndex == iterator.index &&
+                tokensCache.Iterator(last.endTokenIndex - 1).end == iterator.start) {
+                val mergedStart = tokensCache.Iterator(last.startTokenIndex).start
+                val merged = nodeBuilder.createLeafNodes(MarkdownTokenTypes.TEXT, mergedStart, iterator.end).single()
+                currentNodeChildren[currentNodeChildren.size - 1] =
+                    MyASTNodeWrapper(merged, last.startTokenIndex, iterator.index + 1)
+                return
+            }
+        }
         val nodes = nodeBuilder.createLeafNodes(type, iterator.start, iterator.end)
         for (node in nodes) {
             currentNodeChildren?.add(MyASTNodeWrapper(node, iterator.index, iterator.index + 1))
