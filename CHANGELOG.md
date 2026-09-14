@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## 0.7.13
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)
 
 ## 0.7.12
