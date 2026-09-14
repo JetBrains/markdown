@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 
 ## 0.7.13
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)

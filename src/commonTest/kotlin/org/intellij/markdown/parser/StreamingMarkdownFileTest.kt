@@ -174,6 +174,32 @@ class StreamingMarkdownFileTest {
         }
     }
 
+    @Test
+    fun looseListStaysOneList() {
+        for (text in listOf("- a\n\n- b\n\n- c\n", "1. first\n\n2. second\n\n3. third\n")) {
+            val file = EmptyStreamingMarkdownFile()
+            text.forEach { file.append(it.toString()) }
+
+            val lists = file.children.filter {
+                it.type == MarkdownElementTypes.ORDERED_LIST || it.type == MarkdownElementTypes.UNORDERED_LIST
+            }
+            assertEquals(1, lists.size, text)
+            assertEquals(3, lists.single().children.count { it.type == MarkdownElementTypes.LIST_ITEM }, text)
+        }
+    }
+
+    @Test
+    fun listIsPromotedOnceAnotherBlockFollows() {
+        val file = EmptyStreamingMarkdownFile()
+
+        "- a\n\n".forEach { file.append(it.toString()) }
+        assertTrue(file.stableChildren.none { it.type == MarkdownElementTypes.UNORDERED_LIST })
+
+        "paragraph\n\n".forEach { file.append(it.toString()) }
+        assertTrue(file.stableChildren.any { it.type == MarkdownElementTypes.UNORDERED_LIST })
+        assertTrue(file.unstableTail.isEmpty())
+    }
+
     private class TestCancellationException : RuntimeException()
 
     private fun assertTopLevelTypes(nodes: List<ASTNode>, vararg types: IElementType) {
