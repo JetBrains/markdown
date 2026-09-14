@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 
 ## 0.7.13
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)
