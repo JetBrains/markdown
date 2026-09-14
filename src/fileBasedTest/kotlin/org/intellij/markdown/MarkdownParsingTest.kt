@@ -398,6 +398,14 @@ Markdown:MARKDOWN_FILE
         defaultTest(GFMFlavourDescriptor())
     }
 
+    // IJPL-172056: a character without a special meaning inside a destination
+    // should not split the destination into several TEXT tokens
+    @Test
+    fun testLinkDestinationWithSpecialCharacters() {
+        defaultTest()
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     private fun getTestDataPath(): String {
         return getIntellijMarkdownHome() + "/${MARKDOWN_TEST_DATA_PATH}/parser"
     }

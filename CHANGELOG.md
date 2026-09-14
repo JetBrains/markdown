@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)
 
 ## 0.7.12
 - End a link label at a blank line, also when the line ends with a carriage return

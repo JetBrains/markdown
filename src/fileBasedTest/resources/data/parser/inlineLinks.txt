@@ -174,9 +174,7 @@ Markdown:MARKDOWN_FILE
         Markdown:](']')
       Markdown:(('(')
       Markdown:LINK_DESTINATION
-        Markdown:TEXT('text')
-        Markdown:TEXT('_')
-        Markdown:TEXT('/text')
+        Markdown:TEXT('text_/text')
       Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:INLINE_LINK
@@ -186,9 +184,7 @@ Markdown:MARKDOWN_FILE
         Markdown:](']')
       Markdown:(('(')
       Markdown:LINK_DESTINATION
-        Markdown:TEXT('text')
-        Markdown:TEXT('*')
-        Markdown:TEXT('/text')
+        Markdown:TEXT('text*/text')
       Markdown:)(')')
     Markdown:EOL('\n')
     Markdown:INLINE_LINK
@@ -199,10 +195,7 @@ Markdown:MARKDOWN_FILE
       Markdown:(('(')
       Markdown:LINK_DESTINATION
         Markdown:<('<')
-        Markdown:TEXT('text')
-        Markdown:TEXT('_')
-        Markdown:TEXT('*')
-        Markdown:TEXT('/text')
+        Markdown:TEXT('text_*/text')
         Markdown:>('>')
       Markdown:)(')')
     Markdown:EOL('\n')
@@ -232,9 +225,7 @@ Markdown:MARKDOWN_FILE
         Markdown:](']')
       Markdown:(('(')
       Markdown:LINK_DESTINATION
-        Markdown:TEXT('text')
-        Markdown:TEXT('_')
-        Markdown:TEXT('*')
+        Markdown:TEXT('text_*')
       Markdown:)(')')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
