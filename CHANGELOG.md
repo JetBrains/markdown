@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## 0.7.14
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
 - Accept a white space and a new line next to a `$$` block math delimiter (IJPL-255807)
 
