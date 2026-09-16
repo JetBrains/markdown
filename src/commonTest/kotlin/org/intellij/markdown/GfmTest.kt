@@ -93,6 +93,28 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
         "\$\$x+y\$\$a",
     )
 
+    @Test
+    fun testBlockMathAllowsSurroundingWhitespace() = doTest(
+        markdown = "\$\$ x+y \$\$",
+        html = "<p><span class=\"math\" inline = \"false\">x+y</span></p>"
+    )
+
+    @Test
+    fun testBlockMathAllowsDelimitersOnOwnLines() = doTest(
+        markdown = "\$\$\nx+y\n\$\$",
+        html = "<p><span class=\"math\" inline = \"false\">x+y</span></p>"
+    )
+
+    @Test
+    fun testInlineMathDoesNotAllowSurroundingWhitespace() = doPlainParagraphTests(
+        "\$ x+y \$",
+    )
+
+    @Test
+    fun testBlockMathDoesNotPairCurrencyAmounts() = doPlainParagraphTests(
+        "Cost is \$\$5 and \$\$10",
+    )
+
     private fun doPlainParagraphTests(vararg markdowns: String) {
         markdowns.forEach { markdown ->
             doTest(markdown = markdown, html = "<p>$markdown</p>")

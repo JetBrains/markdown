@@ -86,11 +86,26 @@ class MathParser : SequentialParser {
 
     private fun canOpenMath(iterator: TokensCache.Iterator): Boolean {
         val previous = iterator.charLookup(-1)
-        return !isWhitespace(iterator.charLookup(1)) && !previous.isWordCharacter() && !isPunctuation(previous)
+        if (previous.isWordCharacter() || isPunctuation(previous)) {
+            return false
+        }
+        return iterator.isBlockDelimiter() || !isWhitespace(iterator.charLookup(1))
     }
 
     private fun canCloseMath(iterator: TokensCache.Iterator): Boolean {
-        return !isWhitespace(iterator.charLookup(-1)) && !iterator.charLookup(1).isWordCharacter()
+        if (iterator.charLookup(1).isWordCharacter()) {
+            return false
+        }
+        return iterator.isBlockDelimiter() || !isWhitespace(iterator.charLookup(-1))
+    }
+
+    /**
+     * A `$$` delimiter starts a block, not a flanking run.
+     * GFM permits a space or a new line inside `$$ ... $$`, so a block delimiter
+     * does not check the adjacent character for a white space.
+     */
+    private fun TokensCache.Iterator.isBlockDelimiter(): Boolean {
+        return length > 1
     }
 
     private fun collectLinkRanges(tokens: TokensCache, rangesToGlue: List<IntRange>): List<IntRange> {
