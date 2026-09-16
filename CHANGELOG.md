@@ -3,6 +3,7 @@
 
 ## [Unreleased]
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
+- Accept a white space and a new line next to a `$$` block math delimiter (IJPL-255807)
 
 ## 0.7.13
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)
