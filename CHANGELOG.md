@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
 
 ## 0.7.13
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)

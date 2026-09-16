@@ -102,6 +102,44 @@ import kotlin.test.assertTrue
         assertFast(input, false, flavour = GFMFlavourDescriptor())
     }
 
+    @Test
+    fun testDeeplyNestedListMarkersOnOneLine() {
+        val input = "- ".repeat(2_000) + "a\n" + "b\n".repeat(2_000) + "\n"
+        assertFast(input, false, 250)
+    }
+
+    @Test
+    fun testDeeplyNestedCheckboxMarkersOnOneLine() {
+        val input = "- [ ] ".repeat(2_000) + "a\n" + "b\n".repeat(2_000) + "\n"
+        assertFast(input, false, 250, flavour = GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testDeeplyNestedListByIndentation() {
+        val input = (1..1_200).joinToString("\n") { "  ".repeat(it) + "- a" }
+        assertFast(input, false, 200)
+    }
+
+    @Test
+    fun testDeeplyNestedListFollowedByIndentedParagraphs() {
+        val depth = 800
+        val input = (1..depth).joinToString("\n") { "  ".repeat(it) + "- a" } + "\n" +
+                ("  ".repeat(depth) + "  b\n").repeat(depth)
+        assertFast(input, false, 200)
+    }
+
+    @Test
+    fun testDeeplyNestedBlockQuotes() {
+        val input = (1..1_000).joinToString("\n") { "> ".repeat(1_000) + "a" }
+        assertFast(input, false, 150)
+    }
+
+    @Test
+    fun testLongDigitRunIsNotScannedAsListMarker() {
+        val input = "- a\n" + ("1".repeat(100_000) + "\n").repeat(50)
+        assertFast(input, false, 50)
+    }
+
     companion object {
         val WARM_UP_NUM = 10
         val TEST_NUM = 100
