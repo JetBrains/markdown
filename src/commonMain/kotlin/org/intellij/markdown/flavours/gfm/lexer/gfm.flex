@@ -259,7 +259,7 @@ USER_INFO_CHAR =     [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]
 URL_USER_INFO_CHAR = [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~:-]
 EMAIL_AUTOLINK = "<" {USER_INFO_CHAR}+ "@"[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])? (\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)* ">"
 
-HOST_PART={ALPHANUM}([a-zA-Z0-9_-]*{ALPHANUM})?
+HOST_PART={ALPHANUM}(({ALPHANUM}|[_-])*{ALPHANUM})?
 PATH_PART=[\S&&[^\]()<]]|\][^\[(<]
 PATH=({PATH_PART}+ | ("(" {PATH_PART}* ")"? {PATH_PART}*)) ("(" {PATH_PART}* ")"? {PATH_PART}*)*
 // See pushbackAutolink method
