@@ -4,6 +4,7 @@
 ## [Unreleased]
 - Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 - Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
+- Don't end a list at two consecutive blank lines — the rule was removed in CommonMark spec 0.26 (IJPL-96507)
 
 ## 0.7.14
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
