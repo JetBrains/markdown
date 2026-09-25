@@ -121,6 +121,11 @@ class HtmlGeneratorCommonTest : HtmlGeneratorTestBase() {
     }
 
     @Test
+    fun testHighlight() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
     fun testGfmAutolink() {
         defaultTest(GFMFlavourDescriptor())
     }

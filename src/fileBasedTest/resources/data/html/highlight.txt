@@ -1,0 +1,48 @@
+<body>
+<p>
+<mark>Simple</mark>
+</p>
+<p>=Simple=</p>
+<p>== Simple ==</p>
+<p>
+<mark>Two (so many) words</mark>
+</p>
+<p>===Simple===</p>
+<p>====Simple====</p>
+<p>
+aba<mark>asbas</mark>
+asbd</p>
+<p>
+<mark>baba</mark>
+<mark>abab</mark>
+</p>
+<p>==escaped== text</p>
+<p>==unclosed</p>
+<p>
+<mark>contains = inside</mark>
+ and <mark>contains == inside</mark>
+</p>
+<p>
+<strong>
+bold <mark>highlight</mark>
+ inside</strong>
+ and <mark>
+highlight with <strong>bold</strong>
+ inside</mark>
+</p>
+<p>
+<span class="user-del">
+strike with <mark>highlight</mark>
+</span>
+</p>
+<p>
+<code>==code==</code>
+ and <a href="http://example.com?a=b">
+<mark>link</mark>
+</a>
+</p>
+<h1>
+Setext heading with <mark>highlight</mark>
+</h1>
+<p>end.</p>
+</body>

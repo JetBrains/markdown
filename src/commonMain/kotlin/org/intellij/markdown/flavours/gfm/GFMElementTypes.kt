@@ -25,6 +25,9 @@ object GFMTokenTypes {
 
     @JvmField
     val ALERT_TITLE: IElementType = MarkdownElementType("ALERT_TITLE", true)
+
+    @JvmField
+    val EQUALS: IElementType = MarkdownElementType("=", true)
 }
 
 object  GFMElementTypes {
@@ -48,4 +51,7 @@ object  GFMElementTypes {
 
     @JvmField
     val ALERT: IElementType = MarkdownElementType("ALERT")
+
+    @JvmField
+    val HIGHLIGHT: IElementType = MarkdownElementType("HIGHLIGHT")
 }
