@@ -16,14 +16,18 @@ This is lazy third line</p>
 <li>And another bullet</li>
 </ul>
 <ol>
-<li>This is numered list</li>
-<li>And the second point</li>
-</ol>
-<ol start="0">
-<li>Another list</li>
-</ol>
-<ol>
-<li>Another list</li>
+<li>
+<p>This is numered list</p>
+</li>
+<li>
+<p>And the second point</p>
+</li>
+<li>
+<p>Another list</p>
+</li>
+<li>
+<p>Another list</p>
+</li>
 </ol>
 <pre><code>This is *code* fence
 </code></pre>

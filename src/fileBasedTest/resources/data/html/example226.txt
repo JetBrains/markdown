@@ -1,7 +1,8 @@
 <body>
 <ul>
 <li>
-foo<ul>
+<p>foo</p>
+<ul>
 <li>
 bar<ul>
 <li>baz</li>
@@ -9,9 +10,9 @@ bar<ul>
 </li>
 </ul>
 </li>
-</ul>
-<ul>
-<li>foo</li>
+<li>
+<p>foo</p>
+</li>
 <li>
 <pre><code>bar
 </code></pre>

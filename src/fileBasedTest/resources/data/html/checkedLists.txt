@@ -14,21 +14,34 @@
 </ol>
 <ul>
 <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled />Check list</li>
-<li>[] Check list</li>
-<li>[   ] Check list</li>
+<p>
+<input type="checkbox" class="task-list-item-checkbox" disabled />Check list</p>
+</li>
+<li>
+<p>[] Check list</p>
+</li>
+<li>
+<p>[   ] Check list</p>
+</li>
 <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled />Check list</li>
+<p>
+<input type="checkbox" class="task-list-item-checkbox" disabled />Check list</p>
+</li>
 <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" checked disabled />Check list</li>
+<p>
+<input type="checkbox" class="task-list-item-checkbox" checked disabled />Check list</p>
+</li>
 <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" checked disabled />Check list</li>
-<li>[X ] Check list</li>
-</ul>
+<p>
+<input type="checkbox" class="task-list-item-checkbox" checked disabled />Check list</p>
+</li>
+<li>
+<p>[X ] Check list</p>
+</li>
+<li class="task-list-item">
+<p>
+<input type="checkbox" class="task-list-item-checkbox" disabled />a bigger project</p>
 <ul>
-<li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled />
-a bigger project<ul>
 <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled />first subtask #1234</li>
 <li class="task-list-item">
@@ -38,6 +51,8 @@ a bigger project<ul>
 </ul>
 </li>
 <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled />a separate task</li>
+<p>
+<input type="checkbox" class="task-list-item-checkbox" disabled />a separate task</p>
+</li>
 </ul>
 </body>
