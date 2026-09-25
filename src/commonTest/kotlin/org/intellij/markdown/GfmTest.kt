@@ -128,4 +128,42 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
             doTest(markdown = markdown, html = "<p>$markdown</p>")
         }
     }
+
+    // IJPL-91041: a trailing entity reference is excluded from an autolink as a whole,
+    // not just its closing semicolon
+    @Test
+    fun testAutolinkFollowedByEntityReference() = doTest(
+        markdown = "https://travis-ci.com/TheAlgorithms/Java&nbsp;",
+        html = "<p><a href=\"https://travis-ci.com/TheAlgorithms/Java\">https://travis-ci.com/TheAlgorithms/Java</a>\u00A0</p>"
+    )
+
+    @Test
+    fun testLinkedImageFollowedByEntityReference() = doTest(
+        markdown = "[![Build Status](https://api.travis-ci.com/TheAlgorithms/Java.svg?branch=master)](https://travis-ci.com/TheAlgorithms/Java)&nbsp;",
+        html = "<p><a href=\"https://travis-ci.com/TheAlgorithms/Java\">" +
+                "<img src=\"https://api.travis-ci.com/TheAlgorithms/Java.svg?branch=master\" alt=\"Build Status\" /></a>\u00A0</p>"
+    )
+
+    @Test
+    fun testAutolinkFollowedByMultipleEntityReferences() = doTest(
+        markdown = "https://example.com/a&amp;&nbsp;",
+        html = "<p><a href=\"https://example.com/a\">https://example.com/a</a>&amp;\u00A0</p>"
+    )
+
+    @Test
+    fun testAutolinkKeepsAmpersandWithoutEntityName() = doTest(
+        markdown = "https://example.com/foo&;",
+        html = "<p><a href=\"https://example.com/foo&amp;\">https://example.com/foo&amp;</a>;</p>"
+    )
+
+    @Test
+    fun testSfmAutolinkFollowedByEntityReference() {
+        // SFM only linkifies a URL followed by whitespace or punctuation; with the entity
+        // excluded from the autolink, the following '&' glues into a word, so no link is made
+        // (just like `www.foo.com&nbsp;`), instead of an autolink with `&nbsp` inside the URL
+        object : SpecTest(SFMFlavourDescriptor()) {}.doTest(
+            markdown = "https://travis-ci.com/TheAlgorithms/Java&nbsp;",
+            html = "<p>https://travis-ci.com/TheAlgorithms/Java\u00A0</p>"
+        )
+    }
 }

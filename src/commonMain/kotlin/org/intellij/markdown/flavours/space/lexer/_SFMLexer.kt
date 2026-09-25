@@ -174,6 +174,10 @@ class _SFMLexer : GeneratedLexer {
         return balance
     }
 
+    private fun isAlphanumeric(c: Char): Boolean {
+        return c in 'a'..'z' || c in 'A'..'Z' || c in '0'..'9'
+    }
+
     private fun pushbackAutolink() {
         var length = yylength()
         if (yycharat(length - 1) == '/') {
@@ -184,8 +188,9 @@ class _SFMLexer : GeneratedLexer {
         var balance = -1
 
         // See GFM_AUTOLINK rule
-        val badEnding = ".,:;!?\"'*_~]`"
-        for (i in length - 1 downTo 0) {
+        val badEnding = ".,:!?\"'*_~]`"
+        var i = length - 1
+        while (i >= 0) {
             val c = yycharat(i)
             if (c == ')') {
                 if (balance == -1) {
@@ -198,10 +203,21 @@ class _SFMLexer : GeneratedLexer {
                 } else {
                     break
                 }
+            } else if (c == ';') {
+                // A trailing entity reference ('&' followed by alphanumerics and this ';')
+                // is excluded from the autolink as a whole, not just the semicolon
+                var entityStart = i - 1
+                while (entityStart >= 0 && isAlphanumeric(yycharat(entityStart))) {
+                    entityStart--
+                }
+                if (entityStart >= 0 && entityStart < i - 1 && yycharat(entityStart) == '&') {
+                    i = entityStart
+                }
             } else if (badEnding.indexOf(c) == -1) {
                 break
             }
-            length--
+            length = i
+            i--
         }
         yypushback(yylength() - length)
     }
