@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Allow non-ASCII letters everywhere in a GFM autolink host, so a word following the domain is not split in the middle and Unicode domains are linked whole (IJPL-91081)
 - Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 - Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 
