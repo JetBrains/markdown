@@ -30,10 +30,6 @@ class ListItemMarkerBlock(myConstraints: MarkdownConstraints,
         assert(pos.offsetInCurrentLine == -1)
 
         val eolN = MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints)
-        if (eolN >= 3) {
-            return MarkerBlock.ProcessingResult.DEFAULT
-        }
-
         val nonemptyPos = MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos, eolN)
                 ?: return MarkerBlock.ProcessingResult.DEFAULT
         val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(nonemptyPos)

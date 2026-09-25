@@ -169,6 +169,10 @@ import org.intellij.markdown.lexer.GeneratedLexer;
       return balance;
   }
 
+  private boolean isAlphanumeric(char c) {
+      return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9';
+  }
+
   private void pushbackAutolink() {
       int length = yylength();
       if (yycharat(length - 1) == '/') {
@@ -180,9 +184,10 @@ import org.intellij.markdown.lexer.GeneratedLexer;
       int balance = -1;
 
       // See GFM_AUTOLINK rule
-      String badEnding = ".,:;!?\"'*_~]`";
+      String badEnding = ".,:!?\"'*_~]`";
 
-      for (int i = length - 1; i >= 0; --i) {
+      int i = length - 1;
+      while (i >= 0) {
           char c = yycharat(i);
           if (c == ')') {
               if (balance == -1) {
@@ -197,11 +202,23 @@ import org.intellij.markdown.lexer.GeneratedLexer;
                   break;
               }
           }
+          else if (c == ';') {
+              // A trailing entity reference ('&' followed by alphanumerics and this ';')
+              // is excluded from the autolink as a whole, not just the semicolon
+              int entityStart = i - 1;
+              while (entityStart >= 0 && isAlphanumeric(yycharat(entityStart))) {
+                  entityStart--;
+              }
+              if (entityStart >= 0 && entityStart < i - 1 && yycharat(entityStart) == '&') {
+                  i = entityStart;
+              }
+          }
           else if (badEnding.indexOf(c) == -1) {
               break;
           }
 
-          length--;
+          length = i;
+          i--;
       }
 
       yypushback(yylength() - length);

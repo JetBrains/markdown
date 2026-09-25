@@ -1479,7 +1479,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testListItemsExample240() = doTest(
             markdown = "- foo\n\n\n  bar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>\n"
@@ -1753,14 +1752,12 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testListsExample286() = doTest(
             markdown = "- foo\n\n- bar\n\n\n- baz\n",
             html = "<ul>\n<li>\n<p>foo</p>\n</li>\n<li>\n<p>bar</p>\n</li>\n<li>\n<p>baz</p>\n</li>\n</ul>\n"
     )
 
     @Test
-    @Ignore
     fun testListsExample287() = doTest(
             markdown = "- foo\n  - bar\n    - baz\n\n\n      bim\n",
             html = "<ul>\n<li>foo\n<ul>\n<li>bar\n<ul>\n<li>\n<p>baz</p>\n<p>bim</p>\n</li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>\n"
@@ -3861,7 +3858,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testAutolinksExample626() = doTest(
             markdown = "www.google.com/search?q=commonmark&hl=en\n\nwww.google.com/search?q=commonmark&hl;\n",
             html = "<p><a href=\"http://www.google.com/search?q=commonmark&amp;hl=en\">www.google.com/search?q=commonmark&amp;hl=en</a></p>\n<p><a href=\"http://www.google.com/search?q=commonmark\">www.google.com/search?q=commonmark</a>&amp;hl;</p>\n"

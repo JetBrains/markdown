@@ -1605,7 +1605,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testListItemsExample262() = doTest(
             markdown = "- foo\n\n\n  bar\n",
             html = "<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>\n"
@@ -1878,14 +1877,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testListsExample306() = doTest(
             markdown = "- foo\n\n- bar\n\n\n- baz\n",
             html = "<ul>\n<li>\n<p>foo</p>\n</li>\n<li>\n<p>bar</p>\n</li>\n<li>\n<p>baz</p>\n</li>\n</ul>\n"
     )
 
     @Test
-    @Ignore
     fun testListsExample307() = doTest(
             markdown = "- foo\n  - bar\n    - baz\n\n\n      bim\n",
             html = "<ul>\n<li>foo\n<ul>\n<li>bar\n<ul>\n<li>\n<p>baz</p>\n<p>bim</p>\n</li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>\n"
