@@ -63,7 +63,7 @@ open class GFMFlavourDescriptor(
                     ImageParser(),
                     InlineLinkParser(),
                     ReferenceLinkParser(),
-                    EmphasisLikeParser(EmphStrongDelimiterParser(), StrikeThroughDelimiterParser()))
+                    EmphasisLikeParser(EmphStrongDelimiterParser(), StrikeThroughDelimiterParser(), HighlightDelimiterParser()))
         }
     }
 
@@ -84,6 +84,8 @@ open class GFMFlavourDescriptor(
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")
                     }
                 },
+
+                GFMElementTypes.HIGHLIGHT to EqualDelimiterTrimmingInlineTagProvider("mark", GFMTokenTypes.EQUALS),
 
                 GFMElementTypes.TABLE to TablesGeneratingProvider(),
 

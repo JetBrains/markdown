@@ -37,7 +37,7 @@ Markdown:MARKDOWN_FILE
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
         Markdown:BLOCK_QUOTE(' >')
-        Markdown:TEXT('=')
+        Markdown:=('=')
         WHITE_SPACE(' ')
         Markdown:TEXT('1.3.0')
         WHITE_SPACE(' ')

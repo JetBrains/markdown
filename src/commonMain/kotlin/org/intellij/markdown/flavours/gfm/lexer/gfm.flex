@@ -289,7 +289,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") ({URL_USER_INFO_CH
 
 <AFTER_LINE_START, PARSE_DELIMITED> {
   // Escaping
-  \\[\\\"'`*_{}\[\]()#+.,!:@#$%&~<>/-] {
+  \\[\\\"'`*_{}\[\]()#+.,!:@#$%&~<>/=-] {
     return getReturnGeneralized(MarkdownTokenTypes.TEXT);
   }
 
@@ -336,6 +336,10 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") ({URL_USER_INFO_CH
 
   "~" {
     return getReturnGeneralized(GFMTokenTypes.TILDE);
+  }
+
+  "=" {
+    return getReturnGeneralized(GFMTokenTypes.EQUALS);
   }
 
   {AUTOLINK} { return parseDelimited(MarkdownTokenTypes.AUTOLINK, false); }
