@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Exclude a trailing entity reference like `&nbsp;` from a GFM autolink instead of swallowing it into the URL (IJPL-91041)
 - Keep a block that spans the streaming parser's stable boundary whole instead of dropping it
 - Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 
