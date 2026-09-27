@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## 0.7.15
 - Add support for `==text==` highlighting to the GFM flavour, rendered as `<mark>` (IJPL-175082)
 - Exclude a trailing entity reference like `&nbsp;` from a GFM autolink instead of swallowing it into the URL (IJPL-91041)
 - Allow non-ASCII letters everywhere in a GFM autolink host, so a word following the domain is not split in the middle and Unicode domains are linked whole (IJPL-91081)
