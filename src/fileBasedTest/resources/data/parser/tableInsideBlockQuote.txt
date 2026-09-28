@@ -1,0 +1,116 @@
+Markdown:MARKDOWN_FILE
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('>')
+    Markdown:TABLE
+      Markdown:HEADER
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('one')
+          WHITE_SPACE('  ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('two')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('three')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('four')
+          WHITE_SPACE('    ')
+        Markdown:TABLE_SEPARATOR('|')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:TABLE_SEPARATOR('|------|-----|-------|---------|')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:ROW
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('1')
+          WHITE_SPACE('    ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('2')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('3')
+          WHITE_SPACE('     ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('4')
+          WHITE_SPACE('       ')
+        Markdown:TABLE_SEPARATOR('|')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:ROW
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('odin')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('dva')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('tri')
+          WHITE_SPACE('   ')
+        Markdown:TABLE_SEPARATOR('|')
+        Markdown:CELL
+          WHITE_SPACE(' ')
+          Markdown:TEXT('chetyre')
+          WHITE_SPACE(' ')
+        Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('>')
+    Markdown:BLOCK_QUOTE
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:TABLE
+        Markdown:HEADER
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('nested')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('quote')
+            WHITE_SPACE(' ')
+          Markdown:TABLE_SEPARATOR('|')
+        Markdown:EOL('\n')
+        Markdown:BLOCK_QUOTE('>')
+        Markdown:BLOCK_QUOTE('>')
+        Markdown:TABLE_SEPARATOR('|--------|-------|')
+        Markdown:EOL('\n')
+        Markdown:BLOCK_QUOTE('>')
+        Markdown:BLOCK_QUOTE('>')
+        Markdown:ROW
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('a')
+            WHITE_SPACE('      ')
+          Markdown:TABLE_SEPARATOR('|')
+          Markdown:CELL
+            WHITE_SPACE(' ')
+            Markdown:TEXT('b')
+            WHITE_SPACE('     ')
+          Markdown:TABLE_SEPARATOR('|')
+  Markdown:EOL('\n')
