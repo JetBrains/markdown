@@ -6,6 +6,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -39,15 +40,21 @@ class SetextHeaderMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
-        val startSpaces = pos.charsToNonWhitespace()
-                ?: return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DROP, MarkerBlock.EventAction.PROPAGATE)
+        // The underline starts after the markers of the enclosing blocks, e.g. `>`
+        val line = pos.currentLine
+        var setextMarkerStart = constraints.applyToNextLine(pos).getCharsEaten(line)
+        while (setextMarkerStart < line.length && (line[setextMarkerStart] == ' ' || line[setextMarkerStart] == '\t')) {
+            setextMarkerStart++
+        }
+        if (setextMarkerStart == line.length) {
+            return MarkerBlock.ProcessingResult(MarkerBlock.ClosingAction.DROP, MarkerBlock.ClosingAction.DROP, MarkerBlock.EventAction.PROPAGATE)
+        }
 
-        val setextMarkerStart = pos.nextPosition(startSpaces)
-        if (setextMarkerStart?.char == '-') {
+        if (line[setextMarkerStart] == '-') {
             nodeType = MarkdownElementTypes.SETEXT_2
         }
 
-        val setextMarkerStartOffset = setextMarkerStart?.offset ?: pos.offset
+        val setextMarkerStartOffset = pos.offset + 1 + setextMarkerStart
         val markerNodeType = if (nodeType == MarkdownElementTypes.SETEXT_2)
             MarkdownTokenTypes.SETEXT_2
         else

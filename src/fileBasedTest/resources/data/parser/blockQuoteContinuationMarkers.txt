@@ -1,0 +1,142 @@
+Markdown:MARKDOWN_FILE
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Paragraph 1')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Paragraph 2')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('Paragraph 3')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('line 2')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('line 3')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      WHITE_SPACE(' ')
+      Markdown:TEXT('line 4')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Paragraph')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:BLOCK_QUOTE
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('nested')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('quote')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:UNORDERED_LIST
+      Markdown:LIST_ITEM
+        Markdown:LIST_BULLET('- ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('item 1')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:LIST_ITEM
+        Markdown:LIST_BULLET('- ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('item 2')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:BLOCK_QUOTE
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('quote in a list')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:BLOCK_QUOTE('>')
+        Markdown:EOL('\n')
+        WHITE_SPACE('  ')
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('continued')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:CODE_FENCE
+      Markdown:CODE_FENCE_START('```')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:CODE_FENCE_CONTENT('fenced')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:CODE_FENCE_CONTENT('code')
+      Markdown:EOL('\n')
+      Markdown:CODE_FENCE_END('> ```')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:HTML_BLOCK
+      Markdown:HTML_BLOCK_CONTENT('<div>')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('>')
+      Markdown:HTML_BLOCK_CONTENT('foo')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:HTML_BLOCK_CONTENT('</div>')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:SETEXT_2
+      Markdown:SETEXT_CONTENT
+        Markdown:TEXT('Foo')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:SETEXT_2('---')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('  > ')
+    Markdown:SETEXT_1
+      Markdown:SETEXT_CONTENT
+        Markdown:TEXT('Bar')
+      Markdown:EOL('\n')
+      Markdown:BLOCK_QUOTE('  > ')
+      Markdown:SETEXT_1('===')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('>	')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('tab after the marker')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('>')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('>	')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('next paragraph')
+  Markdown:EOL('\n')

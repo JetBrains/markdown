@@ -153,7 +153,7 @@ Markdown:MARKDOWN_FILE
     Markdown:HTML_BLOCK
       Markdown:HTML_BLOCK_CONTENT('<div>')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:HTML_BLOCK_CONTENT('foo')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

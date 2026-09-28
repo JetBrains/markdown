@@ -10,6 +10,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
+import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
 import org.intellij.markdown.parser.markerblocks.providers.*
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.math.min
@@ -68,6 +69,25 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
                 MarkdownTokenTypes.LIST_BULLET
         }
         productionHolder.addProduction(listOf(SequentialParser.Node(startOffset..endOffset, type)))
+    }
+
+    override fun populateContinuedConstraintsTokens(pos: LookaheadText.Position,
+                                                    constraints: MarkdownConstraints,
+                                                    productionHolder: ProductionHolder) {
+        // A paragraph lexes the markers in its text itself
+        if (markersStack.lastOrNull() is ParagraphMarkerBlock) {
+            return
+        }
+        if (constraints !is CommonMarkdownConstraints || CommonMarkdownConstraints.BQ_CHAR !in constraints.types) {
+            return
+        }
+
+        val lineStart = pos.offset + 1
+        val markers = ArrayList<SequentialParser.Node>()
+        constraints.forEachContinuedBlockQuoteMarker(pos.currentLine) { start, end ->
+            markers.add(SequentialParser.Node(lineStart + start..lineStart + end, MarkdownTokenTypes.BLOCK_QUOTE))
+        }
+        productionHolder.addProduction(markers)
     }
 
     override fun createNewMarkerBlocks(pos: LookaheadText.Position,

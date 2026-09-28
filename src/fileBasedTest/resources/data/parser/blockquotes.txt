@@ -24,9 +24,9 @@ Markdown:MARKDOWN_FILE
       WHITE_SPACE(' ')
       Markdown:TEXT('risus.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Donec sit amet nisl.')
       WHITE_SPACE(' ')
@@ -78,17 +78,17 @@ Markdown:MARKDOWN_FILE
     Markdown:PARAGRAPH
       Markdown:TEXT('This is the first level of quoting.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:BLOCK_QUOTE
       Markdown:BLOCK_QUOTE('> ')
       Markdown:PARAGRAPH
         Markdown:TEXT('This is nested blockquote.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Back to the first level.')
   Markdown:EOL('\n')
@@ -101,33 +101,33 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
         Markdown:TEXT('This is a header.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:ORDERED_LIST
       Markdown:LIST_ITEM
         Markdown:LIST_NUMBER('1.   ')
         Markdown:PARAGRAPH
           Markdown:TEXT('This is the first list item.')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:LIST_ITEM
         Markdown:LIST_NUMBER('2.   ')
         Markdown:PARAGRAPH
           Markdown:TEXT('This is the second list item.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Here')
       Markdown:'(''')
       Markdown:TEXT('s some example code')
       Markdown::(':')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:CODE_BLOCK
       Markdown:CODE_LINE('    return shell_exec("echo $input | $markdown_script");')
   Markdown:EOL('\n')
@@ -140,7 +140,7 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
         Markdown:TEXT('Foo')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:PARAGRAPH
       Markdown:TEXT('bar')
       Markdown:EOL('\n')
@@ -157,7 +157,7 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
         Markdown:TEXT('Foo')
     Markdown:EOL('\n')
-    WHITE_SPACE('   > ')
+    Markdown:BLOCK_QUOTE('   > ')
     Markdown:PARAGRAPH
       Markdown:TEXT('bar')
       Markdown:EOL('\n')

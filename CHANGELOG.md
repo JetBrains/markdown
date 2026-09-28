@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Add `BlockQuoteProvider(lazyContinuation = false)`, which ends a block quote at a line without the `>` marker instead of continuing its paragraph
+- Parse the `>` markers on the continuation lines of a block quote as `BLOCK_QUOTE` tokens instead of `WHITE_SPACE`
 
 ## 0.7.15
 - Add support for `==text==` highlighting to the GFM flavour, rendered as `<mark>` (IJPL-175082)

@@ -3,7 +3,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!NOTE]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('This is a note.')
   Markdown:EOL('\n')
@@ -12,7 +12,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!TIP]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('This is a tip.')
   Markdown:EOL('\n')
@@ -21,7 +21,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!IMPORTANT]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('This is important.')
   Markdown:EOL('\n')
@@ -30,7 +30,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!WARNING]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('This is a warning.')
   Markdown:EOL('\n')
@@ -39,7 +39,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!CAUTION]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('This is a caution.')
   Markdown:EOL('\n')
@@ -48,27 +48,27 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!NOTE]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('First paragraph.')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Second paragraph with a list')
       Markdown::(':')
     Markdown:EOL('\n')
-    WHITE_SPACE('>')
+    Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:UNORDERED_LIST
       Markdown:LIST_ITEM
         Markdown:LIST_BULLET('- ')
         Markdown:PARAGRAPH
           Markdown:TEXT('one')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:LIST_ITEM
         Markdown:LIST_BULLET('- ')
         Markdown:PARAGRAPH
@@ -79,7 +79,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!note]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Lowercase marker still works.')
   Markdown:EOL('\n')
@@ -88,7 +88,7 @@ Markdown:MARKDOWN_FILE
     Markdown:BLOCK_QUOTE('> ')
     Markdown:ALERT_TITLE('[!notE]')
     Markdown:EOL('\n')
-    WHITE_SPACE('> ')
+    Markdown:BLOCK_QUOTE('> ')
     Markdown:PARAGRAPH
       Markdown:TEXT('Mixed-case marker still works.')
   Markdown:EOL('\n')

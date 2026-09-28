@@ -34,6 +34,7 @@ class ListCompositeNode(type: IElementType, children: List<ASTNode>) : Composite
                     }
                     MarkdownTokenTypes.LIST_BULLET,
                     MarkdownTokenTypes.LIST_NUMBER,
+                    MarkdownTokenTypes.BLOCK_QUOTE,
                     MarkdownTokenTypes.WHITE_SPACE -> {
                         // do nothing;
                     }

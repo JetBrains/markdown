@@ -6,6 +6,7 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.impl.ParagraphMarkerBlock
+import org.intellij.markdown.parser.markerblocks.providers.BlockQuoteProvider
 
 abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val productionHolder: ProductionHolder,
                                                               protected val startConstraints: MarkdownConstraints) {
@@ -29,12 +30,25 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
                                                      constraints: MarkdownConstraints,
                                                      productionHolder: ProductionHolder)
 
+    /**
+     * Adds the tokens for the markers of the already opened blocks (e.g. `>` of a block quote) which [constraints]
+     * continue on the line after [pos]. [pos] is at the end of the previous line, and the tokens should stay
+     * within the first `constraints.charsEaten` characters of [LookaheadText.Position.currentLine].
+     */
+    protected open fun populateContinuedConstraintsTokens(pos: LookaheadText.Position,
+                                                          constraints: MarkdownConstraints,
+                                                          productionHolder: ProductionHolder) {
+    }
+
     private var nextInterestingPosForExistingMarkers: Int = -1
 
     private val interruptsParagraph: (LookaheadText.Position, MarkdownConstraints) -> Boolean = { position, constraints ->
+        // The paragraph is the top block while it processes a token
+        val paragraphConstraints = topBlockConstraints
         var result = false
         for (provider in getMarkerBlockProviders()) {
-            if (provider.interruptsParagraph(position, constraints)) {
+            if (provider.interruptsParagraph(position, constraints)
+                    || provider is BlockQuoteProvider && provider.endsParagraph(constraints, paragraphConstraints)) {
                 result = true
                 break
             }
@@ -92,6 +106,8 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
             if (delta > 0) {
                 if (pos.offsetInCurrentLine != -1 && stateInfo.nextConstraints.indent <= topBlockConstraints.indent) {
                     populateConstraintsTokens(pos, stateInfo.nextConstraints, productionHolder)
+                } else if (pos.offsetInCurrentLine == -1 && delta > 1) {
+                    populateContinuedConstraintsTokens(pos, stateInfo.nextConstraints, productionHolder)
                 }
                 return pos.nextPosition(delta)
             }

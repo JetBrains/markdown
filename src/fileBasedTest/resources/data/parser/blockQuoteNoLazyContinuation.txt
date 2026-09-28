@@ -1,0 +1,65 @@
+Markdown:MARKDOWN_FILE
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('First line.')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('Second line.')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:BLOCK_QUOTE
+      Markdown:BLOCK_QUOTE('> ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('nested')
+    Markdown:EOL('\n')
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('lazy in the outer quote')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('not quoted')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:UNORDERED_LIST
+    Markdown:LIST_ITEM
+      Markdown:LIST_BULLET('- ')
+      Markdown:BLOCK_QUOTE
+        Markdown:BLOCK_QUOTE('> ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('quote in a list')
+      Markdown:EOL('\n')
+      WHITE_SPACE('  ')
+      Markdown:PARAGRAPH
+        Markdown:TEXT('continues the list item')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:UNORDERED_LIST
+      Markdown:LIST_ITEM
+        Markdown:LIST_BULLET('- ')
+        Markdown:PARAGRAPH
+          Markdown:TEXT('list in a quote')
+          Markdown:EOL('\n')
+          Markdown:BLOCK_QUOTE('>')
+          WHITE_SPACE(' ')
+          Markdown:TEXT('lazy line of the list item')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('not quoted')
+  Markdown:EOL('\n')
+  Markdown:EOL('\n')
+  Markdown:BLOCK_QUOTE
+    Markdown:BLOCK_QUOTE('> ')
+    Markdown:PARAGRAPH
+      Markdown:TEXT('foo')
+  Markdown:EOL('\n')
+  Markdown:SETEXT_1
+    Markdown:SETEXT_CONTENT
+      Markdown:TEXT('bar')
+    Markdown:EOL('\n')
+    Markdown:SETEXT_1('===')
+  Markdown:EOL('\n')
