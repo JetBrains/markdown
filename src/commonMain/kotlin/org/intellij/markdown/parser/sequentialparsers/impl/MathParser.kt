@@ -110,23 +110,13 @@ class MathParser : SequentialParser {
 
     private fun collectLinkRanges(tokens: TokensCache, rangesToGlue: List<IntRange>): List<IntRange> {
         val result = ArrayList<IntRange>()
-        val inlineLinkStarts = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue) {
-            it.rawLookup(1) == MarkdownTokenTypes.LPAREN
-        }
-        val referenceLinkStarts = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue)
+        val scanIndex by lazy { LinkParserUtil.ScanIndex(tokens, rangesToGlue) }
         var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.LBRACKET) {
-                val link = if (iterator.index in inlineLinkStarts) {
-                    InlineLinkParser.parseInlineLink(iterator, inlineLinkStarts)
-                } else {
-                    null
-                } ?: if (iterator.index in referenceLinkStarts) {
-                    ReferenceLinkParser.parseReferenceLink(iterator)
-                } else {
-                    null
-                }
+                val link = InlineLinkParser.parseInlineLink(iterator, scanIndex = scanIndex)
+                        ?: ReferenceLinkParser.parseReferenceLink(iterator, scanIndex)
                 if (link != null) {
                     result.add(iterator.index..link.iteratorPosition.index)
                     iterator = link.iteratorPosition.advance()

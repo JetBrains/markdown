@@ -13,13 +13,11 @@ class InlineLinkParser : SequentialParser {
         val delegateIndices = RangesListBuilder()
         var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
-        val linkStarts = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue) {
-            it.rawLookup(1) == MarkdownTokenTypes.LPAREN
-        }
+        val scanIndex by lazy { LinkParserUtil.ScanIndex(tokens, rangesToGlue) }
 
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.LBRACKET) {
-                val inlineLink = parseInlineLink(iterator, linkStarts)
+                val inlineLink = parseInlineLink(iterator, scanIndex = scanIndex)
                 if (inlineLink != null) {
                     iterator = inlineLink.iteratorPosition.advance()
                     result = result.withOtherParsingResult(inlineLink)
@@ -35,17 +33,23 @@ class InlineLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseInlineLink(iterator: TokensCache.Iterator, linkStarts: Set<Int>? = null): LocalParsingResult? {
+        fun parseInlineLink(
+            iterator: TokensCache.Iterator,
+            linkStarts: Set<Int>? = null,
+            scanIndex: LinkParserUtil.ScanIndex? = null
+        ): LocalParsingResult? {
             if (linkStarts != null && iterator.index !in linkStarts) {
                 return null
             }
 
             val startIndex = iterator.index
-            var it = iterator
-
-            val linkText = LinkParserUtil.parseLinkText(it)
-                    ?: return null
-            it = linkText.iteratorPosition
+            // The link text is collected only once the link is known to be complete,
+            // so that with a scan index a failed candidate costs no scan of it.
+            var it = if (scanIndex != null) {
+                scanIndex.matchingBracket(iterator)
+            } else {
+                LinkParserUtil.parseLinkText(iterator)?.iteratorPosition
+            } ?: return null
             if (it.rawLookup(1) != MarkdownTokenTypes.LPAREN) {
                 return null
             }
@@ -54,14 +58,14 @@ class InlineLinkParser : SequentialParser {
             if (it.type == MarkdownTokenTypes.EOL) {
                 it = it.advance()
             }
-            val linkDestination = LinkParserUtil.parseLinkDestination(it)
+            val linkDestination = LinkParserUtil.parseLinkDestination(it, scanIndex)
             if (linkDestination != null) {
                 it = linkDestination.iteratorPosition.advance()
                 if (it.type == MarkdownTokenTypes.EOL) {
                     it = it.advance()
                 }
             }
-            val linkTitle = LinkParserUtil.parseLinkTitle(it)
+            val linkTitle = LinkParserUtil.parseLinkTitle(it, scanIndex)
             if (linkTitle != null) {
                 it = linkTitle.iteratorPosition.advance()
                 if (it.type == MarkdownTokenTypes.EOL) {
@@ -71,6 +75,8 @@ class InlineLinkParser : SequentialParser {
             if (it.type != MarkdownTokenTypes.RPAREN) {
                 return null
             }
+            val linkText = LinkParserUtil.parseLinkText(iterator)
+                    ?: return null
 
             return LocalParsingResult(it,
                     linkText.parsedNodes
