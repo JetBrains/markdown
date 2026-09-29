@@ -134,6 +134,41 @@ import kotlin.test.assertTrue
         assertFast(input, false, 150)
     }
 
+    /**
+     * IJPL-96392: every `[` used to trigger a link-text scan up to its matching `]`,
+     * so nested matched brackets made inline parsing quadratic.
+     */
+    @Test
+    fun testNestedMatchedBracketsAreLinear() {
+        assertLinkCandidatesFast(
+            "[".repeat(4_000) + "a" + "]".repeat(4_000),
+            "[".repeat(4_000) + "a" + "](".repeat(4_000),
+            "[".repeat(4_000) + "a" + "][]".repeat(4_000),
+        )
+    }
+
+    /**
+     * IJPL-96392: every `[...](` candidate used to scan for its destination and title up to
+     * their closing tokens, so unclosed ones made inline parsing quadratic.
+     */
+    @Test
+    fun testUnclosedInlineLinkCandidatesAreLinear() {
+        assertLinkCandidatesFast(
+            "[ (](".repeat(4_000),
+            "[a](b (".repeat(4_000) + ")",
+            "[a](<".repeat(4_000) + ")",
+            "[a](((".repeat(4_000) + ")",
+        )
+    }
+
+    /** Also checks the inputs with every link candidate turned into an image one. */
+    private fun assertLinkCandidatesFast(vararg inputs: String) {
+        for (input in inputs.flatMap { listOf(it, it.replace("[", "![")) }) {
+            assertFast(input, true, 100)
+            assertFast(input, true, 100, flavour = GFMFlavourDescriptor())
+        }
+    }
+
     @Test
     fun testLongDigitRunIsNotScannedAsListMarker() {
         val input = "- a\n" + ("1".repeat(100_000) + "\n").repeat(50)

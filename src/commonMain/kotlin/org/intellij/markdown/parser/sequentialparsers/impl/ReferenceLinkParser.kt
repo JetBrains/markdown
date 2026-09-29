@@ -13,11 +13,11 @@ class ReferenceLinkParser : SequentialParser {
         val delegateIndices = RangesListBuilder()
         var iterator: TokensCache.Iterator = tokens.RangesListIterator(rangesToGlue)
 
-        val matchedBrackets = LinkParserUtil.buildBracketStarts(tokens, rangesToGlue)
+        val scanIndex by lazy { LinkParserUtil.ScanIndex(tokens, rangesToGlue) }
 
         while (iterator.type != null) {
-            if (iterator.type == MarkdownTokenTypes.LBRACKET && iterator.index in matchedBrackets) {
-                val referenceLink = parseReferenceLink(iterator)
+            if (iterator.type == MarkdownTokenTypes.LBRACKET) {
+                val referenceLink = parseReferenceLink(iterator, scanIndex)
                 if (referenceLink != null) {
                     iterator = referenceLink.iteratorPosition.advance()
                     result = result.withOtherParsingResult(referenceLink)
@@ -33,23 +33,34 @@ class ReferenceLinkParser : SequentialParser {
     }
 
     companion object {
-        fun parseReferenceLink(iterator: TokensCache.Iterator): LocalParsingResult? {
-            return parseFullReferenceLink(iterator) ?: parseShortReferenceLink(iterator)
+        fun parseReferenceLink(
+            iterator: TokensCache.Iterator,
+            scanIndex: LinkParserUtil.ScanIndex? = null
+        ): LocalParsingResult? {
+            return parseFullReferenceLink(iterator, scanIndex) ?: parseShortReferenceLink(iterator)
         }
 
-        private fun parseFullReferenceLink(iterator: TokensCache.Iterator): LocalParsingResult? {
+        private fun parseFullReferenceLink(
+            iterator: TokensCache.Iterator,
+            scanIndex: LinkParserUtil.ScanIndex?
+        ): LocalParsingResult? {
             val startIndex = iterator.index
 
-            val linkText = LinkParserUtil.parseLinkText(iterator)
-                    ?: return null
-            val linkTextEnd = linkText.iteratorPosition.end
-            var it = linkText.iteratorPosition.advance()
+            // See InlineLinkParser.parseInlineLink.
+            val linkTextEnd = if (scanIndex != null) {
+                scanIndex.matchingBracket(iterator)
+            } else {
+                LinkParserUtil.parseLinkText(iterator)?.iteratorPosition
+            } ?: return null
+            var it = linkTextEnd.advance()
 
-            if (it.start != linkTextEnd) {
+            if (it.start != linkTextEnd.end) {
                 return null
             }
 
             val linkLabel = LinkParserUtil.parseLinkLabel(it)
+                    ?: return null
+            val linkText = LinkParserUtil.parseLinkText(iterator)
                     ?: return null
 
             it = linkLabel.iteratorPosition
