@@ -52,7 +52,20 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
         }
         assert(pos.offsetInCurrentLine == -1) { "given $pos" }
 
-        val line = pos.currentLine
+        return continueOnLine(pos.currentLine, null)
+    }
+
+    /**
+     * Reports every block quote marker that [applyToNextLine] continues on [line] to [action] as the start
+     * (inclusive) and end (exclusive) offsets of the marker in [line]. A marker consists of up to 3 spaces
+     * of indentation, `>` and the space or tab that follows it, if that is a part of the constraints.
+     */
+    internal fun forEachContinuedBlockQuoteMarker(line: CharSequence, action: (start: Int, end: Int) -> Unit) {
+        continueOnLine(line, action)
+    }
+
+    private fun continueOnLine(line: CharSequence,
+                               onBlockQuoteMarker: ((start: Int, end: Int) -> Unit)?): CommonMarkdownConstraints {
         val prevN = indents.size
         if (prevN == 0) {
             return base
@@ -107,6 +120,7 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
             totalSpaces = 0
             spacesSeen = 0
 
+            val roundStart = offset
             val bqIndent: Int?
             if (types[indexPrev] == BQ_CHAR) {
                 bqIndent = getBlockQuoteIndent(line, offset) ?: break
@@ -130,6 +144,11 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
 
             if (bqIndent != null) {
                 val bonusForTheBlockquote = if (hasKMoreSpaces(1)) 1 else 0
+                if (onBlockQuoteMarker != null) {
+                    // Only spaces and tabs are eaten after the `>`, so the marker takes the one right after it
+                    val markerEnd = roundStart + bqIndent
+                    onBlockQuoteMarker(roundStart, if (offset > markerEnd) markerEnd + 1 else markerEnd)
+                }
                 currentIndent += bqIndent + bonusForTheBlockquote
                 newIndents[newN] = currentIndent
                 newTypes[newN] = BQ_CHAR

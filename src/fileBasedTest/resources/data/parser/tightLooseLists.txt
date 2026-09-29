@@ -157,7 +157,8 @@ Markdown:MARKDOWN_FILE
         Markdown:PARAGRAPH
           Markdown:TEXT('quote')
         Markdown:EOL('\n')
-        WHITE_SPACE('  >')
+        WHITE_SPACE('  ')
+        Markdown:BLOCK_QUOTE('>')
     Markdown:EOL('\n')
     Markdown:LIST_ITEM
       Markdown:LIST_BULLET('* ')

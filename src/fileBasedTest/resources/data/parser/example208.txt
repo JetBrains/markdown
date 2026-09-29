@@ -9,9 +9,12 @@ Markdown:MARKDOWN_FILE
           Markdown:PARAGRAPH
             Markdown:TEXT('one')
           Markdown:EOL('\n')
-          WHITE_SPACE('>>')
+          Markdown:BLOCK_QUOTE('>')
+          Markdown:BLOCK_QUOTE('>')
           Markdown:EOL('\n')
-          WHITE_SPACE('>>     ')
+          Markdown:BLOCK_QUOTE('>')
+          Markdown:BLOCK_QUOTE('> ')
+          WHITE_SPACE('    ')
           Markdown:PARAGRAPH
             Markdown:TEXT('two')
   Markdown:EOL('\n')

@@ -35,7 +35,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_BLOCK
       Markdown:CODE_LINE('    This is the code')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:CODE_LINE('    inside of a blockquote')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -44,9 +44,9 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_BLOCK
       Markdown:CODE_LINE('    This is the code')
       Markdown:EOL('\n')
-      WHITE_SPACE('>')
+      Markdown:BLOCK_QUOTE('>')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:CODE_LINE('    With empty line')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -55,10 +55,10 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_BLOCK
       Markdown:CODE_LINE('    This is the code')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:CODE_LINE('      ')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:CODE_LINE('    With some rendered whitespace in the middle line')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

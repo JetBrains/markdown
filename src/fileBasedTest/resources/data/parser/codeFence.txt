@@ -167,7 +167,7 @@ Markdown:MARKDOWN_FILE
     Markdown:CODE_FENCE
       Markdown:CODE_FENCE_START('```')
       Markdown:EOL('\n')
-      WHITE_SPACE('> ')
+      Markdown:BLOCK_QUOTE('> ')
       Markdown:CODE_FENCE_CONTENT('aaa')
   Markdown:EOL('\n')
   Markdown:EOL('\n')

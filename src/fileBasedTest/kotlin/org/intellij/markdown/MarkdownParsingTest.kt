@@ -129,6 +129,18 @@ class MarkdownParsingTest : TestCase() {
     }
 
     @Test
+    fun testBlockQuoteContinuationMarkers() {
+        defaultTest()
+        defaultTest(GFMFlavourDescriptor())
+    }
+
+    @Test
+    fun testBlockQuoteNoLazyContinuation() {
+        defaultTest(NonLazyBlockQuoteCommonMarkFlavour())
+        defaultTest(NonLazyBlockQuoteGfmFlavour())
+    }
+
+    @Test
     fun testHeaders() {
         defaultTest()
     }
