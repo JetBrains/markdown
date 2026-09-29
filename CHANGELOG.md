@@ -2,6 +2,8 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+# 0.7.16
 - Add `BlockQuoteProvider(lazyContinuation = false)`, which ends a block quote at a line without the `>` marker instead of continuing its paragraph
 - Parse the `>` markers on the continuation lines of a block quote as `BLOCK_QUOTE` tokens instead of `WHITE_SPACE`
 - Fix quadratic inline parse time on text full of link or image candidates that never form one, such as nested `[...]` brackets or `[...](` with an unclosed destination or title (IJPL-96392)
