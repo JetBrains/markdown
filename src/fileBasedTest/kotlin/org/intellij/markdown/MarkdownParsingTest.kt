@@ -380,6 +380,13 @@ Markdown:MARKDOWN_FILE
         defaultTest(GFMFlavourDescriptor())
     }
 
+    // IJPL-95908: block quote markers of table lines should be parsed as BLOCK_QUOTE tokens,
+    // not whitespace, so that they survive whitespace-normalizing tree mutations
+    @Test
+    fun testTableInsideBlockQuote() {
+        defaultTest(GFMFlavourDescriptor())
+    }
+
     @Test
     fun testTableInsideOrderedListItem() {
         defaultTest(GFMFlavourDescriptor())

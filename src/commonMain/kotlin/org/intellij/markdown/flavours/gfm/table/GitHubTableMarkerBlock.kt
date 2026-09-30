@@ -1,5 +1,6 @@
 package org.intellij.markdown.flavours.gfm.table
 
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.LookaheadText
@@ -34,6 +35,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         }
         // That means it's table header separator line
         if (currentLine == 1) {
+            addBlockQuoteMarkersProduction(pos, lineConstraints)
             val separatorStart = pos.offset + 1 + lineConstraints.getCharsEaten(pos.currentLine)
             productionHolder.addProduction(listOf(SequentialParser.Node(separatorStart..pos.nextLineOrEofOffset,
                     GFMTokenTypes.TABLE_SEPARATOR)))
@@ -48,6 +50,7 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
         if (cellsAndSeps.isEmpty()) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
+        addBlockQuoteMarkersProduction(pos, lineConstraints)
         productionHolder.addProduction(
                 listOf(SequentialParser.Node(cellsAndSeps.first().range.first..cellsAndSeps.last().range.last,
                         GFMElementTypes.ROW))
@@ -64,6 +67,35 @@ class GitHubTableMarkerBlock(pos: LookaheadText.Position,
     override fun isInterestingOffset(pos: LookaheadText.Position) = pos.offsetInCurrentLine == -1
 
     override fun allowsSubBlocks() = false
+
+    /**
+     * Emits [MarkdownTokenTypes.BLOCK_QUOTE] tokens for the block quote markers eaten by the constraints
+     * of a table continuation line. Without these productions the `>` markers would become part of
+     * the whitespace between the table rows and could be lost on a whitespace-normalizing tree mutation.
+     */
+    private fun addBlockQuoteMarkersProduction(pos: LookaheadText.Position, lineConstraints: MarkdownConstraints) {
+        val line = pos.currentLine
+        val prefixLength = lineConstraints.getCharsEaten(line)
+        val lineStartOffset = pos.offset + 1
+        val nodes = ArrayList<SequentialParser.Node>(0)
+        var index = 0
+        while (index < prefixLength) {
+            if (line[index] == '>') {
+                var end = index + 1
+                if (end < prefixLength && line[end] == ' ') {
+                    end++
+                }
+                nodes.add(SequentialParser.Node(lineStartOffset + index..lineStartOffset + end,
+                        MarkdownTokenTypes.BLOCK_QUOTE))
+                index = end
+            } else {
+                index++
+            }
+        }
+        if (nodes.isNotEmpty()) {
+            productionHolder.addProduction(nodes)
+        }
+    }
 
     private fun fillCells(pos: LookaheadText.Position,
                           lineConstraints: MarkdownConstraints = constraints): List<SequentialParser.Node> {
