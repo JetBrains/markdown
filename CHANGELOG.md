@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Keep ordered markers such as `2)` or `2.` inside an existing paragraph unless the list starts with `1`, as required by CommonMark/GFM (IJPL-96524)
 
 # 0.7.16
 - Add `BlockQuoteProvider(lazyContinuation = false)`, which ends a block quote at a line without the `>` marker instead of continuing its paragraph
