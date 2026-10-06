@@ -29,6 +29,10 @@ interface MarkdownConstraints {
      */
     fun addModifierIfNeeded(pos: LookaheadText.Position?): MarkdownConstraints?
 
+    /** Adds a modifier while checking whether it may interrupt an open paragraph. */
+    fun addModifierIfNeeded(pos: LookaheadText.Position?, interruptsParagraph: Boolean): MarkdownConstraints? =
+        addModifierIfNeeded(pos)
+
     /**
      * Returns a constraints for the next line (at given pos) by continuing as much as possible from {@code this}
      * constraints without adding any new modifiers
@@ -59,15 +63,21 @@ fun MarkdownConstraints.eatItselfFromString(s: CharSequence): CharSequence {
     }
 }
 
-fun MarkdownConstraints.applyToNextLineAndAddModifiers(pos: LookaheadText.Position): MarkdownConstraints {
+fun MarkdownConstraints.applyToNextLineAndAddModifiers(pos: LookaheadText.Position): MarkdownConstraints =
+    applyToNextLineAndAddModifiers(pos, interruptsParagraph = false)
+
+fun MarkdownConstraints.applyToNextLineAndAddModifiers(pos: LookaheadText.Position,
+                                                      interruptsParagraph: Boolean): MarkdownConstraints {
     assert(pos.offsetInCurrentLine == -1)
 
     var result = applyToNextLine(pos)
     val line = pos.currentLine
+    // A sibling list item ends the current item rather than interrupting its paragraph.
+    val continuesListItem = (result.types.size until types.size).none { types[it] != '>' }
 
     while (true) {
         val offset = result.getCharsEaten(line)
-        result = result.addModifierIfNeeded(pos.nextPosition(1 + offset))
+        result = result.addModifierIfNeeded(pos.nextPosition(1 + offset), interruptsParagraph && continuesListItem)
                 ?: break
     }
 
