@@ -42,7 +42,7 @@ class ParagraphMarkerBlock(constraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos, interruptsParagraph = true)
         if (!nextLineConstraints.upstreamWith(constraints)) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }

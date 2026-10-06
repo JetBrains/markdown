@@ -380,42 +380,25 @@ KLA accesses the local overrides file via the Environment Variable: <strong>KNOW
 <li>
 The Solr instance type you connect to must be configured via the <strong>solr_provider</strong>
  and <strong>solr_url</strong>
- settings:<ol start="3">
-<li>
-For a single instance Solr server the local overrides file should contain:<ol>
-<li>
-<strong>solr_provider=Single</strong>
-.</li>
-<li>
-<strong>solr_url</strong>
+ settings:
+    3. For a single instance Solr server the local overrides file should contain:
+        1. <strong>solr_provider=Single</strong>
+.
+        2. <strong>solr_url</strong>
  property should be set to the full http address of Solr (i.e. <code>solr_url=http://172.22.60.178:8983/solr</code>
-).</li>
-</ol>
-</li>
-<li>
-For a cloud instance of Solr the local overrides file should contain:<ol>
-<li>
-<strong>solr_provider=Cloud</strong>
-.</li>
-<li>
-<strong>solr_url</strong>
+).
+    4. For a cloud instance of Solr the local overrides file should contain:
+        1. <strong>solr_provider=Cloud</strong>
+.
+        2. <strong>solr_url</strong>
  property should be a list of the Zookeeper nodes managing Solr Cloud (zkhosts setting with IP addresses and port: i.e. <code>solr_url=172.29.24.42:2181,172.29.24.46:2181/logstash_chroot</code>
-).</li>
-</ol>
-</li>
-<li>
-For Load Balanced (DataStax) instances of Solr Cloud the local overrides file should contain:<ol>
-<li>
-<strong>solr_provider=Load Balanced</strong>
-.</li>
-<li>
-<strong>solr_url</strong>
+).
+    5. For Load Balanced (DataStax) instances of Solr Cloud the local overrides file should contain:
+        1. <strong>solr_provider=Load Balanced</strong>
+.
+        2. <strong>solr_url</strong>
  property should be a list of the Solr hosts (i.e. <code>solr_url=http://52.7.123.220:8983/solr,http://52.5.137.196:8983/solr</code>
 ).</li>
-</ol>
-</li>
-</ol>
-</li>
 <li>
 The <strong>solr_core</strong>
  property should be set to specify the appropriate Solr Core or Collection name.</li>
@@ -682,53 +665,31 @@ On the Details tab set the Display name: and Service name: to <code>Logstash</co
 <li>
 Install and Configure Zookeeper, on all Zookeeper nodes (requires Java):<ol>
 <li>
-Open ports 2181 and 2888 - 3888<ol start="2">
-<li>
-Red Hat 6 family<ol start="3">
-<li>
-Open port 2181: <code>iptables -A INPUT -p tcp --dport 2181 -j ACCEPT</code>
-</li>
-<li>
-Open ports 2888-3888: <code>iptables -A INPUT -p tcp --dport 2888:3888 -j ACCEPT</code>
-</li>
-<li>
-Save the iptables changes: <code>iptables-save &gt; /etc/sysconfig/iptables</code>
-</li>
-<li>
-Check firewall status: <code>iptables -L</code>
-</li>
-</ol>
-</li>
-<li>
-Red Hat 7 family<ol start="3">
-<li>
-Open port 2181: <code>firewall-cmd --zone=public --add-port=2181/tcp --permanent</code>
-</li>
-<li>
-Open port 2888-3888: <code>firewall-cmd --zone=public --add-port=2888:3888/tcp --permanent</code>
-</li>
-<li>
-Save the iptables changes: <code>firewall-cmd --reload</code>
-</li>
-<li>
-Check firewall status: <code>sudo iptables -L</code>
-</li>
-</ol>
-</li>
-<li>
-Ubuntu<ol start="3">
-<li>
-Check firewall status: <code>sudo ufw status verbose</code>
-</li>
-<li>
-Open port 2181: <code>sudo ufw allow 2181/tcp</code>
-</li>
-<li>
-Open ports 2888-3888: <code>sudo ufw allow 2888:3888/tcp</code>
-</li>
-</ol>
-</li>
-</ol>
+Open ports 2181 and 2888 - 3888
+        2. Red Hat 6 family
+            3. Open port 2181: <code>iptables -A INPUT -p tcp --dport 2181 -j ACCEPT</code>
+
+            3. Open ports 2888-3888: <code>iptables -A INPUT -p tcp --dport 2888:3888 -j ACCEPT</code>
+
+            3. Save the iptables changes: <code>iptables-save &gt; /etc/sysconfig/iptables</code>
+
+            3. Check firewall status: <code>iptables -L</code>
+
+        2. Red Hat 7 family
+            3. Open port 2181: <code>firewall-cmd --zone=public --add-port=2181/tcp --permanent</code>
+
+            3. Open port 2888-3888: <code>firewall-cmd --zone=public --add-port=2888:3888/tcp --permanent</code>
+
+            3. Save the iptables changes: <code>firewall-cmd --reload</code>
+
+            3. Check firewall status: <code>sudo iptables -L</code>
+
+        2. Ubuntu
+            3. Check firewall status: <code>sudo ufw status verbose</code>
+
+            3. Open port 2181: <code>sudo ufw allow 2181/tcp</code>
+
+            3. Open ports 2888-3888: <code>sudo ufw allow 2888:3888/tcp</code>
 </li>
 <li>
 Install Zookeeper<ol>
@@ -744,51 +705,32 @@ Install Zookeeper<ol>
 </ol>
 </li>
 <li>
-Configure your zookeeper cluster<ol start="2">
-<li>
-<code>cd zookeeper-3.4.6/conf</code>
-</li>
-<li>
-<code>cp zoo_sample.cfg zoo.cfg</code>
-</li>
-<li>
-Edit zoo.cfg:<ol start="3">
-<li>
-change the data dir: <strong>dataDir=/var/zookeeper</strong>
-</li>
-<li>
-add a line for each ZK host in your cluster:<ol start="4">
-<li>
-<strong>server.1=zk1-host:2888:3888</strong>
-</li>
-<li>
-<strong>server.2=zk2-host:2888:3888</strong>
-</li>
-<li>
-<strong>server.3=zk3-host:2888:3888</strong>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>
-Create a <strong>myid</strong>
- file in /var/zookeeper, add the server id to the file (i.e. for zoo1-host the file would just contain the character &quot;1&quot;)</li>
-<li>rename zkServer.sh and copy in the version in /resources/CentOS</li>
-<li>
-create a symlink to run ZK as a service: <code>sudo ln -s /opt/zookeeper-3.4.5/bin/zkServer.sh /etc/init.d/zookeeper</code>
-</li>
-<li>
-configure the service to autostart: <code>chkconfig zookeeper on</code>
-</li>
-<li>
-start ZK: <code>sudo /sbin/service zookeeper start</code>
-</li>
-<li>
-verify ZK is running: <code>echo &quot;ruok&quot; | nc localhost 2181  ; echo ''</code>
+Configure your zookeeper cluster
+        2. <code>cd zookeeper-3.4.6/conf</code>
+
+        2. <code>cp zoo_sample.cfg zoo.cfg</code>
+
+        2. Edit zoo.cfg:
+            3. change the data dir: <strong>dataDir=/var/zookeeper</strong>
+
+            3. add a line for each ZK host in your cluster:
+                4. <strong>server.1=zk1-host:2888:3888</strong>
+
+                4. <strong>server.2=zk2-host:2888:3888</strong>
+
+                4. <strong>server.3=zk3-host:2888:3888</strong>
+
+        2. Create a <strong>myid</strong>
+ file in /var/zookeeper, add the server id to the file (i.e. for zoo1-host the file would just contain the character &quot;1&quot;)
+        2. rename zkServer.sh and copy in the version in /resources/CentOS
+        2. create a symlink to run ZK as a service: <code>sudo ln -s /opt/zookeeper-3.4.5/bin/zkServer.sh /etc/init.d/zookeeper</code>
+
+        2. configure the service to autostart: <code>chkconfig zookeeper on</code>
+
+        2. start ZK: <code>sudo /sbin/service zookeeper start</code>
+
+        2. verify ZK is running: <code>echo &quot;ruok&quot; | nc localhost 2181  ; echo ''</code>
   you should receive an response of: imok</li>
-</ol>
-</li>
 </ol>
 </li>
 </ol>
@@ -811,15 +753,12 @@ Install Solr Cloud on Linux (requires Java, Zookeeper)<ol>
 <li>
 <code>./install_solr_service.sh solr-5.0.0.tgz</code>
 </li>
-<li>
-By default this script will<ol start="2">
-<li>install solr with a symbolic link in /opt,</li>
-<li>create a solr user,</li>
-<li>create a service to run solr as the solr user on the default port (8983) with autostart,</li>
-<li>set Solr database storage to /var/solr,</li>
-<li>starts solr and displays the running status</li>
-</ol>
-</li>
+<li>By default this script will
+        2. install solr with a symbolic link in /opt,
+        2. create a solr user,
+        2. create a service to run solr as the solr user on the default port (8983) with autostart,
+        2. set Solr database storage to /var/solr,
+        2. starts solr and displays the running status</li>
 <li>
 To Stop/Start/Restart/Status the service: <code>service solr start</code>
 </li>

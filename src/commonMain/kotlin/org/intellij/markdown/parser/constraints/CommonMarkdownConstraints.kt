@@ -38,12 +38,16 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
     }
 
     override fun addModifierIfNeeded(pos: LookaheadText.Position?): CommonMarkdownConstraints? {
+        return addModifierIfNeeded(pos, false)
+    }
+
+    override fun addModifierIfNeeded(pos: LookaheadText.Position?, interruptsParagraph: Boolean): CommonMarkdownConstraints? {
         if (pos == null || pos.offsetInCurrentLine == -1)
             return null
         if (HorizontalRuleProvider.isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
             return null
         }
-        return tryAddListItem(pos) ?: tryAddBlockQuote(pos)
+        return tryAddListItem(pos, interruptsParagraph) ?: tryAddBlockQuote(pos)
     }
 
     override fun applyToNextLine(pos: LookaheadText.Position?): CommonMarkdownConstraints {
@@ -222,7 +226,7 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
     protected data class ListMarkerInfo(val markerLength: Int, val markerType: Char, val markerIndent: Int)
 
 
-    private fun tryAddListItem(pos: LookaheadText.Position): CommonMarkdownConstraints? {
+    private fun tryAddListItem(pos: LookaheadText.Position, interruptsParagraph: Boolean): CommonMarkdownConstraints? {
         val line = pos.currentLine
 
         var offset = pos.offsetInCurrentLine
@@ -241,6 +245,14 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
         val markerInfo = fetchListMarker(pos.nextPosition(offset - pos.offsetInCurrentLine)!!)
                 ?: return null
 
+        // Only an ordered list starting with 1 may interrupt a paragraph. Read the
+        // number from the source because GFM may extend the marker with a checkbox.
+        if (interruptsParagraph && line[offset] in '0'..'9') {
+            var numberEnd = offset
+            while (numberEnd < line.length && line[numberEnd] in '0'..'9') numberEnd++
+            if (line.subSequence(offset, numberEnd).toString().toIntOrNull() != 1) return null
+        }
+
         offset += markerInfo.markerLength
         var spacesAfter = 0
 
@@ -254,6 +266,9 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
             }
             offset++
         }
+
+        // Empty list items cannot interrupt paragraphs either.
+        if (interruptsParagraph && offset == line.length) return null
 
         // By the classification http://spec.commonmark.org/0.20/#list-items
         // 1. Basic case

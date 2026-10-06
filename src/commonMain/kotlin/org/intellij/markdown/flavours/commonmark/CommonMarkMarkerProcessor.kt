@@ -44,7 +44,8 @@ open class CommonMarkMarkerProcessor(productionHolder: ProductionHolder, constra
                     markersStack)
         } else if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, stateInfo.nextConstraints)) {
             stateInfo = MarkerProcessor.StateInfo(stateInfo.nextConstraints,
-                    stateInfo.nextConstraints.addModifierIfNeeded(pos) ?: stateInfo.nextConstraints,
+                    stateInfo.nextConstraints.addModifierIfNeeded(pos,
+                            interruptsParagraph = markersStack.lastOrNull() is ParagraphMarkerBlock) ?: stateInfo.nextConstraints,
                     markersStack)
         }
     }
