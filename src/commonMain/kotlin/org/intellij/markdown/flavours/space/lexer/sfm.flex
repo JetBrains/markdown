@@ -94,8 +94,9 @@ import java.util.Stack;
   }
 
   private void processEol() {
-    int newlinePos = 1;
-    while (newlinePos < yylength() && yycharat(newlinePos) != '\n') {
+    int lineEndingLength = yycharat(0) == '\r' && yylength() > 1 && yycharat(1) == '\n' ? 2 : 1;
+    int newlinePos = lineEndingLength;
+    while (newlinePos < yylength() && yycharat(newlinePos) != '\n' && yycharat(newlinePos) != '\r') {
       newlinePos++;
     }
 
@@ -106,7 +107,7 @@ import java.util.Stack;
     }
 
     yybegin(YYINITIAL);
-    yypushback(yylength() - 1);
+    yypushback(yylength() - lineEndingLength);
 
     isHeader = false;
   }
@@ -360,7 +361,8 @@ SFM_AUTOLINK = (({SCHEME}"://") ({URL_USER_INFO_CHAR}+ "@")? {HOST_PART} ("." {H
   }
 
   {WHITE_SPACE}* ({EOL} {WHITE_SPACE}*)+ {
-    int lastSpaces = yytext().toString().indexOf("\n");
+    int lastSpaces = 0;
+    while (lastSpaces < yylength() && yycharat(lastSpaces) != '\n' && yycharat(lastSpaces) != '\r') lastSpaces++;
     if (lastSpaces >= 2) {
       yypushback(yylength() - lastSpaces);
       return Token.HARD_LINE_BREAK;

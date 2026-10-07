@@ -3,24 +3,27 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.lexer.Compat.assert
 import kotlin.math.max
 
-// CharSequence.split() always copies each piece into a new String (substring() = subSequence().toString()).
-// This keeps pieces as CharSequence views via subSequence(), so a bombed/cancellable CharSequence isn't flattened.
-private fun CharSequence.splitLinesToCharSequences(): List<CharSequence> {
-    val result = ArrayList<CharSequence>()
-    var start = 0
-    while (true) {
-        val index = indexOf('\n', start)
-        if (index == -1) {
-            result.add(subSequence(start, length))
-            return result
-        }
-        result.add(subSequence(start, index))
-        start = index + 1
-    }
-}
-
 class LookaheadText(private val text: CharSequence) {
-    private val lines: List<CharSequence> = text.splitLinesToCharSequences()
+    private val lineStarts = ArrayList<Int>().apply {
+        add(0)
+        var cr = text.indexOf('\r')
+        var lf = text.indexOf('\n')
+        while (cr >= 0 || lf >= 0) {
+            val offset = if (cr < 0) lf else if (lf < 0) cr else minOf(cr, lf)
+            val end = offset + if (offset == cr && lf == cr + 1) 2 else 1
+            add(end)
+            if (cr in 0 until end) cr = text.indexOf('\r', end)
+            if (lf in 0 until end) lf = text.indexOf('\n', end)
+        }
+    }.toIntArray()
+    // Keep views of the original text, including its offsets and cancellation checks.
+    private val lines = lineStarts.mapIndexed { index, start ->
+        var end = if (index + 1 < lineStarts.size) lineStarts[index + 1] - 1 else text.length
+        if (end > start && text[end - 1] == '\r' && end < text.length && text[end] == '\n') end--
+        text.subSequence(start, end)
+    }
+
+    private fun lineEnd(index: Int): Int = lineStarts[index] + lines[index].length
 
     val startPosition: Position? = if (text.isNotEmpty())
         Position(0, -1, -1).nextPosition()
@@ -57,14 +60,10 @@ class LookaheadText(private val text: CharSequence) {
             get() = localPos
 
         val nextLineOffset: Int?
-            get() = if (lineN + 1 < lines.size) {
-                globalPos + (currentLine.length - localPos)
-            } else {
-                null
-            }
+            get() = if (lineN + 1 < lines.size) lineEnd(lineN) else null
 
         val nextLineOrEofOffset: Int
-            get() = globalPos + (currentLine.length - localPos)
+            get() = lineEnd(lineN)
 
         val textFromPosition: CharSequence
             get() = text.subSequence(globalPos, text.length)
@@ -90,29 +89,19 @@ class LookaheadText(private val text: CharSequence) {
             get() = text[globalPos]
 
         fun nextPosition(delta: Int = 1): Position? {
-            var remaining = delta
-            var currentPosition = this
-
-            while (true) {
-                if (remaining == 0) {
-                    return currentPosition
-                }
-                if (currentPosition.localPos + remaining < currentPosition.currentLine.length) {
-                    return Position(currentPosition.lineN,
-                            currentPosition.localPos + remaining,
-                            currentPosition.globalPos + remaining)
-                } else {
-                    val nextLine = currentPosition.nextLineOffset
-                    if (nextLine == null) {
-                        return null
-                    } else {
-                        val payload = currentPosition.currentLine.length - currentPosition.localPos
-
-                        currentPosition = Position(currentPosition.lineN + 1, -1, currentPosition.globalPos + payload)
-                        remaining -= payload
-                    }
+            if (delta == 0) return this
+            if (delta > 0 && globalPos >= text.length - delta) return null
+            val target = globalPos + delta
+            var nextLineN = lineN
+            while (nextLineN + 1 < lines.size && target >= lineEnd(nextLineN)) {
+                nextLineN++
+                if (target < lineStarts[nextLineN]) {
+                    // A CRLF is one line ending; -1 denotes its last character so offset + 1
+                    // still points to the first character of the following line.
+                    return Position(nextLineN, -1, lineStarts[nextLineN] - 1)
                 }
             }
+            return Position(nextLineN, target - lineStarts[nextLineN], target)
         }
 
         fun nextLinePosition(): Position? {

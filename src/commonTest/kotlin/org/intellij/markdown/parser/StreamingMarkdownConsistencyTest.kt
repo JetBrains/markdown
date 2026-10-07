@@ -211,6 +211,14 @@ class StreamingMarkdownConsistencyTest {
         )
     }
 
+    @Test
+    fun crAndCrLfLineEndingsArriveInSeparateChunks() {
+        for (eol in listOf("\r\n", "\r")) {
+            val text = "before${eol}${eol}```python${eol}print(1)${eol}```${eol}${eol}after${eol}${eol}"
+            assertStreamingMatchesFullParse(text, chunkSizes = listOf(1))
+        }
+    }
+
     private fun assertStreamingMatchesFullParse(text: String, chunkSizes: List<Int>) {
         val file = EmptyStreamingMarkdownFile()
         val consumedText = StringBuilder()

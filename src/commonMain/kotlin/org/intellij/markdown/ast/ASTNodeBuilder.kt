@@ -30,7 +30,7 @@ open class ASTNodeBuilder(
             while (lastEol < endOffset) {
                 cancellationToken.checkCancelled()
 
-                val nextEol = indexOfSubSeq(text, lastEol, endOffset, '\n')
+                val nextEol = indexOfSubSeq(text, lastEol, endOffset, '\n', '\r')
                 if (nextEol == -1) {
                     break
                 }
@@ -38,8 +38,8 @@ open class ASTNodeBuilder(
                 if (nextEol > lastEol) {
                     result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol + baseOffset, nextEol + baseOffset))
                 }
-                result.add(LeafASTNode(MarkdownTokenTypes.EOL, nextEol + baseOffset, nextEol + 1 + baseOffset))
-                lastEol = nextEol + 1
+                lastEol = nextEol + if (text[nextEol] == '\r' && nextEol + 1 < endOffset && text[nextEol + 1] == '\n') 2 else 1
+                result.add(LeafASTNode(MarkdownTokenTypes.EOL, nextEol + baseOffset, lastEol + baseOffset))
             }
             if (endOffset > lastEol) {
                 result.add(LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, lastEol + baseOffset, endOffset + baseOffset))
@@ -67,9 +67,13 @@ open class ASTNodeBuilder(
     }
 
     companion object {
-        fun indexOfSubSeq(s: CharSequence, from: Int, to: Int, c: Char): Int {
-            for (i in from..to - 1) {
-                if (s[i] == c) {
+        fun indexOfSubSeq(s: CharSequence, from: Int, to: Int, c: Char): Int =
+            indexOfSubSeq(s, from, to, c, c)
+
+        private fun indexOfSubSeq(s: CharSequence, from: Int, to: Int, c: Char, alternative: Char): Int {
+            for (i in from until to) {
+                val char = s[i]
+                if (char == c || char == alternative) {
                     return i
                 }
             }
