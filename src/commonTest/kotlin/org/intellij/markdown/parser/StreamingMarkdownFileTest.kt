@@ -230,6 +230,24 @@ class StreamingMarkdownFileTest {
         assertTrue(file.unstableTail.isEmpty())
     }
 
+    @Test
+    fun lineOfOtherWhitespaceIsNotABlankLine() {
+        for (text in listOf("line one\r\nline two\r\n\r\nnext\r\n", "line one\n\u00A0\nline two\n")) {
+            val file = EmptyStreamingMarkdownFile()
+            text.forEach { file.append(it.toString()) }
+
+            val expected = MarkdownParser(GFMFlavourDescriptor(), cancellationToken = CancellationToken.NonCancellable)
+                .buildMarkdownTreeFromString(text)
+                .children
+
+            assertEquals(
+                expected.map { Triple(it.type, it.startOffset, it.endOffset) },
+                file.children.map { Triple(it.type, it.startOffset, it.endOffset) },
+                text
+            )
+        }
+    }
+
     private class TestCancellationException : RuntimeException()
 
     private fun assertTopLevelTypes(nodes: List<ASTNode>, vararg types: IElementType) {

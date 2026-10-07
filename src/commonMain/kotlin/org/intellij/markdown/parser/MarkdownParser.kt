@@ -185,13 +185,14 @@ class MarkdownParser(
     }
 
     /**
-     * Return the exclusive end of the last blank line in the string.
+     * Return the exclusive end of the last blank line in the string. As in the block parser, only spaces and tabs make
+     * a line blank; a line holding other whitespace, such as `\r`, does not end a block.
      * This guarantees O(1) memory usage and O(n) worst-case time complexity.
      */
     private tailrec fun CharSequence.lastBlankLineEndOrNull(lineEnd: Int = lastIndexOf('\n')): Int? {
         val lastLineEnd = lastIndexOf('\n', lineEnd - 1)
         if (lastLineEnd == -1) return null
-        if ((lastLineEnd..lineEnd).all { this[it].isWhitespace() }) return lineEnd + 1
+        if ((lastLineEnd + 1 until lineEnd).all { this[it] == ' ' || this[it] == '\t' }) return lineEnd + 1
         return lastBlankLineEndOrNull(lastLineEnd)
     }
 
