@@ -3,6 +3,7 @@
 
 ## [Unreleased]
 - Keep ordered markers such as `2)` or `2.` inside an existing paragraph unless the list starts with `1`, as required by CommonMark/GFM (IJPL-96524)
+- Keep a streamed paragraph whole across a line holding whitespace other than spaces and tabs, such as `\r` with CRLF line endings, instead of splitting it depending on how the text was chunked
 
 # 0.7.16
 - Add `BlockQuoteProvider(lazyContinuation = false)`, which ends a block quote at a line without the `>` marker instead of continuing its paragraph
