@@ -95,8 +95,9 @@ class _MarkdownLexer : GeneratedLexer {
     }
 
     private fun processEol() {
-        var newlinePos = 1
-        while (newlinePos < yylength() && yycharat(newlinePos) != '\n') {
+        val lineEndingLength = if (yycharat(0) == '\r' && yylength() > 1 && yycharat(1) == '\n') 2 else 1
+        var newlinePos = lineEndingLength
+        while (newlinePos < yylength() && yycharat(newlinePos) != '\n' && yycharat(newlinePos) != '\r') {
             newlinePos++
         }
 
@@ -106,7 +107,7 @@ class _MarkdownLexer : GeneratedLexer {
             return
         }
         yybegin(YYINITIAL)
-        yypushback(yylength() - 1)
+        yypushback(yylength() - lineEndingLength)
         isHeader = false
     }
 
@@ -353,7 +354,7 @@ class _MarkdownLexer : GeneratedLexer {
                     21 -> {
                     }
                     5 -> {
-                        val lastSpaces = yytext().toString().indexOf("\n")
+                        val lastSpaces = yytext().indexOfFirst { it == '\n' || it == '\r' }
                         if (lastSpaces >= 2) {
                             yypushback(yylength() - lastSpaces)
                             return MarkdownTokenTypes.HARD_LINE_BREAK

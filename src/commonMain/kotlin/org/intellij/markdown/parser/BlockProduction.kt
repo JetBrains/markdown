@@ -24,7 +24,15 @@ fun collectBlockProduction(
     var pos: LookaheadText.Position? = textHolder.startPosition
     while (pos != null) {
         cancellationToken.checkCancelled()
-        productionHolder.updatePosition(pos.offset)
+        // Positions use the last character of CRLF; block ranges end before the whole line ending.
+        val offset = pos.offset
+        val lineEndOffset = if (pos.offsetInCurrentLine == -1 && offset > 0
+            && text[offset] == '\n' && text[offset - 1] == '\r') {
+            offset - 1
+        } else {
+            offset
+        }
+        productionHolder.updatePosition(lineEndOffset)
         pos = markerProcessor.processPosition(pos)
     }
 

@@ -231,6 +231,27 @@ class StreamingMarkdownFileTest {
     }
 
     @Test
+    fun crAndCrLfBlankLinesPromoteOnlyCompletedParagraphs() {
+        for (eol in listOf("\r\n", "\r")) {
+            val file = EmptyStreamingMarkdownFile()
+            file.append("first${eol}${eol}next")
+            val paragraph = file.stableChildren.single { it.type == MarkdownElementTypes.PARAGRAPH }
+            assertEquals(5, paragraph.endOffset)
+            assertEquals(5 + 2 * eol.length, file.unstableTail.single().startOffset)
+        }
+    }
+
+    @Test
+    fun trailingCrWaitsForPossibleLf() {
+        val file = EmptyStreamingMarkdownFile()
+        file.append("first\r\n\r")
+        assertTrue(file.stableChildren.isEmpty())
+        file.append("\n")
+        assertTrue(file.unstableTail.isEmpty())
+        assertEquals(9, file.children.last().endOffset)
+    }
+
+    @Test
     fun lineOfOtherWhitespaceIsNotABlankLine() {
         for (text in listOf("line one\r\nline two\r\n\r\nnext\r\n", "line one\n\u00A0\nline two\n")) {
             val file = EmptyStreamingMarkdownFile()

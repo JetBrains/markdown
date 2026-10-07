@@ -31,7 +31,8 @@ abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
 
     final override fun processToken(pos: LookaheadText.Position,
                                     currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
-        if (lastInterestingOffset != pos.offset && scheduledResult != null) {
+        // Advancing across CRLF can skip the scheduled offset on its CR character.
+        if (lastInterestingOffset > pos.offset && scheduledResult != null) {
             return MarkerBlock.ProcessingResult.CANCEL
         }
 

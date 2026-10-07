@@ -185,15 +185,27 @@ class MarkdownParser(
     }
 
     /**
-     * Return the exclusive end of the last blank line in the string. As in the block parser, only spaces and tabs make
-     * a line blank; a line holding other whitespace, such as `\r`, does not end a block.
-     * This guarantees O(1) memory usage and O(n) worst-case time complexity.
+     * Return the exclusive end of the last blank line, using O(1) memory and O(n) worst-case time.
+     * Only spaces and tabs make a line blank. A trailing CR remains unstable until a possible LF arrives.
      */
-    private tailrec fun CharSequence.lastBlankLineEndOrNull(lineEnd: Int = lastIndexOf('\n')): Int? {
-        val lastLineEnd = lastIndexOf('\n', lineEnd - 1)
-        if (lastLineEnd == -1) return null
-        if ((lastLineEnd + 1 until lineEnd).all { this[it] == ' ' || this[it] == '\t' }) return lineEnd + 1
-        return lastBlankLineEndOrNull(lastLineEnd)
+    private fun CharSequence.lastBlankLineEndOrNull(): Int? {
+        var offset = lastIndex
+        while (offset >= 0) {
+            val c = this[offset]
+            if (c != '\r' && c != '\n') {
+                offset--
+                continue
+            }
+            val lineEnd = offset + 1
+            if (c == '\n' && offset > 0 && this[offset - 1] == '\r') offset--
+            offset--
+            while (offset >= 0 && (this[offset] == ' ' || this[offset] == '\t')) offset--
+            if (offset >= 0 && (this[offset] == '\r' || this[offset] == '\n')
+                && (c != '\r' || lineEnd < length)) {
+                return lineEnd
+            }
+        }
+        return null
     }
 
     private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int = 0): ASTNode {
