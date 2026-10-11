@@ -62,6 +62,23 @@ in several stages:
 
 These tasks may be completed independently according to the current needs. 
 
+#### Input line endings
+
+The parser requires LF (`\n`) line endings. Callers must normalize CRLF (`\r\n`) and bare CR (`\r`) to LF before parsing:
+
+```kotlin
+val src = originalText.replace("\r\n", "\n").replace("\r", "\n")
+```
+
+For streaming input, do not normalize each chunk independently with the example above. Buffer a trailing CR
+until the next character or the end of the stream: if the next character is LF, emit a single LF for the pair;
+otherwise, emit an LF for the buffered CR before processing the next character. At the end of the stream,
+emit an LF for any remaining buffered CR. This prevents a CRLF split across chunks from becoming two line breaks.
+
+Use the same normalized text for parsing and HTML generation. AST offsets refer to the text supplied to the parser
+(with `baseOffset` added when specified). Normalizing CRLF to LF changes character offsets; callers that need
+positions in the original text must maintain their own offset mapping.
+
 #### Simple html generation (Kotlin)
 
 ```kotlin
