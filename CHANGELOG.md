@@ -5,12 +5,12 @@
 - Keep ordered markers such as `2)` or `2.` inside an existing paragraph unless the list starts with `1`, as required by CommonMark/GFM (IJPL-96524)
 - Keep a streamed paragraph whole across a line holding whitespace other than spaces and tabs, such as `\r` with CRLF line endings, instead of splitting it depending on how the text was chunked
 
-# 0.7.16
+## [0.7.16]
 - Add `BlockQuoteProvider(lazyContinuation = false)`, which ends a block quote at a line without the `>` marker instead of continuing its paragraph
 - Parse the `>` markers on the continuation lines of a block quote as `BLOCK_QUOTE` tokens instead of `WHITE_SPACE`
 - Fix quadratic inline parse time on text full of link or image candidates that never form one, such as nested `[...]` brackets or `[...](` with an unclosed destination or title (IJPL-96392)
 
-## 0.7.15
+## [0.7.15]
 - Add support for `==text==` highlighting to the GFM flavour, rendered as `<mark>` (IJPL-175082)
 - Exclude a trailing entity reference like `&nbsp;` from a GFM autolink instead of swallowing it into the URL (IJPL-91041)
 - Allow non-ASCII letters everywhere in a GFM autolink host, so a word following the domain is not split in the middle and Unicode domains are linked whole (IJPL-91081)
@@ -18,14 +18,14 @@
 - Keep a list at the end of the streamed text open, so a later item joins it instead of starting a second list
 - Don't end a list at two consecutive blank lines — the rule was removed in CommonMark spec 0.26 (IJPL-96507)
 
-## 0.7.14
+## [0.7.14]
 - Fix cubic parse time on deeply nested lists and block quotes in `CommonMarkdownConstraints`
 - Accept a white space and a new line next to a `$$` block math delimiter (IJPL-255807)
 
-## 0.7.13
+## [0.7.13]
 - Merge adjacent tokens inside a link destination so it stays a single `TEXT` node (IJPL-172056)
 
-## 0.7.12
+## [0.7.12]
 - End a link label at a blank line, also when the line ends with a carriage return
 
 ## [0.7.11]
@@ -86,39 +86,39 @@
 - [#146] Added linuxArm64 target
 - [#149] Fixed parsing of code spans with backslashes and spaces
 
-## 0.6.1
+## [0.6.1]
 - [#141] Added support for cancellation of the parsing process
 
-## 0.6.0
+## [0.6.0]
 - [#135] Fixed node creation for zero-length table cells
 
-## 0.5.2
+## [0.5.2]
 - [#130] Fixed segfault caused by lexer companion object initialization on native targets
 
-## 0.5.1
+## [0.5.1]
 - [#127] Migrated lexer to the optional BitSet
 - [#129] Fixed parsing of auto-link lexing to stop at opening angle bracket
 
-## 0.5.0
+## [0.5.0]
 - Updated Kotlin version to `1.9.0` and set the project language level to `1.7`
 - [#121] Fixed legacy mode warnings from JS artifacts
 
-## 0.4.1
+## [0.4.1]
 - [#117] Fixed exceptions caused by the table pipes regex in Safari
 
-## 0.4.0
+## [0.4.0]
 - Added the ability to provide a custom way of obtaining opening info for code fence delimiters
 
-## 0.3.6
+## [0.3.6]
 - [#114] Added support for HTTPS urls in GFM auto links without explicitly defined schema
 - Fixed binary compatibility issues caused by `MarkdownParser(MarkdownFlavourDescriptor)` constructor
 
-## 0.3.5
+## [0.3.5]
 - [#48] Updated table parsing constraints to allow creating tables with less than 3 dashes in delimiter row
 
-## 0.3.4
+## [0.3.4]
 - [[IDEA-283181](https://youtrack.jetbrains.com/issue/IDEA-283181)] Fixed incorrect handling of escaped pipes in code spans inside table cells
 
-## 0.3.3
+## [0.3.3]
 - [#108] Fixed incorrect handling of escaped pipes inside tables
 - [#111] Fixed public type of `GFMFlavourDescriptor.markerProcessorFactory`
