@@ -54,6 +54,12 @@ class BlockQuoteMarkersTest {
     )
 
     @Test
+    fun testHtmlCommentWithEmptyContinuation() = doTest(
+        markdown = "><!--\n>",
+        html = "<blockquote>\n<!--\n\n</blockquote>\n"
+    )
+
+    @Test
     fun testSetextHeading2InBlockQuote() = doTest(
         markdown = "> Foo\n> ---\n",
         html = "<blockquote>\n<h2>Foo</h2>\n</blockquote>\n"
