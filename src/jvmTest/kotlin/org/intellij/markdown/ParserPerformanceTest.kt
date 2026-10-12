@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.intellij.markdown
 
 import junit.framework.TestCase
