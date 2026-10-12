@@ -38,8 +38,20 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
         return MarkerBlock.ClosingAction.DONE
     }
 
+    private fun addCodeLine(pos: LookaheadText.Position) {
+        val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
+        val nodeRange = pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset
+        if (nodeRange.last - nodeRange.first > 0) {
+            productionHolder.addProduction(listOf(SequentialParser.Node(
+                    nodeRange, MarkdownTokenTypes.CODE_LINE)))
+        }
+    }
+
     override fun doProcessToken(pos: LookaheadText.Position, currentConstraints: MarkdownConstraints): MarkerBlock.ProcessingResult {
         if (pos.offset < realInterestingOffset) {
+            if (pos.offsetInCurrentLine == -1) {
+                addCodeLine(pos)
+            }
             return MarkerBlock.ProcessingResult.CANCEL
         }
 
@@ -62,14 +74,8 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
             return MarkerBlock.ProcessingResult.DEFAULT
         } else {
             // We'll add the current line anyway
-            val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
-            val nodeRange = pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset
-            if (nodeRange.last - nodeRange.first > 0) {
-                productionHolder.addProduction(listOf(SequentialParser.Node(
-                        nodeRange, MarkdownTokenTypes.CODE_LINE)))
-            }
-            
-            realInterestingOffset = pos.nextLineOrEofOffset
+            addCodeLine(pos)
+            realInterestingOffset = nonemptyPos.offset
             return MarkerBlock.ProcessingResult.CANCEL
         }
     }
