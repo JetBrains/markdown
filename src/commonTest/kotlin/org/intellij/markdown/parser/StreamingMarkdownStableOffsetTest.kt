@@ -85,6 +85,11 @@ class StreamingMarkdownStableOffsetTest {
     }
 
     @Test
+    fun trailingIndentedCodeBlockWithBlankLineIsUnstable() {
+        assertUnstableStartOffset("    code\n\n", 0)
+    }
+
+    @Test
     fun baseOffsetIsAppliedToUnstableStartOffset() {
         assertUnstableStartOffset("hello\n\nworld", 17, baseOffset = 10)
     }

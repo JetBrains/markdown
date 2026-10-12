@@ -153,6 +153,19 @@ class StreamingMarkdownConsistencyTest {
     }
 
     @Test
+    fun indentedCodeAfterBlankLineArrivesInChunks() {
+        for ((text, chunkSizes) in listOf(
+            "a\n\n\t|" to listOf(2, 5, 5),
+            "\n\n    *" to listOf(2, 4, 5),
+            ">\n\n    #" to listOf(1, 4, 3),
+            "    first\n\n\t|" to listOf(2, 5, 5),
+            "    first\n\n    *" to listOf(2, 4, 5),
+        )) {
+            assertStreamingMatchesFullParse(text, chunkSizes)
+        }
+    }
+
+    @Test
     fun htmlBlocksArriveLineByLine() {
         val text = """
             <div>

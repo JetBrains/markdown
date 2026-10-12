@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+* `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line
 * Fix `"more than one root?"` parser exception on an unclosed HTML comment inside a block quote or list (for IJPL-258292)
 - Fix quadratic parse time on long contiguous emphasis delimiter runs
 - Fix quadratic parse time on indented code blocks with long blank-line runs

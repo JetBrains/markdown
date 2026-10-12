@@ -97,7 +97,10 @@ class MarkdownParser(
             val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
             StreamingMarkdownParseResult(
                 tree = tree,
-                unstableStartOffset = keepTrailingListOpen(tree, keepNodesWhole(tree, findUnstableStartOffset(openMarkers, text, baseOffset)))
+                unstableStartOffset = keepTrailingCodeBlockOpen(
+                    tree,
+                    keepTrailingListOpen(tree, keepNodesWhole(tree, findUnstableStartOffset(openMarkers, text, baseOffset)))
+                )
             )
         }
         catch (e: MarkdownParsingException) {
@@ -182,6 +185,18 @@ class MarkdownParser(
         } ?: return offset
         val following = blocks.firstOrNull { it.startOffset >= lastList.endOffset }
         return if (following != null && offset > following.endOffset) offset else minOf(offset, lastList.startOffset)
+    }
+
+    /** An indented code block can continue after trailing blank lines when more text is appended. */
+    private fun keepTrailingCodeBlockOpen(tree: ASTNode, offset: Int): Int {
+        val lastBlock = tree.children.lastOrNull {
+            it.type != MarkdownTokenTypes.EOL && it.type != MarkdownTokenTypes.WHITE_SPACE
+        } ?: return offset
+        return if (lastBlock.type == MarkdownElementTypes.CODE_BLOCK) {
+            minOf(offset, lastBlock.startOffset)
+        } else {
+            offset
+        }
     }
 
     /**
