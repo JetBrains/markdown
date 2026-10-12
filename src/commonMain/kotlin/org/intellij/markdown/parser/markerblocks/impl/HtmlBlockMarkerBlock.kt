@@ -45,11 +45,11 @@ class HtmlBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
         if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
             return MarkerBlock.ProcessingResult.DEFAULT
-        } else if (endCheckingRegex != null && endCheckingRegex.find(prevLine) != null) {
+        } else if (endCheckingRegex?.find(prevLine) != null) {
             return MarkerBlock.ProcessingResult.DEFAULT
         }
 
-        if (pos.currentLine.isNotEmpty()) {
+        if (pos.currentLine.length > nextLineConstraints.getCharsEaten(pos.currentLine)) {
             productionHolder.addProduction(listOf(SequentialParser.Node(
                     pos.offset + 1 + nextLineConstraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset,
                     MarkdownTokenTypes.HTML_BLOCK_CONTENT)))
