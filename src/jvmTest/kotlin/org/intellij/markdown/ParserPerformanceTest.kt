@@ -4,7 +4,11 @@ import junit.framework.TestCase
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.lexer.MarkdownLexer
+import org.intellij.markdown.lexer._MarkdownLexer
 import org.intellij.markdown.parser.MarkdownParser
+import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
+import org.intellij.markdown.parser.sequentialparsers.impl.EmphStrongParser
 import org.junit.experimental.categories.Category
 import java.io.File
 import kotlin.test.Test
@@ -173,6 +177,29 @@ import kotlin.test.assertTrue
     fun testLongDigitRunIsNotScannedAsListMarker() {
         val input = "- a\n" + ("1".repeat(100_000) + "\n").repeat(50)
         assertFast(input, false, 50)
+    }
+
+    /**
+     * A long unterminated underscore run after a word is split into 50-token chunks, exercising the old backward scan
+     * for every chunk.
+     */
+    @Test
+    fun testLongUnderscoreRunIsLinear() {
+        val delimiterCount = 200_000
+        val input = "a" + "_".repeat(delimiterCount)
+        val lexer = MarkdownLexer(_MarkdownLexer())
+        lexer.start(input)
+        val tokens = LexerBasedTokensCache(lexer)
+        assertTrue(tokens.filteredTokens.count { it.type == MarkdownTokenTypes.EMPH } == delimiterCount)
+        val ranges = listOf(0..tokens.filteredTokens.size)
+        val parser = EmphStrongParser()
+
+        parser.parse(tokens, ranges)
+        val startTime = System.nanoTime()
+        parser.parse(tokens, ranges)
+        val timeMs = (System.nanoTime() - startTime) / 1e6
+        println("$testName: ${timeMs}ms")
+        assertTrue(timeMs <= 100, "Expected 100 ms, got $timeMs")
     }
 
     companion object {
