@@ -18,6 +18,19 @@ abstract class MarkerBlockImpl(protected val constraints: MarkdownConstraints,
 
     private var scheduledResult: MarkerBlock.ProcessingResult? = null
 
+    private var cachedNonWhitespaceLinePos: LookaheadText.Position? = null
+
+    protected fun getFirstNonWhitespaceLinePos(pos: LookaheadText.Position, toSkip: Int): LookaheadText.Position? {
+        val cachedPos = cachedNonWhitespaceLinePos
+        if (cachedPos != null && cachedPos.offset > pos.offset) {
+            return cachedPos
+        }
+
+        return MarkdownParserUtil.getFirstNonWhitespaceLinePos(pos, toSkip).also {
+            cachedNonWhitespaceLinePos = it?.takeIf { nonWhitespacePos -> nonWhitespacePos.offset > pos.offset }
+        }
+    }
+
     final override fun getNextInterestingOffset(pos: LookaheadText.Position): Int {
         if (scheduledResult != null) {
             return pos.offset + 1

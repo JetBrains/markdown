@@ -208,6 +208,13 @@ import kotlin.test.assertTrue
         assertFast(input, false, 250)
     }
 
+    @Test
+    fun testLongBlankRunsInListsAreLinear() {
+        val blankLines = "\n".repeat(16_000)
+        assertFast("- x\n" + blankLines + "- y\n", true, 50)
+        assertFast("- x\n" + blankLines + "  y\n", true, 50)
+    }
+
     companion object {
         val WARM_UP_NUM = 10
         val TEST_NUM = 100
