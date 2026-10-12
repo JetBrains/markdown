@@ -28,7 +28,25 @@ class LinkParserUtil {
         // the loop entered at i with zero depth stops, or -1 if the parentheses are unbalanced there.
         private val destinationEnd by lazy {
             val matchingParen = matchPairs(MarkdownTokenTypes.LPAREN, MarkdownTokenTypes.RPAREN)
+            val maxParenthesesDepth = IntArray(iterators.size)
+            val openParentheses = ArrayDeque<Int>()
+            for (i in iterators.indices) {
+                when (iterators[i].type) {
+                    MarkdownTokenTypes.LPAREN -> {
+                        openParentheses.addLast(i)
+                        maxParenthesesDepth[i] = 1
+                    }
+                    MarkdownTokenTypes.RPAREN -> if (openParentheses.isNotEmpty()) {
+                        val opening = openParentheses.removeLast()
+                        if (openParentheses.isNotEmpty()) {
+                            val parent = openParentheses.last()
+                            maxParenthesesDepth[parent] = maxOf(maxParenthesesDepth[parent], maxParenthesesDepth[opening] + 1)
+                        }
+                    }
+                }
+            }
             val result = IntArray(iterators.size)
+            val destinationDepth = IntArray(iterators.size)
             var wordEnd = -1
             for (i in iterators.lastIndex downTo 0) {
                 val token = iterators[i]
@@ -39,10 +57,23 @@ class LinkParserUtil {
                 }
                 val closingParen = matchingParen[i]
                 result[i] = when {
-                    token.type == MarkdownTokenTypes.LPAREN ->
-                        if (closingParen != -1 && closingParen <= wordEnd) result[closingParen] else -1
-                    isWordEnd || next == MarkdownTokenTypes.RPAREN -> i
-                    else -> result[i + 1]
+                    token.type == MarkdownTokenTypes.LPAREN -> {
+                        if (closingParen == -1 || closingParen > wordEnd) {
+                            destinationDepth[i] = MAX_LINK_DESTINATION_PARENTHESES_DEPTH + 1
+                            -1
+                        } else {
+                            destinationDepth[i] = maxOf(maxParenthesesDepth[i], destinationDepth[closingParen])
+                            if (destinationDepth[i] > MAX_LINK_DESTINATION_PARENTHESES_DEPTH) -1 else result[closingParen]
+                        }
+                    }
+                    isWordEnd || next == MarkdownTokenTypes.RPAREN -> {
+                        destinationDepth[i] = 0
+                        i
+                    }
+                    else -> {
+                        destinationDepth[i] = destinationDepth[i + 1]
+                        result[i + 1]
+                    }
                 }
             }
             result
@@ -99,6 +130,8 @@ class LinkParserUtil {
     }
 
     companion object {
+        private const val MAX_LINK_DESTINATION_PARENTHESES_DEPTH = 32
+
         fun parseLinkDestination(iterator: TokensCache.Iterator, scanIndex: ScanIndex? = null): LocalParsingResult? {
             var it = iterator
             if (it.type == MarkdownTokenTypes.EOL || it.type == MarkdownTokenTypes.RPAREN) {
@@ -124,6 +157,9 @@ class LinkParserUtil {
                 } else if (!withBraces) {
                     if (it.type == MarkdownTokenTypes.LPAREN) {
                         openParenthesesDepth++
+                        if (openParenthesesDepth > MAX_LINK_DESTINATION_PARENTHESES_DEPTH) {
+                            return null
+                        }
                     }
 
                     val next = it.rawLookup(1)

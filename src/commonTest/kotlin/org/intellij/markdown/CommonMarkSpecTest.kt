@@ -3043,6 +3043,21 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    fun testLinkDestinationParenthesesDepthLimit() {
+        val maximumDepthDestination = "(".repeat(32) + "foo" + ")".repeat(32)
+        doTest(
+                markdown = "[link]($maximumDepthDestination)\n",
+                html = "<p><a href=\"$maximumDepthDestination\">link</a></p>\n"
+        )
+
+        val excessiveDepthDestination = "(".repeat(33) + "foo" + ")".repeat(33)
+        doTest(
+                markdown = "[link]($excessiveDepthDestination)\n",
+                html = "<p>[link]($excessiveDepthDestination)</p>\n"
+        )
+    }
+
+    @Test
     fun testLinksExample496() = doTest(
             markdown = "[link](foo(and(bar))\n",
             html = "<p>[link](foo(and(bar))</p>\n"

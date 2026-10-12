@@ -5,6 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.sequentialparsers.LocalParsingResult
 import org.intellij.markdown.parser.sequentialparsers.RangesListBuilder
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import org.intellij.markdown.parser.sequentialparsers.SequentialParserUtil
 import org.intellij.markdown.parser.sequentialparsers.TokensCache
 
 class InlineLinkParser : SequentialParser {
@@ -64,6 +65,9 @@ class InlineLinkParser : SequentialParser {
                 if (it.type == MarkdownTokenTypes.EOL) {
                     it = it.advance()
                 }
+            }
+            if (linkDestination == null && it.type != MarkdownTokenTypes.RPAREN && !SequentialParserUtil.isWhitespace(it, -1)) {
+                return null
             }
             val linkTitle = LinkParserUtil.parseLinkTitle(it, scanIndex)
             if (linkTitle != null) {
