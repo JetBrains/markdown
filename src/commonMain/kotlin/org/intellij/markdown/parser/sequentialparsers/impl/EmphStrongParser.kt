@@ -24,11 +24,16 @@ class EmphStrongParser : SequentialParser {
         var iterator = tokens.RangesListIterator(rangesToGlue)
 
         val openingOnes = ArrayList<OpeningEmphInfo>()
+        var delimiterRunStart: TokensCache.Iterator? = null
 
         while (iterator.type != null) {
             if (iterator.type != MarkdownTokenTypes.EMPH) {
                 iterator = iterator.advance()
                 continue
+            }
+
+            if (iterator.rawLookup(-1) != MarkdownTokenTypes.EMPH || getType(iterator) != iterator.charLookup(-1)) {
+                delimiterRunStart = iterator
             }
 
             var thisEmphWasEaten = false
@@ -62,7 +67,7 @@ class EmphStrongParser : SequentialParser {
                 continue
             }
 
-            val numCanStart = canStartNumber(iterator)
+            val numCanStart = canStartNumber(iterator, checkNotNull(delimiterRunStart))
             if (numCanStart != 0) {
                 openingOnes.add(OpeningEmphInfo(iterator.index, numCanStart, getType(iterator)))
                 kotlin.repeat(numCanStart) { iterator = iterator.advance() }
@@ -74,12 +79,7 @@ class EmphStrongParser : SequentialParser {
         return result
     }
 
-    private fun canStartNumber(iterator: TokensCache.Iterator): Int {
-        var leftIt = iterator
-        while (leftIt.rawLookup(-1) == MarkdownTokenTypes.EMPH && getType(leftIt) == leftIt.charLookup(-1)) {
-            leftIt = leftIt.rollback()
-        }
-
+    private fun canStartNumber(iterator: TokensCache.Iterator, leftIt: TokensCache.Iterator): Int {
         var it = iterator
         for (i in 0..50 - 1) {
             if (it.rawLookup(1) != MarkdownTokenTypes.EMPH || getType(it) != getType(it.advance())) {
