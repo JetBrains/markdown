@@ -202,6 +202,12 @@ import kotlin.test.assertTrue
         assertTrue(timeMs <= 100, "Expected 100 ms, got $timeMs")
     }
 
+    @Test
+    fun testIndentedCodeBlockBlankLinesAreLinear() {
+        val input = "    first\n" + "\n".repeat(10_000) + "    second\n"
+        assertFast(input, false, 250)
+    }
+
     companion object {
         val WARM_UP_NUM = 10
         val TEST_NUM = 100

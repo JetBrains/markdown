@@ -69,7 +69,7 @@ class CodeBlockMarkerBlock(myConstraints: MarkdownConstraints,
                         nodeRange, MarkdownTokenTypes.CODE_LINE)))
             }
             
-            realInterestingOffset = pos.nextLineOrEofOffset
+            realInterestingOffset = nonemptyPos.offset
             return MarkerBlock.ProcessingResult.CANCEL
         }
     }
