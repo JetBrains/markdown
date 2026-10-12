@@ -690,6 +690,12 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
+    fun testIndentedCodeBlocksPreserveWhitespaceOnSkippedLines() = doTest(
+            markdown = "    a\n     \n      \n    b\n",
+            html = "<pre><code>a\n \n  \nb\n</code></pre>\n"
+    )
+
+    @Test
     @Ignore
     fun testIndentedCodeBlocksExample113() = doTest(
             markdown = "Foo\n    bar\n\n",
