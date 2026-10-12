@@ -26,23 +26,20 @@ import kotlin.test.assertTrue
         fullParse: Boolean,
         expectedTimeMs: Int? = 1000,
         flavour: MarkdownFlavourDescriptor = CommonMarkFlavourDescriptor(),
-        warmUpNum: Int = WARM_UP_NUM,
-        testNum: Int = TEST_NUM,
-        parse: () -> Unit = {
+    ) {
+        val runnable = { i: Int ->
             val root = MarkdownParser(flavour).
             parse(MarkdownElementTypes.MARKDOWN_FILE, content, fullParse)
             assert(root.children.size > 0)
-        },
-    ) {
-        val runnable = { _: Int -> parse() }
+        }
 
-        repeat(warmUpNum, runnable)
+        repeat(WARM_UP_NUM, runnable)
 
         val startTime = System.nanoTime()
-        repeat(testNum, runnable)
+        repeat(TEST_NUM, runnable)
         val testTime = System.nanoTime() - startTime
 
-        val timeMs = testTime / testNum / 1e6
+        val timeMs = testTime / TEST_NUM / 1e6
         println("$testName: ${timeMs}ms")
         if (expectedTimeMs != null) {
             assertTrue(timeMs <= expectedTimeMs, "Expected $expectedTimeMs ms, got $timeMs")
@@ -199,9 +196,12 @@ import kotlin.test.assertTrue
         val ranges = listOf(0..tokens.filteredTokens.size)
         val parser = EmphStrongParser()
 
-        assertFast(input, false, warmUpNum = 1, testNum = 1) {
-            parser.parse(tokens, ranges)
-        }
+        parser.parse(tokens, ranges)
+        val startTime = System.nanoTime()
+        parser.parse(tokens, ranges)
+        val timeMs = (System.nanoTime() - startTime) / 1e6
+        println("$testName: ${timeMs}ms")
+        assertTrue(timeMs <= 100, "Expected 100 ms, got $timeMs")
     }
 
     companion object {
