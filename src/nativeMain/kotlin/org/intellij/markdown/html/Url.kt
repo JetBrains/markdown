@@ -57,9 +57,9 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
     var password = ""
     var host: String? = null
     var port: Int? = null
-    var path: MutableList<String> = mutableListOf()
-    var query: String? = null
-    var fragment: String? = null
+    var path: MutableList<StringBuilder> = mutableListOf()
+    var query: StringBuilder? = null
+    var fragment: StringBuilder? = null
     var cannotBeABaseUrl = false
     var relativeNoSlash = false
 
@@ -110,7 +110,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                         }
                         else -> {
                             cannotBeABaseUrl = true
-                            path.add("")
+                            path.add(StringBuilder())
                             STATE_CANNOT_BE_BASE_URL_PATH
                         }
                     }
@@ -125,9 +125,9 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                 // The spec requires an error if base is null here. We allow a null base.
                 state = if (base != null && base.cannotBeABaseUrl && c == '#') {
                     scheme = base.scheme
-                    path = base.path.toMutableList()
-                    query = base.query
-                    fragment = ""
+                    path = base.path.map { StringBuilder(it) }.toMutableList()
+                    query = base.query?.let { StringBuilder(it) }
+                    fragment = StringBuilder()
                     cannotBeABaseUrl = true
                     STATE_FRAGMENT
                 } else if (scheme != "file") {
@@ -171,13 +171,13 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                     password = base?.password ?: ""
                     host = base?.host
                     port = base?.port
-                    path = base?.path?.toMutableList() ?: mutableListOf()
-                    query = base?.query
+                    path = base?.path?.map { StringBuilder(it) }?.toMutableList() ?: mutableListOf()
+                    query = base?.query?.let { StringBuilder(it) }
                     if (c == '?') {
-                        query = ""
+                        query = StringBuilder()
                         state = STATE_QUERY
                     } else if (c == '#') {
-                        fragment = ""
+                        fragment = StringBuilder()
                         state = STATE_FRAGMENT
                     } else if (c != null) {
                         query = null
@@ -304,13 +304,13 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                     STATE_FILE_SLASH
                 } else if (base?.scheme == "file") {
                     host = base.host
-                    path = base.path.toMutableList()
-                    query = base.query
+                    path = base.path.map { StringBuilder(it) }.toMutableList()
+                    query = base.query?.let { StringBuilder(it) }
                     if (c == '?') {
-                        query = ""
+                        query = StringBuilder()
                         STATE_QUERY
                     } else if (c == '#') {
-                        fragment = ""
+                        fragment = StringBuilder()
                         STATE_FRAGMENT
                     } else if (c != null) {
                         query = null
@@ -340,7 +340,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                         if (!startsWithWindowsDriveLetter(input.substring(pointer))
                                 && base.path.isNotEmpty()
                                 && isNormalizedWindowsDriveLetter(base.path[0])) {
-                            path.add(base.path[0])
+                            path.add(StringBuilder(base.path[0]))
                         }
                         pointer -= 1
                         state = STATE_PATH
@@ -376,10 +376,10 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                         pointer -= 1
                     }
                 } else if (c == '?') {
-                    query = ""
+                    query = StringBuilder()
                     state = STATE_QUERY
                 } else if (c == '#') {
-                    fragment = ""
+                    fragment = StringBuilder()
                     state = STATE_FRAGMENT
                 } else if (c != null) {
                     if (c != '/') {
@@ -398,23 +398,23 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                     if (isDoubleDotPathSegment(buffer.toString())) {
                         shortenPath(path, scheme)
                         if (c != '/' && !urlIsSpecial() && c != '\\') {
-                            path.add("")
+                            path.add(StringBuilder())
                         }
                     } else if (isSingleDotPathSegment(buffer.toString()) && c != '/' && !urlIsSpecial() && c != '\\') {
-                        path.add("")
+                        path.add(StringBuilder())
                     } else if (!isSingleDotPathSegment(buffer.toString())) {
                         if (scheme == "file" && path.isEmpty() && isWindowsDriveLetter(buffer.toString())) {
                             buffer[1] = ':'
                         }
-                        path.add(buffer.toString())
+                        path.add(StringBuilder(buffer.toString()))
                     }
                     buffer.clear()
                     if (c == '?') {
-                        query = ""
+                        query = StringBuilder()
                         state = STATE_QUERY
                     }
                     if (c == '#') {
-                        fragment = ""
+                        fragment = StringBuilder()
                         state = STATE_FRAGMENT
                     }
                 } else {
@@ -425,16 +425,16 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
             }
             STATE_CANNOT_BE_BASE_URL_PATH -> {
                 if (c == '?') {
-                    query = ""
+                    query = StringBuilder()
                     state = STATE_QUERY
                 } else if (c == '#') {
-                    fragment = ""
+                    fragment = StringBuilder()
                     state = STATE_FRAGMENT
                 } else {
                     // validation error if c != null && c != '%' && c is not a URL code point
                     // validation error if c == '%' and remaining does not start with two ASCII hex digits
                     if (c != null) {
-                        path[0] = path[0] + percentEncode(c.toString(), PERCENT_ENCODE_SET_C0)
+                        path[0].append(percentEncode(c.toString(), PERCENT_ENCODE_SET_C0))
                     }
                 }
             }
@@ -444,10 +444,10 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                         urlIsSpecial() -> PERCENT_ENCODE_SET_SPECIAL_QUERY
                         else -> PERCENT_ENCODE_SET_QUERY
                     }
-                    query = query!! + percentEncode(buffer.toString(), queryPercentEncodeSet)
+                    query!!.append(percentEncode(buffer.toString(), queryPercentEncodeSet))
                     buffer.clear()
                     if (c == '#') {
-                        fragment = ""
+                        fragment = StringBuilder()
                         state = STATE_FRAGMENT
                     }
                 } else {
@@ -460,7 +460,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
                 if (c != null) {
                     // validation error if c is not a URL code point and not U+0025 (%)
                     // validation error if c == '%' && remaining does not start with two ASCII hex digit
-                    fragment = fragment!! + percentEncode(c.toString(), PERCENT_ENCODE_SET_FRAGMENT)
+                    fragment!!.append(percentEncode(c.toString(), PERCENT_ENCODE_SET_FRAGMENT))
                 }
             }
         }
@@ -468,7 +468,7 @@ internal fun parseUrl(rawInput: String, base: URL?): URL {
         pointer += 1
     } while (pointer <= input.length)
 
-    return URL(scheme, username, password, host, port, path, query, fragment, cannotBeABaseUrl, relativeNoSlash)
+    return URL(scheme, username, password, host, port, path.map { it.toString() }, query?.toString(), fragment?.toString(), cannotBeABaseUrl, relativeNoSlash)
 }
 
 // Deviation from spec:
@@ -520,9 +520,9 @@ private fun isDoubleDotPathSegment(input: String): Boolean {
 
 
 // https://url.spec.whatwg.org/#shorten-a-urls-path
-private fun shortenPath(path: MutableList<String>, scheme: String) {
+private fun shortenPath(path: MutableList<StringBuilder>, scheme: String) {
     if (path.isEmpty()) return
-    if (scheme == "file" && path.size == 1 && isNormalizedWindowsDriveLetter(path[0])) return
+    if (scheme == "file" && path.size == 1 && isNormalizedWindowsDriveLetter(path[0].toString())) return
     path.removeAt(path.lastIndex)
 }
 
