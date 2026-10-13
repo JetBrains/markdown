@@ -34,7 +34,7 @@ jobs:
 
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: error-report-${{ runner.os }}
           path: build/reports
@@ -62,7 +62,7 @@ jobs:
 
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: error-report-${{ runner.os }}
           path: build/reports
@@ -90,7 +90,7 @@ jobs:
 
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: error-report-${{ runner.os }}
           path: build/reports
