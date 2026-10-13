@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Recognize a single indented `-` after a list item's text as an empty nested list item
 - `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line
 - Fix `"more than one root?"` parser exception on an unclosed HTML comment inside a block quote or list (for IJPL-258292)
 - Fix quadratic parse time on long inputs, including emphasis delimiters, indented code blocks, blank-line runs, and Native URL destinations

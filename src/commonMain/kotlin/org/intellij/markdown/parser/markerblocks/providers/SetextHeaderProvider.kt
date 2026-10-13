@@ -39,7 +39,7 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         val nextLineConstraints = constraints.applyToNextLine(pos.nextLinePosition())
         if (nextLineConstraints.extendsPrev(constraints)) {
             val content = nextLineConstraints.eatItselfFromString(line)
-            if (nextLineConstraints.isInListItem() && content.trim(' ', '\t').contentEquals("-")) {
+            if (nextLineConstraints.isInListItem() && content.trim().contentEquals("-")) {
                 return null
             }
             return content

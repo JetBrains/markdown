@@ -25,8 +25,7 @@ class NestedEmptyListItemTest {
     }
 
     private fun doTest(markdown: String, html: String) {
-        for (flavour in listOf(CommonMarkFlavourDescriptor(), GFMFlavourDescriptor())) {
-            object : SpecTest(flavour) {}.doTest(markdown, html)
-        }
+        object : SpecTest(CommonMarkFlavourDescriptor()) {}.doTest(markdown, html)
+        object : SpecTest(GFMFlavourDescriptor()) {}.doTest(markdown, html)
     }
 }
