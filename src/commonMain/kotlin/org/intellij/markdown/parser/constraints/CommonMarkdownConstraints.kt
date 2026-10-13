@@ -88,20 +88,21 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
         var offset = 0
         var indexPrev = 0
 
-        var totalSpaces = 0
+        var column = 0
         var spacesSeen = 0
         val hasKMoreSpaces = { k: Int ->
             val oldSpacesSeen = spacesSeen
             val oldOffset = offset
+            val oldColumn = column
             afterSpaces@
             while (spacesSeen < k && offset < line.length) {
                 val deltaSpaces = when (line[offset]) {
                     ' ' -> 1
-                    '\t' -> 4 - totalSpaces % 4
+                    '\t' -> 4 - column % 4
                     else -> break@afterSpaces
                 }
                 spacesSeen += deltaSpaces
-                totalSpaces += deltaSpaces
+                column += deltaSpaces
                 offset++
             }
             if (offset == line.length) {
@@ -114,14 +115,14 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
             } else {
                 offset = oldOffset
                 spacesSeen = oldSpacesSeen
+                column = oldColumn
                 false
             }
         }
 
         // Each round continues (at most) one blockquote marker followed by a run of list indents.
-        // The whitespace accounting is restarted on every round.
+        // Only the unconsumed whitespace is reset; tab stops are relative to the start of the line.
         while (indexPrev < prevN) {
-            totalSpaces = 0
             spacesSeen = 0
 
             val roundStart = offset
@@ -129,6 +130,7 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
             if (types[indexPrev] == BQ_CHAR) {
                 bqIndent = getBlockQuoteIndent(line, offset) ?: break
                 offset += bqIndent
+                column += bqIndent
                 indexPrev++
             } else {
                 bqIndent = null
@@ -267,8 +269,8 @@ open class CommonMarkdownConstraints protected constructor(private val indents: 
             offset++
         }
 
-        // Empty list items cannot interrupt paragraphs either.
-        if (interruptsParagraph && offset == line.length) return null
+        val isNestedHyphen = markerInfo.markerType == '-' && isInListItem()
+        if (interruptsParagraph && offset == line.length && !isNestedHyphen) return null
 
         // By the classification http://spec.commonmark.org/0.20/#list-items
         // 1. Basic case
