@@ -6,6 +6,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.time.TimeSource
 
+@Suppress("UnnecessaryOptInAnnotation")
+@OptIn(kotlin.time.ExperimentalTime::class) // required for tests
 class NativeUrlTest {
     @Test
     fun resolvesLongPathAndFragmentFast() {
