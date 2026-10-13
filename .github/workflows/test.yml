@@ -32,16 +32,13 @@ jobs:
         with:
           arguments: check --stacktrace
 
-      - name: Bundle the build report
-        if: failure()
-        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
-
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
-          name: error-report
-          path: build-reports.zip
+          name: error-report-${{ runner.os }}
+          path: build/reports
+          if-no-files-found: warn
 
   macos-tests:
     runs-on: macos-latest
@@ -63,16 +60,13 @@ jobs:
         with:
           arguments: macosX64Test iosX64Test --stacktrace
 
-      - name: Bundle the build report
-        if: failure()
-        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
-
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
-          name: error-report
-          path: build-reports.zip
+          name: error-report-${{ runner.os }}
+          path: build/reports
+          if-no-files-found: warn
 
   windows-tests:
     runs-on: windows-latest
@@ -94,16 +88,13 @@ jobs:
         with:
           arguments: mingwX64Test --stacktrace
 
-      - name: Bundle the build report
-        if: failure()
-        run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
-
       - name: Upload the build report
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
-          name: error-report
-          path: build-reports.zip
+          name: error-report-${{ runner.os }}
+          path: build/reports
+          if-no-files-found: warn
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx5G  -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
