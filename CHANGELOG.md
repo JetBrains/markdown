@@ -2,11 +2,9 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
-* `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line
-* Fix `"more than one root?"` parser exception on an unclosed HTML comment inside a block quote or list (for IJPL-258292)
-- Fix quadratic parse time on long contiguous emphasis delimiter runs
-- Fix quadratic parse time on indented code blocks with long blank-line runs
-- Fix quadratic parse time on long blank-line runs between list items
+- `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line
+- Fix `"more than one root?"` parser exception on an unclosed HTML comment inside a block quote or list (for IJPL-258292)
+- Fix quadratic parse time on long inputs, including emphasis delimiters, indented code blocks, blank-line runs, and Native URL destinations
 - Keep ordered markers such as `2)` or `2.` inside an existing paragraph unless the list starts with `1`, as required by CommonMark/GFM (IJPL-96524)
 - Keep a streamed paragraph whole across a line holding whitespace other than spaces and tabs, such as `\r` with CRLF line endings, instead of splitting it depending on how the text was chunked
 
