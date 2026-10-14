@@ -10,6 +10,7 @@ class NestedEmptyListItemTest {
         doTest("- hallo\n    -", "<ul><li>hallo<ul><li></li></ul></li></ul>")
         doTest("- hallo\n    - ", "<ul><li>hallo<ul><li></li></ul></li></ul>")
         doTest("- hallo\n\t-", "<ul><li>hallo<ul><li></li></ul></li></ul>")
+        doTest("- > hallo\n  > -", "<ul><li><blockquote><p>hallo</p><ul><li></li></ul></blockquote></li></ul>")
     }
 
     @Test

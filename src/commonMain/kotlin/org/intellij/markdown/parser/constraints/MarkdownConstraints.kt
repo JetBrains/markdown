@@ -40,7 +40,7 @@ interface MarkdownConstraints {
     fun applyToNextLine(pos: LookaheadText.Position?): MarkdownConstraints
 }
 
-internal fun MarkdownConstraints.isInListItem(): Boolean = types.isNotEmpty() && types.last() != '>'
+internal fun MarkdownConstraints.isInListItem(): Boolean = types.any { it != '>' }
 
 fun MarkdownConstraints.extendsList(other: MarkdownConstraints): Boolean {
     if (other.types.isEmpty()) {
