@@ -40,6 +40,8 @@ interface MarkdownConstraints {
     fun applyToNextLine(pos: LookaheadText.Position?): MarkdownConstraints
 }
 
+internal fun MarkdownConstraints.isInListItem(): Boolean = types.any { it != '>' }
+
 fun MarkdownConstraints.extendsList(other: MarkdownConstraints): Boolean {
     if (other.types.isEmpty()) {
         throw IllegalArgumentException("List constraints should contain at least one item")

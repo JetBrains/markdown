@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Recognize a single indented `-` after a list item's text as an empty nested list item
 
 ## [0.7.17]
 - `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line
