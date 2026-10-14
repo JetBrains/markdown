@@ -15,29 +15,15 @@ fun collectBlockProduction(
     text: CharSequence,
     productionHolder: ProductionHolder,
     cancellationToken: CancellationToken
-): List<MarkerBlock> = collectBlockProduction(flavour, root, text, productionHolder, 0, false, cancellationToken)
-
-internal fun collectBlockProduction(
-    flavour: MarkdownFlavourDescriptor,
-    root: IElementType,
-    text: CharSequence,
-    productionHolder: ProductionHolder,
-    startOffset: Int,
-    stopAtNextBlock: Boolean,
-    cancellationToken: CancellationToken,
 ): List<MarkerBlock> {
     val markerProcessor = flavour.markerProcessorFactory.createMarkerProcessor(productionHolder)
 
-    productionHolder.updatePosition(startOffset)
     val rootMarker = productionHolder.mark()
 
-    val textHolder = LookaheadText(text, startOffset)
+    val textHolder = LookaheadText(text)
     var pos: LookaheadText.Position? = textHolder.startPosition
     while (pos != null) {
         cancellationToken.checkCancelled()
-        if (stopAtNextBlock && pos.offset > startOffset && pos.offsetInCurrentLine == 0 && !markerProcessor.hasOpenBlocks) {
-            break
-        }
         productionHolder.updatePosition(pos.offset)
         pos = markerProcessor.processPosition(pos)
     }
@@ -45,7 +31,7 @@ internal fun collectBlockProduction(
     // Take a snapshot before flush
     val openMarkers = markerProcessor.markersStackSnapshot
 
-    productionHolder.updatePosition(pos?.offset ?: text.length)
+    productionHolder.updatePosition(text.length)
     markerProcessor.flushMarkers()
 
     rootMarker.done(root)

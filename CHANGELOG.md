@@ -3,7 +3,6 @@
 
 ## [Unreleased]
 - Recognize a single indented `-` after a list item's text as an empty nested list item
-- Add `MarkdownParser.parseBlocks`, which parses one top-level block from an offset and stops at the next line where no block is open, so a highlighting lexer can parse a large file block by block
 
 ## [0.7.17]
 - `StreamingMarkdownFile` tree differs from a full parse for indented code after a blank line

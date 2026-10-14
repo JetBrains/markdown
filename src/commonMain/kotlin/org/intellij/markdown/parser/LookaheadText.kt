@@ -3,37 +3,30 @@ package org.intellij.markdown.parser
 import org.intellij.markdown.lexer.Compat.assert
 import kotlin.math.max
 
-class LookaheadText internal constructor(private val text: CharSequence, startOffset: Int) {
-    constructor(text: CharSequence) : this(text, 0)
+// CharSequence.split() always copies each piece into a new String (substring() = subSequence().toString()).
+// This keeps pieces as CharSequence views via subSequence(), so a bombed/cancellable CharSequence isn't flattened.
+private fun CharSequence.splitLinesToCharSequences(): List<CharSequence> {
+    val result = ArrayList<CharSequence>()
+    var start = 0
+    while (true) {
+        val index = indexOf('\n', start)
+        if (index == -1) {
+            result.add(subSequence(start, length))
+            return result
+        }
+        result.add(subSequence(start, index))
+        start = index + 1
+    }
+}
 
-    // CharSequence.split() always copies each piece into a new String (substring() = subSequence().toString()).
-    // This keeps pieces as CharSequence views via subSequence(), so a bombed/cancellable CharSequence isn't flattened.
-    private val lines = ArrayList<CharSequence>()
-    private var nextLineStart = startOffset
+class LookaheadText(private val text: CharSequence) {
+    private val lines: List<CharSequence> = text.splitLinesToCharSequences()
 
-    val startPosition: Position? = if (startOffset < text.length)
-        Position(0, -1, startOffset - 1).nextPosition()
+    val startPosition: Position? = if (text.isNotEmpty())
+        Position(0, -1, -1).nextPosition()
     else
         null
 
-    private fun hasLine(lineN: Int): Boolean {
-        while (lineN >= lines.size && nextLineStart != -1) {
-            val lineEnd = text.indexOf('\n', nextLineStart)
-            if (lineEnd == -1) {
-                lines.add(text.subSequence(nextLineStart, text.length))
-                nextLineStart = -1
-            } else {
-                lines.add(text.subSequence(nextLineStart, lineEnd))
-                nextLineStart = lineEnd + 1
-            }
-        }
-        return lineN < lines.size
-    }
-
-    private fun line(lineN: Int): CharSequence {
-        hasLine(lineN)
-        return lines[lineN]
-    }
 
     inner class Position internal constructor(private val lineN: Int,
                                                      private val localPos: Int, // -1 if on newline before
@@ -41,7 +34,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
 
         val originalText: CharSequence get() = text
 
-        val currentLine = line(lineN)
+        val currentLine = lines[lineN]
 
         init {
             assert(localPos >= -1 && localPos < currentLine.length)
@@ -64,7 +57,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
             get() = localPos
 
         val nextLineOffset: Int?
-            get() = if (hasLine(lineN + 1)) {
+            get() = if (lineN + 1 < lines.size) {
                 globalPos + (currentLine.length - localPos)
             } else {
                 null
@@ -80,15 +73,15 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
             get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
 
         val nextLine: CharSequence?
-            get() = if (hasLine(lineN + 1)) {
-                line(lineN + 1)
+            get() = if (lineN + 1 < lines.size) {
+                lines[lineN + 1]
             } else {
                 null
             }
 
         val prevLine: CharSequence?
             get() = if (lineN > 0) {
-                line(lineN - 1)
+                lines[lineN - 1]
             } else {
                 null
             }

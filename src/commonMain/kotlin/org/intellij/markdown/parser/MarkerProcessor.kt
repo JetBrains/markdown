@@ -18,9 +18,6 @@ abstract class MarkerProcessor<T : MarkerProcessor.StateInfo>(private val produc
     internal val markersStackSnapshot: List<MarkerBlock>
         get() = markersStack.toList()
 
-    internal val hasOpenBlocks: Boolean
-        get() = markersStack.isNotEmpty()
-
     protected var topBlockConstraints: MarkdownConstraints = startConstraints
 
     protected abstract val stateInfo: T

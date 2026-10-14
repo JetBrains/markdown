@@ -92,26 +92,6 @@ class MarkdownParser(
         return parseInline(root, text, textStart, textEnd, 0)
     }
 
-    /**
-     * Parses one top-level block of [text] from [startOffset] with `parseInlines = false`.
-     * The parse stops at the next line start where no block is open. [startOffset] must be such a line start too.
-     * The children of the result are the same as the children of a full parse in that range.
-     * The [ASTNode.endOffset] can be used as `startOffset` of the next call.
-     */
-    fun parseBlocks(text: CharSequence, startOffset: Int): ASTNode {
-        require(startOffset < text.length) { "Nothing to parse at $startOffset in a text of ${text.length} chars" }
-        val root = MarkdownElementTypes.MARKDOWN_FILE
-        return try {
-            doParse(root, text, parseInlines = false, startOffset = startOffset, stopAtNextBlock = true).tree
-        }
-        catch (e: MarkdownParsingException) {
-            if (assertionsEnabled)
-                throw e
-            else
-                topLevelFallback(root, text.subSequence(startOffset, text.length), startOffset)
-        }
-    }
-
     internal fun parseStreaming(root: IElementType, text: CharSequence, parseInlines: Boolean, baseOffset: Int): StreamingMarkdownParseResult {
         return try {
             val (tree, openMarkers) = doParse(root, text, parseInlines, baseOffset)
@@ -139,17 +119,13 @@ class MarkdownParser(
         root: IElementType,
         text: CharSequence,
         parseInlines: Boolean = true,
-        baseOffset: Int = 0,
-        startOffset: Int = 0,
-        stopAtNextBlock: Boolean = false
+        baseOffset: Int = 0
     ): MarkdownParseResult {
         val productionHolder = ProductionHolder()
         val openMarkers = collectBlockProduction(
             flavour = flavour,
             root = root,
             text = text,
-            startOffset = startOffset,
-            stopAtNextBlock = stopAtNextBlock,
             productionHolder = productionHolder,
             cancellationToken = cancellationToken
         )
