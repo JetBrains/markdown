@@ -30,7 +30,7 @@ class ParseBlocksTest {
     @Test
     fun stopsAtNextSafePoint() {
         val text = "- item\n\n  continued item\n\nParagraph.\n"
-        val tree = MarkdownParser(CommonMarkFlavourDescriptor()).parseBlocks(text, 0)
+        val tree = MarkdownParser(CommonMarkFlavourDescriptor()).parseBlock(text, 0)
         assertEquals(text.indexOf("Paragraph"), tree.endOffset)
     }
 
@@ -38,7 +38,7 @@ class ParseBlocksTest {
         val nodes = ArrayList<ASTNode>()
         var offset = 0
         while (offset < text.length) {
-            val tree = parser.parseBlocks(text, offset)
+            val tree = parser.parseBlock(text, offset)
             assertEquals(offset, tree.startOffset)
             assertTrue(tree.endOffset > offset)
             nodes.addAll(tree.children)

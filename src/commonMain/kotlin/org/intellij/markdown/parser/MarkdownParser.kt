@@ -98,7 +98,7 @@ class MarkdownParser(
      * The children of the result are the same as the children of a full parse in that range.
      * The [ASTNode.endOffset] can be used as `startOffset` of the next call.
      */
-    fun parseBlocks(text: CharSequence, startOffset: Int): ASTNode {
+    fun parseBlock(text: CharSequence, startOffset: Int): ASTNode {
         require(startOffset < text.length) { "Nothing to parse at $startOffset in a text of ${text.length} chars" }
         val root = MarkdownElementTypes.MARKDOWN_FILE
         return try {

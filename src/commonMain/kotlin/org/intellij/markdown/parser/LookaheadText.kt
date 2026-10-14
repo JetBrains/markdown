@@ -16,7 +16,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
     else
         null
 
-    private fun hasLine(lineN: Int): Boolean {
+    private fun getLine(lineN: Int): CharSequence? {
         while (lineN >= lines.size && nextLineStart != -1) {
             val lineEnd = text.indexOf('\n', nextLineStart)
             if (lineEnd == -1) {
@@ -27,12 +27,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
                 nextLineStart = lineEnd + 1
             }
         }
-        return lineN < lines.size
-    }
-
-    private fun line(lineN: Int): CharSequence {
-        hasLine(lineN)
-        return lines[lineN]
+        return lines.getOrNull(lineN)
     }
 
     inner class Position internal constructor(private val lineN: Int,
@@ -41,7 +36,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
 
         val originalText: CharSequence get() = text
 
-        val currentLine = line(lineN)
+        val currentLine = getLine(lineN)!!
 
         init {
             assert(localPos >= -1 && localPos < currentLine.length)
@@ -64,7 +59,7 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
             get() = localPos
 
         val nextLineOffset: Int?
-            get() = if (hasLine(lineN + 1)) {
+            get() = if (getLine(lineN + 1) != null) {
                 globalPos + (currentLine.length - localPos)
             } else {
                 null
@@ -80,15 +75,11 @@ class LookaheadText internal constructor(private val text: CharSequence, startOf
             get() = currentLine.subSequence(offsetInCurrentLine, currentLine.length)
 
         val nextLine: CharSequence?
-            get() = if (hasLine(lineN + 1)) {
-                line(lineN + 1)
-            } else {
-                null
-            }
+            get() = getLine(lineN + 1)
 
         val prevLine: CharSequence?
             get() = if (lineN > 0) {
-                line(lineN - 1)
+                getLine(lineN - 1)
             } else {
                 null
             }
