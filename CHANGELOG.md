@@ -2,6 +2,9 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+
+## [0.7.18]
+
 - Recognize a single indented `-` after a list item's text as an empty nested list item
 - Add `MarkdownParser#parseBlock`, which parses one top-level block at the time
 
