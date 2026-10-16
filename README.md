@@ -228,7 +228,7 @@ It can be used as a [reference][GFMFlavourDescriptor] for implementing your own 
 [Kotlin]: https://github.com/JetBrains/kotlin
 [markdown-flavours]: https://www.markdownguide.org/getting-started/#flavors-of-markdown
 [jflex]: https://github.com/jflex-de/jflex
-[markdown-plugin]: https://github.com/JetBrains/intellij-plugins/tree/master/markdown
+[markdown-plugin]: https://github.com/JetBrains/intellij-community/tree/master/plugins/markdown
 
 [AST]: https://en.wikipedia.org/wiki/Abstract_syntax_tree 'Wikipedia reference'
 [visitor-pattern]: https://en.wikipedia.org/wiki/Visitor_pattern 'Wikipedia reference'
