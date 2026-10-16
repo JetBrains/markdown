@@ -15,6 +15,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.jetbrains.configureSonatypePublicationIfNecessary
+import org.jetbrains.configurePublicationRepositoryIfNecessary
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import java.io.File
@@ -280,6 +281,7 @@ for ((publication, artifact) in publicationsToArtifacts) {
 }
 signPublicationsIfNecessary(*publicationsToArtifacts.keys.toTypedArray())
 configureSonatypePublicationIfNecessary()
+configurePublicationRepositoryIfNecessary()
 configureBintrayPublicationIfNecessary()
 
 tasks.withType<AbstractPublishToMaven>().configureEach {

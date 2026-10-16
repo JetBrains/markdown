@@ -50,6 +50,25 @@ If you are using Maven or older Gradle, you need to specify the correct artifact
 * `org.jetbrains:markdown-jvm:<version>` for the JVM version
 * `org.jetbrains:markdown-js:<version>` for the JS version
 
+#### Using intermediate releases
+
+Intermediate `A.B.C.x` versions are published to the JetBrains `intellij-dependencies` repository. 
+If you want to use them, then add `intellij-dependencies` to your repository:
+
+```groovy
+repositories {
+    maven {
+        url "https://packages.jetbrains.team/maven/p/ij/intellij-dependencies"
+    }
+}
+```
+
+```kts
+repositories {
+    maven("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+}
+```
+
 ### Using `intellij-markdown` for parsing and generating HTML
 
 One of the goals of this project is to provide flexibility in terms of the tasks being solved.
