@@ -3,6 +3,7 @@ package org.jetbrains
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.get
@@ -54,6 +55,36 @@ fun Project.configureSonatypePublicationIfNecessary() {
             maven {
                 name = "artifacts"
                 url = artifactsDir
+            }
+        }
+    }
+}
+
+fun Project.configurePublicationRepositoryIfNecessary() {
+    val repositoryUrl = findProperty("publicationRepositoryUrl")?.toString() ?: return
+    val repositoryName = "jetbrains"
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = repositoryName
+                url = uri(repositoryUrl)
+                credentials {
+                    username = property("publicationUsername").toString()
+                    password = property("publicationPassword").toString()
+                }
+            }
+        }
+    }
+    // A.B.C is reserved for Maven Central. Versions in the JetBrains repositories are immutable, so a A.B.C
+    // published there by mistake could never be replaced by the real release. Checked before any task runs.
+    gradle.taskGraph.whenReady {
+        val publishesToRepository = allTasks.any {
+            it is PublishToMavenRepository && it.repository?.name == repositoryName
+        }
+        if (publishesToRepository) {
+            check(Regex("""\d+\.\d+\.\d+\.\d+""").matches(version.toString())) {
+                "$repositoryUrl accepts only JetBrains-internal A.B.C.x versions, got $version. " +
+                    "Tag the commit A.B.C.x; A.B.C releases go to Maven Central."
             }
         }
     }
