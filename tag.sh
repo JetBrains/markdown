@@ -23,9 +23,10 @@ problem and how to fix it, and creates nothing:
      (version=0.7.18 allows 0.7.18.1, 0.7.18.2, ... but not 0.7.19.1)
   5. the tag does not exist yet, locally or on origin (versions are immutable)
 
-The script never switches branches, pulls, rebases or pushes branches.
-It only runs `git fetch origin master` (updates the `origin/master` ref),
-then `git tag` and `git push` for the tag itself.
+The script never switches branches, pulls, rebases or updates branches.
+It only runs `git fetch origin master` (updates the `origin/master` ref), then `git tag`
+and one atomic `git push` of the tag. That push also names `master`, but only as a lease:
+it is rejected, publishing nothing, if `origin/master` moved after the checks above.
 
 Examples:
   ./tag.sh 0.7.18.1      # tag the latest master as 0.7.18.1 and push the tag
@@ -96,5 +97,13 @@ if [[ -n $remote_tag ]]; then
 fi
 
 git tag "$version"
-git push origin "refs/tags/$version"
+# The push also names master, only as a lease on the checked commit: if master moved since the check
+# above, git rejects the whole push, so no tag is published from an outdated commit.
+# --no-follow-tags: with push.followTags=true git would also push other local annotated tags.
+if ! git push --atomic --no-follow-tags --force-with-lease="refs/heads/master:$(git rev-parse HEAD)" \
+        origin HEAD:refs/heads/master "refs/tags/$version"; then
+    git tag -d "$version" >/dev/null
+    fail "push rejected, nothing was published (origin/master may have moved since the check, or the remote refused the tag)." \
+         "see the git output above and re-run once it's resolved. The local tag '$version' was removed."
+fi
 echo "Tag $version created and pushed to origin."
