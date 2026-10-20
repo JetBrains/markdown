@@ -1971,7 +1971,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testEntityAndNumericCharacterReferencesExample322() = doTest(
             markdown = "&#35; &#1234; &#992; &#0;\n",
             html = "<p># Ӓ Ϡ �</p>\n"
