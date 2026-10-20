@@ -19,7 +19,9 @@ problem and how to fix it, and creates nothing:
   1. <version> matches A.B.C.D
   2. the current branch is `master`
   3. local `master` is identical to `origin/master` (same latest commit)
-  4. the tag does not exist yet, locally or on origin (versions are immutable)
+  4. A.B.C equals `version` in gradle.properties of that commit
+     (version=0.7.18 allows 0.7.18.1, 0.7.18.2, ... but not 0.7.19.1)
+  5. the tag does not exist yet, locally or on origin (versions are immutable)
 
 The script never switches branches, pulls, rebases or pushes branches.
 It only runs `git fetch origin master` (updates the `origin/master` ref),
@@ -70,6 +72,17 @@ elif [[ $behind -gt 0 ]]; then
 elif [[ $ahead -gt 0 ]]; then
     fail "local master has $ahead commit(s) that are not on origin/master; the tag would point to a commit the remote doesn't have." \
          "push or merge them first (the tag must be on the latest origin/master), then re-run."
+fi
+
+# Read from HEAD (the commit being tagged), not the working tree, which may have uncommitted edits.
+project_version=$(git show HEAD:gradle.properties | sed -n 's/^version=//p')
+if [[ -z $project_version ]]; then
+    fail "no 'version=' line found in gradle.properties at HEAD, can't check the version prefix." \
+         "restore the 'version=A.B.C' line in gradle.properties on master, then re-run."
+fi
+if [[ ${version%.*} != "$project_version" ]]; then
+    fail "version '$version' has prefix '${version%.*}', but gradle.properties has version=$project_version." \
+         "use $project_version.D (e.g. $project_version.1)"
 fi
 
 if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
