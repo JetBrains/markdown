@@ -160,7 +160,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEntityAndNumericCharacterReferencesExample26() = doTest(
             markdown = "&#35; &#1234; &#992; &#0;\n",
             html = "<p># Ӓ Ϡ �</p>\n"
@@ -173,7 +172,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testEntityAndNumericCharacterReferencesExample28() = doTest(
             markdown = "&nbsp &x; &#; &#x;\n&#87654321;\n&#abcdef0;\n&ThisIsNotDefined; &hi?;\n",
             html = "<p>&amp;nbsp &amp;x; &amp;#; &amp;#x;\n&amp;#87654321;\n&amp;#abcdef0;\n&amp;ThisIsNotDefined; &amp;hi?;</p>\n"

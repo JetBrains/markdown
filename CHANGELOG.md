@@ -2,6 +2,7 @@
 # IntelliJ Markdown Changelog
 
 ## [Unreleased]
+- Decode character references above U+FFFF, such as `&#x1F600;` or `&Afr;`, to the right character instead of a truncated one, and replace `&#0;`, surrogates and out of range numeric references with U+FFFD as required by CommonMark
 
 ## [0.7.18]
 
