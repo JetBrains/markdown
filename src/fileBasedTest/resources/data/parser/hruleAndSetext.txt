@@ -5,3 +5,20 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:HORIZONTAL_RULE('___')
   Markdown:EOL('\n')
+  Markdown:ATX_1
+    Markdown:ATX_HEADER('#')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('atx')
+  Markdown:EOL('\n')
+  Markdown:HORIZONTAL_RULE('---')
+  Markdown:EOL('\n')
+  Markdown:ATX_1
+    Markdown:ATX_HEADER('#')
+    Markdown:ATX_CONTENT
+      WHITE_SPACE(' ')
+      Markdown:TEXT('atx')
+  Markdown:EOL('\n')
+  Markdown:PARAGRAPH
+    Markdown:TEXT('===')
+  Markdown:EOL('\n')
