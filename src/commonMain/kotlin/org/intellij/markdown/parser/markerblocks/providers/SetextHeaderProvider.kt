@@ -22,6 +22,10 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         if (stateInfo.nextConstraints != currentConstaints) {
             return emptyList()
         }
+        // An ATX heading can't be the content of a setext heading
+        if (ATX_HEADER_PROVIDER.interruptsParagraph(pos, currentConstaints)) {
+            return emptyList()
+        }
         if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, currentConstaints)
                 && getNextLineFromConstraints(pos, currentConstaints)?.let { REGEX.matches(it) } == true) {
             return listOf(SetextHeaderMarkerBlock(currentConstaints, productionHolder))
@@ -50,5 +54,7 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
     companion object {
         val REGEX: Regex = Regex("^ {0,3}(-+|=+) *$")
+
+        private val ATX_HEADER_PROVIDER = AtxHeaderProvider()
     }
 }
