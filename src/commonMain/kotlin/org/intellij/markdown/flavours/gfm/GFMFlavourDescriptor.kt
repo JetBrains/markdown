@@ -53,10 +53,10 @@ open class GFMFlavourDescriptor(
     ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter = false)
 
     constructor(
-            useSafeLinks: Boolean,
-            absolutizeAnchorLinks: Boolean,
-            makeHttpsAutoLinks: Boolean,
-            useTagFilter: Boolean,
+            useSafeLinks: Boolean = true,
+            absolutizeAnchorLinks: Boolean = false,
+            makeHttpsAutoLinks: Boolean = false,
+            useTagFilter: Boolean = false,
     ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter, lazyContinuation = true)
 
     override val markerProcessorFactory: MarkerProcessorFactory =
