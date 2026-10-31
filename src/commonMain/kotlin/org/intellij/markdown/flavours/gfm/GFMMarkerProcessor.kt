@@ -12,14 +12,24 @@ import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
+import org.intellij.markdown.parser.markerblocks.providers.BlockQuoteProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.math.min
 
-class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints)
+class GFMMarkerProcessor(
+    productionHolder: ProductionHolder,
+    constraintsBase: CommonMarkdownConstraints,
+    private val lazyContinuation: Boolean,
+)
 : CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
+    constructor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints) :
+            this(productionHolder, constraintsBase, lazyContinuation = true)
+
     private val markerBlockProviders = listOf(GitHubAlertMarkerProvider())
-            .plus(super.getMarkerBlockProviders())
+            .plus(super.getMarkerBlockProviders().map {
+                if (it is BlockQuoteProvider) BlockQuoteProvider(lazyContinuation) else it
+            })
             .plus(listOf(GitHubTableMarkerProvider()))
 
     override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {
@@ -65,6 +75,16 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Co
     object Factory : MarkerProcessorFactory {
         override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
             return GFMMarkerProcessor(productionHolder, GFMConstraints.BASE)
+        }
+
+        internal fun withLazyContinuation(lazyContinuation: Boolean): MarkerProcessorFactory {
+            return if (lazyContinuation) this else ConfiguredFactory(lazyContinuation)
+        }
+    }
+
+    private class ConfiguredFactory(private val lazyContinuation: Boolean) : MarkerProcessorFactory {
+        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
+            return GFMMarkerProcessor(productionHolder, GFMConstraints.BASE, lazyContinuation)
         }
     }
 }
