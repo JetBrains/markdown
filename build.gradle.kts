@@ -2,6 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.configureBintrayPublicationIfNecessary
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
@@ -93,10 +94,17 @@ kotlin {
     mingwX64()
     macosX64()
     macosArm64()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosDeviceArm64()
+    watchosX64()
     watchosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
     tvosSimulatorArm64()
-    ios()
 
     sourceSets {
         all {
@@ -128,19 +136,8 @@ kotlin {
         val nativeTest by creating {
             dependsOn(fileBasedTest)
         }
-        val nativeSourceSets = listOf(
-            "linuxX64",
-            "linuxArm64",
-            "mingwX64",
-            "macosX64",
-            "macosArm64",
-            "ios",
-            "iosSimulatorArm64",
-            "watchosSimulatorArm64",
-            "tvosSimulatorArm64"
-        ).map { "${it}Main" }
-        for (set in nativeSourceSets) {
-            named(set) {
+        for (target in targets.withType<KotlinNativeTarget>()) {
+            named("${target.name}Main") {
                 dependsOn(nativeMain)
             }
         }
@@ -263,18 +260,8 @@ val publicationsToArtifacts = mapOf(
     "jvm" to "markdown-jvm",
     "js" to "markdown-js",
     "wasmJs" to "markdown-wasm-js",
-    "linuxX64" to "markdown-linuxx64",
-    "linuxArm64" to "markdown-linuxarm64",
-    "mingwX64" to "markdown-mingwx64",
-    "macosX64" to "markdown-macosx64",
-    "macosArm64" to "markdown-macosarm64",
-    "iosX64" to "markdown-iosx64",
-    "iosArm64" to "markdown-iosarm64",
-    "iosSimulatorArm64" to "markdown-iossimulatorarm64",
-    "watchosSimulatorArm64" to "markdown-watchossimulatorarm64",
-    "tvosSimulatorArm64" to "markdown-tvossimulatorarm64",
     "metadata" to "markdown-metadata"
-)
+) + kotlin.targets.withType<KotlinNativeTarget>().associate { it.name to "markdown-${it.name.lowercase()}" }
 
 for ((publication, artifact) in publicationsToArtifacts) {
     registerPublicationFromKotlinPlugin(publication, artifact)

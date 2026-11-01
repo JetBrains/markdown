@@ -4,6 +4,7 @@
 ## [Unreleased]
 - Decode character references above U+FFFF, such as `&#x1F600;` or `&Afr;`, to the right character instead of a truncated one, and replace `&#0;`, surrogates and out of range numeric references with U+FFFD as required by CommonMark
 - Parse an ATX heading followed by `---` or `===` as a heading, not as setext content (IJPL-94630)
+- Publish the `watchosArm32`, `watchosArm64`, `watchosDeviceArm64`, `watchosX64`, `tvosArm64` and `tvosX64` targets
 
 ## [0.7.18]
 
