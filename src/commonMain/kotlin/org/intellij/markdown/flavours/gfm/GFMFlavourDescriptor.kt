@@ -33,12 +33,15 @@ import org.intellij.markdown.parser.sequentialparsers.impl.*
  * otherwise. When enabled, the leading `<` of the disallowed raw HTML tags (`title`, `textarea`, `style`, `xmp`,
  * `iframe`, `noembed`, `noframes`, `script`, `plaintext`) is replaced with `&lt;`.
  * See [Disallowed Raw HTML (extension)](https://github.github.com/gfm/#disallowed-raw-html-extension-)
+ *
+ * @param lazyContinuation `true` if an unmarked line may continue a paragraph inside a block quote.
  */
 open class GFMFlavourDescriptor(
         useSafeLinks: Boolean = true,
         absolutizeAnchorLinks: Boolean = false,
         private val makeHttpsAutoLinks: Boolean = false,
-        private val useTagFilter: Boolean = false
+        private val useTagFilter: Boolean = false,
+        private val lazyContinuation: Boolean = true,
 ) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
     /**
      * For ABI compatibility.
@@ -49,7 +52,15 @@ open class GFMFlavourDescriptor(
             makeHttpsAutoLinks: Boolean = false
     ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter = false)
 
-    override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
+    constructor(
+            useSafeLinks: Boolean = true,
+            absolutizeAnchorLinks: Boolean = false,
+            makeHttpsAutoLinks: Boolean = false,
+            useTagFilter: Boolean = false,
+    ) : this(useSafeLinks, absolutizeAnchorLinks, makeHttpsAutoLinks, useTagFilter, lazyContinuation = true)
+
+    override val markerProcessorFactory: MarkerProcessorFactory =
+            GFMMarkerProcessor.Factory.withLazyContinuation(lazyContinuation)
 
     override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_GFMLexer())
