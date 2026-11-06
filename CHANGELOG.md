@@ -5,6 +5,7 @@
 - Decode character references above U+FFFF, such as `&#x1F600;` or `&Afr;`, to the right character instead of a truncated one, and replace `&#0;`, surrogates and out of range numeric references with U+FFFD as required by CommonMark
 - Parse an ATX heading followed by `---` or `===` as a heading, not as setext content (IJPL-94630)
 - Add `lazyContinuation` parameter to GFM flavor
+- Strike through single-tilde text such as `~abc~` or `abc~abc~` when its opening tilde is the first emphasis-like delimiter of the paragraph
 
 ## [0.7.18]
 

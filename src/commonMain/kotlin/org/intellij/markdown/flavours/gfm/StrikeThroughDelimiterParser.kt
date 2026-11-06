@@ -43,7 +43,7 @@ class StrikeThroughDelimiterParser : DelimiterParser() {
         // Start at the end and move backward, matching tokens
         var index = delimiters.size - 1
 
-        while (index > 0) {
+        while (index >= 0) {
             // Find opening tilde
             if (!delimiters[index].isOpeningTilde()) {
                 index -= 1

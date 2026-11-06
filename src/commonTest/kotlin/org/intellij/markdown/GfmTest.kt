@@ -42,6 +42,17 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
         html = "<p><a href=\"https://jb.gg\"><a href=\"https://www.jb.gg/?q=19\">https://www.jb.gg/?q=19</a></a></p>"
     )
 
+    // A single tilde run that is the first delimiter in the paragraph must still open a strikethrough
+    @Test
+    fun testSingleTildeStrikethroughAsFirstDelimiter() {
+        doTest(markdown = "~abc~", html = "<p><span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "abc~abc~", html = "<p>abc<span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "~abc~**", html = "<p><span class=\"user-del\">abc</span>**</p>")
+        doTest(markdown = "* abc~abc~", html = "<ul><li>abc<span class=\"user-del\">abc</span></li></ul>")
+        doTest(markdown = "*abc~abc~", html = "<p>*abc<span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "*~abc~*", html = "<p><em><span class=\"user-del\">abc</span></em></p>")
+    }
+
     // IJPL-91082: the GFM autolink lexer used to swallow the closing paren of an inline link
     // destination together with the non-ASCII separator and the following link's text
     @Test
