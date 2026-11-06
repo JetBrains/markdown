@@ -2,7 +2,9 @@
 <p>
 <span class="user-del">Simple</span>
 </p>
-<p>~Simple~</p>
+<p>
+<span class="user-del">Simple</span>
+</p>
 <p>~~ Simple ~~</p>
 <p>
 <span class="user-del">Two (so many) words</span>

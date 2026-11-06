@@ -9,9 +9,10 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:~('~')
-    Markdown:TEXT('Simple')
-    Markdown:~('~')
+    Markdown:STRIKETHROUGH
+      Markdown:~('~')
+      Markdown:TEXT('Simple')
+      Markdown:~('~')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
