@@ -63,12 +63,11 @@ Markdown:MARKDOWN_FILE
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
-    Markdown:STRIKETHROUGH
-      Markdown:~('~')
-      Markdown:~('~')
-      Markdown::(':')
-      Markdown:~('~')
-      Markdown:~('~')
+    Markdown:~('~')
+    Markdown:~('~')
+    Markdown::(':')
+    Markdown:~('~')
+    Markdown:~('~')
     Markdown:~('~')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
@@ -89,7 +88,6 @@ Markdown:MARKDOWN_FILE
       Markdown:TEXT('baba')
       Markdown:~('~')
       Markdown:~('~')
-    Markdown:STRIKETHROUGH
       Markdown:~('~')
       Markdown:~('~')
       Markdown:TEXT('abab')
