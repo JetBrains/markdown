@@ -42,6 +42,48 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
         html = "<p><a href=\"https://jb.gg\"><a href=\"https://www.jb.gg/?q=19\">https://www.jb.gg/?q=19</a></a></p>"
     )
 
+    // A single tilde run that is the first delimiter in the paragraph must still open a strikethrough
+    @Test
+    fun testSingleTildeStrikethroughAsFirstDelimiter() {
+        doTest(markdown = "~abc~", html = "<p><span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "abc~abc~", html = "<p>abc<span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "~abc~**", html = "<p><span class=\"user-del\">abc</span>**</p>")
+        doTest(markdown = "* abc~abc~", html = "<ul><li>abc<span class=\"user-del\">abc</span></li></ul>")
+        doTest(markdown = "*abc~abc~", html = "<p>*abc<span class=\"user-del\">abc</span></p>")
+        doTest(markdown = "*~abc~*", html = "<p><em><span class=\"user-del\">abc</span></em></p>")
+    }
+
+    // Strikethrough must be wrapped in a matching pair of one or two tildes:
+    // tilde runs of different lengths never match, and runs of three or more never open or close
+    @Test
+    fun testStrikethroughTildeRunsMustHaveSameLength() {
+        doTest(markdown = "No ~mismatch~~", html = "<p>No ~mismatch~~</p>")
+        doTest(markdown = "No ~~mismatch~", html = "<p>No ~~mismatch~</p>")
+        doTest(markdown = "*~mismatch~~", html = "<p>*~mismatch~~</p>")
+        doTest(markdown = "a ~~abc~~~", html = "<p>a ~~abc~~~</p>")
+        doTest(markdown = "a ~~~abc~~", html = "<p>a ~~~abc~~</p>")
+        doTest(markdown = "a ~~~abc~~~", html = "<p>a ~~~abc~~~</p>")
+        doTest(markdown = "a ~x~~~", html = "<p>a ~x~~~</p>")
+        doTest(markdown = "~~abc~~~ d", html = "<p>~~abc~~~ d</p>")
+        doTest(markdown = "a ~~abc~ d~", html = "<p>a ~~abc~ d~</p>")
+    }
+
+    // A tilde run of a different length is skipped while looking for a matching opener
+    @Test
+    fun testStrikethroughSkipsTildeRunsOfDifferentLength() {
+        doTest(markdown = "a ~abc~~def~", html = "<p>a <span class=\"user-del\">abc~~def</span></p>")
+        doTest(markdown = "a ~~abc~def~~", html = "<p>a <span class=\"user-del\">abc~def</span></p>")
+        doTest(markdown = "a ~abc~~def~~", html = "<p>a ~abc<span class=\"user-del\">def</span></p>")
+        doTest(
+            markdown = "a ~abc ~~def~~ ghi~",
+            html = "<p>a <span class=\"user-del\">abc <span class=\"user-del\">def</span> ghi</span></p>"
+        )
+        doTest(
+            markdown = "a ~~abc~~ ~d~",
+            html = "<p>a <span class=\"user-del\">abc</span> <span class=\"user-del\">d</span></p>"
+        )
+    }
+
     // IJPL-91082: the GFM autolink lexer used to swallow the closing paren of an inline link
     // destination together with the non-ASCII separator and the following link's text
     @Test

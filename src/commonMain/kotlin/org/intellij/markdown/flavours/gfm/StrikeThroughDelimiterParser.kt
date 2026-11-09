@@ -19,12 +19,16 @@ class StrikeThroughDelimiterParser : DelimiterParser() {
             rightIterator = rightIterator.advance()
             stepsToAdvance += 1
         }
-        val (canOpen, canClose) = canOpenClose(tokens, iterator, rightIterator, canSplitText = true)
+        // Runs of three or more tildes never open or close a strikethrough
+        val (canOpen, canClose) = when {
+            stepsToAdvance > 2 -> false to false
+            else -> canOpenClose(tokens, iterator, rightIterator, canSplitText = true)
+        }
         for (index in 0 until stepsToAdvance) {
             val info = Info(
                 tokenType = GFMTokenTypes.TILDE,
                 position = iterator.index + index,
-                length = 0,
+                length = stepsToAdvance,
                 canOpen = canOpen,
                 canClose = canClose,
                 marker = '~'
@@ -43,7 +47,7 @@ class StrikeThroughDelimiterParser : DelimiterParser() {
         // Start at the end and move backward, matching tokens
         var index = delimiters.size - 1
 
-        while (index > 0) {
+        while (index >= 0) {
             // Find opening tilde
             if (!delimiters[index].isOpeningTilde()) {
                 index -= 1
@@ -60,11 +64,10 @@ class StrikeThroughDelimiterParser : DelimiterParser() {
                 delimitersMatched += 1
             }
 
-            // If 3 or more delimiters are matched, ignore
-            if (delimitersMatched < 3) {
-                val opener = delimiters[openerIndex]
-                val closer = delimiters[closerIndex]
-
+            val opener = delimiters[openerIndex]
+            val closer = delimiters[closerIndex]
+            // The opening and closing runs must be fully matched with each other
+            if (delimitersMatched == opener.length && delimitersMatched == closer.length) {
                 result.withNode(SequentialParser.Node(opener.position..closer.position + 1, GFMElementTypes.STRIKETHROUGH))
             }
 
@@ -72,6 +75,15 @@ class StrikeThroughDelimiterParser : DelimiterParser() {
             index = openerIndex - 1
         }
     }
+
+    /**
+     * A strikethrough is wrapped in a matching pair of one or two tildes,
+     * so the opening and closing runs must have the same length.
+     *
+     * See [GFM spec](https://github.github.com/gfm/#strikethrough-extension-).
+     */
+    override fun canMatch(opener: Info, closer: Info): Boolean =
+        opener.tokenType != GFMTokenTypes.TILDE || opener.length == closer.length
 }
 
 private fun DelimiterParser.Info.isOpeningTilde(): Boolean =

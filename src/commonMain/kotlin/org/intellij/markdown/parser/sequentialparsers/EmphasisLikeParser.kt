@@ -86,7 +86,8 @@ class EmphasisLikeParser(private vararg val parsers: DelimiterParser): Sequentia
                     openerIndex -= openersIndices[openerIndex] + 1
                     continue
                 }
-                if (opener.canOpen && opener.closerIndex < 0 && !violatesRuleOfThree(opener, closer)) {
+                if (opener.canOpen && opener.closerIndex < 0 && !violatesRuleOfThree(opener, closer) &&
+                    parsers.all { it.canMatch(opener, closer) }) {
                     // If the previous delimiter cannot be an opener, skip the entire sequence in future checks.
                     val lastIndex = when {
                         openerIndex > 0 && !delimiters[openerIndex - 1].canOpen -> openersIndices[openerIndex - 1] + 1

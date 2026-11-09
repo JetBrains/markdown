@@ -27,6 +27,15 @@ abstract class DelimiterParser {
         result: SequentialParser.ParsingResultBuilder
     )
 
+    /**
+     * Invoked by [EmphasisLikeParser.balanceDelimiters] for every potential [opener]/[closer] pair
+     * with the same marker, before they are matched. Returning `false` prevents the match,
+     * and the search for an opener continues further back.
+     *
+     * Implementations should only veto pairs of their own delimiters.
+     */
+    open fun canMatch(opener: Info, closer: Info): Boolean = true
+
     data class Info(
         val tokenType: IElementType,
         val position: Int,
