@@ -6,6 +6,7 @@
 - Parse an ATX heading followed by `---` or `===` as a heading, not as setext content (IJPL-94630)
 - Add `lazyContinuation` parameter to GFM flavor
 - Strike through single-tilde text such as `~abc~` or `abc~abc~` when its opening tilde is the first emphasis-like delimiter of the paragraph
+- Parse a thematic break followed by `---` or `===`, such as `----` before `--------`, as a thematic break, not as setext content
 
 ## [0.7.18]
 

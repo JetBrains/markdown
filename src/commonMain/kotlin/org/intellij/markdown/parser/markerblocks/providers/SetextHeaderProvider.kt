@@ -22,8 +22,9 @@ class SetextHeaderProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         if (stateInfo.nextConstraints != currentConstaints) {
             return emptyList()
         }
-        // An ATX heading can't be the content of a setext heading
-        if (ATX_HEADER_PROVIDER.interruptsParagraph(pos, currentConstaints)) {
+        // An ATX heading or a thematic break can't be the content of a setext heading
+        if (ATX_HEADER_PROVIDER.interruptsParagraph(pos, currentConstaints)
+                || HorizontalRuleProvider.isHorizontalRule(pos.currentLine, pos.offsetInCurrentLine)) {
             return emptyList()
         }
         if (MarkerBlockProvider.isStartOfLineWithConstraints(pos, currentConstaints)
