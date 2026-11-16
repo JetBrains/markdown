@@ -4,11 +4,28 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.commonmark.CommonMarkMarkerProcessor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
+import org.intellij.markdown.parser.MarkerProcessor
+import org.intellij.markdown.parser.MarkerProcessorFactory
+import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
+import org.intellij.markdown.parser.markerblocks.providers.SetextHeaderProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
+
+/** CommonMark with [SetextHeaderProvider] tried before the other providers, as in the IntelliJ Markdown plugin. */
+private class SetextFirstFlavour : CommonMarkFlavourDescriptor() {
+    override val markerProcessorFactory: MarkerProcessorFactory = object : MarkerProcessorFactory {
+        override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> =
+            object : CommonMarkMarkerProcessor(productionHolder, CommonMarkdownConstraints.BASE) {
+                private val providers = super.getMarkerBlockProviders().sortedBy { it !is SetextHeaderProvider }
+                override fun getMarkerBlockProviders() = providers
+            }
+    }
+}
 
 class MarkdownParsingTest : TestCase() {
 
@@ -189,6 +206,7 @@ class MarkdownParsingTest : TestCase() {
     @Test
     fun testHruleAndSetext() {
         defaultTest()
+        defaultTest(SetextFirstFlavour())
     }
 
     @Test
