@@ -26,6 +26,10 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 
   private int codeSpanBacktickslength = 0;
 
+  private int codeSpanOpenerLength = 0;
+
+  private int codeSpanSplitCloser = -1;
+
   private ParseDelimited parseDelimited = new ParseDelimited();
 
   private static class ParseDelimited {
@@ -136,6 +140,35 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 
   private boolean canInline() {
     return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed || yystate() == CODE_SPAN && parseDelimited.inlinesAllowed;
+  }
+
+  private void trackCodeSpan(int openerLength, int closerLength) {
+    if (codeSpanOpenerLength == 0) {
+      codeSpanOpenerLength = openerLength;
+      codeSpanSplitCloser = -1;
+    }
+    else if (codeSpanOpenerLength == closerLength) {
+      codeSpanOpenerLength = 0;
+    }
+  }
+
+  private int codeSpanCloserIndex() {
+    if (codeSpanOpenerLength == 0) {
+      return -1;
+    }
+    int run = 0;
+    for (int i = 0; i < yylength(); i++) {
+      if (yycharat(i) == '`') {
+        run++;
+      }
+      else {
+        if (run == codeSpanOpenerLength) {
+          return i - run;
+        }
+        run = 0;
+      }
+    }
+    return -1;
   }
 
   private IElementType getReturnGeneralized(IElementType defaultType) {
@@ -296,6 +329,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") ({URL_USER_INFO_CH
   // Backticks (code span)
   "`"+ {
     if (canInline()) {
+      trackCodeSpan(yylength(), yylength());
       codeSpanBacktickslength = yylength();
       stateStack.push(yystate());
       yybegin(CODE_SPAN);
@@ -315,6 +349,7 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") ({URL_USER_INFO_CH
 
 <CODE_SPAN> {
   "`"+ {
+    trackCodeSpan(yylength(), yylength());
     if (yylength() == codeSpanBacktickslength) {
       codeSpanBacktickslength = 0;
       popState();
@@ -345,7 +380,22 @@ GFM_AUTOLINK = (("http" "s"? | "ftp" | "file")"://" | "www.") ({URL_USER_INFO_CH
   {AUTOLINK} { return parseDelimited(MarkdownTokenTypes.AUTOLINK, false); }
   {EMAIL_AUTOLINK} { return parseDelimited(MarkdownTokenTypes.EMAIL_AUTOLINK, false); }
 
-  {HTML_TAG} { return MarkdownTokenTypes.HTML_TAG; }
+  {HTML_TAG} {
+    int closer = codeSpanCloserIndex();
+    if (closer != -1) {
+      int closerOffset = getTokenStart() + closer;
+      if (closerOffset != codeSpanSplitCloser) {
+        // Split the first tag that crosses the closer after "<", and lex the rest as usual
+        codeSpanSplitCloser = closerOffset;
+        yypushback(yylength() - 1);
+        return MarkdownTokenTypes.LT;
+      }
+      // A later tag crossing the same closer: return the text before the closer at once, so it is not rescanned
+      yypushback(yylength() - closer);
+      return MarkdownTokenTypes.TEXT;
+    }
+    return MarkdownTokenTypes.HTML_TAG;
+  }
 
 }
 

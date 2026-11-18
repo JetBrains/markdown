@@ -23,6 +23,10 @@ import org.intellij.markdown.lexer.GeneratedLexer;
 
   private boolean isHeader = false;
 
+  private int codeSpanOpenerLength = 0;
+
+  private int codeSpanSplitCloser = -1;
+
   private ParseDelimited parseDelimited = new ParseDelimited();
 
   private static class ParseDelimited {
@@ -135,6 +139,39 @@ import org.intellij.markdown.lexer.GeneratedLexer;
     return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed;
   }
 
+  private void trackCodeSpan(int openerLength, int closerLength) {
+    // AutolinkParser consumes autolink contents before BacktickParser runs
+    if (yystate() == PARSE_DELIMITED && parseDelimited.returnType == MarkdownTokenTypes.AUTOLINK) {
+      return;
+    }
+    if (codeSpanOpenerLength == 0) {
+      codeSpanOpenerLength = openerLength;
+      codeSpanSplitCloser = -1;
+    }
+    else if (codeSpanOpenerLength == closerLength) {
+      codeSpanOpenerLength = 0;
+    }
+  }
+
+  private int codeSpanCloserIndex() {
+    if (codeSpanOpenerLength == 0) {
+      return -1;
+    }
+    int run = 0;
+    for (int i = 0; i < yylength(); i++) {
+      if (yycharat(i) == '`') {
+        run++;
+      }
+      else {
+        if (run == codeSpanOpenerLength) {
+          return i - run;
+        }
+        run = 0;
+      }
+    }
+    return -1;
+  }
+
   private IElementType getReturnGeneralized(IElementType defaultType) {
     if (canInline()) {
       return defaultType;
@@ -209,6 +246,9 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
 <AFTER_LINE_START, PARSE_DELIMITED> {
   // The special case of a backtick
   \\"`"+ {
+    if (canInline()) {
+      trackCodeSpan(yylength() - 2, yylength() - 1);
+    }
     return getReturnGeneralized(MarkdownTokenTypes.ESCAPED_BACKTICKS);
   }
 
@@ -220,6 +260,7 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
   // Backticks (code span)
   "`"+ {
     if (canInline()) {
+      trackCodeSpan(yylength(), yylength());
       return MarkdownTokenTypes.BACKTICK;
     }
     return parseDelimited.returnType;
@@ -237,7 +278,22 @@ EMAIL_AUTOLINK = "<" [a-zA-Z0-9.!#$%&'*+/=?\^_`{|}~-]+ "@"[a-zA-Z0-9]([a-zA-Z0-9
   {AUTOLINK} { return parseDelimited(MarkdownTokenTypes.AUTOLINK, false); }
   {EMAIL_AUTOLINK} { return parseDelimited(MarkdownTokenTypes.EMAIL_AUTOLINK, false); }
 
-  {HTML_TAG} { return MarkdownTokenTypes.HTML_TAG; }
+  {HTML_TAG} {
+    int closer = codeSpanCloserIndex();
+    if (closer != -1) {
+      int closerOffset = getTokenStart() + closer;
+      if (closerOffset != codeSpanSplitCloser) {
+        // Split the first tag that crosses the closer after "<", and lex the rest as usual
+        codeSpanSplitCloser = closerOffset;
+        yypushback(yylength() - 1);
+        return MarkdownTokenTypes.LT;
+      }
+      // A later tag crossing the same closer: return the text before the closer at once, so it is not rescanned
+      yypushback(yylength() - closer);
+      return MarkdownTokenTypes.TEXT;
+    }
+    return MarkdownTokenTypes.HTML_TAG;
+  }
 
 }
 

@@ -2113,7 +2113,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample343() = doTest(
             markdown = "`<a href=\"`\">`\n",
             html = "<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>\n"

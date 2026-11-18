@@ -60,6 +60,9 @@ class _GFMLexer : GeneratedLexer {
     private val stateStack: Stack<Int> = Stack()
     private var isHeader = false
     private var codeSpanBacktickslength = 0
+
+    private var codeSpanOpenerLength = 0
+    private var codeSpanSplitCloser = -1
     private val parseDelimited = ParseDelimited()
 
     private class ParseDelimited {
@@ -141,6 +144,33 @@ class _GFMLexer : GeneratedLexer {
 
     private fun canInline(): Boolean {
         return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed || yystate() == CODE_SPAN && parseDelimited.inlinesAllowed
+    }
+
+    private fun trackCodeSpan(openerLength: Int, closerLength: Int) {
+        if (codeSpanOpenerLength == 0) {
+            codeSpanOpenerLength = openerLength
+            codeSpanSplitCloser = -1
+        } else if (codeSpanOpenerLength == closerLength) {
+            codeSpanOpenerLength = 0
+        }
+    }
+
+    private fun codeSpanCloserIndex(): Int {
+        if (codeSpanOpenerLength == 0) {
+            return -1
+        }
+        var run = 0
+        for (i in 0 until yylength()) {
+            if (yycharat(i) == '`') {
+                run++
+            } else {
+                if (run == codeSpanOpenerLength) {
+                    return i - run
+                }
+                run = 0
+            }
+        }
+        return -1
     }
 
     private fun getReturnGeneralized(defaultType: IElementType): IElementType? {
@@ -231,6 +261,7 @@ class _GFMLexer : GeneratedLexer {
         zzAtBOL = true
         zzEndRead = end
         yybegin(initialState)
+        codeSpanOpenerLength = 0
     }
 
     /**
@@ -475,6 +506,7 @@ class _GFMLexer : GeneratedLexer {
                     33 -> {}
                     12 -> {
                        return if (canInline()) {
+                            trackCodeSpan(yylength(), yylength())
                             codeSpanBacktickslength = yylength()
                             stateStack.push(yystate())
                             yybegin(CODE_SPAN)
@@ -501,6 +533,7 @@ class _GFMLexer : GeneratedLexer {
 
                     36 -> {}
                     15 -> {
+                        trackCodeSpan(yylength(), yylength())
                         if (yylength() == codeSpanBacktickslength) {
                             codeSpanBacktickslength = 0
                             popState()
@@ -522,6 +555,19 @@ class _GFMLexer : GeneratedLexer {
 
                     39 -> {}
                     18 -> {
+                        val closer = codeSpanCloserIndex()
+                        if (closer != -1) {
+                            val closerOffset = tokenStart + closer
+                            if (closerOffset != codeSpanSplitCloser) {
+                                // Split the first tag that crosses the closer after "<", and lex the rest as usual
+                                codeSpanSplitCloser = closerOffset
+                                yypushback(yylength() - 1)
+                                return MarkdownTokenTypes.LT
+                            }
+                            // A later tag crossing the same closer: return the text before the closer at once, so it is not rescanned
+                            yypushback(yylength() - closer)
+                            return MarkdownTokenTypes.TEXT
+                        }
                         return MarkdownTokenTypes.HTML_TAG
                     }
 
