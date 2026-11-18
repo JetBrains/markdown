@@ -1,8 +1,12 @@
 package org.intellij.markdown
 
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
 import org.intellij.markdown.flavours.space.SFMFlavourDescriptor
+import org.intellij.markdown.lexer.MarkdownLexer
+import org.intellij.markdown.lexer._MarkdownLexer
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor()) {
     // An ordered list may interrupt a paragraph only when it starts with 1.
@@ -266,5 +270,43 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
             markdown = "https://travis-ci.com/TheAlgorithms/Java&nbsp;",
             html = "<p>https://travis-ci.com/TheAlgorithms/Java\u00A0</p>"
         )
+    }
+
+    // A backtick inside an autolink cannot open a code span, so it must not split a later HTML tag
+    @Test
+    fun testCommonMarkBacktickInAutolinkDoesNotSplitHtmlTag() {
+        object : SpecTest(CommonMarkFlavourDescriptor()) {}.doTest(
+            markdown = "<http://foo/`> <a title=\"`\">x</a>",
+            html = "<p><a href=\"http://foo/%60\">http://foo/`</a> <a title=\"`\">x</a></p>"
+        )
+    }
+
+    // A restarted lexer must not remember a code span opener from the previous input
+    @Test
+    fun testLexerResetClearsCodeSpanTracking() {
+        for (lexer in listOf(MarkdownLexer(_MarkdownLexer()), MarkdownLexer(_GFMLexer()))) {
+            lexer.start("`unclosed")
+            lexer.start("<a title=\"`\">x</a>")
+            assertEquals(MarkdownTokenTypes.HTML_TAG, lexer.type)
+        }
+    }
+
+    // Only the first tag crossing a code span closer is split after "<"; a later one crossing the same closer
+    // is returned up to the closer at once, so a run of such tags is not rescanned quadratically
+    @Test
+    fun testTagsCrossingSameCodeSpanCloserAreNotRescanned() {
+        for (lexer in listOf(MarkdownLexer(_MarkdownLexer()), MarkdownLexer(_GFMLexer()))) {
+            lexer.start("`<?<?`?>")
+            val tokens = mutableListOf<String>()
+            while (lexer.type != null) {
+                tokens += "${lexer.type}('${lexer.originalText.subSequence(lexer.tokenStart, lexer.tokenEnd)}')"
+                lexer.advance()
+            }
+            assertEquals(
+                listOf("Markdown:BACKTICK('`')", "Markdown:<('<')", "Markdown:TEXT('?<?')", "Markdown:BACKTICK('`')",
+                    "Markdown:TEXT('?')", "Markdown:>('>')"),
+                tokens
+            )
+        }
     }
 }

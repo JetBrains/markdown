@@ -54,6 +54,8 @@ class _MarkdownLexer : GeneratedLexer {
 
     private val stateStack: ArrayList<Int> = ArrayList()
     private var isHeader = false
+    private var codeSpanOpenerLength = 0
+    private var codeSpanSplitCloser = -1
     private val parseDelimited = ParseDelimited()
 
     private class ParseDelimited {
@@ -136,6 +138,37 @@ class _MarkdownLexer : GeneratedLexer {
         return yystate() == AFTER_LINE_START || yystate() == PARSE_DELIMITED && parseDelimited.inlinesAllowed
     }
 
+    private fun trackCodeSpan(openerLength: Int, closerLength: Int) {
+        // AutolinkParser consumes autolink contents before BacktickParser runs
+        if (yystate() == PARSE_DELIMITED && parseDelimited.returnType == MarkdownTokenTypes.AUTOLINK) {
+            return
+        }
+        if (codeSpanOpenerLength == 0) {
+            codeSpanOpenerLength = openerLength
+            codeSpanSplitCloser = -1
+        } else if (codeSpanOpenerLength == closerLength) {
+            codeSpanOpenerLength = 0
+        }
+    }
+
+    private fun codeSpanCloserIndex(): Int {
+        if (codeSpanOpenerLength == 0) {
+            return -1
+        }
+        var run = 0
+        for (i in 0 until yylength()) {
+            if (yycharat(i) == '`') {
+                run++
+            } else {
+                if (run == codeSpanOpenerLength) {
+                    return i - run
+                }
+                run = 0
+            }
+        }
+        return -1
+    }
+
     private fun getReturnGeneralized(defaultType: IElementType): IElementType? {
         return if (canInline()) {
             defaultType
@@ -162,6 +195,7 @@ class _MarkdownLexer : GeneratedLexer {
         zzAtBOL = true
         zzEndRead = end
         yybegin(initialState)
+        codeSpanOpenerLength = 0
     }
 
     /**
@@ -388,6 +422,7 @@ class _MarkdownLexer : GeneratedLexer {
                     }
                     10 -> {
                         return if (canInline()) {
+                            trackCodeSpan(yylength(), yylength())
                             MarkdownTokenTypes.BACKTICK
                         } else parseDelimited.returnType
                     }
@@ -419,11 +454,27 @@ class _MarkdownLexer : GeneratedLexer {
                     30 -> {
                     }
                     14 -> {
+                        if (canInline()) {
+                            trackCodeSpan(yylength() - 2, yylength() - 1)
+                        }
                         return getReturnGeneralized(MarkdownTokenTypes.ESCAPED_BACKTICKS)
                     }
                     31 -> {
                     }
                     15 -> {
+                        val closer = codeSpanCloserIndex()
+                        if (closer != -1) {
+                            val closerOffset = tokenStart + closer
+                            if (closerOffset != codeSpanSplitCloser) {
+                                // Split the first tag that crosses the closer after "<", and lex the rest as usual
+                                codeSpanSplitCloser = closerOffset
+                                yypushback(yylength() - 1)
+                                return MarkdownTokenTypes.LT
+                            }
+                            // A later tag crossing the same closer: return the text before the closer at once, so it is not rescanned
+                            yypushback(yylength() - closer)
+                            return MarkdownTokenTypes.TEXT
+                        }
                         return MarkdownTokenTypes.HTML_TAG
                     }
                     32 -> {

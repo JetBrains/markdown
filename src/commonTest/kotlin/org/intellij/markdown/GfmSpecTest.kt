@@ -2157,7 +2157,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testCodeSpansExample353() = doTest(
             markdown = "`<a href=\"`\">`\n",
             html = "<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>\n"

@@ -7,6 +7,7 @@
 - Add `lazyContinuation` parameter to GFM flavor
 - Strike through single-tilde text such as `~abc~` or `abc~abc~` when its opening tilde is the first emphasis-like delimiter of the paragraph
 - Parse a thematic break followed by `---` or `===`, such as `----` before `--------`, as a thematic break, not as setext content
+- End a code span at the first backtick string of the same length, also when it is inside an HTML tag, such as `` `Class<?>` `` (IJPL-262140)
 
 ## [0.7.18]
 
