@@ -1000,7 +1000,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testLinkReferenceDefinitionsExample164() = doTest(
             markdown = "[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n",
             html = "<p><a href=\"my%20url\" title=\"title\">Foo bar</a></p>\n"
@@ -1037,7 +1036,6 @@ class GfmSpecTest : SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescri
     )
 
     @Test
-    @Ignore
     fun testLinkReferenceDefinitionsExample170() = doTest(
             markdown = "[foo]: <bar>(baz)\n\n[foo]\n",
             html = "<p>[foo]: <bar>(baz)</p>\n<p>[foo]</p>\n"

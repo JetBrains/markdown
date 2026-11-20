@@ -54,19 +54,13 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_TITLE(''title (with parens)'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:PARAGRAPH
-    Markdown:SHORT_REFERENCE_LINK
-      Markdown:LINK_LABEL
-        Markdown:[('[')
-        Markdown:TEXT('Foo bar')
-        Markdown:](']')
-    Markdown::(':')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[Foo bar]')
+    WHITE_SPACE(':')
     Markdown:EOL('\n')
-    Markdown:HTML_TAG('<my url>')
+    Markdown:LINK_DESTINATION('<my url>')
     Markdown:EOL('\n')
-    Markdown:'(''')
-    Markdown:TEXT('title')
-    Markdown:'(''')
+    Markdown:LINK_TITLE(''title'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:LINK_DEFINITION
@@ -249,15 +243,10 @@ Markdown:MARKDOWN_FILE
     Markdown:LINK_TITLE(''title'')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
-  Markdown:PARAGRAPH
-    Markdown:SHORT_REFERENCE_LINK
-      Markdown:LINK_LABEL
-        Markdown:[('[')
-        Markdown:TEXT('foo')
-        Markdown:](']')
-    Markdown::(':')
-    WHITE_SPACE(' ')
-    Markdown:HTML_TAG('<bar baz>')
+  Markdown:LINK_DEFINITION
+    Markdown:LINK_LABEL('[foo]')
+    WHITE_SPACE(': ')
+    Markdown:LINK_DESTINATION('<bar baz>')
   Markdown:EOL('\n')
   Markdown:EOL('\n')
   Markdown:PARAGRAPH
