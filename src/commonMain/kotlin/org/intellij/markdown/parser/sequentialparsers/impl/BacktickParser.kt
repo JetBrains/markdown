@@ -16,7 +16,7 @@ class BacktickParser : SequentialParser {
         while (iterator.type != null) {
             if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
 
-                val endIterator = findOfSize(iterator.advance(), getLength(iterator, true))
+                val endIterator = findClosingBackticks(iterator)
 
                 if (endIterator != null) {
                     result.withNode(SequentialParser.Node(iterator.index..endIterator.index + 1, MarkdownElementTypes.CODE_SPAN))
@@ -31,31 +31,31 @@ class BacktickParser : SequentialParser {
         return result.withFurtherProcessing(delegateIndices.get())
     }
 
-    private fun findOfSize(it: TokensCache.Iterator, length: Int): TokensCache.Iterator? {
-        var iterator = it
-        while (iterator.type != null) {
-            if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
-                if (getLength(iterator, false) == length) {
-                    return iterator
+    companion object {
+        internal fun findClosingBackticks(opener: TokensCache.Iterator): TokensCache.Iterator? {
+            val length = getLength(opener, true)
+            var iterator = opener.advance()
+            while (iterator.type != null) {
+                if (iterator.type == MarkdownTokenTypes.BACKTICK || iterator.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
+                    if (getLength(iterator, false) == length) {
+                        return iterator
+                    }
+                }
+                iterator = iterator.advance()
+            }
+            return null
+        }
+
+        private fun getLength(info: TokensCache.Iterator, canEscape: Boolean): Int {
+            var toSubtract = 0
+            if (info.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
+                if (canEscape) {
+                    toSubtract = 2
+                } else {
+                    toSubtract = 1
                 }
             }
-
-            iterator = iterator.advance()
+            return info.length - toSubtract
         }
-        return null
-    }
-
-
-    private fun getLength(info: TokensCache.Iterator, canEscape: Boolean): Int {
-        var toSubtract = 0
-        if (info.type == MarkdownTokenTypes.ESCAPED_BACKTICKS) {
-            if (canEscape) {
-                toSubtract = 2
-            } else {
-                toSubtract = 1
-            }
-        }
-
-        return info.length - toSubtract
     }
 }
