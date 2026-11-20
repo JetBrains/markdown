@@ -157,6 +157,18 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
     )
 
     @Test
+    fun testProtectedInlineMathAfterPunctuationDoesNotJoinCodeSpans() = doTest(
+        markdown = "(\$`x` `y`\$)",
+        html = "<p>(\$<code>x</code> <code>y</code>\$)</p>"
+    )
+
+    @Test
+    fun testProtectedInlineMathAfterPunctuationMatchesBacktickRunLength() = doTest(
+        markdown = "(\$``x` + y``\$)",
+        html = "<p>(<span class=\"math\" inline = \"true\">x` + y</span>)</p>"
+    )
+
+    @Test
     fun testInlineMathDoesNotEndBeforeWordCharacters() = doPlainParagraphTests(
         "$1+2$3",
         "$1+2\$a",

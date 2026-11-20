@@ -29,7 +29,7 @@ class MathParser : SequentialParser {
             val endIndex = when {
                 iterator.type != GFMTokenTypes.DOLLAR -> -1
                 canOpenMath(iterator) -> nextClosers[iterator.index]
-                else -> findProtectedMathEnd(iterator)
+                else -> findProtectedMathEnd(tokens, iterator)
             }
             if (endIndex != -1) {
                 while (linkRangeIndex < ranges.size && iterator.index > ranges[linkRangeIndex].last) {
@@ -55,17 +55,20 @@ class MathParser : SequentialParser {
         return result.withFurtherProcessing(delegateIndices.get())
     }
 
-    private fun findProtectedMathEnd(iterator: TokensCache.RangesListIterator): Int {
+    private fun findProtectedMathEnd(tokens: TokensCache, iterator: TokensCache.RangesListIterator): Int {
         if (iterator.length != 1 || !isPunctuation(iterator.charLookup(-1)) || iterator.charLookup(1) != '`') {
             return -1
         }
 
-        // The backtick parser has already removed the code span from the ranges
         val end = iterator.advance()
         if (end.type != GFMTokenTypes.DOLLAR || end.length != 1 || end.charLookup(-1) != '`' || !canCloseMath(end)) {
             return -1
         }
-        return end.index
+
+        // The gap left by the backtick parser can contain multiple code spans
+        val gap = tokens.RangesListIterator(listOf(iterator.index + 1 until end.index))
+        val closingBackticks = BacktickParser.findClosingBackticks(gap)
+        return if (closingBackticks?.index == end.index - 1) end.index else -1
     }
 
     private fun collectNextClosingIndices(
