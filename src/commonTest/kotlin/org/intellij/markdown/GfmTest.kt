@@ -143,6 +143,20 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
     )
 
     @Test
+    fun testProtectedInlineMathAfterPunctuation() = doTest(
+        markdown = "**\$`v_0`\$** (\$`x+y`\$) fixed-\$`k`\$",
+        html = "<p><strong><span class=\"math\" inline = \"true\">v_0</span></strong> " +
+                "(<span class=\"math\" inline = \"true\">x+y</span>) " +
+                "fixed-<span class=\"math\" inline = \"true\">k</span></p>"
+    )
+
+    @Test
+    fun testProtectedInlineMathAfterPunctuationRequiresMatchingDelimiters() = doTest(
+        markdown = "(\$`x+y`) costs 5\$.",
+        html = "<p>(\$<code>x+y</code>) costs 5\$.</p>"
+    )
+
+    @Test
     fun testInlineMathDoesNotEndBeforeWordCharacters() = doPlainParagraphTests(
         "$1+2$3",
         "$1+2\$a",
