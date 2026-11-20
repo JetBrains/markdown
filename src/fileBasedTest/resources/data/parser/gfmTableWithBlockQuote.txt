@@ -36,7 +36,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        Markdown:BLOCK_QUOTE(' >')
+        WHITE_SPACE(' ')
+        Markdown:>('>')
         Markdown:=('=')
         WHITE_SPACE(' ')
         Markdown:TEXT('1.3.0')
@@ -51,7 +52,8 @@ Markdown:MARKDOWN_FILE
         WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
       Markdown:CELL
-        Markdown:BLOCK_QUOTE(' >')
+        WHITE_SPACE(' ')
+        Markdown:>('>')
         Markdown:TEXT('0')
         WHITE_SPACE(' ')
       Markdown:TABLE_SEPARATOR('|')
