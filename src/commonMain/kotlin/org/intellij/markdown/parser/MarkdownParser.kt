@@ -10,6 +10,7 @@ import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.lexer.Compat.assert
+import org.intellij.markdown.lexer._MarkdownLexer
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.sequentialparsers.LexerBasedTokensCache
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -242,7 +243,11 @@ class MarkdownParser(
 
     private fun doParseInline(root: IElementType, text: CharSequence, textStart: Int, textEnd: Int, baseOffset: Int = 0): ASTNode {
         val lexer = flavour.createInlinesLexer()
-        lexer.start(text, textStart, textEnd)
+        // A `>` can only be a block quote marker at the start of a line. Inline content that starts in the
+        // middle of a line (e.g. ATX heading content after `#`) must not have its first `>` lexed as one.
+        // The GFM and SFM lexers declare the same states in the same order, so the constants match.
+        val startsMidLine = textStart > 0 && text[textStart - 1] != '\n'
+        lexer.start(text, textStart, textEnd, if (startsMidLine) _MarkdownLexer.AFTER_LINE_START else _MarkdownLexer.YYINITIAL)
         val tokensCache = LexerBasedTokensCache(lexer)
 
         val wholeRange = 0..tokensCache.filteredTokens.size

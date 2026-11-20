@@ -9,6 +9,7 @@
 - Parse a thematic break followed by `---` or `===`, such as `----` before `--------`, as a thematic break, not as setext content
 - End a code span at the first backtick string of the same length, also when it is inside an HTML tag, such as `` `Class<?>` `` (IJPL-262140)
 - Parse GFM inline math delimited by dollar signs and backticks after punctuation, as in `` ($`x+y`$) ``
+- Keep a `>` at the start of ATX heading content, as in `# > a`, as text instead of dropping it as a block quote marker; GFM table cells starting with `>` now get the same tokens
 
 ## [0.7.18]
 
