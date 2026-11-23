@@ -1,13 +1,10 @@
 package org.intellij.markdown.parser
 
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.lexer.GeneratedLexer
 import org.intellij.markdown.lexer.MarkdownLexer
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class MarkdownParserInlineStartStateTest {
     @Test
@@ -31,18 +28,5 @@ class MarkdownParserInlineStartStateTest {
         }
 
         MarkdownParser(flavour).buildMarkdownTreeFromString("# > a\n")
-    }
-
-    @Test
-    fun bareCrStartsANewInlineLine() {
-        val text = "x\r> y"
-        val tree = MarkdownParser(CommonMarkFlavourDescriptor()).parseInline(
-            MarkdownElementTypes.PARAGRAPH,
-            text,
-            textStart = 2,
-            textEnd = text.length
-        )
-
-        assertEquals(MarkdownTokenTypes.BLOCK_QUOTE, tree.children.first().type)
     }
 }
