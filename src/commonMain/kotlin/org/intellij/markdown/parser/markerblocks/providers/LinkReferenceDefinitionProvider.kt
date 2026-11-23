@@ -73,7 +73,8 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
             offset = destination.last + 1
             offset = passOneNewline(text, offset)
 
-            val title = matchLinkTitle(text, offset)
+            // A title must be separated from the destination, so `<bar>(baz)` has none.
+            val title = if (offset > destination.last + 1) matchLinkTitle(text, offset) else null
 
             val result = ArrayList<IntRange>()
             result.add(linkLabel)
@@ -103,7 +104,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                     val c = text[offset]
                     if (c == '>')
                         return IntRange(start, offset)
-                    if (c == '<' || c == '>' || isSpaceOrNewline(c))
+                    if (c == '<' || c == '>' || c == '\n')
                         return null
                     if (c == '\\' && offset + 1 < text.length && !isSpaceOrNewline(text[offset + 1]))
                         offset++

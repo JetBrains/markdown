@@ -1194,7 +1194,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testLinkReferenceDefinitionsExample195() = doTest(
             markdown = "[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n",
             html = "<p><a href=\"my%20url\" title=\"title\">Foo bar</a></p>\n"
@@ -1231,7 +1230,6 @@ class CommonMarkSpecTest : SpecTest(org.intellij.markdown.flavours.commonmark.Co
     )
 
     @Test
-    @Ignore
     fun testLinkReferenceDefinitionsExample201() = doTest(
             markdown = "[foo]: <bar>(baz)\n\n[foo]\n",
             html = "<p>[foo]: <bar>(baz)</p>\n<p>[foo]</p>\n"

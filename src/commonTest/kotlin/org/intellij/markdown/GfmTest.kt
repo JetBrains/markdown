@@ -335,4 +335,10 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
             )
         }
     }
+
+    @Test
+    fun testLinkDefinitionDestinationWithSpaces() = doTest(
+        markdown = "[document]: <./docs/path with spaces>\n\n[link][document]",
+        html = "<p><a href=\"./docs/path%20with%20spaces\">link</a></p>"
+    )
 }
