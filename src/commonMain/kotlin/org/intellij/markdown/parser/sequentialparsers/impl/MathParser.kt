@@ -26,19 +26,18 @@ class MathParser : SequentialParser {
                 continue
             }
 
-            if (iterator.type == GFMTokenTypes.DOLLAR && canOpenMath(iterator)) {
+            val endIndex = when {
+                iterator.type != GFMTokenTypes.DOLLAR -> -1
+                canOpenMath(iterator) -> nextClosers[iterator.index]
+                else -> findProtectedMathEnd(tokens, iterator)
+            }
+            if (endIndex != -1) {
                 while (linkRangeIndex < ranges.size && iterator.index > ranges[linkRangeIndex].last) {
                     linkRangeIndex++
                 }
 
                 val isInsideLink = linkRangeIndex < ranges.size && iterator.index >= ranges[linkRangeIndex].first
                 if (!isInsideLink) {
-                    val endIndex = nextClosers[iterator.index]
-                    if (endIndex == -1) {
-                        delegateIndices.put(iterator.index)
-                        iterator = iterator.advance()
-                        continue
-                    }
                     if (iterator.length == 1) {
                         result.withNode(SequentialParser.Node(iterator.index..endIndex + 1, GFMElementTypes.INLINE_MATH))
                     } else {
@@ -54,6 +53,22 @@ class MathParser : SequentialParser {
         }
 
         return result.withFurtherProcessing(delegateIndices.get())
+    }
+
+    private fun findProtectedMathEnd(tokens: TokensCache, iterator: TokensCache.RangesListIterator): Int {
+        if (iterator.length != 1 || !isPunctuation(iterator.charLookup(-1)) || iterator.charLookup(1) != '`') {
+            return -1
+        }
+
+        val end = iterator.advance()
+        if (end.type != GFMTokenTypes.DOLLAR || end.length != 1 || end.charLookup(-1) != '`' || !canCloseMath(end)) {
+            return -1
+        }
+
+        // The gap left by the backtick parser can contain multiple code spans
+        val gap = tokens.RangesListIterator(listOf(iterator.index + 1 until end.index))
+        val closingBackticks = BacktickParser.findClosingBackticks(gap)
+        return if (closingBackticks?.index == end.index - 1) end.index else -1
     }
 
     private fun collectNextClosingIndices(

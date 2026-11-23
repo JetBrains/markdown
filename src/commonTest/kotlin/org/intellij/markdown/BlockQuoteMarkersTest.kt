@@ -70,4 +70,22 @@ class BlockQuoteMarkersTest {
         markdown = "  > Foo\n  > ===\n",
         html = "<blockquote>\n<h1>Foo</h1>\n</blockquote>\n"
     )
+
+    @Test
+    fun testGreaterThanAtStartOfAtxHeading() = doTest(
+        markdown = "# > a\n",
+        html = "<h1>&gt; a</h1>\n"
+    )
+
+    @Test
+    fun testOnlyGreaterThanInAtxHeading() = doTest(
+        markdown = "## >\n",
+        html = "<h2>&gt;</h2>\n"
+    )
+
+    @Test
+    fun testGreaterThanSignsAtStartOfAtxHeadingInBlockQuote() = doTest(
+        markdown = "> # >> a\n",
+        html = "<blockquote>\n<h1>&gt;&gt; a</h1>\n</blockquote>\n"
+    )
 }

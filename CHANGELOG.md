@@ -8,6 +8,8 @@
 - Strike through single-tilde text such as `~abc~` or `abc~abc~` when its opening tilde is the first emphasis-like delimiter of the paragraph
 - Parse a thematic break followed by `---` or `===`, such as `----` before `--------`, as a thematic break, not as setext content
 - End a code span at the first backtick string of the same length, also when it is inside an HTML tag, such as `` `Class<?>` `` (IJPL-262140)
+- Parse GFM inline math delimited by dollar signs and backticks after punctuation, as in `` ($`x+y`$) ``
+- Keep a `>` at the start of ATX heading content, as in `# > a`, as text instead of dropping it as a block quote marker; GFM table cells starting with `>` now get the same tokens
 - Parse a link reference definition whose `<...>` destination contains spaces, such as `[foo]: <my url>` (IJPL-93503)
 - Parse `[foo]: <bar>(baz)` as a paragraph, since a link title must be separated from its destination by whitespace
 
