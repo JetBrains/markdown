@@ -56,4 +56,38 @@ class LinkReferenceDefinitionProviderTest {
 
         assertNull(LinkReferenceDefinitionProvider.matchLinkLabel(text, 0))
     }
+
+    @Test
+    fun destinationKeepsBalancedParentheses() {
+        assertEquals(0..5, LinkReferenceDefinitionProvider.matchLinkDestination("/u(a)b", 0))
+        assertEquals(0..8, LinkReferenceDefinitionProvider.matchLinkDestination("/u(a(b)c)", 0))
+        assertEquals(0..9, LinkReferenceDefinitionProvider.matchLinkDestination("/u(((a)))b \"t\"", 0))
+    }
+
+    @Test
+    fun destinationRejectsUnclosedParenthesis() {
+        assertNull(LinkReferenceDefinitionProvider.matchLinkDestination("/u(", 0))
+        assertNull(LinkReferenceDefinitionProvider.matchLinkDestination("/u(a", 0))
+        assertNull(LinkReferenceDefinitionProvider.matchLinkDestination("/u((a) \"t\"", 0))
+    }
+
+    @Test
+    fun destinationStopsAtUnopenedParenthesis() {
+        assertEquals(0..1, LinkReferenceDefinitionProvider.matchLinkDestination("/u)", 0))
+        assertEquals(0..4, LinkReferenceDefinitionProvider.matchLinkDestination("/u(a))", 0))
+    }
+
+    @Test
+    fun destinationIgnoresEscapedParentheses() {
+        assertEquals(0..3, LinkReferenceDefinitionProvider.matchLinkDestination("/u\\(", 0))
+        assertEquals(0..5, LinkReferenceDefinitionProvider.matchLinkDestination("/u(\\()", 0))
+    }
+
+    @Test
+    fun destinationLimitsParenthesisDepth() {
+        fun nested(depth: Int) = "/u" + "(".repeat(depth) + ")".repeat(depth)
+
+        assertEquals(0..65, LinkReferenceDefinitionProvider.matchLinkDestination(nested(32), 0))
+        assertNull(LinkReferenceDefinitionProvider.matchLinkDestination(nested(33), 0))
+    }
 }

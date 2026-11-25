@@ -12,6 +12,7 @@
 - Keep a `>` at the start of ATX heading content, as in `# > a`, as text instead of dropping it as a block quote marker; GFM table cells starting with `>` now get the same tokens
 - Parse a link reference definition whose `<...>` destination contains spaces, such as `[foo]: <my url>` (IJPL-93503)
 - Parse `[foo]: <bar>(baz)` as a paragraph, since a link title must be separated from its destination by whitespace
+- Allow nested parentheses in the destination of a link reference definition, such as `[x]: /u(a(b))`, and reject a destination with an unclosed parenthesis
 
 ## [0.7.18]
 
