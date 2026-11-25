@@ -51,6 +51,9 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
         // an unbounded scan of the rest of the line (or, for titles, the rest of the document).
         private const val MAX_LINK_PART_LENGTH = 999
 
+        // The spec asks for at least three levels, cmark and commonmark.js allow 32
+        private const val MAX_PAREN_DEPTH = 32
+
         fun addToRangeAndWiden(range: IntRange, t: Int): IntRange {
             return IntRange(range.first + t, range.last + t + 1)
         }
@@ -114,7 +117,7 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                 return null
             }
             else {
-                var hasParens = false
+                var parenDepth = 0
                 while (offset < text.length) {
                     if (offset - start > MAX_LINK_PART_LENGTH)
                         return null
@@ -122,23 +125,21 @@ class LinkReferenceDefinitionProvider : MarkerBlockProvider<MarkerProcessor.Stat
                     if (isSpaceOrNewline(c) || c.code <= 27)
                         break
                     if (c == '(') {
-                        if (hasParens)
-                            break
-                        else
-                            hasParens = true
+                        parenDepth++
+                        if (parenDepth > MAX_PAREN_DEPTH)
+                            return null
                     }
                     else if (c == ')') {
-                        if (!hasParens)
+                        if (parenDepth == 0)
                             break
-                        else
-                            hasParens = false
+                        parenDepth--
                     }
                     else if (c == '\\' && offset + 1 < text.length && !isSpaceOrNewline(text[offset + 1]))
                         offset++
 
                     offset++
                 }
-                if (start == offset)
+                if (start == offset || parenDepth != 0)
                     return null
                 else
                     return IntRange(start, offset - 1)
