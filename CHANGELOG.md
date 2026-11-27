@@ -13,6 +13,7 @@
 - Parse a link reference definition whose `<...>` destination contains spaces, such as `[foo]: <my url>` (IJPL-93503)
 - Parse `[foo]: <bar>(baz)` as a paragraph, since a link title must be separated from its destination by whitespace
 - Allow nested parentheses in the destination of a link reference definition, such as `[x]: /u(a(b))`, and reject a destination with an unclosed parenthesis
+- Escape `<`, `>`, `&` and `"` in the HTML of math expressions, so that `$a <b$` keeps its text (IJPL-184013)
 
 ## [0.7.18]
 

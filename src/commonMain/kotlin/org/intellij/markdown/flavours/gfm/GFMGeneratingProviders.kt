@@ -180,7 +180,7 @@ internal class MathGeneratingProvider(private val inline: Boolean = false): Gene
         val nodes = node.children.subList(1, node.children.size - 1)
         val output = nodes.joinToString(separator = "") { it.getTextInNode(text) }.trimSurroundingBackticksAndWhitespaces()
         visitor.consumeTagOpen(node, "span", "class=\"math\"", "inline = \"$inline\"")
-        visitor.consumeHtml(output)
+        visitor.consumeHtml(EntityConverter.replaceEntities(output, processEntities = true, processEscapes = false))
         visitor.consumeTagClose("span")
     }
 
