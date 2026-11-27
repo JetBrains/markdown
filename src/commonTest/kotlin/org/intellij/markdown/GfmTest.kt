@@ -228,9 +228,9 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
 
     @Test
     fun testMathEscapesHtml() = doTest(
-        markdown = "\$A_{earliest} <A_{latest} <B_{earliest} <B_{latest}\$ \$a &lt; b\$\n\n\$\$x<y\$\$",
+        markdown = "\$A_{earliest} <A_{latest} <B_{earliest} <B_{latest}\$ \$a &lt; &NotEqualTilde; &foo; b\$\n\n\$\$x<y\$\$",
         html = "<p><span class=\"math\" inline = \"true\">A_{earliest} &lt;A_{latest} &lt;B_{earliest} &lt;B_{latest}</span> " +
-                "<span class=\"math\" inline = \"true\">a &lt; b</span></p>\n" +
+                "<span class=\"math\" inline = \"true\">a &lt; &NotEqualTilde; &amp;foo; b</span></p>\n" +
                 "<p><span class=\"math\" inline = \"false\">x&lt;y</span></p>"
     )
 

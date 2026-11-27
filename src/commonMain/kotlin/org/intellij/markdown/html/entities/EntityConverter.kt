@@ -51,6 +51,20 @@ object EntityConverter {
         }
     }
 
+    /**
+     * Escapes `"`, `&`, `<` and `>` in [text], but keeps a numeric character reference and a known named one, such as `&lt;`.
+     * The browser then decodes a reference with all its code points.
+     */
+    internal fun escapeKeepingEntities(text: CharSequence): String {
+        return REGEX.replace(text) { match ->
+            when {
+                match.groups[4] != null -> replacements.getValue(match.value[0])
+                match.groups[1] != null && match.value !in Entities.map -> "&amp;${match.value.substring(1)}"
+                else -> match.value
+            }
+        }
+    }
+
     private const val REPLACEMENT_CHARACTER = 0xFFFD
 
     private fun isValidCodePoint(code: Int): Boolean =
