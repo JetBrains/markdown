@@ -226,6 +226,14 @@ class GfmTest: SpecTest(org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor(
         "Cost is \$\$5 and \$\$10",
     )
 
+    @Test
+    fun testMathEscapesHtml() = doTest(
+        markdown = "\$A_{earliest} <A_{latest} <B_{earliest} <B_{latest}\$ \$a &lt; b\$\n\n\$\$x<y\$\$",
+        html = "<p><span class=\"math\" inline = \"true\">A_{earliest} &lt;A_{latest} &lt;B_{earliest} &lt;B_{latest}</span> " +
+                "<span class=\"math\" inline = \"true\">a &lt; b</span></p>\n" +
+                "<p><span class=\"math\" inline = \"false\">x&lt;y</span></p>"
+    )
+
     // IJPL-91081: a link followed immediately by a word (no space or punctuation in between,
     // as is usual in Korean or Japanese) must still be parsed as a link
     @Test
